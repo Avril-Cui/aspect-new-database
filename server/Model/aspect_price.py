@@ -2,6 +2,8 @@ from typing import Optional
 import numpy as np
 from copy import deepcopy
 
+from pydantic import NumberNotGeError
+
 class DayPriceGenerator:
 	def __init__(
 		self,  
@@ -112,19 +114,56 @@ class StockSimulator:
 			mu_tmp = drift
 			sigma = 0.08
 			next_price = self.per_second_price(mu_tmp, sigma)
-
 			self.second_price = next_price
+
 			self.ask_bid_list = self.ontk_trading_population(previous_price, self.second_price)
 			price_index = int((self.second_price-self.lower)//self.minimum_price_unit)
 			LOB = self.ask_bid_list[(price_index-4):(price_index+6)]
 			daily_price.append(round(self.second_price,2))
+			result_price = self.order_book_influence(LOB, next_price)
+			print(round(self.second_price,2), round(result_price, 2))
 			ask_bid.append(LOB)
-			print(LOB)
 
 		daily_price[-1] = adjust_price
 		self.second_price_lst = daily_price
 		return daily_price, ask_bid
-	
+        
+	def order_book_influence(
+		self,
+		ask_bid_list: list,
+		original_value: float,
+	):
+
+		random_factor = np.random.normal(0,1)
+		try:
+			imbalance_1 = abs(ask_bid_list[4])/(abs(ask_bid_list[4])+abs(ask_bid_list[5]))
+
+		except ZeroDivisionError:
+			imbalance_1 = 0
+		try:
+			imbalance_2 = abs(ask_bid_list[3])/(abs(ask_bid_list[3])+abs(ask_bid_list[6]))
+
+		except ZeroDivisionError:
+			imbalance_2 = 0
+		try:
+			imbalance_3 = abs(ask_bid_list[2])/(abs(ask_bid_list[2])+abs(ask_bid_list[7]))
+
+		except ZeroDivisionError:
+			imbalance_3 = 0
+		try:
+			imbalance_4 = abs(ask_bid_list[1])/(abs(ask_bid_list[1])+abs(ask_bid_list[8]))
+		except ZeroDivisionError:
+			imbalance_4 = 0
+		try:
+			imbalance_5 = abs(ask_bid_list[0])/(abs(ask_bid_list[0])+abs(ask_bid_list[9]))
+
+		except ZeroDivisionError:
+			imbalance_5 = 0
+
+		micro_price = random_factor * (imbalance_1 * (-0.2638) + imbalance_2 * 0.1154 + imbalance_3 * (-0.4902) + imbalance_4 * (-0.1657) + imbalance_5 * (0.2239))
+		print(micro_price)
+		market_value = original_value + micro_price
+		return (market_value)
 
 	def initial_trading_population(
 		self,
@@ -149,7 +188,7 @@ class StockSimulator:
 		self,
 		previous_comp_price: float,
 		current_comp_price: float,
-		population_strength: Optional[int] = 0.7,
+		population_strength: Optional[int] = 1,
 		markov_step: Optional[int] = 10
 	):
 		ask_bid_list_tmp = deepcopy(self.ask_bid_list)
