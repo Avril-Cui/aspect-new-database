@@ -1,0 +1,16 @@
+Sequence:
+1. Historical price contains all price data used in this model.
+   Wakron (WRKN) is one of my virtual companies and is used as a sample 
+   to demonstrate this model.
+2. save_parameters.py contains the code to request historical data.
+3. get_parameters.py calculates the required parameters for Stochastic
+   differential equations (macro model) and Death & Birth process (micro model).
+4. simulator_simplified_version.py contains an easier version of the model. 
+   It does not include the micro model.
+5. stock_simulator.py is the main script. Please read this file when reading
+   through the whole model.
+6. aspect_simulator.py is an old version of my model. I keep it in this folder
+   for future references.
+
+Recommended Reading Route:
+save_parameters.py -> historical_price -> get_parameters.py -> stock_simulator.py

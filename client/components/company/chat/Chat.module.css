@@ -1,0 +1,45 @@
+.chat_header{
+    width: 100%;
+    background-color: #1f1f1f;
+    display: inline-flex;
+}
+
+.icon {
+    font-size: 20px;
+    margin: 0.2em;
+    margin-left: 0.7em;
+}
+
+.button_login{
+    background-color: #2d2d31;
+    margin: 0.2em 0.4em 0.2em 14em;
+    padding: 0em 0.5em;
+}
+
+.section{
+    text-decoration: none;
+    color: #dadada;
+}
+
+.button_login p{
+    color: #dadada;
+}
+
+.button_login:hover{
+    background-color: #34343b;
+}
+
+
+
+/* .messages_container {
+    width: 300px;
+    height: 500px;
+    background-color: aqua;
+    padding: 16px;
+    flex-grow: 1;
+    border: 1px solid var(--color-gray);
+    border-radius: var(--border-radius);
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+} */

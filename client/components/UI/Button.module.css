@@ -1,0 +1,10 @@
+.button_shape{
+    background: #577A60;
+    border: 1px solid #C9FFD1;
+    border-radius: 0.625em;
+}
+
+.button_shape:hover{
+    background: #6c9476;
+    box-shadow: inset 0px 4px 4px rgba(0, 0, 0, 0.25);
+}

@@ -1,0 +1,41 @@
+.title_text {
+  font-size: 20px;
+  font-weight: 300;
+  color: #c9ffd1;
+  margin-left: 0.25em;
+  margin-bottom: 0.25em;
+}
+
+.header {
+  display: inline-flex;
+}
+
+.price_info_table {
+  margin-top: 0.1em;
+  margin-left: 20.5em;
+}
+
+.types {
+  font-size: 15px;
+  font-family: "Roboto";
+  padding: 0em 1.5em;
+}
+
+.types button {
+  color: #f0f0f0;
+  font-weight: 300;
+}
+
+.types button:hover {
+  border-bottom: 2px solid #72b176;
+  padding-bottom: 3px;
+  color: #c9ffd1;
+  cursor: pointer;
+}
+
+.types button:focus {
+  border-bottom: 2px solid #72b176;
+  padding-bottom: 3px;
+  color: #c9ffd1;
+  cursor: pointer;
+}

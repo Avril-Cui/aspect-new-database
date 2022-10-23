@@ -1,0 +1,27 @@
+.dropdown_content {
+    display: none;
+    position: absolute;
+    background-color: #2c2c2c;
+    min-width: 160px;
+    box-shadow: 0em 0em 1px 0em rgba(0,0,0,0.5);
+    z-index: 1;
+    margin-left: -2.813em;
+}
+
+.dropdown_content a {
+    float: none;
+    color: #fff;
+    padding: 0.313em 1em;
+    font-size: 0.85em;
+    text-decoration: none;
+    display: block;
+    text-align: center;
+}
+
+.dropdown_content a:hover{
+    background-color: #3d3d3d;
+}
+
+.all_drop:hover .dropdown_content{
+    display: block;
+}

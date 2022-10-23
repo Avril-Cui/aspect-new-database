@@ -1,0 +1,25 @@
+.input_box{
+    margin-top: 1em;
+    background-color: #1f1f1f;
+}
+
+.message_input_container {
+    display: flex;
+}
+
+.message_input {
+    padding: 0.1em 0.5em;
+    flex: 1;
+    background-color: #3f3f3f;
+    font-size: 16px;
+    font-weight: 300;
+    color: #dadada;;
+}
+
+.send_message{
+    padding: 0.5em 0.75em;
+    cursor: pointer;
+    color: #C3FCC2;
+    font-size: 16px;
+    font-weight: 300;
+}

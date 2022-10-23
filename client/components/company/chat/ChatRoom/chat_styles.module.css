@@ -1,0 +1,21 @@
+.messages_container {
+    width: 300px;
+    height: 400px;
+    width: 100%;
+    background-color: #242424;
+}
+
+.back_link{
+    color: #dadada;
+    font-size: 16px;
+    font-weight: 300;
+    margin-left: 0.5em;
+    /* margin-top: -0.25em; */
+    height: 42px;
+    background-color: #242424;
+}
+
+.back_link:hover{
+    color: #C9FFD1;
+    text-decoration: underline;
+}

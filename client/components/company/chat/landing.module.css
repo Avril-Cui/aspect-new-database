@@ -1,0 +1,57 @@
+.pick{
+    color: #ffffff;
+    font-size: 18px;
+    font-weight: 300;
+    text-align: center;
+    margin-top: 1.5em;
+}
+
+.chat_room_list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    padding: 1em 1em;
+}
+
+.chat_room_list li {
+    background-color: #585858;
+    height: 60px;
+    flex: 1 1 calc(50% - 4px);
+    border-radius: 5px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #ffffff;
+}
+
+.heading{
+    color: #C9FFD1;
+    font-size: 20px;
+    font-weight: 300;
+    text-align: center;
+    margin-top: 0.75em;
+}
+
+.slogan{
+    color: #ffffff;
+    font-size: 16px;
+    font-weight: 300;
+    margin-left: 1.5em;
+    margin-top: 1.5em;
+}
+
+.functions{
+    color: #ffffff;
+    font: 14px;
+    font-weight: 300;
+    margin-left: 1.5em;
+    padding: 0.25em 0em;
+}
+
+.functions span{
+    font-weight: 400;
+}
+
+.section{
+    color: #ffffff;
+}

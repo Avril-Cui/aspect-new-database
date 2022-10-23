@@ -1,0 +1,93 @@
+.container{
+    display: table;
+    margin: 10em auto;
+    margin-bottom: 20em;
+}
+
+.log_in{
+    margin-left: 3em;
+}
+
+
+.login_container{
+    width: 550px;
+    height: 530px;
+    background: #5F5F5F;
+    border-radius: 20px;
+}
+
+.login_text{
+    font-weight: 400;
+    font-size: 26px;
+    text-align: center;
+    color: #FFFFFF;
+    text-align: center;
+    padding-top: 0.75em;
+}
+
+.email_input{
+    margin-top: 2em;
+}
+
+.password_input{
+    margin-top: 2em;
+}
+
+.show_text{
+    font-weight: 300;
+    font-size: 18px;
+    color: #FFFFFF;
+}
+
+.input_name{
+    font-weight: 300;
+    display: block; 
+    padding: 0.5rem 0.75rem;
+    margin-top: 0.25rem; 
+    width: 90%; 
+    border-radius: 10px; 
+    border: 1px solid #e6e6e6; 
+    background: #454545;
+    color: #e6e6e6;
+}
+
+.input_name:focus{
+    border: 2px solid #C3FCC2;
+}
+
+.submit_button{
+    margin-top: 2em;
+    padding: 5px 30px; 
+    background-color: #577A60; 
+    color: #ffffff;
+    font-size: 22px; 
+    font-weight: 300; 
+    border-radius: 10px; 
+    cursor: pointer; 
+    box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06); 
+}
+
+.submit_button:hover{
+    background-color: rgb(109, 144, 118); 
+    border: 1px solid #C9FFD1;
+}
+
+.sign_in{
+    font-weight: 300;
+    font-size: 22px;
+    text-align: center;
+    color: #FFFFFF;
+}
+
+.register{
+    color: #FCBF49;
+}
+
+.register:hover{
+    text-decoration: underline;
+}
+
+.sign_in_container{
+    margin-top: -7em;
+    text-align: center;
+}
