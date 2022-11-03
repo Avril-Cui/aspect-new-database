@@ -1,0 +1,51 @@
+.frame{
+    box-sizing: border-box;
+    width: 23.75em;
+    height: 20.625em;
+    border: 2px solid #FFFFFF;
+    border-radius: 15px;
+}
+
+.image_style{
+    border-radius: 15px;
+}
+
+.section_name{
+    width: 23.75em;
+    font-weight: 400;
+    font-size: 28px;
+    text-align: center;
+    color: #C9FFD1;
+    padding: 0.25em 0em;
+    margin-left: -5em;
+}
+
+.section_description{
+    font-weight: 200;
+    font-size: 20px;
+    color: #FFFFFF;
+    margin-left: 3em;
+    margin-bottom: 0.25em;
+}
+
+.section_difficulty{
+    font-weight: 200;
+    font-size: 20px;
+    color: #FFFFFF;
+    margin-left: 3em;
+    margin-bottom: 0.75em;
+}
+
+.button{
+    width: 23.75em;
+    text-align: center;
+}
+
+.button_text{
+    font-weight: 400;
+    font-size: 26px;
+    line-height: 34px;
+    text-align: center;
+    color: #C9FFD1;
+    padding: 0.1em 1.5em;
+}

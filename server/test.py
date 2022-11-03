@@ -99,6 +99,5 @@ class TestUser(unittest.TestCase):
         portfolio = user.trade_stock("WRKN", 30, 70, price)
         self.assertEqual(portfolio, "No available shares for trade now, your trade will enter pending state.")
 
-print("HI")
 if __name__ == "__main__":
     unittest.main()

@@ -1,0 +1,21 @@
+.container_layout{
+    margin-bottom: 1em;
+}
+
+@media (max-width: 640px) {
+    .container_layout{
+        margin-right: 10em;
+    }
+    .container_big{
+        margin-left: 10em;
+    }
+}
+
+@media (max-width: 1050px) {
+    .container_layout{
+        margin-right: 10em;
+    }
+    .container_big{
+        margin-left: 10em;
+    }
+}

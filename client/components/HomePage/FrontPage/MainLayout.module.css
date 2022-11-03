@@ -1,0 +1,137 @@
+.container{
+    max-width: 90%;
+    display: table;
+    margin: 0em auto;
+}
+
+
+.colored_container{
+    width: 100%;
+    background-color: #577A60;
+    height: 21.875em;
+    margin-top: 5em;
+    display: inline-flex;
+}
+
+.slogan{
+    font-size: 54px;
+    line-height: 1.2;
+    width: 600px;
+    color: #FFFFFF;
+    padding-top: 1em;
+}
+
+.aspect{
+    text-decoration-line: underline;
+    text-decoration-thickness: 3px;
+    text-underline-offset: 10px;
+}
+
+.explaination{
+    margin-top: 1em;
+    font-size: 20px;
+    text-align: left;
+    color: #FFFFFF;
+}
+
+.logo_image{
+    margin-left: 20em;
+    margin-top: 3em;
+}
+
+.img{
+    height: 3em;
+    width: 100%;
+    object-fit: cover; 
+}
+
+.img:hover{
+    transform: scale(1.05);
+    transition-property: transform; 
+    transition-timing-function: ease-in-out;
+    transition-duration: 200ms;
+}
+
+.img_border{
+    border: #FFFFFF;
+    border-radius: 12px;
+    cursor: pointer;
+    overflow: hidden; 
+    margin-top: -0.55em;
+}
+
+.section_container{
+    margin-top: 3em;
+}
+
+.persuade_text{
+    padding-left: 2.5rem;
+    margin-top: 1.25rem;
+}
+
+
+@media (max-width: 640px) {
+    .img_border{
+        width: 90%;
+    }
+    .section_container{
+        margin-left: 6em;
+    }
+    .section_text{
+        font-size: 30px;
+        font-weight: 400;
+    }
+    .logo_image{
+        display: none;
+    }
+    .persuade_text{
+        display: table;
+        margin: 0em auto;
+    }
+}
+
+/* @media (max-width: 1025px) {
+    .img{
+        width: 100%;
+        height: 380px;
+    }
+    .text_cont{
+        padding: 0.5em 1.25em;
+        background-color: white;
+        margin-top: -9.5em;
+        border-bottom-right-radius: 8px;
+        border-bottom-left-radius: 8px;
+        color: #577A60;
+    }
+} */
+
+
+
+
+
+.text_cont{
+    display: flex;
+    justify-content: space-between;
+    padding: 0.5em 1.25em;
+    background-color: rgb(245, 245, 245);
+    margin-top: -0.3em;
+    border-bottom-right-radius: 8px;
+    border-bottom-left-radius: 8px;
+}
+
+.section_text{
+    font-size: 20px;
+    font-weight: 400;
+}
+
+.section_text span:hover{
+    color: #86BF8C;
+}
+
+.section_text span{
+    text-decoration: underline;
+}
+
+.logo_A Image{
+    margin-top: -100em;
+}

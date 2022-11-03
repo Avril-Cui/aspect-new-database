@@ -102,7 +102,7 @@ const Manu = () => {
               Log Out
             </Nav.Link>
           ) : (
-            <Nav.Link className={styles.text} href="/">
+            <Nav.Link className={styles.text} href="/auth/login">
               <a className={styles.login_text}>Log In</a>
             </Nav.Link>
           )}

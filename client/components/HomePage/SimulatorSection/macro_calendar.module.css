@@ -1,0 +1,49 @@
+@media (max-width: 640px) {
+    .frame{
+        display: none;
+    }
+}
+
+.frame{
+    box-sizing: border-box;
+    width: 18.125em;
+    height: 42.25em;
+    border: 1px solid #C3FCC2;
+    border-radius: 5px;
+    margin-top: -42.25em;
+    margin-left: 31em;
+    margin-bottom: 1.5em;
+}
+
+.text{
+    margin-left: 0.5em;
+    font-style: normal;
+    font-weight: 400;
+    font-size: 24px;
+    color: #C0FFCA;
+}
+
+.macro_events{
+    list-style-type: none;
+    overflow: hidden;
+    margin-top: -1.5em;
+}
+
+.macro_events li{
+    list-style-type: none;
+    box-sizing: border-box;
+    width: 15.938em;
+    height: 8.125em;
+    background: #EBFFE8;
+    border: 1px solid #C3FCC2;
+    margin-top: 1.75em;
+    margin-left: 1em;
+}
+
+.events_container{
+    font-weight: 500;
+    font-size: 28px;
+    color: #577A60;
+    margin-top: 1.5em;
+    text-align: center;
+}

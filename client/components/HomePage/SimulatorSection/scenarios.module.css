@@ -1,0 +1,28 @@
+.frame{
+    box-sizing: border-box;
+    width: 30em;
+    height: 20.625em;
+    border: 1px solid #C3FCC2;
+    border-radius: 5px;
+    margin-top: 1em;
+}
+
+.text{
+    margin-left: 0.5em;
+    font-style: normal;
+    font-weight: 400;
+    font-size: 24px;
+    color: #C0FFCA;
+}
+
+.scenarios{
+    height: 45px;
+    background: #677A60;
+    font-style: normal;
+    font-weight: 400;
+    font-size: 20px;
+    line-height: 40px;
+    text-align: center;
+    color: #FFFFFF;
+    margin-top: 0.625em;
+}

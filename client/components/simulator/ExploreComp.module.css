@@ -1,0 +1,118 @@
+.container {
+  background-color: #2d2d2d;
+  border-radius: 10px;
+  width: 1200px;
+  height: 960px;
+  margin-left: 0em;
+  margin-bottom: 10em;
+}
+
+.header {
+  font-size: 18px;
+  font-weight: 300;
+  color: #c9ffd1;
+  padding-left: 1em;
+  padding-top: 0.5em;
+}
+
+.inline {
+  display: inline-flex;
+}
+
+.logo_container {
+  width: 54px;
+  height: 54px;
+  background-color: #c9ffd1;
+  border: 2px solid #577a60;
+  border-radius: 100px;
+}
+
+.logo_container {
+  font-weight: 500;
+  font-size: 28px;
+  text-align: center;
+  padding: 5px 0;
+  color: #577a60;
+}
+
+.comp_name {
+  color: #ffffff;
+  font-size: 24px;
+  font-weight: 400;
+  margin-left: 0.25em;
+  margin-top: -0.25em;
+}
+
+.comp_full_name {
+  color: #a5a5a5;
+  font-size: 16px;
+  font-weight: 300;
+  margin-left: 0.5em;
+  margin-top: -0.3em;
+}
+
+.price {
+  margin-top: 0.4em;
+  color: #ffffff;
+  font-size: 28px;
+  font-weight: 400;
+  margin-left: 0.25em;
+}
+
+.price span {
+  color: #a5a5a5;
+  font-size: 16px;
+  font-weight: 300;
+}
+
+.price_change {
+  margin-top: 1.9em;
+  margin-left: 1em;
+  color: #c9ffd1;
+  font-size: 14px;
+  font-weight: 300;
+}
+
+.stats_table {
+  margin-left: -0.75em;
+  margin-top: 0.5em;
+}
+
+.stats_table_left {
+  text-align: left;
+  padding: 0.35em 1em;
+  color: #a5a5a5;
+  font-size: 14px;
+  font-weight: 300;
+}
+
+.stats_table_right {
+  text-align: right;
+  padding: 0.35em 1em;
+  font-size: 14px;
+  font-weight: 300;
+  color: #ffffff;
+}
+
+.overview {
+  font-size: 16px;
+  font-weight: 300;
+  color: #eeeeee;
+  margin-left: 3.5em;
+  margin-top: 0.5em;
+}
+
+.overview_text {
+  font-size: 14px;
+  font-weight: 300;
+  color: #a5a5a5;
+  margin-left: 4em;
+  margin-top: 0.5em;
+  width: 360px;
+}
+
+.split {
+    height: 2em;
+    width: 100%;
+    border-top: 1px solid #a5a5a5;
+}

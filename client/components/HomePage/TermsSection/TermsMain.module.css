@@ -1,0 +1,53 @@
+.main_container{
+    display: table;
+    margin: 4em auto;
+}
+
+.text{
+    display: table;
+    margin: 0 auto;
+}
+
+.slogan{
+    width: 800px;
+    font-style: normal;
+    font-weight: 700;
+    font-size: 65px;
+    text-align: center;
+    color: #FFFFFF;
+    margin-top: 0.5em;
+    line-height: 1.2;
+}
+
+.description{
+    width: 800px;
+    font-style: normal;
+    font-weight: 400;
+    font-size: 25px;
+    line-height: 35px;
+    text-align: center;
+    color: #FFFFFF;
+    margin-top: 0.75em;
+}
+
+.terms{
+    margin-top: 2.5em;
+    display: table;
+    margin: 0 auto;
+}
+
+.button_text{
+    font-style: normal;
+    font-weight: 400;
+    font-size: 26px;
+    line-height: 47px;
+    text-align: center;
+    color: #C3FCC2;
+    padding: 0.1em 2.25em;
+}
+
+.button{
+    display: table;
+    margin: 0 auto;
+    margin-top: 3em;
+}

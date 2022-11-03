@@ -1,0 +1,53 @@
+.section{
+    cursor: pointer;
+}
+
+.image_style{
+    width: 17.5em;
+    height: 11.875em;
+    border: 2px solid #C9FFD1;
+    border-radius: 15px;  
+    overflow: hidden; 
+}
+
+.image_style div:hover{
+    transform: scale(1.05);
+    transition-property: transform; 
+    transition-timing-function: ease-in-out;
+    transition-duration: 200ms;
+}
+
+.section_name{
+    width: 280px;
+    font-style: normal;
+    font-weight: 400;
+    font-size: 24px;
+    text-align: center;
+    color: #C3FCC2;
+    padding-top: 5px;
+}
+
+.section_description{
+    width: 17.5em;
+    font-style: normal;
+    font-weight: 300;
+    font-size: 16px;
+    text-align: center;
+    color: #FFFFFF;
+    margin-top: 0.438em;
+    margin-bottom: 0.625em;
+}
+
+.read_more{
+    width: 280px;
+    font-style: normal;
+    font-weight: 400;
+    font-size: 18px;
+    text-decoration-line: underline;
+    color: #C3FCC2;
+    text-align: right;
+}
+
+.read_more:hover{
+    color: #EBFFE8;
+}

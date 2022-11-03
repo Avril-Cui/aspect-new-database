@@ -20,13 +20,13 @@ function SignIn() {
             <Nav.Link
               onClick={() => {
                 handleLogout;
-                router.push("/");
+                router.push("/auth/login");
               }}
             >
               Log Out
             </Nav.Link>
           ) : (
-            <Link href="/">Log In</Link>
+            <Link href="/auth/login">Log In</Link>
           )}
         </p>
       </Button>

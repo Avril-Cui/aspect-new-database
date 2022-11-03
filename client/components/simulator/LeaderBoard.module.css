@@ -1,0 +1,49 @@
+.container{
+    background-color: #2d2d2d;
+    border-radius: 10px;
+    width: 804px;
+    height: 455px;
+    margin-left: 1em;
+}
+
+.header {
+    font-size: 18px;
+    font-weight: 300;
+    color: #c9ffd1;
+    padding-left: 1em;
+    padding-top: 0.5em;
+}
+
+.user_table{
+    border-collapse: collapse;
+    display: table;
+    margin: 0.5em auto;
+}
+
+.user_table th{
+    font-size: 16px;
+    font-weight: 300;
+    text-align: left;
+    padding: 0.35em 1.75em;
+    color: #72B176;
+}
+
+.normal{
+    font-size: 14px;
+    font-weight: 300;
+    text-align: left;
+    padding: 0.65em 1.75em;
+    color: #dadada;
+}
+
+.user_table tr:nth-child(even) {
+    background-color: #272727;
+}
+
+.ranking{
+    text-align: center;
+    font-size: 14px;
+    font-weight: 300;
+    padding: 0.65em 1.5em;
+    color: #dadada;
+}

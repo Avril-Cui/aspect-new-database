@@ -1,0 +1,61 @@
+.container{
+    width: 100%;
+}
+
+.first_container{
+    display: table;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.grey_container{
+    height: 250px;
+    width: 100%;
+    background: #777B78;
+}
+
+.green_container{
+    width: 100%;
+    height: 237px;
+    background: #577A60;
+    margin-top: -9em;
+}
+
+.button{
+    width: 270px;
+    height: 55px;
+    background: #C9FFD1;
+    border-radius: 10px;
+    margin-top: 1.5em;
+}
+
+.button_text{
+    width: 270px;
+    font-weight: 500;
+    font-size: 28px;
+    color: #577A60;
+    text-align: center;
+}
+
+.contact{
+    font-weight: 400;
+    font-size: 28px;
+    line-height: 45px;
+    color: #FFFFFF;
+}
+
+.join_game{
+    font-weight: 400;
+    font-size: 28px;
+    line-height: 45px;
+    color: #C9FFD1;
+    margin-top: -1.75em;
+    margin-left: 15em;
+}
+
+.contact_container{
+    display: table;
+    margin-left: auto;
+    margin-right: auto;
+    padding-top: 3.5em;
+}

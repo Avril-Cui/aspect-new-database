@@ -1,0 +1,82 @@
+.show_mini {
+  display: inline-flex;
+  margin-left: 1.5em;
+  background-color: #2d2d2d;
+  opacity: 1;
+  width: 1200px;
+  border-radius: 10px;
+  padding-bottom: 0.75em;
+  margin-top: 0.5em;
+  padding-top: 0.75em;
+}
+
+.container {
+  margin-left: 0.75em;
+  padding-top: 0.5em;
+  background-color: #272727;
+  width: 381px;
+  border-radius: 7px;
+}
+
+.inline {
+  display: inline-flex;
+}
+
+.logo_container {
+  width: 54px;
+  height: 54px;
+  background-color: #c9ffd1;
+  border: 2px solid #577a60;
+  border-radius: 100px;
+}
+
+.logo_container {
+  font-weight: 500;
+  font-size: 28px;
+  text-align: center;
+  padding: 5px 0;
+  color: #577a60;
+}
+
+.comp_name {
+  color: #ffffff;
+  font-size: 28px;
+  font-weight: 400;
+  margin-left: 0.25em;
+  margin-top: -0.25em;
+}
+
+.comp_full_name {
+  color: #a5a5a5;
+  font-size: 16px;
+  font-weight: 300;
+  margin-left: 0.5em;
+  margin-top: -0.3em;
+}
+
+.price {
+  margin-top: 0.4em;
+  color: #ffffff;
+  font-size: 28px;
+  font-weight: 400;
+  margin-left: 0.25em;
+}
+
+.price span {
+  color: #a5a5a5;
+  font-size: 16px;
+  font-weight: 300;
+}
+
+.price_change {
+  margin-top: 1.9em;
+  margin-left: 1em;
+  color: #c9ffd1;
+  font-size: 14px;
+  font-weight: 300;
+}
+
+.chart {
+  margin-left: 0.75em;
+  margin-top: -0.5em;
+}

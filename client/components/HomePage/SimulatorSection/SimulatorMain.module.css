@@ -1,0 +1,79 @@
+.main_container{
+    display: table;
+    margin: 0 auto;
+}
+
+@media (max-width: 640px) {
+    .text_container{
+        margin-left: -15em;
+    }
+}
+
+.quote{
+    margin-top: -45em;
+    margin-left: 54.5em;
+}
+
+.quote_left{
+    width: 100px;
+    height: 100px;
+    font-style: normal;
+    font-weight: 700;
+    font-size: 80px;
+    line-height: 132px;
+    text-align: center;
+    color: #FFFFFF;
+    margin-left: -1.25em;
+}
+
+.slogan{
+    width: 420px;
+    font-style: normal;
+    font-weight: 700;
+    font-size: 58px;
+    text-align: center;
+    color: #FFFFFF;
+    margin-top: -0.7em;
+    margin-left: -0.5em;
+}
+
+.quote_right{
+    width: 89px;
+    height: 80px;
+    font-style: normal;
+    font-weight: 700;
+    font-size: 80px;
+    line-height: 132px;
+    text-align: right;
+    color: #FFFFFF;
+    margin-left: 4em;
+    margin-top: -0.25em;
+}
+
+.description {
+    position: absolute;
+    width: 410px;
+    font-style: normal;
+    font-weight: 400;
+    font-size: 18px;
+    line-height: 28px;
+    color: #FFFFFF;
+    margin-left: 47em;
+    margin-top: 2em;
+}
+
+.button_text{
+    font-style: normal;
+    font-weight: 400;
+    font-size: 22px;
+    line-height: 37px;
+    text-decoration-line: underline;
+    color: #C9FFD1;
+    padding-left: 0.25em;
+    padding-right: 0.25em;
+}
+
+.button{
+    margin-left: 69em;
+    margin-top: 18.25em;
+}

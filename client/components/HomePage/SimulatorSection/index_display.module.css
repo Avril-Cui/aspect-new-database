@@ -1,0 +1,17 @@
+
+.frame{
+    box-sizing: border-box;
+    width: 30em;
+    height: 20.625em;
+    border: 1px solid #C3FCC2;
+    border-radius: 5px;
+    margin-top: 5em;
+}
+
+.text{
+    margin-left: 0.5em;
+    font-style: normal;
+    font-weight: 400;
+    font-size: 20px;
+    color: #C0FFCA;
+}
