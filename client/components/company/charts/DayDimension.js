@@ -320,7 +320,7 @@ const DayDimension = (props) => {
   
 
   return (
-      <ReactEcharts  className={styles.time_line_chart} style={{height: 370, width: 750}}option={option} />
+      <ReactEcharts  className={styles.time_line_chart} style={{height: 420, width: 750}}option={option} />
   );
 };
 

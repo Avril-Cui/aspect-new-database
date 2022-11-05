@@ -42,24 +42,28 @@ function ExploreComp() {
           </div>
 
           <table className={styles.stats_table}>
-            <tr>
-              <td className={styles.stats_table_left}>
-                Price to Earning (P/E)
-              </td>
-              <td className={styles.stats_table_right}>1.523</td>
-            </tr>
-            <tr>
-              <td className={styles.stats_table_left}>Price to Book (P/B)</td>
-              <td className={styles.stats_table_right}>5.125</td>
-            </tr>
-            <tr>
-              <td className={styles.stats_table_left}>Price to Sales (P/S)</td>
-              <td className={styles.stats_table_right}>1.277</td>
-            </tr>
-            <tr>
-              <td className={styles.stats_table_left}>Enterprise Value</td>
-              <td className={styles.stats_table_right}>177.67 B</td>
-            </tr>
+            <tbody>
+              <tr>
+                <td className={styles.stats_table_left}>
+                  Price to Earning (P/E)
+                </td>
+                <td className={styles.stats_table_right}>1.523</td>
+              </tr>
+              <tr>
+                <td className={styles.stats_table_left}>Price to Book (P/B)</td>
+                <td className={styles.stats_table_right}>5.125</td>
+              </tr>
+              <tr>
+                <td className={styles.stats_table_left}>
+                  Price to Sales (P/S)
+                </td>
+                <td className={styles.stats_table_right}>1.277</td>
+              </tr>
+              <tr>
+                <td className={styles.stats_table_left}>Enterprise Value</td>
+                <td className={styles.stats_table_right}>177.67 B</td>
+              </tr>
+            </tbody>
           </table>
         </div>
         <div>
@@ -111,24 +115,28 @@ function ExploreComp() {
           </div>
 
           <table className={styles.stats_table}>
-            <tr>
-              <td className={styles.stats_table_left}>
-                Price to Earning (P/E)
-              </td>
-              <td className={styles.stats_table_right}>1.523</td>
-            </tr>
-            <tr>
-              <td className={styles.stats_table_left}>Price to Book (P/B)</td>
-              <td className={styles.stats_table_right}>5.125</td>
-            </tr>
-            <tr>
-              <td className={styles.stats_table_left}>Price to Sales (P/S)</td>
-              <td className={styles.stats_table_right}>1.277</td>
-            </tr>
-            <tr>
-              <td className={styles.stats_table_left}>Enterprise Value</td>
-              <td className={styles.stats_table_right}>177.67 B</td>
-            </tr>
+            <tbody>
+              <tr>
+                <td className={styles.stats_table_left}>
+                  Price to Earning (P/E)
+                </td>
+                <td className={styles.stats_table_right}>1.523</td>
+              </tr>
+              <tr>
+                <td className={styles.stats_table_left}>Price to Book (P/B)</td>
+                <td className={styles.stats_table_right}>5.125</td>
+              </tr>
+              <tr>
+                <td className={styles.stats_table_left}>
+                  Price to Sales (P/S)
+                </td>
+                <td className={styles.stats_table_right}>1.277</td>
+              </tr>
+              <tr>
+                <td className={styles.stats_table_left}>Enterprise Value</td>
+                <td className={styles.stats_table_right}>177.67 B</td>
+              </tr>
+            </tbody>
           </table>
         </div>
         <div>
@@ -141,7 +149,7 @@ function ExploreComp() {
             among customers in the Consumer Health industry through its
             well-known products in body lotion and facial cleansers. In recent
             years, Surgo invested much of its R&D in the Medical Device and
-            Pharmaceutical industry. Surgo successfully 
+            Pharmaceutical industry. Surgo successfully
           </div>
         </div>
         <div style={{ marginLeft: "2em" }}>
@@ -180,24 +188,28 @@ function ExploreComp() {
           </div>
 
           <table className={styles.stats_table}>
-            <tr>
-              <td className={styles.stats_table_left}>
-                Price to Earning (P/E)
-              </td>
-              <td className={styles.stats_table_right}>1.523</td>
-            </tr>
-            <tr>
-              <td className={styles.stats_table_left}>Price to Book (P/B)</td>
-              <td className={styles.stats_table_right}>5.125</td>
-            </tr>
-            <tr>
-              <td className={styles.stats_table_left}>Price to Sales (P/S)</td>
-              <td className={styles.stats_table_right}>1.277</td>
-            </tr>
-            <tr>
-              <td className={styles.stats_table_left}>Enterprise Value</td>
-              <td className={styles.stats_table_right}>177.67 B</td>
-            </tr>
+            <tbody>
+              <tr>
+                <td className={styles.stats_table_left}>
+                  Price to Earning (P/E)
+                </td>
+                <td className={styles.stats_table_right}>1.523</td>
+              </tr>
+              <tr>
+                <td className={styles.stats_table_left}>Price to Book (P/B)</td>
+                <td className={styles.stats_table_right}>5.125</td>
+              </tr>
+              <tr>
+                <td className={styles.stats_table_left}>
+                  Price to Sales (P/S)
+                </td>
+                <td className={styles.stats_table_right}>1.277</td>
+              </tr>
+              <tr>
+                <td className={styles.stats_table_left}>Enterprise Value</td>
+                <td className={styles.stats_table_right}>177.67 B</td>
+              </tr>
+            </tbody>
           </table>
         </div>
         <div>
@@ -209,7 +221,7 @@ function ExploreComp() {
             business operation focuses on three mainstream: automotive, electric
             vehicle, and batteries. Starting in 2010, the company continues to
             invest in its electric vehicle and batteries business segments,
-            aiming to establish its leading position in the two areas. 
+            aiming to establish its leading position in the two areas.
           </div>
         </div>
         <div style={{ marginLeft: "2em" }}>

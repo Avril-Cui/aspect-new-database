@@ -12,7 +12,7 @@ export default class LightweightChart extends React.PureComponent {
   componentDidMount() {
     var chart = createChart(this.props.containerId, {
       width: 750,
-      height: 365,
+      height: 400,
       rightPriceScale: {
         borderVisible: false,
       },

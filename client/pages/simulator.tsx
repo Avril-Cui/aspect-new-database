@@ -55,7 +55,7 @@ export default function Simulator({ index, individual }: Props) {
                               </p>
                               <div style={{ marginTop: 55 }}>
                                 <div className={styles.post_author}>
-                                  <p className={styles.post_detail}>
+                                  <div className={styles.post_detail}>
                                     Author: <span>{post.author.name}</span>
                                     <p className={styles.post_detail}>
                                       Published at{" "}
@@ -63,7 +63,7 @@ export default function Simulator({ index, individual }: Props) {
                                         post._createdAt
                                       ).toLocaleString()}
                                     </p>
-                                  </p>
+                                  </div>
                                 </div>
                                 <img
                                   className={styles.author_pic}

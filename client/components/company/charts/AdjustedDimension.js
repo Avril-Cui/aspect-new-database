@@ -332,7 +332,7 @@ const AdjustedDimension = (props) => {
   
 
   return (
-      <ReactEcharts  className={styles.time_line_chart} style={{height: 370, width: 750, marginLeft: 5}}option={option} />
+      <ReactEcharts  className={styles.time_line_chart} style={{height: 420, width: 750, marginLeft: 5}}option={option} />
   );
 };
 

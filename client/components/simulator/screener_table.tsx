@@ -60,38 +60,40 @@ const ScreenerTable = () => {
   return (
     <div>
       <table className={styles.screener_table}>
-        <tr>
-          <th>Company</th>
-          <th>Price</th>
-          <th>Change</th>
-          <th>Percentage</th>
-        </tr>
-        {companyProfiles.map((company: any) => (
-          <tr key={company.id}>
-            <Link key={company.id} href={`/company/${company.id}`}>
-              <td className={styles.comp_link}>{company.name}</td>
-            </Link>
-            <td>{stockPrice[company.index][1]}</td>
-            <td
-              style={
-                stockChange[company.index][1] > 0
-                  ? { color: "#C9FFD1" }
-                  : { color: "#FD6565" }
-              }
-            >
-              {stockChange[company.index][1]}
-            </td>
-            <td
-              style={
-                stockPctChange[company.index][1] > 0
-                  ? { color: "#C9FFD1" }
-                  : { color: "#FD6565" }
-              }
-            >
-              {stockPctChange[company.index][1]}%
-            </td>
+        <tbody>
+          <tr>
+            <th>Company</th>
+            <th>Price</th>
+            <th>Change</th>
+            <th>Percentage</th>
           </tr>
-        ))}
+          {companyProfiles.map((company: any) => (
+            <tr key={company.id}>
+              <Link key={company.id} href={`/company/${company.id}`}>
+                <td className={styles.comp_link}>{company.name}</td>
+              </Link>
+              <td>{stockPrice[company.index][1]}</td>
+              <td
+                style={
+                  stockChange[company.index][1] > 0
+                    ? { color: "#C9FFD1" }
+                    : { color: "#FD6565" }
+                }
+              >
+                {stockChange[company.index][1]}
+              </td>
+              <td
+                style={
+                  stockPctChange[company.index][1] > 0
+                    ? { color: "#C9FFD1" }
+                    : { color: "#FD6565" }
+                }
+              >
+                {stockPctChange[company.index][1]}%
+              </td>
+            </tr>
+          ))}
+        </tbody>
       </table>
     </div>
   );
