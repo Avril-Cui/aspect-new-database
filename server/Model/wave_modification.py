@@ -1,44 +1,41 @@
 from typing import Optional
 import numpy as np
 from copy import deepcopy
+import pandas as pd
 
 class DayPriceGenerator:
-	def __init__(
-		self,  
-		macro_params: dict,
-		fixed_random_seed: Optional[bool] = True,
-		random_seed: Optional[int] = 17
-	):
-		self.original_price = macro_params['original_price']
-		self.macro_params = macro_params
-		self.price = macro_params['original_price']
-		self.price_list = []
+    """
+        DayPriceGenerator class generates the daily price according to the historical price trend.
+    """
+    def __init__(
+        self,  
+        macro_params: dict,
+    ):
+        self.original_price = macro_params['original_price']
+        self.macro_params = macro_params
+        self.price = macro_params['original_price']
+        self.price_list = []
 
-		if fixed_random_seed:
-			np.random.seed(random_seed)
-	
-	def ontk_price(self, theta, mu, sigma):
-		tmp_bm = np.random.normal(0,1)
-		simulated_price = self.price + theta * (mu-self.price) + sigma * tmp_bm
-		return simulated_price
-	
-	def price_loop(
-		self
-	):
-		mu_lst = self.macro_params["mu_sde"]
-		sigma_lst = self.macro_params["sigma"]
-		theta_lst = self.macro_params["theta"]
-		time_length = self.macro_params["time"]
+    def ontk_price(self, theta, mu):
+        simulated_price = self.price + theta * (mu-self.price)
+        return simulated_price
 
-		for index in range(time_length):
-			mu = mu_lst[index]
-			theta = theta_lst[index]
-			sigma = sigma_lst[index]
-			next_price = self.ontk_price(theta, mu, sigma)
-			self.price = next_price
-			self.price_list.append(next_price)
-		
-		return (self.price_list)
+    def price_loop(
+        self
+    ):
+        mu_lst = self.macro_params["mu_sde"]
+        theta_lst = self.macro_params["theta"]
+        time_length = self.macro_params["time"]
+
+        for index in range(time_length):
+            mu = mu_lst[index]
+            theta = theta_lst[index]
+            next_price = self.ontk_price(theta, mu)
+            self.price = next_price
+            self.price_list.append(next_price)
+        
+        return (self.price_list)
+
 
 class StockSimulator:
 	def __init__(
@@ -92,44 +89,88 @@ class StockSimulator:
 		if fixed_random_seed:
 			np.random.seed(random_seed)
 
-	def per_second_price(self, mu, sigma):
-
+	def per_second_base_price(self, mu):
 		dt = 1/(60*60)
-		tmp_bm = np.random.normal(0, np.sqrt(dt))
-		next_price = self.second_price + mu * self.second_price * dt + sigma * np.sqrt(self.second_price) * tmp_bm
+		next_price = self.second_price + mu * self.second_price * dt
 		return next_price
+	
 
-	def generate_price(self):
+	def generate_base_price(self):
 		adjust_price = self.adjusted_factor * self.day_price_lst[self.index]
 		adjusted_last = self.adjusted_factor * self.day_price_lst[self.index-1]
 		drift = (adjust_price - adjusted_last)/(adjusted_last)
 		dt = 1/(60*60)
 		num = int(1/dt)
 		daily_price = []
-		ask_bid = []
 		for _ in range(num):
-			previous_price = self.second_price
-			mu_tmp = drift
-			sigma = 0.08
-			next_price = self.per_second_price(mu_tmp, sigma)
-			self.second_price = next_price
-
-			self.ask_bid_list = self.ontk_trading_population(previous_price, self.second_price)
-			price_index = int((self.second_price-self.lower)//self.minimum_price_unit)
-			LOB = self.ask_bid_list[(price_index-4):(price_index+6)]
-			daily_price.append(round(self.second_price,2))
-			result_price = self.order_book_influence(LOB, next_price)
-			print(round(self.second_price,2), round(result_price, 2))
-			ask_bid.append(LOB)
-
+			self.second_price += drift * self.second_price * dt
+			daily_price.append(round(self.second_price, 2))
+		
 		daily_price[-1] = adjust_price
 		self.second_price_lst = daily_price
-		return daily_price, ask_bid
-        
+		return daily_price
+	
+	def generate_user_interaction_price_LOB(self):
+		price_list = self.generate_base_price()
+		user_interaction_price = []
+		ask_bid = []
+
+		for index in range(len(price_list)):
+			if index > 0:
+					previous_price = price_list[index-1]
+					current_price = price_list[index]
+					self.ask_bid_list = self.ontk_trading_population(previous_price, current_price)
+					price_index = int((current_price-self.lower)//self.minimum_price_unit)
+					LOB = self.ask_bid_list[(price_index-5):(price_index+5)]
+					micro_price = self.order_book_influence(LOB)
+					ask_bid.append(LOB)
+					print(micro_price)
+					user_interaction_price.append(micro_price)	
+		return user_interaction_price, ask_bid
+	
+	def convolution_wave(self, price_df, days):
+		convolution_wave = price_df.rolling(window=days).mean()
+		convolution_wave = convolution_wave[days:]
+		convolution_wave = convolution_wave.to_list()
+		return convolution_wave
+	
+	def per_day_index_price(
+		self,
+		initial_point,
+		mu,
+		daily_hour: Optional[int] = 9
+    ):
+		tick_unit = 1/(60*60)
+		total_iteration_number = int(daily_hour/tick_unit)
+		daily_price_list = [initial_point]
+		second_price = initial_point
+		for iteration in range(total_iteration_number):
+			mu_tmp = mu[int(iteration*tick_unit)]*1.4
+			second_price += mu_tmp * second_price * tick_unit
+			daily_price_list.append(second_price)
+			print(second_price)
+		return daily_price_list	
+	
+	def generate_per_second_price(self, price_df, days):
+		original_price_lst = self.convolution_wave(price_df, days)
+		split_ten_points = [original_price_lst[index:index+10] for index in range(0, len(original_price_lst), 10)]
+		second_based_price_list = [original_price_lst[0]]
+		for inx in range(len(split_ten_points[:-1])):
+			one_day_ten_points = split_ten_points[inx]
+			one_day_ten_points_df = pd.DataFrame(one_day_ten_points, columns = ['one_day_ten_prices'])
+			daily_drift = one_day_ten_points_df.pct_change()
+			daily_drift = daily_drift[1:]['one_day_ten_prices'].tolist()
+			initial_point = one_day_ten_points[0]
+			print(initial_point)
+			daily_price_list = self.per_day_index_price(initial_point, daily_drift)
+			second_based_price_list += daily_price_list
+		print("mid term price finishing generated")
+		return second_based_price_list
+
+	#The following functions gives the algorithm-generated user interaction.
 	def order_book_influence(
 		self,
-		ask_bid_list: list,
-		original_value: float,
+		ask_bid_list: list
 	):
 
 		random_factor = np.random.normal(0,1)
@@ -159,9 +200,7 @@ class StockSimulator:
 			imbalance_5 = 0
 
 		micro_price = random_factor * (imbalance_1 * (-0.2638) + imbalance_2 * 0.1154 + imbalance_3 * (-0.4902) + imbalance_4 * (-0.1657) + imbalance_5 * (0.2239))
-		print(micro_price)
-		market_value = original_value + micro_price
-		return (market_value)
+		return (micro_price)
 
 	def initial_trading_population(
 		self,
@@ -202,9 +241,9 @@ class StockSimulator:
 			else:
 				ask_bid_list[index] = 0
 
-		self.lower += self.second_price - previous_comp_price
-		self.upper += self.second_price - previous_comp_price
-		index_current = int((self.second_price-self.lower)/self.minimum_price_unit)
+		self.lower += current_comp_price - previous_comp_price
+		self.upper += current_comp_price - previous_comp_price
+		index_current = int((current_comp_price-self.lower)/self.minimum_price_unit)
 		iteration_number = np.arange(0, population_strength, self.minimum_simulation_tick)
 
 		for index in range(0, index_current):
@@ -214,7 +253,7 @@ class StockSimulator:
 			if ask_bid_list[index] > 0:
 				ask_bid_list[index] = 0
 				reset_population = self.initial_trading_population(initial_length = 1500, normal_scale = 7)
-				middle_index = int((self.second_price-self.lower)//self.minimum_price_unit)
+				middle_index = int((current_comp_price-self.lower)//self.minimum_price_unit)
 				reset_list = reset_population[middle_index - abs(index_difference) : middle_index]
 				for value in reset_list:
 					ask_bid_list[index] = -abs(value)
@@ -235,7 +274,7 @@ class StockSimulator:
 			if ask_bid_list[index] < 0:
 				ask_bid_list[index] = 0
 				reset_population = self.initial_trading_population(initial_length = 1500, normal_scale = 7)
-				middle_index = int((self.second_price-self.lower)//self.minimum_price_unit)
+				middle_index = int((current_comp_price-self.lower)//self.minimum_price_unit)
 				reset_list = reset_population[middle_index : middle_index - abs(index_difference)]
 				for value in reset_list:
 					ask_bid_list[index] = abs(value)
@@ -250,28 +289,39 @@ class StockSimulator:
 					continue
 		return ask_bid_list
 
-	def change_price(self, modifying_lst):
-		self.modified_lst = np.add(self.second_price_lst, modifying_lst)
-		return(self.modified_lst)
+	#The following functions modify the price waves.
+	def normalize_price(self, price_list, start_point):
+		price_lst = np.divide(price_list, price_list[start_point])
+		return price_lst
+
+	def price_wave_intensity(self, base_price, intensity_factor):
+		new_price_wave = np.multiply(base_price, intensity_factor)
+		return new_price_wave
+
+	def price_wave_addition(self, transformation, intensity, length, *argv):
+		"""
+			Input format: {
+				"price_list": list,
+				"start_point": int,
+				"duration": int,
+				"weight: float,
+				intensity_factor: float
+			}
+		"""
+		price_list = [0 for _ in range(length)]
+		for wave_info in argv:
+			start_point = wave_info['start_point']
+			end_point = start_point+wave_info['duration']
+			normal_wave = self.normalize_price(wave_info['price_list'][start_point:end_point], 0)
+			weighted_wave = np.multiply(normal_wave, wave_info['weight'])
+			intensity_adjusted_wave = self.price_wave_intensity(weighted_wave, wave_info['intensity_factor'])
+			price_list = np.add(price_list, intensity_adjusted_wave)
+		price_list = self.price_wave_intensity(price_list, intensity)
+		price_list = np.add(price_list, transformation)
+		return price_list
 
 
 
 
-##Testing
-from get_parameters import Wakron_macro, Wakron_micro
 
-wrkn_macro_params = Wakron_macro["IPO"]()
-wrkn_micro_params = Wakron_micro["IPO"]
 
-wrkn_simulator = DayPriceGenerator(wrkn_macro_params)
-day_price_list = {
-    "wrkn": wrkn_simulator.price_loop()
-}
-
-adjusted_factor = {
-    "wrkn": 50/day_price_list["wrkn"][1]
-}
-price_generator = StockSimulator(
-    adjusted_factor["wrkn"], day_price_list["wrkn"][0], day_price_list["wrkn"], 1, wrkn_micro_params)
-
-price_list, ask_bid_lst = price_generator.generate_price()
