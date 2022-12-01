@@ -35,7 +35,7 @@ function ShowCompValue(props) {
 
       axios(config)
         .then(function (response) {
-          setPortfolio(response.data[0]);
+          setPortfolio(response.data);
         })
         .catch(function (error) {
           console.log(error);
@@ -53,7 +53,6 @@ function ShowCompValue(props) {
           <tbody>
             <tr>
               <th>Ticker</th>
-              <th>Company</th>
               <th>Shares</th>
               <th>Last Buy-In</th>
               <th>Total Value</th>
@@ -63,9 +62,14 @@ function ShowCompValue(props) {
           </tbody>
           {Object.keys(portfolio).map((key) => {
             return key != "portfolio_value" ? (
-              <Company company={portfolio[key]} />
+              <tbody    className={styles.table_line}>
+                {" "}
+                <Company
+                  company={portfolio[key]}
+                />
+              </tbody>
             ) : (
-              <tbody key = "random"></tbody>
+              <tbody key="random"></tbody>
             );
           })}
         </table>
@@ -132,27 +136,24 @@ function Company(props) {
   }
 
   return (
-    <tbody key={category}>
-      <tr className={styles.holding_detail}>
-        <td className={classes.comp_link}>{category}</td>
-        <td>Wakron, INC.</td>
-        <td>{share_number}</td>
-        <td>{last_buy_in}</td>
-        <td>{round(company_value)}</td>
-        <td
-          style={price_change > 0 ? { color: "#C9FFD1" } : { color: "#FD6565" }}
-        >
-          {price_change}
-        </td>
-        <td
-          style={
-            price_pct_change > 0 ? { color: "#C9FFD1" } : { color: "#FD6565" }
-          }
-        >
-          {price_pct_change}%
-        </td>
-      </tr>
-    </tbody>
+    <tr key={category} className={styles.holding_detail}>
+      <td className={classes.comp_link}>{category}</td>
+      <td>{share_number}</td>
+      <td>{last_buy_in}</td>
+      <td>{round(company_value)}</td>
+      <td
+        style={price_change > 0 ? { color: "#C9FFD1" } : { color: "#FD6565" }}
+      >
+        {price_change}
+      </td>
+      <td
+        style={
+          price_pct_change > 0 ? { color: "#C9FFD1" } : { color: "#FD6565" }
+        }
+      >
+        {price_pct_change}%
+      </td>
+    </tr>
   );
 }
 export default ShowCompValue;

@@ -42,7 +42,7 @@ class MidPriceGenerator:
         self.ma_days = ma_days
     
     def generate_mid_price(self):
-        mid_price = web.get_data_yahoo(self.symbol, self.start_date, self.end_date)['Adj Close']["IBM"]
+        mid_price = web.get_data_yahoo(self.symbol, self.start_date, self.end_date)['Adj Close'][self.symbol[0]]
         convolution_wave = mid_price.rolling(window=self.ma_days).mean()[self.ma_days:].to_list()
         return convolution_wave
 
@@ -50,8 +50,8 @@ class WaveModifier:
     def __init__(self):
         self.start_date = 1
     
-    def normalize_price(self, price_list, start_point):
-        price_lst = np.divide(price_list, price_list[start_point])
+    def normalize_price(self, price_list):
+        price_lst = np.divide(price_list, price_list[0])
         return price_lst
 
     def price_wave_intensity(self, base_price, intensity_factor):
@@ -66,7 +66,7 @@ class WaveModifier:
         for wave_info in argv:
             start_point = wave_info['start_point']
             end_point = start_point+wave_info['duration']
-            normal_wave = self.normalize_price(wave_info['price_list'][start_point:end_point], 0)
+            normal_wave = self.normalize_price(wave_info['price_list'][start_point:end_point])
             weighted_wave = np.multiply(normal_wave, wave_info['weight'])
             price_list = np.add(price_list, weighted_wave)
         price_list = self.price_wave_intensity(price_list, intensity)
@@ -280,67 +280,62 @@ class StockSimulator:
 					continue
 		return ask_bid_list
 
-import pandas_datareader as web
-import numpy as np
-import matplotlib.pyplot as plt
-from get_parameters import Wakron_macro, Wakron_micro
+# import pandas_datareader as web
+# import numpy as np
+# import matplotlib.pyplot as plt
+# from get_parameters import Wakron_macro, Wakron_micro
 
-wrkn_macro_params = Wakron_macro["IPO"]()
-wrkn_micro_params = Wakron_micro["IPO"]
+# wrkn_macro_params = Wakron_macro["IPO"]()
+# wrkn_micro_params = Wakron_micro["IPO"]
 
-wrkn_simulator = DayPriceGenerator(wrkn_macro_params)
-base_price = wrkn_simulator.price_loop()
+# wrkn_simulator = DayPriceGenerator(wrkn_macro_params)
+# base_price = wrkn_simulator.price_loop()
 
-MidPrice = MidPriceGenerator("1993/6/1", "1994/10/1", ['IBM'], 15)
-mid_price = MidPrice.generate_mid_price()
-length = min(len(base_price), len(mid_price))
-wave_1 = {
-    'price_list': base_price,
-    'start_point': 0,
-    'duration': length,
-    'weight': 0.35,
-    'intensity_factor': 1
-}
+# MidPrice = MidPriceGenerator("1993/6/1", "1994/10/1", ['IBM'], 15)
+# mid_price = MidPrice.generate_mid_price()
+# length = min(len(base_price), len(mid_price))
+# wave_1 = {
+#     'price_list': base_price,
+#     'start_point': 0,
+#     'duration': length,
+#     'weight': 0.35,
+#     'intensity_factor': 1
+# }
 
-wave_2 = {
-    'price_list': mid_price,
-    'start_point': 0,
-    'duration': length,
-    'weight': 0.65,
-    'intensity_factor': 1
-}
+# wave_2 = {
+#     'price_list': mid_price,
+#     'start_point': 0,
+#     'duration': length,
+#     'weight': 0.65,
+#     'intensity_factor': 1
+# }
 
-Combinator = WaveModifier()
-combinated_price = Combinator.price_wave_addition(1, 1, length, wave_1, wave_2)
+# Combinator = WaveModifier()
+# combinated_price = Combinator.price_wave_addition(1, 1, length, wave_1, wave_2)
 
-final_price_list = []
-user_interaction_price = []
-ask_bid_list = []
-for index in range(len(combinated_price)):
-    if index > 0:
-        price_generator = StockSimulator(50/combinated_price[1], combinated_price[index], combinated_price, index, wrkn_micro_params)
-        result_price = price_generator.generate_price()
-        final_price_list.extend(result_price)
-        # interaction_price, ask_bid = price_generator.generate_user_interaction_price_LOB()
-        # user_interaction_price.extend(interaction_price)
-        # ask_bid_list.append(ask_bid)
-user_interaction_modifier = []
-for index in range(len(final_price_list)):
-    random_modifier = np.random.normal(0, 0.006)
-    user_interaction_modifier.append(random_modifier)
+# final_price_list = []
+# for index in range(len(combinated_price)):
+#     if index > 0:
+#         price_generator = StockSimulator(50/combinated_price[1], combinated_price[index], combinated_price, index, wrkn_micro_params)
+#         result_price = price_generator.generate_price()
+#         final_price_list.extend(result_price)
+# user_interaction_modifier = []
+# for index in range(len(final_price_list)):
+#     random_modifier = np.random.normal(0, 0.006)
+#     user_interaction_modifier.append(random_modifier)
 
-final_price_list = np.add(user_interaction_modifier, final_price_list)
-print(len(final_price_list)/(60*60*9))
-plt.figure()
-plt.plot(final_price_list[0:60*60*9])
-plt.grid(True)
-plt.figure()
-plt.plot(final_price_list)
-plt.grid(True)
-plt.figure()
-plt.plot(combinated_price)
+# final_price_list = np.add(user_interaction_modifier, final_price_list)
+# print(len(final_price_list)/(60*60*9))
 # plt.figure()
-# plt.plot(user_interaction_price)
-plt.show()
+# plt.plot(final_price_list[0:60*60*9])
+# plt.grid(True)
+# plt.figure()
+# plt.plot(final_price_list)
+# plt.grid(True)
+# plt.figure()
+# plt.plot(combinated_price)
+# # plt.figure()
+# # plt.plot(user_interaction_price)
+# plt.show()
 
 

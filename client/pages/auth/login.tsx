@@ -9,7 +9,8 @@ const Login = () => {
   const router = useRouter();
 
   const [data, setData] = useState({
-    user_name: "",
+    user_uid: "",
+    user_email: "",
     password: "",
   });
 
@@ -19,8 +20,8 @@ const Login = () => {
     e.preventDefault();
     cookies.set('userData', data, { path: '/' });
     axios({
-      method: "post",
-      url: "http://127.0.0.1:5000/login",
+      method: "POST",
+      url: "http://127.0.0.1:5000/result",
       headers: {
         "Content-Type": "text/plain",
       },
@@ -41,19 +42,19 @@ const Login = () => {
         <div className={styles.log_in}>
           <form onSubmit={handleLogin}>
             <div className={styles.email_input}>
-              <span className={styles.show_text}>Account User Name</span>
+              <span className={styles.show_text}>Account Email</span>
               <div style={{ marginTop: 10 }}>
                 <input
                   onChange={(e: any) =>
                     setData({
                       ...data,
-                      user_name: e.target.value,
+                      user_email: e.target.value,
                     })
                   }
                   className={styles.input_name}
-                  value={data["user_name"]}
-                  type="text"
-                  placeholder="Enter user name"
+                  value={data["user_email"]}
+                  type="email"
+                  placeholder="Enter user email"
                 />
               </div>
             </div>
@@ -86,7 +87,7 @@ const Login = () => {
       </div>
 
       <div className={styles.sign_in_container}>
-        <Link href="/login/signup">
+        <Link href="/auth/signup">
           <a className={styles.sign_in}>
             New user? <span className={styles.register}>Register</span> an
             account.

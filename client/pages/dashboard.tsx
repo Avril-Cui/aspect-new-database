@@ -26,7 +26,6 @@ const Home = (props: any) => {
     setIsOpen(!isOpen);
   };
 
-  const WAIT_TIME = 20000;
   const [rank, setRank] = useState(0);
 
   useEffect(() => {

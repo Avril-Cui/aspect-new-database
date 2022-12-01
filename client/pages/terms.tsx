@@ -10,7 +10,7 @@ interface Props {
 
 export default function Terminology({ posts }: Props) {
   return (
-    <div style={{marginBottom: 200}}>
+    <div style={{marginBottom: 200}} className={styles.full_container}>
       <p className={styles.title}>Dictionary For Financial Terms</p>
       <div className={styles.search_cont}>
         <div className={styles.search_container}>

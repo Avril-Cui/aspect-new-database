@@ -1,7 +1,6 @@
 import numpy as np
 import pandas_datareader as web
 import pandas as pd
-price = pd.read_csv("/Users/xiaokeai/Desktop/FLP Price Data/Market Situation/1929_roaring_twenties.csv")
 
 # #Roaring Twenties
 # start_date = "1927/1/1"
@@ -67,22 +66,22 @@ price = pd.read_csv("/Users/xiaokeai/Desktop/FLP Price Data/Market Situation/192
 # index_price_df_covid = index_data['Adj Close']
 # index_price_df_covid.to_csv('2020_COVID_situation.csv')
 
-#Normal
-start_date = "1968/1/1"
-end_date = "1970/1/1"
-symbol = ['^GSPC']
-index_data = web.get_data_yahoo(symbol, start_date, end_date)
-index_price_df_covid = index_data['Adj Close']
-index_price_df_covid.to_csv('normal_situation.csv')
+# #Normal
+# start_date = "1968/1/1"
+# end_date = "1970/1/1"
+# symbol = ['^GSPC']
+# index_data = web.get_data_yahoo(symbol, start_date, end_date)
+# index_price_df_covid = index_data['Adj Close']
+# index_price_df_covid.to_csv('server/Model/historical_price/index_data/normal_situation.csv')
 
 #------------------------------------------------------------------------------------------------------------
-# #Surgo New Competition
-# start_date = "2020/11/15"
-# end_date = "2021/6/15"
-# symbol = ['MRNA']
-# index_data = web.get_data_yahoo(symbol, start_date, end_date)
-# index_price = index_data['Adj Close']
-# index_price.to_csv('SGO_new_competition.csv')
+#Surgo New Competition
+start_date = "2020/11/15"
+end_date = "2021/6/15"
+symbol = ['MRNA']
+index_data = web.get_data_yahoo(symbol, start_date, end_date)
+index_price = index_data['Adj Close']
+index_price.to_csv('server/Model/historical_price/SGO/new_competition.csv')
 
 # #Share Purchase
 # start_date = "2008/9/1"
@@ -139,3 +138,43 @@ index_price_df_covid.to_csv('normal_situation.csv')
 # index_data = web.get_data_yahoo(symbol, start_date, end_date)
 # index_price = index_data['Adj Close']
 # index_price.to_csv('WRKN_inventing_new_game.csv')
+
+##FSIN Advertisement
+start_date = "1986/11/1"
+end_date = "1987/4/1"
+symbol = ['NKE']
+index_data = web.get_data_yahoo(symbol, start_date, end_date)
+index_price_df_covid = index_data['Adj Close']
+index_price_df_covid.to_csv('server/Model/historical_price/FSIN/advertisement.csv')
+
+##DSC M&A
+start_date = "2018/1/1"
+end_date = "2019/3/1"
+symbol = ['VOD']
+index_data = web.get_data_yahoo(symbol, start_date, end_date)
+index_price_df_covid = index_data['Adj Close']
+index_price_df_covid.to_csv('server/Model/historical_price/DSC/acquisition.csv')
+
+##JKY Mortage Survival
+start_date = "2008/4/1"
+end_date = "2009/6/1"
+symbol = ['JPM']
+index_data = web.get_data_yahoo(symbol, start_date, end_date)
+index_price_df_covid = index_data['Adj Close']
+index_price_df_covid.to_csv('server/Model/historical_price/JKY/mortage_survival.csv')
+
+##AST Boost
+start_date = "2020/7/1"
+end_date = "2021/3/1"
+symbol = ['BYDDY']
+index_data = web.get_data_yahoo(symbol, start_date, end_date)
+index_price_df_covid = index_data['Adj Close']
+index_price_df_covid.to_csv('server/Model/historical_price/AST/national_positive_policy.csv')
+
+##HHW covid
+start_date = "2020/2/1"
+end_date = "2020/10/1"
+symbol = ['M']
+index_data = web.get_data_yahoo(symbol, start_date, end_date)
+index_price_df_covid = index_data['Adj Close']
+index_price_df_covid.to_csv('server/Model/historical_price/HHW/pandemic_lockdown.csv')

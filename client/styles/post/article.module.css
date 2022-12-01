@@ -2,6 +2,7 @@
     background-color: #ffffff;
 }
 
+
 .img{
     margin-top: 5em;
     object-fit: cover; 
@@ -11,69 +12,94 @@
 
 .article{
     padding: 1.25rem 20%;
+    width: 90%;
     display: table;
     margin: 0em auto;
     line-height: 2;
 }
 
 .title{
-    font-size: 42px;
+    font-size: 30px;
     font-weight: 500;
+    line-height: 1.25em;
+    margin-bottom: -1.5em;
 }
 
 .description{
+    font-family: 'PT Serif';
     padding: 1.25rem 0em; 
     margin-top: -1em;
     max-width: 48rem; 
 }
 
 .intro_div{
-    display: flex; 
+    margin-top: 6em;
+    margin-bottom: 1em;
+    display: inline-flex; 
 }
 
 .author_pic{
-    width: 2.5rem; 
-    height: 2.5rem; 
+    width: 2.5em; 
+    height: 2.5em; 
     border-radius: 9999px; 
 }
 
-.post_detail{
-    font-size: 0.875rem;
-    font-weight: 200; 
+.post_date{
+    font-size: 14px;
+    font-weight: 400; 
     padding-left: 0.75em;
-    margin-top: 0.5em;
+    margin-top: -0.5em;
+    color: #797979;
+}
+
+.post_detail{
+    font-size: 14px;
+    font-weight: 400; 
+    padding-left: 0.75em;
+    margin-top: 0em;
 }
 
 .h1{
-    margin-top: 1.25rem;
-    margin-bottom: 1.25rem; 
-    font-size: 1.5rem;
-    line-height: 2rem; 
-    font-weight: 700; 
+    font-family: "Roboto";
+    margin-top: 2em;
+    margin-bottom: 0em; 
+    font-size: 22px;
+    font-weight: 500; 
 }
 
 .h2{
-    margin-top: 1.25rem;
-    margin-bottom: 1.25rem; 
-    font-size: 1.25rem;
-    line-height: 1.75rem; 
-    font-weight: 700; 
+    font-family: "Roboto";
+    margin-top: 1.75em;
+    font-size: 18px;
+    font-weight: 500; 
 }
 
 .h3{
-    margin-top: 1.25rem;
-    margin-bottom: 1.25rem; 
-    font-size: 1.25rem;
-    line-height: 1.75rem; 
-    font-weight: 700; 
+    font-family: "Roboto";
+    font-size: 16px;
+    font-weight: 500; 
 }
 
 .h4{
-    margin-top: 1.25rem;
-    margin-bottom: 1.25rem; 
-    font-size: 1.1rem;
-    line-height: 1.75rem; 
+    font-family: "Roboto";
+    font-size: 16px;
     font-weight: 500; 
+}
+
+.paragraphs{
+    font-family: "PT Serif";
+    line-height: 1.75em; 
+    font-size: 18px;
+    font-weight: 200;
+    padding-top: 2em;
+}
+
+.paragraphs :not(:last-child){
+    margin-bottom: 15px;
+}
+
+.paragraphs_normal{
+    color: #6b9977;
 }
 
 .list{

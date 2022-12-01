@@ -1,14 +1,50 @@
 import styles from "./multi_chart.module.css";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import DayDimension from "./DayDimension";
 import AdjustedDimension from "./AdjustedDimension";
 import dynamic from "next/dynamic";
-const LightweightChart = dynamic(() => import("./wrknChart"), {
-  ssr: false,
-});
 
 const MultiChart = (props) => {
   const [chart, setChart] = useState(1);
+
+  const WAIT_TIME = 3000;
+
+  const [priceData, setPriceData] = useState([{"time": 0, "value": 0}])
+  let LightweightChart = dynamic(() => import("./compMinChart"), {
+    ssr: false,
+  });
+
+  useEffect(() => {
+    const data = setInterval(() => {
+      LightweightChart = dynamic(() => import("./compMinChart"), {
+        ssr: false,
+      });
+      var axios = require("axios");
+      var data = '"wrkn"';
+
+      var config = {
+        method: 'post',
+        url: 'http://localhost:5000/tick-graph',
+        headers: { 
+          'Content-Type': 'text/plain'
+        },
+        data : data
+      };
+
+      axios(config)
+      .then(function (response) {
+        console.log(response.data)
+        setPriceData(response.data);
+        console.log(JSON.stringify(response.data));
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
+    }, WAIT_TIME);
+    return () => clearInterval(data);
+  }, [priceData]);
+  console.log(priceData[0]["time"])
+
 
   return (
     <div>
@@ -37,9 +73,12 @@ const MultiChart = (props) => {
       </div>
 
       {chart === 1 && (
-        <div>
-          <LightweightChart />
-        </div>
+          priceData[0]["time"] !== 0 && (
+            <div>
+              <LightweightChart priceData={priceData} />
+            </div>
+          )
+
       )}
       {chart === 2 && (
         <div>

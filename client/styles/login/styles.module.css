@@ -8,6 +8,12 @@
     margin-left: 3em;
 }
 
+.signup_container{
+    width: 550px;
+    height: 570px;
+    background: #5F5F5F;
+    border-radius: 20px;
+}
 
 .login_container{
     width: 550px;
@@ -74,7 +80,7 @@
 
 .sign_in{
     font-weight: 300;
-    font-size: 22px;
+    font-size: 20px;
     text-align: center;
     color: #FFFFFF;
 }

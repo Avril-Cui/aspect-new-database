@@ -35,7 +35,7 @@ function ExploreComp() {
           <div>
             <div className={styles.inline}>
               <p className={styles.price}>
-                685.23 <span>ASD</span>
+                56.38 <span>ASD</span>
               </p>
               <p className={styles.price_change}>+12.83 (+1.86%)</p>
             </div>
@@ -108,7 +108,7 @@ function ExploreComp() {
           <div>
             <div className={styles.inline}>
               <p className={styles.price}>
-                685.23 <span>ASD</span>
+                33.90 <span>ASD</span>
               </p>
               <p className={styles.price_change}>+16.72 (+3.64%)</p>
             </div>
@@ -181,7 +181,7 @@ function ExploreComp() {
           <div>
             <div className={styles.inline}>
               <p className={styles.price}>
-                685.23 <span>ASD</span>
+                77.99 <span>ASD</span>
               </p>
               <p className={styles.price_change}>+3.25 (+0.23%)</p>
             </div>
