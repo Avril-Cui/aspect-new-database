@@ -13,8 +13,9 @@ function TradeInput(props: any) {
   const [sellShares, setSellShares] = useState(undefined);
   const [sellPrice, setSellPrice] = useState(undefined);
   const [sellTicker, setSellTicker] = useState(undefined);
-
-
+  
+  const [isCurrentBuy, setIsCurrentBuy] = useState(false);
+  const [isCurrentSell, setIsCurrentSell] = useState(false);
 
   const handleBuySharesChange = (event: any) => {
     setBuyShares(event.target.value);
@@ -39,6 +40,7 @@ function TradeInput(props: any) {
   const [message, setMessage] = useState("");
 
   const setDefaultBuyPriceHandler = (e: { preventDefault: () => void; }) => {
+    setIsCurrentBuy(true)
     e.preventDefault();
     axios({
       method: "POST",
@@ -59,6 +61,7 @@ function TradeInput(props: any) {
   }
 
   const setDefaultSellPriceHandler = (e: { preventDefault: () => void; }) => {
+    setIsCurrentSell(true)
     e.preventDefault();
     axios({
       method: "POST",
@@ -91,8 +94,13 @@ function TradeInput(props: any) {
     setIsSubmit(true);
     if (buyShares !== undefined && buyPrice !== undefined && buyTicker !== undefined) {
       let buy_shares = parseFloat(buyShares);
-      let buy_price = parseFloat(buyPrice);
-
+      let buy_price
+      if (isCurrentBuy == true) {
+        buy_price = 0;
+      } else {
+        buy_price = parseFloat(buyPrice);
+      }
+      console.log(buy_price)
       var buy_data = JSON.stringify({
         user_name: userData.user_name,
         comp_name: buyTicker,
@@ -129,8 +137,12 @@ function TradeInput(props: any) {
 
     if (sellShares !== undefined && sellPrice !== undefined && sellTicker !== undefined) {
       let sell_shares = -parseFloat(sellShares);
-      let sell_price = parseFloat(sellPrice);
-      console.log(sell_shares)
+      let sell_price
+      if (isCurrentSell == true) {
+        sell_price = 0;
+      } else {
+        sell_price = parseFloat(sellPrice);
+      }
 
       var sell_data = JSON.stringify({
         user_name: userData.user_name,

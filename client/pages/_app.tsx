@@ -12,7 +12,15 @@ const ProtectedRoute = dynamic(
     ssr: false,
   }
 );
+const EndSeason = dynamic(
+  () => import("../components/EndSeason"),
+  {
+    ssr: false,
+  }
+);
+
 const AuthRequired = ["/dashboard"];
+const EndSeasonRequired= ["/end-season-summary"]
 
 function MyApp({ Component, pageProps }: AppProps) {
   const router = useRouter();
@@ -27,6 +35,13 @@ function MyApp({ Component, pageProps }: AppProps) {
         ) : (
           <Layout>
             <Component {...pageProps} />
+            {/* {EndSeasonRequired.includes(router.pathname) ? (
+              <EndSeason>
+                <Component {...pageProps} />
+              </EndSeason>
+            ) : (
+              <Component {...pageProps} />
+            )} */}
           </Layout>
         )}
       </CookiesProvider>

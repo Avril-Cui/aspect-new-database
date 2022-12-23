@@ -43,7 +43,6 @@ function ShowPortfolio() {
           const res = response.data;
           const price = res.price;
           setPrice(price);
-          console.log(price);
         })
         .catch((error) => {
           console.log(error);
@@ -62,7 +61,6 @@ function ShowPortfolio() {
       axios(config)
         .then(function (response) {
           setPortfolio(response.data.portfolio_value);
-          console.log(response.data.portfolio_value)
         })
         .catch(function (error) {
           console.log(error);

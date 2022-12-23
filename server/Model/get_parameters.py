@@ -66,6 +66,7 @@ def wrkn_2012_IPO_macro():
 		between the company's own theta and the index's theta value.
 	"""
 	comp_price_df = pd.read_csv("server/Model/historical_price/WRKN/WRKN_IPO.csv")
+	print(len(comp_price_df))
 	stock_price = comp_price_df["FB"].to_list()
 	index_params = get_index_parameters_1929_roaring_twenties()
 	index_theta = index_params["theta"]

@@ -39,6 +39,22 @@ const Manu = () => {
 
   const handleLogout = () => {
     cookies.remove('userData', { path: '/' });
+    var axios = require('axios');
+    var data = '';
+
+    var config = {
+      method: 'post',
+      url: 'http://127.0.0.1:5000/log-out',
+      headers: { },
+      data : data
+    };
+
+    axios(config)
+    .then(function (response) {
+    })
+    .catch(function (error) {
+      console.log(error);
+    });
     router.push("/")
     console.log(userData)
   };

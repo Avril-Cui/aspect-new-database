@@ -1,3 +1,4 @@
+import time
 class UserPortfolio:
     def __init__(
         self,
@@ -30,6 +31,9 @@ class UserPortfolio:
             self.portfolio["portfolio_value"]["holdingValue"] += round((name_price_dict[key] * self.portfolio[key]["shares"]- self.portfolio[key]["total_holdings"]),2)
             self.portfolio[key]["total_worth"] += round((name_price_dict[key] * self.portfolio[key]["shares"]- self.portfolio[key]["total_holdings"]),2)
         return (self.portfolio)
+    
+    def current_portfolio_value(self):
+        return self.portfolio
 
     def trade_stock(
         self, 
@@ -41,7 +45,7 @@ class UserPortfolio:
         trade_value = share_number * target_price
         available_shares = 50
 
-        if round(current_price, 2) != target_price:
+        if current_price != target_price:
             return "Invalid 3"
 
         if abs(share_number) > available_shares:
@@ -55,16 +59,17 @@ class UserPortfolio:
                 self.portfolio["portfolio_value"]["holdingValue"] += round(trade_value,2)
                 self.portfolio[comp_name]["total_holdings"] += round(trade_value,2)
                 self.portfolio[comp_name]["shares"] += round(share_number,2)
-                self.portfolio[comp_name]["last_price"] = round(target_price,2)
+                self.portfolio[comp_name]["buy_history"][str(int(time.time()))] = {"price": round(target_price,2)}
             else:
                 self.portfolio["portfolio_value"]["cashValue"] -= round(trade_value,2)
                 self.portfolio["portfolio_value"]["holdingValue"] += round(trade_value,2)
-                print(self.portfolio["portfolio_value"]["holdingValue"])
                 self.portfolio[comp_name]={
                     "total_holdings": round(trade_value,2),
                     "total_worth": round(trade_value,2),
                     "category": comp_name,
-                    "last_price": round(target_price,2),
+                    "buy_history": {
+                        str(int(time.time())): {"price": round(target_price,2)}
+                    },
                     "shares": round(share_number,2),
                 }
             return (self.portfolio)

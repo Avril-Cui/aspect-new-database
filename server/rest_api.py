@@ -1,5 +1,4 @@
 import json
-from flask_httpauth import HTTPBasicAuth
 from flask import Flask, request, jsonify, request
 import pyrebase
 from Model.modified_wave import DayPriceGenerator
@@ -17,7 +16,8 @@ from functools import reduce
 import operator
 
 seconds = time.time()
-start_time = 1669816866.243045
+start_time = 1670019550.797493
+end_time = start_time + (60*60*24)*28
 ## Set up the price list by calling the class StockSimulator#####
 parameters = {
     "ast": {
@@ -150,8 +150,6 @@ app = Flask(__name__, static_url_path='')
 CORS(app)
 app.config["CORS_ORIGINS"] = ["https://aspect.com",
                               "http://localhost:8080", "http://127.0.0.1:5000/"]
-auth = HTTPBasicAuth()
-
 config = {
     "apiKey": "AIzaSyBkqCpt7urvGI7bnDrB7J0Yw9Rq2tfZywI",
     "authDomain": "aspect-user-auth.firebaseapp.com",
@@ -164,7 +162,7 @@ auth = firebase.auth()
 db = firebase.database()
 
 person = {"is_logged_in": False, "user_name": "", "user_email": "", "user_uid": "", "portfolio": None}
-
+user_object = None
 ### Set up some maps for data storage ############################
 
 user_rank = {}
@@ -177,6 +175,7 @@ price_history_dict = {
     "wrkn": None
 }
 
+event = None
 
 @app.route('/')
 def home():  # At the same home function as before
@@ -188,19 +187,22 @@ def result():
         result = json.loads(request.data)           #Get the data
         email = result["user_email"]
         password = result["password"]
+        print(email)
+        print(password)
         try:
-            #Try signing in the user with the given information
             user = auth.sign_in_with_email_and_password(email, password)
-            #Insert the user data in the global person
+            print(user)
             global person
             person["is_logged_in"] = True
             person["user_email"] = user["email"]
             person["user_uid"] = user["localId"]
+            print(person)
             data = db.child("users").get()
-            person["user_name"] = data.val()[person["user_uid"]]["user_name"]
+            print(data.val())
+            person["user_name"] = result["user_email"]
             return "valid"
         except:
-            pass
+            return "Invalid user request", 401
     else:
         if person["is_logged_in"] == True:
             return "valid"
@@ -208,7 +210,7 @@ def result():
 @app.route("/register", methods = ["POST", "GET"])
 def register():
     if request.method == "POST":
-        result =  json.loads(request.data)
+        result = json.loads(request.data)
         email = result["user_email"]
         password = result["password"]
         name = result["user_name"]
@@ -223,26 +225,45 @@ def register():
         global user_object
         user_object = UserPortfolio(name)
         initialized_portfolio = user_object.initialize_portfolio()
-        person["portfolio"] = user_object.initialize_portfolio()
-        db.child("users").child(person["user_uid"]).set(initialized_portfolio)
+        initial_port = {"portfolio_value": {}}
+        for key in initialized_portfolio["portfolio_value"]:
+            if key != "accountValue" and key != "holdingValue":
+                initial_port["portfolio_value"][key] = initialized_portfolio["portfolio_value"][key]
+        db.child("users").child(person["user_uid"]).set(initial_port)
         return "valid"
 
     else:
         if person["is_logged_in"] == True:
             return "valid"
 
+@app.route('/log-out', methods=['POST'])
+def log_out():
+    person = {"is_logged_in": False, "user_name": "", "user_email": "", "user_uid": "", "portfolio": None}
+    user_object = None
+    return ("Logged Out")
+
+@app.route('/set-event', methods=['POST'])
+def set_event():
+    data = json.loads(request.data)
+    global event
+    event = data
+    return(event)
+
+@app.route('/get-event', methods=['GET'])
+def get_event():
+    print(event)
+    return(event)
+
+@app.route('/is-end-game', methods=['POST'])
+def is_end_game():
+    current_time = time.time()
+    if current_time >= end_time:
+        return str(0) #True
+    else:
+        return str(1) #False
+
 @app.route('/trade-stock', methods=['POST'])
-# @auth.login_required
 def trade_stock():
-    """
-        Payload Structure:
-        {
-            "user_name"
-            "comp_name": string,
-            "share_number": float,
-            "target_price": float
-        }
-    """
     trade_data = json.loads(request.data)
     share_number = trade_data["share_number"]
     target_price = trade_data["target_price"]
@@ -252,7 +273,8 @@ def trade_stock():
     index_lst = int((current_time-start_time)/3600)
     index_tmp = int(current_time-start_time)%3600
     current_price = price_list[comp_name][index_lst][index_tmp]
-
+    if target_price == 0:
+        target_price = current_price
     response = user_object.trade_stock(
         comp_name, share_number, target_price, current_price)
 
@@ -263,14 +285,35 @@ def trade_stock():
     elif response == "Invalid 3":
         return "Currently no shares available for trade. Your transaction will enter the pending state.", 403
     else:
-        db.child("users").child(person["user_uid"]).set(response)
-        return str(response)
+        result_portfolio = {}
+        for category in response:
+            individual_result = {}
+            if category != "portfolio_value":
+                for key in response[category]:
+                    if key == "category" or key == "shares" or key == "buy_history":
+                        individual_result[key] = response[category][key]
+                if response[category]["shares"] == 0:
+                    print(str(category))
+                    print(str(person["user_uid"]))
+                    db.child("users").child(person["user_uid"]).child(category).remove()
+            else:
+                for key in response["portfolio_value"]:
+                    if key == "category" or key == "cashValue":
+                        individual_result[key] = response["portfolio_value"][key]
+            result_portfolio[category] = individual_result            
+        db.child("users").child(person["user_uid"]).set(result_portfolio)
+        for category in response:
+            if category != "portfolio_value":
+                if response[category]["shares"] == 0:
+                    print(str(category))
+                    print(str(person["user_uid"]))
+                    db.child("users").child(person["user_uid"]).child(category).remove()
+        return str(result_portfolio)
 
 @app.route('/portfolio-detail', methods=['POST'])
 def portfolio_detail():
-    fetched_data = db.child("users").child(person["user_uid"]).get()
-    data = dict(fetched_data.val())
-    return jsonify(data)
+    current_portfolio = user_object.current_portfolio_value()
+    return jsonify(current_portfolio)
 
 @app.route('/update-value', methods=['POST'])
 def update_value():
@@ -279,13 +322,12 @@ def update_value():
     data = dict(fetched_data.val())
     fetched_data = db.child("users").child(person["user_uid"]).get()
     data = dict(fetched_data.val())
+    current_portfolio = user_object.current_portfolio_value()
     if len(data) > 1:
         portfolio = user_object.update_value(input["name_price_dict"])
-        db.child("users").child(person["user_uid"]).set(portfolio)
         return(portfolio)
     else:
-        return(data)
-
+        return(current_portfolio)
 
 @app.route('/show-ranking', methods=['POST'])
 def show_ranking():
@@ -293,7 +335,7 @@ def show_ranking():
     data = dict(values.val())
     portfolio_value = {}
     for key in data:
-        portfolio_value[key] = data[key]["portfolio_value"]["accountValue"]
+        portfolio_value[key] = data[key]["portfolio_value"]["cashValue"]
     user_rank = {k: v for k, v in sorted(
         portfolio_value.items(), key=lambda item: item[1])}
     rank = len(user_rank)-list(user_rank.keys()).index(person["user_uid"])
@@ -305,7 +347,7 @@ def total_rank():
     data = dict(values.val())
     portfolio_value = {}
     for key in data:
-        portfolio_value[key] = data[key]["portfolio_value"]["accountValue"]
+        portfolio_value[key] = data[key]["portfolio_value"]["cashValue"]
     user_rank = {k: v for k, v in sorted(
         portfolio_value.items(), key=lambda item: item[1])}
     return str(user_rank)
@@ -448,4 +490,4 @@ def tick_graph():
             tick_price_graph[comp_name].append({"time": (index+start_time), "value": round(flat_price[comp_name][index], 2)})
     return jsonify(tick_price_graph[comp_name])
 
-app.run(host="localhost", port=5000, debug=True)
+app.run(port=5000, debug=True)

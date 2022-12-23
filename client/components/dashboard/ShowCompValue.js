@@ -44,7 +44,6 @@ function ShowCompValue(props) {
     return () => clearInterval(data);
   }, [portfolio]);
 
-  console.log(portfolio["portfolio_value"]);
 
   return (
     <div className={styles.scroll}>
@@ -82,7 +81,11 @@ import classes from "../../styles/portfolio.module.css";
 import axios from "axios";
 
 function Company(props) {
-  const { total_holdings, category, shares, last_price } = props.company;
+  const {buy_history, category, shares, total_holdings, total_worth} = props.company;
+  // const { total_holdings, category, shares, last_price, total_worth } = props.company;
+  let last_buy_price = Object.values(buy_history).pop();
+  let last_price = last_buy_price.price
+  
 
   let company_value = null;
   let share_number = null;
@@ -93,7 +96,6 @@ function Company(props) {
 
   const [price, setPrice] = useState(undefined);
 
-  console.log(comp_name);
 
   const WAIT_TIME = 2000;
 
@@ -111,7 +113,6 @@ function Company(props) {
           const res = response.data;
           const price = res.price;
           setPrice(price);
-          console.log(price);
         })
         .catch((error) => {
           console.log(error);
@@ -135,25 +136,29 @@ function Company(props) {
     price_pct_change = round(((price - last_price) / last_price) * 100);
   }
 
-  return (
-    <tr key={category} className={styles.holding_detail}>
-      <td className={classes.comp_link}>{category}</td>
-      <td>{share_number}</td>
-      <td>{last_buy_in}</td>
-      <td>{round(company_value)}</td>
-      <td
-        style={price_change > 0 ? { color: "#C9FFD1" } : { color: "#FD6565" }}
-      >
-        {price_change}
-      </td>
-      <td
-        style={
-          price_pct_change > 0 ? { color: "#C9FFD1" } : { color: "#FD6565" }
-        }
-      >
-        {price_pct_change}%
-      </td>
-    </tr>
-  );
+  if (share_number != 0){
+    return (
+      <tr key={category} className={styles.holding_detail}>
+        <td className={classes.comp_link}>{category}</td>
+        <td>{share_number}</td>
+        <td>{last_buy_in}</td>
+        <td>{round(company_value)}</td>
+        <td
+          style={price_change > 0 ? { color: "#C9FFD1" } : { color: "#FD6565" }}
+        >
+          {price_change}
+        </td>
+        <td
+          style={
+            price_pct_change > 0 ? { color: "#C9FFD1" } : { color: "#FD6565" }
+          }
+        >
+          {price_pct_change}%
+        </td>
+      </tr>
+    );
+  } else{
+    return <tbody key="random"></tbody>
+  }
 }
 export default ShowCompValue;
