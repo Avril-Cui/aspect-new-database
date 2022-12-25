@@ -22,40 +22,24 @@ function ShowPortfolio() {
   });
 
   const cookies = new Cookies();
+  const user_uid = cookies.get("user_uid");
 
-  const WAIT_TIME = 1000;
-  const [price, setPrice] = useState(undefined);
+  const WAIT_TIME = 3000;
 
   useEffect(() => {
-    if (portfolio.accountValue != undefined){
+    if (portfolio.accountValue != undefined) {
       setLoading(true);
     }
+
     const data = setInterval(() => {
-      axios({
-        method: "POST",
-        url: "http://127.0.0.1:5000/current-price",
-        headers: {
-          "Content-Type": "text/plain",
-        },
-        data: JSON.stringify("wrkn"),
-      })
-        .then((response) => {
-          const res = response.data;
-          const price = res.price;
-          setPrice(price);
-        })
-        .catch((error) => {
-          console.log(error);
-        });
+      let data = JSON.stringify(user_uid);
       var config = {
-        method: "POST",
-        url: "http://127.0.0.1:5000/update-value",
+        method: "post",
+        url: "http://127.0.0.1:5000/portfolio-detail",
         headers: {
           "Content-Type": "text/plain",
         },
-        data: JSON.stringify({
-          name_price_dict: { wrkn: price },
-        }),
+        data: data,
       };
 
       axios(config)
@@ -65,9 +49,10 @@ function ShowPortfolio() {
         .catch(function (error) {
           console.log(error);
         });
+
     }, WAIT_TIME);
     return () => clearInterval(data);
-  }, [price, portfolio]);
+  }, [portfolio]);
 
   function round(num) {
     var m = Number((Math.abs(num) * 100).toPrecision(15));

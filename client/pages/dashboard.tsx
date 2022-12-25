@@ -7,7 +7,6 @@ import styles from "../styles/portfolio.module.css";
 import axios from "axios";
 import Cookies from "universal-cookie";
 import Header from "../components/Header/Header";
-import { useRouter } from "next/router";
 const PortfolioChart = dynamic(
   () => import("../components/dashboard/PortfolioChart"),
   {
@@ -16,9 +15,8 @@ const PortfolioChart = dynamic(
 );
 
 const Home = (props: any) => {
-  const router = useRouter();
   const cookies = new Cookies();
-  const userData = cookies.get("userData");
+  const user_uid = cookies.get("user_uid");
 
   const [isOpen, setIsOpen] = useState(false);
 
@@ -29,12 +27,7 @@ const Home = (props: any) => {
   const [rank, setRank] = useState(0);
 
   useEffect(() => {
-    console.log(userData);
-
-    var data = JSON.stringify(userData.user_name);
-    console.log(data);
-    console.log(userData.user_name);
-
+    var data = JSON.stringify(user_uid);
     var config = {
       method: "post",
       url: "http://127.0.0.1:5000/show-ranking",
@@ -47,7 +40,6 @@ const Home = (props: any) => {
     axios(config)
       .then(function (response) {
         setRank(response.data);
-        console.log(data);
       })
       .catch(function (error) {
         console.log(error);
@@ -87,7 +79,6 @@ const Home = (props: any) => {
                   {isOpen && (
                     <TradeInput
                       toggleClose={togglePopup}
-                      user_data={userData}
                     />
                   )}
                 </div>
@@ -96,7 +87,7 @@ const Home = (props: any) => {
             <div style={{ marginLeft: "1em" }}>
               <p className={styles.header}>HOLDING DETAIL</p>
               <div className={styles.holdings_container}>
-                <ShowCompValue user_data={userData} />
+                <ShowCompValue />
               </div>
             </div>
           </div>

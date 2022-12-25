@@ -5,7 +5,7 @@ import Cookies from "universal-cookie";
 
 function ShowCompValue(props) {
   const cookies = new Cookies();
-  const userData = cookies.get("userData");
+  const user_uid = cookies.get("user_uid");
 
   const containerRef = useRef(null);
   const [portfolio, setPortfolio] = useState({
@@ -17,12 +17,12 @@ function ShowCompValue(props) {
     },
   });
 
-  const WAIT_TIME = 2000;
+  const WAIT_TIME = 3000;
 
   useEffect(() => {
     const data = setInterval(() => {
       var axios = require("axios");
-      var data = JSON.stringify(userData.user_name);
+      var data = JSON.stringify(user_uid);
 
       var config = {
         method: "post",
@@ -53,7 +53,6 @@ function ShowCompValue(props) {
             <tr>
               <th>Ticker</th>
               <th>Shares</th>
-              <th>Last Buy-In</th>
               <th>Total Value</th>
               <th>Change</th>
               <th>Percentage</th>
@@ -81,59 +80,26 @@ import classes from "../../styles/portfolio.module.css";
 import axios from "axios";
 
 function Company(props) {
-  const {buy_history, category, shares, total_holdings, total_worth} = props.company;
-  // const { total_holdings, category, shares, last_price, total_worth } = props.company;
-  let last_buy_price = Object.values(buy_history).pop();
-  let last_price = last_buy_price.price
-  
-
-  let company_value = null;
-  let share_number = null;
-  let comp_name = category;
-  let last_buy_in = null;
-  let price_change = 0;
-  let price_pct_change = 0;
-
-  const [price, setPrice] = useState(undefined);
-
-
-  const WAIT_TIME = 2000;
-
-  useEffect(() => {
-    const data = setInterval(() => {
-      axios({
-        method: "POST",
-        url: "http://127.0.0.1:5000/current-price",
-        headers: {
-          "Content-Type": "text/plain",
-        },
-        data: JSON.stringify(comp_name),
-      })
-        .then((response) => {
-          const res = response.data;
-          const price = res.price;
-          setPrice(price);
-        })
-        .catch((error) => {
-          console.log(error);
-        });
-    }, WAIT_TIME);
-    return () => clearInterval(data);
-  }, [price]);
-
   function round(num) {
     var m = Number((Math.abs(num) * 100).toPrecision(15));
     return (Math.round(m) / 100) * Math.sign(num);
   }
 
+  const {category, shares_holding, total_holding, cost} = props.company;  
+
+  let company_value = null;
+  let share_number = null;
+  let comp_name = category;
+  let price_pct_change = 0;
+  let price_change = 0;
+
   if (category != "portfolio_value") {
-    company_value = total_holdings;
-    share_number = shares;
+    company_value = total_holding;
+    share_number = shares_holding;
     comp_name = category;
-    last_buy_in = last_price;
     // current_price = price;
-    price_change = round(price - last_price);
-    price_pct_change = round(((price - last_price) / last_price) * 100);
+    price_change = round(total_holding - cost);
+    price_pct_change = round(((total_holding - cost) / cost) * 100);
   }
 
   if (share_number != 0){
@@ -141,7 +107,6 @@ function Company(props) {
       <tr key={category} className={styles.holding_detail}>
         <td className={classes.comp_link}>{category}</td>
         <td>{share_number}</td>
-        <td>{last_buy_in}</td>
         <td>{round(company_value)}</td>
         <td
           style={price_change > 0 ? { color: "#C9FFD1" } : { color: "#FD6565" }}

@@ -5,7 +5,7 @@ import Cookies from "universal-cookie";
 
 function TradeInput(props: any) {
   const cookies = new Cookies();
-  const userData = cookies.get("userData");
+  const user_uid = cookies.get("user_uid");
   const [buyShares, setBuyShares] = useState(undefined);
   const [buyPrice, setBuyPrice] = useState(undefined);
   const [buyTicker, setBuyTicker] = useState(undefined);
@@ -83,7 +83,7 @@ function TradeInput(props: any) {
 
   const handleSubmit = (event: any) => {
     event.preventDefault(
-      userData,
+      user_uid,
       buyShares,
       buyPrice,
       buyTicker,
@@ -100,9 +100,8 @@ function TradeInput(props: any) {
       } else {
         buy_price = parseFloat(buyPrice);
       }
-      console.log(buy_price)
       var buy_data = JSON.stringify({
-        user_name: userData.user_name,
+        user_uid: user_uid,
         comp_name: buyTicker,
         share_number: buy_shares,
         target_price: buy_price,
@@ -118,7 +117,6 @@ function TradeInput(props: any) {
 
       axios(buy_config)
         .then(function (response) {
-          console.log(response.data);
           setMessage("Trade entered successfully!");
         })
         .catch(function (error) {
@@ -144,13 +142,12 @@ function TradeInput(props: any) {
         sell_price = parseFloat(sellPrice);
       }
 
-      var sell_data = JSON.stringify({
-        user_name: userData.user_name,
+      var sell_data = JSON.stringify({    
+        user_uid: user_uid,
         comp_name: sellTicker,
         share_number: sell_shares,
         target_price: sell_price,
       });
-      console.log(sell_data);
       var sell_config = {
         method: "post",
         url: "http://127.0.0.1:5000/trade-stock",
@@ -162,7 +159,6 @@ function TradeInput(props: any) {
 
       axios(sell_config)
         .then(function (response) {
-          console.log(response.data);
           setMessage("Trade entered successfully!");
         })
         .catch(function (error) {

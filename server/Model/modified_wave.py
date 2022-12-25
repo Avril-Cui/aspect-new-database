@@ -1,8 +1,16 @@
+"""
+Note from 12/23: pandas datareader get_data_yahoo has some bug.
+pdr_override is used to temperarily fix this bug.
+This issue might be fixed by yahoo later.
+"""
+
 from typing import Optional
 import numpy as np
 from copy import deepcopy
-import pandas as pd
 import pandas_datareader as web
+from pandas_datareader import data as pdr
+import yfinance as yf
+yf.pdr_override()
 
 class DayPriceGenerator:
     def __init__(
@@ -42,7 +50,8 @@ class MidPriceGenerator:
         self.ma_days = ma_days
     
     def generate_mid_price(self):
-        mid_price = web.get_data_yahoo(self.symbol, self.start_date, self.end_date)['Adj Close'][self.symbol[0]]
+        mid_price = pdr.get_data_yahoo(self.symbol, self.start_date, self.end_date)['Adj Close']
+        print(mid_price)
         convolution_wave = mid_price.rolling(window=self.ma_days).mean()[self.ma_days:].to_list()
         return convolution_wave
 

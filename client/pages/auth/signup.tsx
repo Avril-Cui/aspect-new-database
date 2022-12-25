@@ -2,7 +2,7 @@ import { useRouter } from "next/router";
 import React, { useState } from "react";
 import styles from "../../styles/login/styles.module.css";
 import axios from "axios";
-import Cookies from 'universal-cookie';
+import Cookies from "universal-cookie";
 import Link from "next/link";
 
 const Login = () => {
@@ -16,10 +16,9 @@ const Login = () => {
 
   const cookies = new Cookies();
 
-  const handleLogin = async (e: any) => {
+  const handleSignUp = async (e: any) => {
     e.preventDefault();
-    console.log(data)
-    cookies.set('userData', data, { path: '/' });
+    cookies.set("userData", data, { path: "/" });
     axios({
       method: "POST",
       url: "http://127.0.0.1:5000/register",
@@ -28,12 +27,14 @@ const Login = () => {
       },
       data: data,
     })
-      .then(function (response) {
-        router.push('/dashboard')
+      .then(function (response: any) {
+        cookies.set("user_uid", response.data, { path: "/" });
+        console.log(cookies.get("user_uid"));
+        router.push("/dashboard")
       })
-      .catch(function (error) {
+      .catch(function (error: any) {
         console.log(error);
-      });
+      })
   };
 
   return (
@@ -41,8 +42,8 @@ const Login = () => {
       <div className={styles.signup_container}>
         <h1 className={styles.login_text}>Sign Up in to Website</h1>
         <div className={styles.log_in}>
-          <form onSubmit={handleLogin}>
-          <div className={styles.email_input}>
+          <form onSubmit={handleSignUp}>
+            <div className={styles.email_input}>
               <span className={styles.show_text}>User Name</span>
               <div style={{ marginTop: 10 }}>
                 <input

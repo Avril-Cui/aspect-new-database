@@ -1,12 +1,9 @@
 import json
 from flask import Flask, request, jsonify, request
 import pyrebase
-from Model.modified_wave import DayPriceGenerator
-from Model.modified_wave import MidPriceGenerator
-from Model.modified_wave import WaveModifier
-from Model.modified_wave import StockSimulator
+from Model.modified_wave import DayPriceGenerator, MidPriceGenerator, WaveModifier, StockSimulator
 from Model.get_parameters import WRKN_macro, WRKN_micro, JKY_macro, JKY_micro, AST_macro, AST_micro, DSC_macro, DSC_micro, FSIN_macro, FSIN_micro, HHW_macro, HHW_micro, SGO_macro, SGO_micro
-from User.user import UserPortfolio
+from User.user_database import UserDatabaseCommands
 import time
 import numpy as np
 from flask_cors import CORS
@@ -16,8 +13,9 @@ from functools import reduce
 import operator
 
 seconds = time.time()
-start_time = 1670019550.797493
+start_time = 1671822785.1980438
 end_time = start_time + (60*60*24)*28
+
 ## Set up the price list by calling the class StockSimulator#####
 parameters = {
     "ast": {
@@ -64,10 +62,8 @@ parameters = {
     }
 }
 
-
 day_price_list = {
 }
-
 
 adjusted_factor = {
 }
@@ -112,7 +108,14 @@ tick_price_graph = {
     "wrkn": []
 }
 
-
+def get_current_prices(company_list):
+    current_time = time.time()
+    index_lst = int((current_time-start_time)/3600)
+    index_tmp = int(current_time-start_time)%3600
+    current_prices = {}
+    for company in company_list:
+        current_prices[company] = price_list[company][index_lst][index_tmp]
+    return current_prices
 #################################################################
 
 # Set up some default users by calling the class UserPortfolio
@@ -151,22 +154,16 @@ CORS(app)
 app.config["CORS_ORIGINS"] = ["https://aspect.com",
                               "http://localhost:8080", "http://127.0.0.1:5000/"]
 config = {
-    "apiKey": "AIzaSyBkqCpt7urvGI7bnDrB7J0Yw9Rq2tfZywI",
-    "authDomain": "aspect-user-auth.firebaseapp.com",
-    "databaseURL":  "https://aspect-user-auth-default-rtdb.firebaseio.com/",
-    "storageBucket": "aspect-user-auth.appspot.com",
+    "apiKey": "AIzaSyAHY-ZeX87ObL6y3y_2n76GLNxU-24hHs0",
+    "authDomain": "aspect-fb6c9.firebaseapp.com",
+    "databaseURL":  "https://aspect-fb6c9-default-rtdb.firebaseio.com/",
+    "storageBucket": "aspect-fb6c9.appspot.com",
 }
 
 firebase = pyrebase.initialize_app(config)
 auth = firebase.auth()
-db = firebase.database()
 
-person = {"is_logged_in": False, "user_name": "", "user_email": "", "user_uid": "", "portfolio": None}
-user_object = None
 ### Set up some maps for data storage ############################
-
-user_rank = {}
-
 current_price_dict = {
     "wrkn": None
 }
@@ -183,76 +180,31 @@ def home():  # At the same home function as before
 
 @app.route("/result", methods = ["POST", "GET"])
 def result():
-    if request.method == "POST":        #Only if data has been posted
-        result = json.loads(request.data)           #Get the data
-        email = result["user_email"]
-        password = result["password"]
-        print(email)
-        print(password)
-        try:
-            user = auth.sign_in_with_email_and_password(email, password)
-            print(user)
-            global person
-            person["is_logged_in"] = True
-            person["user_email"] = user["email"]
-            person["user_uid"] = user["localId"]
-            print(person)
-            data = db.child("users").get()
-            print(data.val())
-            person["user_name"] = result["user_email"]
-            return "valid"
-        except:
-            return "Invalid user request", 401
-    else:
-        if person["is_logged_in"] == True:
-            return "valid"
-
-@app.route("/register", methods = ["POST", "GET"])
-def register():
     if request.method == "POST":
         result = json.loads(request.data)
         email = result["user_email"]
         password = result["password"]
-        name = result["user_name"]
-
-        auth.create_user_with_email_and_password(email, password)
-        user = auth.sign_in_with_email_and_password(email, password)
-        global person
-        person["is_logged_in"] = True
-        person["user_email"] = user["email"]
-        person["user_uid"] = user["localId"]
-        person["user_name"] = name
-        global user_object
-        user_object = UserPortfolio(name)
-        initialized_portfolio = user_object.initialize_portfolio()
-        initial_port = {"portfolio_value": {}}
-        for key in initialized_portfolio["portfolio_value"]:
-            if key != "accountValue" and key != "holdingValue":
-                initial_port["portfolio_value"][key] = initialized_portfolio["portfolio_value"][key]
-        db.child("users").child(person["user_uid"]).set(initial_port)
-        return "valid"
-
-    else:
-        if person["is_logged_in"] == True:
+        try:
+            user = auth.sign_in_with_email_and_password(email, password)
             return "valid"
+        except:
+            return "Invalid user request", 401
 
-@app.route('/log-out', methods=['POST'])
-def log_out():
-    person = {"is_logged_in": False, "user_name": "", "user_email": "", "user_uid": "", "portfolio": None}
-    user_object = None
-    return ("Logged Out")
+@app.route("/register", methods = ["POST", "GET"])
+def register():
+    if request.method == "POST":
+        data = json.loads(request.data)
+        email = data["user_email"]
+        password = data["password"]
+        name = data["user_name"]
 
-@app.route('/set-event', methods=['POST'])
-def set_event():
-    data = json.loads(request.data)
-    global event
-    event = data
-    return(event)
-
-@app.route('/get-event', methods=['GET'])
-def get_event():
-    print(event)
-    return(event)
+        try:
+            auth.create_user_with_email_and_password(email, password)
+            user = auth.sign_in_with_email_and_password(email, password)
+            UserDatabaseCommands.intialize_user(user["localId"], name)
+            return user["localId"]
+        except:
+            pass
 
 @app.route('/is-end-game', methods=['POST'])
 def is_end_game():
@@ -268,6 +220,7 @@ def trade_stock():
     share_number = trade_data["share_number"]
     target_price = trade_data["target_price"]
     comp_name = trade_data["comp_name"]
+    user_uid = trade_data["user_uid"]
 
     current_time = time.time()
     index_lst = int((current_time-start_time)/3600)
@@ -275,8 +228,7 @@ def trade_stock():
     current_price = price_list[comp_name][index_lst][index_tmp]
     if target_price == 0:
         target_price = current_price
-    response = user_object.trade_stock(
-        comp_name, share_number, target_price, current_price)
+    response = UserDatabaseCommands.trade_stock(user_uid, share_number, target_price, current_price, comp_name)
 
     if response == "Invalid 1":
         return "You do not owe enough shares of this stock.", 401
@@ -285,118 +237,29 @@ def trade_stock():
     elif response == "Invalid 3":
         return "Currently no shares available for trade. Your transaction will enter the pending state.", 403
     else:
-        result_portfolio = {}
-        for category in response:
-            individual_result = {}
-            if category != "portfolio_value":
-                for key in response[category]:
-                    if key == "category" or key == "shares" or key == "buy_history":
-                        individual_result[key] = response[category][key]
-                if response[category]["shares"] == 0:
-                    print(str(category))
-                    print(str(person["user_uid"]))
-                    db.child("users").child(person["user_uid"]).child(category).remove()
-            else:
-                for key in response["portfolio_value"]:
-                    if key == "category" or key == "cashValue":
-                        individual_result[key] = response["portfolio_value"][key]
-            result_portfolio[category] = individual_result            
-        db.child("users").child(person["user_uid"]).set(result_portfolio)
-        for category in response:
-            if category != "portfolio_value":
-                if response[category]["shares"] == 0:
-                    print(str(category))
-                    print(str(person["user_uid"]))
-                    db.child("users").child(person["user_uid"]).child(category).remove()
-        return str(result_portfolio)
+        company_list = UserDatabaseCommands.get_comp_holding_list(user_uid)
+        current_prices = get_current_prices(company_list)
+        portfolio = UserDatabaseCommands.get_portfolio_info(user_uid, current_prices)
+        return jsonify(portfolio)
 
 @app.route('/portfolio-detail', methods=['POST'])
 def portfolio_detail():
-    current_portfolio = user_object.current_portfolio_value()
-    return jsonify(current_portfolio)
-
-@app.route('/update-value', methods=['POST'])
-def update_value():
-    input = json.loads(request.data)
-    fetched_data = db.child("users").child(person["user_uid"]).get()
-    data = dict(fetched_data.val())
-    fetched_data = db.child("users").child(person["user_uid"]).get()
-    data = dict(fetched_data.val())
-    current_portfolio = user_object.current_portfolio_value()
-    if len(data) > 1:
-        portfolio = user_object.update_value(input["name_price_dict"])
-        return(portfolio)
-    else:
-        return(current_portfolio)
+    user_uid = json.loads(request.data)
+    company_list = UserDatabaseCommands.get_comp_holding_list(user_uid)
+    current_prices = get_current_prices(company_list)
+    portfolio = UserDatabaseCommands.get_portfolio_info(user_uid, current_prices)
+    return jsonify(portfolio)
 
 @app.route('/show-ranking', methods=['POST'])
 def show_ranking():
-    values = db.child("users").get()
-    data = dict(values.val())
-    portfolio_value = {}
-    for key in data:
-        portfolio_value[key] = data[key]["portfolio_value"]["cashValue"]
-    user_rank = {k: v for k, v in sorted(
-        portfolio_value.items(), key=lambda item: item[1])}
-    rank = len(user_rank)-list(user_rank.keys()).index(person["user_uid"])
+    user_uid = json.loads(request.data)
+    rank = UserDatabaseCommands.get_rank_user(user_uid)
     return str(rank)
 
-@app.route('/total-rank', methods=['POST'])
+@app.route('/total-rank', methods=['GET'])
 def total_rank():
-    values = db.child("users").get()
-    data = dict(values.val())
-    portfolio_value = {}
-    for key in data:
-        portfolio_value[key] = data[key]["portfolio_value"]["cashValue"]
-    user_rank = {k: v for k, v in sorted(
-        portfolio_value.items(), key=lambda item: item[1])}
+    user_rank = UserDatabaseCommands.get_total_rank()
     return str(user_rank)
-
-# store message info for chat feature
-@app.route('/send-message', methods=['POST'])
-def send_message():
-    """
-        message = {
-            "section": "main",
-            "name": "Avril",
-            "text": "Hello world"
-        }
-    """
-    data = json.loads(request.data)
-    uid = uuid.uuid4()
-    dateTimeObj = datetime.now()
-    chat_storeage[data["section"]][str(uid)] = {
-        "name": data["name"],
-        "text": data["text"],
-        "timestamp": dateTimeObj,
-        "uid": uid
-    }
-
-    return jsonify(chat_storeage[data["section"]][str(uid)])
-
-@app.route('/get-message', methods=['POST'])
-def get_message():
-    section = json.loads(request.data)
-    section_message = chat_storeage[section]
-    section_message_lst = list(section_message.items())
-    message_lst = []
-    if len(section_message_lst) < 50:
-        for index in range(len(section_message_lst)):
-            message_lst.append({
-                "timestamp": section_message_lst[index][1]["timestamp"],
-                "name": section_message_lst[index][1]["name"],
-                "text": section_message_lst[index][1]["text"],
-                "uid": section_message_lst[index][1]["uid"]
-            })
-    else:
-        for index in range(50):
-            message_lst.append({
-                "timestamp": section_message_lst[-index][1]["timestamp"],
-                "name": section_message_lst[-index][1]["name"],
-                "text": section_message_lst[-index][1]["text"],
-                "uid": section_message_lst[index][1]["uid"]
-            })
-    return jsonify(list(message_lst))
 
 @app.route('/set-price', methods=["POST"])
 def set_price():
@@ -447,8 +310,8 @@ def set_price():
     price_list[data["comp_name"]] = final_price_list
     flat_price[data["comp_name"]] = reduce(operator.concat, price_list[data["comp_name"]].tolist())
     return (str(final_price_list))
+    return str("HI")
 
-# ROUTE 1: Need a function to serve the value of a stock at any PoT    -> Name of stock + POT -> Long
 @app.route('/current-price', methods=['POST'])
 def current_price():
     current_time = time.time()
@@ -456,22 +319,8 @@ def current_price():
     index_tmp = int(current_time-start_time)%3600
     comp_name = json.loads(request.data)
     current_price = price_list[comp_name][index_lst][index_tmp]
-    # if index_tmp % 15 == 0:
-    tick_price_graph[comp_name].append({"time": current_time, "value": round(current_price, 2)})
     return {"price": round(current_price, 2)}
 
-@app.route('/current-all-prices', methods=['POST'])
-def all_current_price():
-    for comp_name in price_list:
-        current_time = time.time()
-        index_lst = int((current_time-start_time)/3600)
-        index_tmp = int(current_time-start_time)%3600
-        current_price = price_list[comp_name][index_lst][index_tmp]
-        current_prices[comp_name] = round(current_price, 2)
-        tick_price_graph[comp_name].append({"time": current_time, "value": round(current_price, 2)})
-    return current_prices
-
-# ROUTE 2: Need a function to give you the entire history of a stock.   -> name of stock -> Array(Long)
 @app.route('/price-history', methods=['POST'])
 def price_history():
     comp_name = json.loads(request.data)
@@ -489,5 +338,66 @@ def tick_graph():
         if index % (5*60) == 0:
             tick_price_graph[comp_name].append({"time": (index+start_time), "value": round(flat_price[comp_name][index], 2)})
     return jsonify(tick_price_graph[comp_name])
+
+@app.route('/set-end-season-info', methods=["POST"])
+def set_end_season_info():
+    """
+        {
+            "event_name": "Metadefect Virus Attact",
+            "highlight": ["Pandemic", "Market Crash", "IPO", "Short", "Long", "ESG", "Stability", "Value", "Growth"]
+        }
+    """
+    global end_season_info
+    end_season_info = json.loads(request.data)
+    return jsonify(end_season_info)
+
+@app.route('/get-end-season-info', methods=["POST"])
+def get_end_season_info():
+    return jsonify(end_season_info)
+
+@app.route('/send-message', methods=['POST'])
+def send_message():
+    """
+        message = {
+            "section": "main",
+            "name": "Avril",
+            "text": "Hello world"
+        }
+    """
+    data = json.loads(request.data)
+    uid = uuid.uuid4()
+    dateTimeObj = datetime.now()
+    chat_storeage[data["section"]][str(uid)] = {
+        "name": data["name"],
+        "text": data["text"],
+        "timestamp": dateTimeObj,
+        "uid": uid
+    }
+
+    return jsonify(chat_storeage[data["section"]][str(uid)])
+
+@app.route('/get-message', methods=['POST'])
+def get_message():
+    section = json.loads(request.data)
+    section_message = chat_storeage[section]
+    section_message_lst = list(section_message.items())
+    message_lst = []
+    if len(section_message_lst) < 50:
+        for index in range(len(section_message_lst)):
+            message_lst.append({
+                "timestamp": section_message_lst[index][1]["timestamp"],
+                "name": section_message_lst[index][1]["name"],
+                "text": section_message_lst[index][1]["text"],
+                "uid": section_message_lst[index][1]["uid"]
+            })
+    else:
+        for index in range(50):
+            message_lst.append({
+                "timestamp": section_message_lst[-index][1]["timestamp"],
+                "name": section_message_lst[-index][1]["name"],
+                "text": section_message_lst[-index][1]["text"],
+                "uid": section_message_lst[index][1]["uid"]
+            })
+    return jsonify(list(message_lst))
 
 app.run(port=5000, debug=True)
