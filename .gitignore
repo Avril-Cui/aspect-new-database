@@ -1,3 +1,6 @@
 .next/*
 .history/*
 ./client/.history/*
+.vscode/*
+__pycache__/*
+node_modules/*
