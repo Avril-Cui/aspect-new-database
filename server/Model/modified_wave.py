@@ -50,8 +50,8 @@ class MidPriceGenerator:
         self.ma_days = ma_days
     
     def generate_mid_price(self):
+        # mid_price = web.get_data_yahoo(self.symbol, self.start_date, self.end_date)['Adj Close'][self.symbol[0]]
         mid_price = pdr.get_data_yahoo(self.symbol, self.start_date, self.end_date)['Adj Close']
-        print(mid_price)
         convolution_wave = mid_price.rolling(window=self.ma_days).mean()[self.ma_days:].to_list()
         return convolution_wave
 

@@ -13,7 +13,7 @@ from functools import reduce
 import operator
 
 seconds = time.time()
-start_time = 1672282432.713603
+start_time = 1671822785.1980438
 end_time = start_time + (60*60*24)*28
 
 ## Set up the price list by calling the class StockSimulator#####

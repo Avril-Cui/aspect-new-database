@@ -11,8 +11,8 @@ index_data = pdr.get_data_yahoo(symbol, start_date, end_date)['Adj Close']
 index_data.to_csv('Model/historical_price/index_data/normal1.csv')
 plt.plot(index_data)
 plt.show()
-start_date = "2015-4-1"
-end_date = "2015-7-1"
+start_date = "2021-4-9"
+end_date = "2021-10-25"
 symbol = ['^GSPC']
 index_data = pdr.get_data_yahoo(symbol, start_date, end_date)['Adj Close']
 index_data.to_csv('Model/historical_price/index_data/normal2.csv')
