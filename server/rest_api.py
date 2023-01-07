@@ -207,17 +207,31 @@ def total_rank():
 @app.route('/current-all-prices', methods=["POST"])
 def current_all_prices():
 	current_time = time.time()
-	index_lst = int((current_time-start_time)/28800)
-	index_tmp = int((current_time-start_time)%28800)
-	current_price_dict = {}
-	print(index_lst, index_tmp)
-	for key in price_list:
-		open_price = price_list[key][index_lst][0]
-		change = round((price_list[key][index_lst][index_tmp] - open_price),2)
-		pct_change = round((price_list[key][index_lst][index_tmp] - open_price) /open_price * 100,2)
-		print(round(pct_change, 2))
-		current_price_dict[key] = {"price":  round(price_list[key][index_lst][index_tmp], 2), "change": change, "pct_change": pct_change}
-	return jsonify(current_price_dict)
+	index_lst = int(int((current_time-start_time))/28800)
+	index_tmp = int((current_time-start_time) - index_lst * 28800 - index_lst * 60*60*(24-8))
+	if index_tmp <= 28800:
+		current_price_dict = {}
+		for key in price_list:
+			open_price = price_list[key][index_lst][0]
+			change = round((price_list[key][index_lst][index_tmp] - open_price),2)
+			pct_change = round((price_list[key][index_lst][index_tmp] - open_price) /open_price * 100,2)
+			current_price = price_list[key][index_lst][index_tmp]
+			current_price_dict[key] = {"price":  round(current_price, 2), "change": change, "pct_change": pct_change}
+		return jsonify(current_price_dict)
+	elif index_tmp > 28800 and index_tmp < 60*60*24:
+		current_price_dict = {}
+		for key in price_list:
+			final_price = price_list[key][index_lst][-1]
+			current_price_dict[key] = {"price":  round(final_price, 2), "change": "N/A", "pct_change": "N/A"}
+		return jsonify(current_price_dict)
+
+	else:
+		current_price_dict = {}
+		for key in price_list:
+			final_price = price_list[key][index_lst][-1]
+			current_price_dict[key] = {"price":  round(final_price, 2), "change": "N/A", "pct_change": "N/A"}
+		index_lst+=1
+		return jsonify(current_price_dict)
 
 @app.route('/current-price', methods=['POST'])
 def current_price():
@@ -233,8 +247,9 @@ def current_price():
 			return {"price": round(price_list[comp_name][index_lst][-1], 2)}
 		
 		else:
+			last_price = round(price_list[comp_name][index_lst][-1], 2)
 			index_lst+=1
-			return {"price": round(price_list[comp_name][index_lst][-1], 2)}
+			return {"price": last_price}
 
 @app.route('/price-history', methods=['POST'])
 def price_history():
