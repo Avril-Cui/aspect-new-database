@@ -55,16 +55,6 @@ current_prices = {
 	"wrkn": None
 }
 
-tick_price_graph = {
-	"ast": [],
-	"dsc": [],
-	"fsin": [],
-	"hhw": [],
-	"jky": [],
-	"sgo": [],
-	"wrkn": []
-}
-
 def get_current_prices(company_list):
 	current_time = time.time()
 	index_lst = int(int((current_time-start_time))/28800)
@@ -207,7 +197,6 @@ def total_rank():
 @app.route('/current-all-prices', methods=["POST"])
 def current_all_prices():
 	current_time = time.time()
-	index_lst = int(int((current_time-start_time))/28800)
 	index_tmp = int((current_time-start_time) - index_lst * 28800 - index_lst * 60*60*(24-8))
 	if index_tmp <= 28800:
 		current_price_dict = {}
@@ -236,7 +225,6 @@ def current_all_prices():
 @app.route('/current-price', methods=['POST'])
 def current_price():
 	current_time = time.time()
-	index_lst = int(int((current_time-start_time))/28800)
 	index_tmp = int((current_time-start_time) - index_lst * 28800 - index_lst * 60*60*(24-8))
 	comp_name = json.loads(request.data)
 	if index_tmp <= 28800:
@@ -251,23 +239,32 @@ def current_price():
 			index_lst+=1
 			return {"price": last_price}
 
-@app.route('/price-history', methods=['POST'])
-def price_history():
-	comp_name = json.loads(request.data)
-	second_price_lst = tick_price_graph[comp_name]
+# @app.route('/price-history', methods=['POST'])
+# def price_history():
+# 	comp_name = json.loads(request.data)
+# 	second_price_lst = tick_price_graph[comp_name]
 
-	return str(second_price_lst)
+# 	return str(second_price_lst)
 
 @app.route('/tick-graph', methods=["POST"])
 def tick_graph():
-	comp_name = json.loads(request.data)
-	current_time = time.time()
-	index_lst = int(int((current_time-start_time))/28800)
-	index_tmp = int((current_time-start_time))%28800
-	for index in range(index_tmp):
-		if index % (300) == 0 and index!=28800 and index!=0:
-			tick_price_graph[comp_name].append({"time": (index+start_time), "value": round(price_list[comp_name][index_lst][index], 2)})
-	return jsonify(tick_price_graph[comp_name])
+    comp_name = json.loads(request.data)
+    current_time = time.time()
+    index_tmp = int((current_time-start_time) - index_lst * 28800 - index_lst * 60*60*(24-8))
+    if index_tmp <= 28800:
+        tick_price_graph = []
+        for index in range(index_tmp):
+            if index % (300) == 0 and index!=28800 and index!=0:
+                tick_price_graph.append({"time": (index+start_time), "value": round(price_list[comp_name][index_lst][index], 2)})
+        return jsonify(tick_price_graph)
+    else:
+        tick_price_graph = []
+        for index in range(28800):
+            if index % (300) == 0 and index!=28800 and index!=0:
+                tick_price_graph.append({"time": (index+start_time), "value": round(price_list[comp_name][index_lst][index], 2)})
+        
+        return jsonify(tick_price_graph)
+        
 
 @app.route('/set-end-season-info', methods=["POST"])
 def set_end_season_info():
