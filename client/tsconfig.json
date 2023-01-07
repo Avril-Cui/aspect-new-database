@@ -15,6 +15,6 @@
     "jsx": "preserve",
     "incremental": true
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "components/dashboard/ShowCompValue.js", "components/company/charts/comp_header.js", "components/simulator/screener_table.js", "components/dashboard/ShowPortfolio.js", "components/Header/Manu.js"],
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "components/dashboard/ShowCompValue.js", "components/company/charts/comp_header.js", "components/simulator/screener_table.js", "components/dashboard/ShowPortfolio.js", "components/Header/Manu.js", "components/front_page/compGraph/graphs/index.js", "components/front_page/news.tsx", "companyProfile.js", "pages/index.tsx", "features/priceSlice.js", "features/priceSlice.ts", "components/front_page/news.tsx"],
   "exclude": ["node_modules"]
 }

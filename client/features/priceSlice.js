@@ -3,7 +3,48 @@ import { createSlice } from "@reduxjs/toolkit";
 export const priceSlice = createSlice({
   name: "price",
   initialState: {
-    value: { loading: 100 },
+    value: {
+      "ast": {
+          "change": null,
+          "pct_change": null,
+          "price": null
+      },
+      "dsc": {
+          "change": null,
+          "pct_change": null,
+          "price": null
+      },
+      "fsin": {
+          "change": null,
+          "pct_change": null,
+          "price": null
+      },
+      "hhw": {
+          "change": null,
+          "pct_change": null,
+          "price": null
+      },
+      "index": {
+          "change": null,
+          "pct_change": null,
+          "price": null
+      },
+      "jky": {
+          "change": null,
+          "pct_change": null,
+          "price": null
+      },
+      "sgo": {
+          "change": null,
+          "pct_change": null,
+          "price": null
+      },
+      "wrkn": {
+          "change": null,
+          "pct_change": null,
+          "price": null
+      }
+  },
     price_change: "N/A" ,
   },
   reducers: {

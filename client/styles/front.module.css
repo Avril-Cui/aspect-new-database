@@ -1,0 +1,64 @@
+.inline {
+  display: inline-flex;
+}
+
+.container {
+  margin-top: 8em;
+  padding-bottom: 10em;
+}
+
+.layer_one {
+  width: 1250px;
+}
+
+.header {
+  font-size: 26px;
+  color: #ffffff;
+  font-weight: 500;
+}
+
+.terms_theme {
+  width: 14em;
+  font-size: 46px;
+  font-weight: 500;
+  color: #ffffff;
+}
+
+.terms_intro {
+  font-size: 18px;
+  font-weight: 400;
+  color: #a3a3a3;
+  width: 30em;
+  margin-left: 4em;
+  padding-top: 1em;
+}
+
+.date_container {
+  font-size: 16px;
+  margin-top: 1.5em;
+  background-color: #2f2f2f;
+  color: #cacaca;
+  width: 5em;
+  text-align: center;
+  padding: 0.25em 0em;
+  border-radius: 8px;
+}
+
+.screener_table {
+  border: 1px solid #494949;
+  padding-top: 0.6em;
+  padding-left: 0.75em;
+  padding-bottom: 1.25em;
+  width: 30em;
+  border-radius: 8px;
+}
+
+.leader_container {
+  border: 1px solid #494949;
+  padding-top: 0.1em;
+  padding-left: 0.75em;
+  padding-right: 0.75em;
+  padding-bottom: 0.75em;
+  margin-left: 1em;
+  border-radius: 8px;
+}

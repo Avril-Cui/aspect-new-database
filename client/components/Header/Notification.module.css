@@ -2,7 +2,7 @@
     width: 100%;
     height: 2em;
     top: 0px;
-    background: #577A60;
+    background: #C3FCC2;
 }
 
 .notification {
@@ -10,18 +10,19 @@
     margin-left: auto;
     margin-right: auto;
     font-style: normal;
+    font-family: "Roboto";
     font-weight: 400;
     font-size: 16px;
     padding-top: 0.35em;
-    color: #FFFFFF;
+    color: #2c2c2c;
     text-align: center;
 }
 
 .link{
     text-decoration-line: underline;
-    color: #FFFFFF;
+    color: #2c2c2c;
 }
 
 .link:hover {
-    color: #C3FCC2;
+    color: #577A60;
 }

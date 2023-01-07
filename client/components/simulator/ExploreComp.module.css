@@ -1,10 +1,5 @@
 .container {
-  background-color: #2d2d2d;
-  border-radius: 10px;
-  width: 1200px;
-  height: 960px;
-  margin-left: 0em;
-  margin-bottom: 10em;
+  margin-left: -1.5em;
 }
 
 .header {
@@ -22,8 +17,7 @@
 .logo_container {
   width: 54px;
   height: 54px;
-  background-color: #c9ffd1;
-  border: 2px solid #577a60;
+  border: 2px solid #707070;
   border-radius: 100px;
 }
 
@@ -32,7 +26,7 @@
   font-size: 28px;
   text-align: center;
   padding: 5px 0;
-  color: #577a60;
+  color: #4b4b4b;
 }
 
 .comp_name {
@@ -95,10 +89,10 @@
 }
 
 .overview {
-  font-size: 16px;
-  font-weight: 300;
+  font-size: 18px;
+  font-weight: 400;
   color: #eeeeee;
-  margin-left: 3.5em;
+  margin-left: 3em;
   margin-top: 0.5em;
 }
 
@@ -108,11 +102,11 @@
   color: #a5a5a5;
   margin-left: 4em;
   margin-top: 0.5em;
-  width: 360px;
+  width: 450px;
 }
 
 .split {
-    height: 2em;
-    width: 100%;
-    border-top: 1px solid #a5a5a5;
+  height: 2em;
+  width: 100%;
+  border-top: 1px solid #a5a5a5;
 }

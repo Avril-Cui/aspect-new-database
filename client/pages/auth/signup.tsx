@@ -7,6 +7,7 @@ import Link from "next/link";
 
 const Login = () => {
   const router = useRouter();
+  const [isError, setIsError] = useState(false);
 
   const [data, setData] = useState({
     user_email: "",
@@ -29,12 +30,12 @@ const Login = () => {
     })
       .then(function (response: any) {
         cookies.set("user_uid", response.data, { path: "/" });
-        console.log(cookies.get("user_uid"));
-        router.push("/dashboard")
+        router.push("/dashboard");
       })
       .catch(function (error: any) {
+        setIsError(true);
         console.log(error);
-      })
+      });
   };
 
   return (
@@ -97,6 +98,12 @@ const Login = () => {
                 />
               </div>
             </div>
+            {isError ? (
+              <p className={styles.wrong_text}>
+                Sign-up error, likely the email already exists
+              </p>
+            ) : null}
+
             <input
               type="submit"
               className={styles.submit_button}

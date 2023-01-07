@@ -33,9 +33,7 @@ const MultiChart = (props) => {
 
       axios(config)
       .then(function (response) {
-        console.log(response.data)
         setPriceData(response.data);
-        console.log(JSON.stringify(response.data));
       })
       .catch(function (error) {
         console.log(error);
@@ -43,7 +41,6 @@ const MultiChart = (props) => {
     }, WAIT_TIME);
     return () => clearInterval(data);
   }, [priceData]);
-  console.log(priceData[0]["time"])
 
 
   return (

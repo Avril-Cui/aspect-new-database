@@ -29,7 +29,7 @@ function Balance() {
             </tr>
           </table>
           <div className={styles.graph} style={{ marginTop: "-3em" }}>
-            <Image src={graph} width="400px" height="320px" />
+            <Image src={graph} width="400px" height="320px" alt=""/>
           </div>
           <div className={styles.valuation_text}>
             <p style={{ marginBottom: "0.5em" }}>

@@ -45,7 +45,7 @@ const Home = (props: any) => {
         console.log(error);
       });
     return () => clearInterval(data);
-  }, []);
+  }, [user_uid]);
 
   return (
     <div>

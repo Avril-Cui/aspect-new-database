@@ -3,19 +3,85 @@ import TermsSection from "../components/terminology/terms_section";
 import Link from "next/link";
 import { sanityClient, urlFor } from "../sanity";
 import { Post } from "../typings";
+import { useState, useEffect, useRef } from "react";
+import Search from "../components/search/search";
 
 interface Props {
   posts: [Post];
 }
 
 export default function Terminology({ posts }: Props) {
+  const [isOpen, setIsOpen] = useState(false);
+  const [searchField, setSearchField] = useState("");
+  const formRef:any = useRef();
+
+  const togglePopup = () => {
+    setIsOpen(true);
+  };
+
+  const toggleClose = () => {
+    setIsOpen(false);
+  };
+
+  const handleChange = (e: any) => {
+    setSearchField(e.target.value);
+  };
+
+  const handleClearInput = () => {
+    setSearchField("");
+    formRef.current.reset();
+  };
+
+  try {
+    const html:any = document.querySelector("html");
+    if (isOpen == true) {
+      html.style.overflow = "hidden";
+    } else {
+      html.style.overflow = "auto";
+    }
+  } catch (error) {}
+
   return (
-    <div style={{marginBottom: 200}} className={styles.full_container}>
-      <p className={styles.title}>Dictionary For Financial Terms</p>
+    <div style={{ marginBottom: 200 }} className={styles.full_container}>
+      <p
+        className={styles.title}
+        style={isOpen ? { marginBottom: "-0.63em" } : { marginBottom: "0em" }}
+      >
+        Dictionary For Financial Terms
+      </p>
       <div className={styles.search_cont}>
         <div className={styles.search_container}>
-          <input type="text" className={styles.search_box} />
-          <p className={styles.search_text}>Search Terms</p>
+          {isOpen && (
+            <div className={styles.inline}>
+              <p className={styles.close} onClick={handleClearInput}>
+                Clear<span style={{ marginLeft: "0.5em" }}>|</span>
+              </p>
+              <button
+                className={styles.close_btn}
+                style={{ marginLeft: "0.5em" }}
+                onClick={toggleClose}
+              >
+                <p>✕</p>
+              </button>
+            </div>
+          )}
+          <form ref={formRef}>
+            <input
+              type="search"
+              className={styles.search_box}
+              placeholder="Terms, e.g. Income Statement"
+              onClick={togglePopup}
+              onChange={handleChange}
+            />
+            {isOpen && (
+              <Search
+                toggleClose={togglePopup}
+                posts={posts}
+                searchField={searchField}
+                handleClearInput={handleClearInput}
+              />
+            )}
+          </form>
         </div>
       </div>
       <TermsSection
@@ -71,82 +137,88 @@ export default function Terminology({ posts }: Props) {
         start_link="/post/corporate-valuation-overview"
       />
       <div className={styles.container}>
-      <div className={styles.scroll}>
-        <div className={styles.term_sections_cont}>
-          <div
-            className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 md:gap-6"
-            style={{ width: 1060 }}
-          >
-            {posts.map((post) => (
-              post.categories != null &&
-              post.categories._ref == "8480489c-3a97-43b9-9c33-21d78304b12a" ?
-              (<Link key={post._id} href={`/post/${post.slug.current}`}>
-                <div className={styles.img_border}>
-                  <img
-                    className={styles.img}
-                    src={urlFor(post.mainImage).url()!}
-                    alt=""
-                  />
-                  <div className={styles.text_cont}>
-                    <div>
-                      <p className={styles.section_title}>{post.title}</p>
-                      <p className={styles.section_text}>{post.description}</p>
+        <div className={styles.scroll}>
+          <div className={styles.term_sections_cont}>
+            <div
+              className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 md:gap-6"
+              style={{ width: 1060 }}
+            >
+              {posts.map((post) =>
+                post.categories != null &&
+                post.categories._ref ==
+                  "8480489c-3a97-43b9-9c33-21d78304b12a" ? (
+                  <Link key={post._id} href={`/post/${post.slug.current}`}>
+                    <div className={styles.img_border}>
+                      <img
+                        className={styles.img}
+                        src={urlFor(post.mainImage).url()!}
+                        alt=""
+                      />
+                      <div className={styles.text_cont}>
+                        <div>
+                          <p className={styles.section_title}>{post.title}</p>
+                          <p className={styles.section_text}>
+                            {post.description}
+                          </p>
+                        </div>
+                        <img
+                          className={styles.author_pic}
+                          src={urlFor(post.author.image).url()!}
+                          alt=""
+                        />
+                      </div>
                     </div>
-                    <img
-                      className={styles.author_pic}
-                      src={urlFor(post.author.image).url()!}
-                      alt=""
-                    />
-                  </div>
-                </div>
-              </Link>):null
-            ))}
+                  </Link>
+                ) : null
+              )}
+            </div>
           </div>
         </div>
-        </div>
       </div>
-
-
 
       <TermsSection
         section_num="Section Three"
         section_name="Trading"
         intro_text="Buy low, sell high. This is a typical strategy for many new investors. However, in the actual financial world, there are many more exciting and complex trading rules. Understanding how these rules work and how they can help us form various investment decisions are essential to increasing potential investment returns. Therefore, this section will discuss different trading strategies."
-        start_link="/post/corporate-valuation-overview"
+        start_link="/post/trading-overview"
       />
       <div className={styles.container}>
-      <div className={styles.scroll}>
-        <div className={styles.term_sections_cont}>
-          <div
-            className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 md:gap-6"
-            style={{ width: 1060 }}
-          >
-            {posts.map((post) => (
-              post.categories != null &&
-              post.categories._ref == "9684989a-9b82-4f91-b012-fd375a389ef0" ?
-              (<Link key={post._id} href={`/post/${post.slug.current}`}>
-                <div className={styles.img_border}>
-                  <img
-                    className={styles.img}
-                    src={urlFor(post.mainImage).url()!}
-                    alt=""
-                  />
-                  <div className={styles.text_cont}>
-                    <div>
-                      <p className={styles.section_title}>{post.title}</p>
-                      <p className={styles.section_text}>{post.description}</p>
+        <div className={styles.scroll}>
+          <div className={styles.term_sections_cont}>
+            <div
+              className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 md:gap-6"
+              style={{ width: 1060 }}
+            >
+              {posts.map((post) =>
+                post.categories != null &&
+                post.categories._ref ==
+                  "9684989a-9b82-4f91-b012-fd375a389ef0" ? (
+                  <Link key={post._id} href={`/post/${post.slug.current}`}>
+                    <div className={styles.img_border}>
+                      <img
+                        className={styles.img}
+                        src={urlFor(post.mainImage).url()!}
+                        alt=""
+                      />
+                      <div className={styles.text_cont}>
+                        <div>
+                          <p className={styles.section_title}>{post.title}</p>
+                          <p className={styles.section_text}>
+                            {post.description}
+                          </p>
+                        </div>
+                        <img
+                          className={styles.author_pic}
+                          src={urlFor(post.author.image).url()!}
+                          alt=""
+                        />
+                      </div>
                     </div>
-                    <img
-                      className={styles.author_pic}
-                      src={urlFor(post.author.image).url()!}
-                      alt=""
-                    />
-                  </div>
-                </div>
-              </Link>):null
-            ))}
+                  </Link>
+                ) : null
+              )}
+            </div>
           </div>
-        </div>
         </div>
       </div>
 
@@ -157,38 +229,42 @@ export default function Terminology({ posts }: Props) {
         start_link="/post/portfolio-management-overview"
       />
       <div className={styles.container}>
-      <div className={styles.scroll}>
-        <div className={styles.term_sections_cont}>
-          <div
-            className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 md:gap-6"
-            style={{ width: 1060 }}
-          >
-            {posts.map((post) => (
-              post.categories != null &&
-              post.categories._ref == "92150e2c-d600-4c64-8995-5f754c479391" ?
-              (<Link key={post._id} href={`/post/${post.slug.current}`}>
-                <div className={styles.img_border}>
-                  <img
-                    className={styles.img}
-                    src={urlFor(post.mainImage).url()!}
-                    alt=""
-                  />
-                  <div className={styles.text_cont}>
-                    <div>
-                      <p className={styles.section_title}>{post.title}</p>
-                      <p className={styles.section_text}>{post.description}</p>
+        <div className={styles.scroll}>
+          <div className={styles.term_sections_cont}>
+            <div
+              className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 md:gap-6"
+              style={{ width: 1060 }}
+            >
+              {posts.map((post) =>
+                post.categories != null &&
+                post.categories._ref ==
+                  "92150e2c-d600-4c64-8995-5f754c479391" ? (
+                  <Link key={post._id} href={`/post/${post.slug.current}`}>
+                    <div className={styles.img_border}>
+                      <img
+                        className={styles.img}
+                        src={urlFor(post.mainImage).url()!}
+                        alt=""
+                      />
+                      <div className={styles.text_cont}>
+                        <div>
+                          <p className={styles.section_title}>{post.title}</p>
+                          <p className={styles.section_text}>
+                            {post.description}
+                          </p>
+                        </div>
+                        <img
+                          className={styles.author_pic}
+                          src={urlFor(post.author.image).url()!}
+                          alt=""
+                        />
+                      </div>
                     </div>
-                    <img
-                      className={styles.author_pic}
-                      src={urlFor(post.author.image).url()!}
-                      alt=""
-                    />
-                  </div>
-                </div>
-              </Link>):null
-            ))}
+                  </Link>
+                ) : null
+              )}
+            </div>
           </div>
-        </div>
         </div>
       </div>
 
@@ -199,38 +275,42 @@ export default function Terminology({ posts }: Props) {
         start_link="/post/decentralization"
       />
       <div className={styles.container}>
-      <div className={styles.scroll}>
-        <div className={styles.term_sections_cont}>
-          <div
-            className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 md:gap-6"
-            style={{ width: 1060 }}
-          >
-            {posts.map((post) => (
-              post.categories != null &&
-              post.categories._ref == "aa97ff9e-1c13-4f34-9359-03d50bbe5dee" ?
-              (<Link key={post._id} href={`/post/${post.slug.current}`}>
-                <div className={styles.img_border}>
-                  <img
-                    className={styles.img}
-                    src={urlFor(post.mainImage).url()!}
-                    alt=""
-                  />
-                  <div className={styles.text_cont}>
-                    <div>
-                      <p className={styles.section_title}>{post.title}</p>
-                      <p className={styles.section_text}>{post.description}</p>
+        <div className={styles.scroll}>
+          <div className={styles.term_sections_cont}>
+            <div
+              className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 md:gap-6"
+              style={{ width: 1060 }}
+            >
+              {posts.map((post) =>
+                post.categories != null &&
+                post.categories._ref ==
+                  "aa97ff9e-1c13-4f34-9359-03d50bbe5dee" ? (
+                  <Link key={post._id} href={`/post/${post.slug.current}`}>
+                    <div className={styles.img_border}>
+                      <img
+                        className={styles.img}
+                        src={urlFor(post.mainImage).url()!}
+                        alt=""
+                      />
+                      <div className={styles.text_cont}>
+                        <div>
+                          <p className={styles.section_title}>{post.title}</p>
+                          <p className={styles.section_text}>
+                            {post.description}
+                          </p>
+                        </div>
+                        <img
+                          className={styles.author_pic}
+                          src={urlFor(post.author.image).url()!}
+                          alt=""
+                        />
+                      </div>
                     </div>
-                    <img
-                      className={styles.author_pic}
-                      src={urlFor(post.author.image).url()!}
-                      alt=""
-                    />
-                  </div>
-                </div>
-              </Link>):null
-            ))}
+                  </Link>
+                ) : null
+              )}
+            </div>
           </div>
-        </div>
         </div>
       </div>
 
@@ -241,38 +321,42 @@ export default function Terminology({ posts }: Props) {
         start_link="/post/why-is-esg-important"
       />
       <div className={styles.container}>
-      <div className={styles.scroll}>
-        <div className={styles.term_sections_cont}>
-          <div
-            className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 md:gap-6"
-            style={{ width: 1060 }}
-          >
-            {posts.map((post) => (
-              post.categories != null &&
-              post.categories._ref == "5d65abaa-003b-464d-82bf-a438c3b5d0a2" ?
-              (<Link key={post._id} href={`/post/${post.slug.current}`}>
-                <div className={styles.img_border}>
-                  <img
-                    className={styles.img}
-                    src={urlFor(post.mainImage).url()!}
-                    alt=""
-                  />
-                  <div className={styles.text_cont}>
-                    <div>
-                      <p className={styles.section_title}>{post.title}</p>
-                      <p className={styles.section_text}>{post.description}</p>
+        <div className={styles.scroll}>
+          <div className={styles.term_sections_cont}>
+            <div
+              className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 md:gap-6"
+              style={{ width: 1060 }}
+            >
+              {posts.map((post) =>
+                post.categories != null &&
+                post.categories._ref ==
+                  "5d65abaa-003b-464d-82bf-a438c3b5d0a2" ? (
+                  <Link key={post._id} href={`/post/${post.slug.current}`}>
+                    <div className={styles.img_border}>
+                      <img
+                        className={styles.img}
+                        src={urlFor(post.mainImage).url()!}
+                        alt=""
+                      />
+                      <div className={styles.text_cont}>
+                        <div>
+                          <p className={styles.section_title}>{post.title}</p>
+                          <p className={styles.section_text}>
+                            {post.description}
+                          </p>
+                        </div>
+                        <img
+                          className={styles.author_pic}
+                          src={urlFor(post.author.image).url()!}
+                          alt=""
+                        />
+                      </div>
                     </div>
-                    <img
-                      className={styles.author_pic}
-                      src={urlFor(post.author.image).url()!}
-                      alt=""
-                    />
-                  </div>
-                </div>
-              </Link>):null
-            ))}
+                  </Link>
+                ) : null
+              )}
+            </div>
           </div>
-        </div>
         </div>
       </div>
 
@@ -283,47 +367,49 @@ export default function Terminology({ posts }: Props) {
         start_link="/post/swot"
       />
       <div className={styles.container}>
-      <div className={styles.scroll}>
-        <div className={styles.term_sections_cont}>
-          <div
-            className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 md:gap-6"
-            style={{ width: 1060 }}
-          >
-            {posts.map((post) => (
-              post.categories != null &&
-              post.categories._ref == "2fa03938-7680-4329-8fd8-25684c6fbad1" ?
-              (<Link key={post._id} href={`/post/${post.slug.current}`}>
-                <div className={styles.img_border}>
-                  <img
-                    className={styles.img}
-                    src={urlFor(post.mainImage).url()!}
-                    alt=""
-                  />
-                  <div className={styles.text_cont}>
-                    <div>
-                      <p className={styles.section_title}>{post.title}</p>
-                      <p className={styles.section_text}>{post.description}</p>
+        <div className={styles.scroll}>
+          <div className={styles.term_sections_cont}>
+            <div
+              className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 md:gap-6"
+              style={{ width: 1060 }}
+            >
+              {posts.map((post) =>
+                post.categories != null &&
+                post.categories._ref ==
+                  "2fa03938-7680-4329-8fd8-25684c6fbad1" ? (
+                  <Link key={post._id} href={`/post/${post.slug.current}`}>
+                    <div className={styles.img_border}>
+                      <img
+                        className={styles.img}
+                        src={urlFor(post.mainImage).url()!}
+                        alt=""
+                      />
+                      <div className={styles.text_cont}>
+                        <div>
+                          <p className={styles.section_title}>{post.title}</p>
+                          <p className={styles.section_text}>
+                            {post.description}
+                          </p>
+                        </div>
+                        <img
+                          className={styles.author_pic}
+                          src={urlFor(post.author.image).url()!}
+                          alt=""
+                        />
+                      </div>
                     </div>
-                    <img
-                      className={styles.author_pic}
-                      src={urlFor(post.author.image).url()!}
-                      alt=""
-                    />
-                  </div>
-                </div>
-              </Link>):null
-            ))}
+                  </Link>
+                ) : null
+              )}
+            </div>
           </div>
         </div>
       </div>
-      </div>
-
-
     </div>
   );
 }
 
-export const getServerSideProps = async () => {
+export const getStaticProps = async () => {
   const query = `*[_type == "post"]{
     _id,
     title,
@@ -346,4 +432,3 @@ export const getServerSideProps = async () => {
     },
   };
 };
-

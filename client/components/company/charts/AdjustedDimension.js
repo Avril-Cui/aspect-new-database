@@ -3,7 +3,7 @@ import { useState, useEffect } from "react";
 import styles from "../../../styles/simulator/company.module.css"
 const AdjustedDimension = (props) => {
   const WAIT_TIME = 1000 * 60 * 60 * 24;
-  const [price, setPrice] = useState(
+  let price = 
     [["07/01/2071 ", 50.0, 47.72, 47.63, 53.85],
     ["07/02/2071 ", 47.72, 58.63, 47.72, 59.6],
     ["07/03/2071 ", 58.62, 58.55, 57.63, 62.32],
@@ -89,21 +89,7 @@ const AdjustedDimension = (props) => {
     ["09/21/2071 ", 81.35, 78.25, 78.18, 85.7],
     ["09/22/2071 ", 78.25, 62.3, 62.24, 81.3],
     ["09/23/2071 ", 62.31, 63.36, 58.55, 68.01],
-    ["09/24/2071 ", 63.36, 60.85, 60.85, 63.39]]);
-
-  console.log(price)
-  // useEffect(() => {
-  //   const data = setInterval(() => {
-  //     fetch(`/api/${props.CompanyName}/dayChart`)
-  //     .then((res) => res.json())
-  //     .then((result_value) => {
-  //       setPrice(result_value)
-  //     })
-
-  //   }, WAIT_TIME);
-  //   return () => clearInterval(data);
-  // }, [price]); 
-  
+    ["09/24/2071 ", 63.36, 60.85, 60.85, 63.39]];
 
   let option;
 
@@ -181,7 +167,7 @@ const AdjustedDimension = (props) => {
       right: "0%",
       top: "3%",
       bottom: "10%",
-      backgroundColor: "#2D2D2D",
+      backgroundColor: "#141414",
       show: true,
       borderWidth: 0,
     },

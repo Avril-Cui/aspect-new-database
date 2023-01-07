@@ -164,7 +164,7 @@ const DayDimension = (props) => {
       right: "3%",
       top: "7%",
       bottom: "10%",
-      backgroundColor: "#2D2D2D",
+      backgroundColor: "#141414",
       show: true,
       borderWidth: 0,
     },

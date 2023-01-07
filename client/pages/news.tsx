@@ -45,7 +45,7 @@ export default function News({ posts }: Props) {
   );
 }
 
-export const getServerSideProps = async () => {
+export const getStaticProps = async () => {
   const query = `*[_type == "news"]{
     _id,
     title,

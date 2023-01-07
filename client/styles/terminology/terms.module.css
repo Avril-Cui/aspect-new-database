@@ -1,121 +1,168 @@
-.title{
-    margin-top: 2.25em;
-    font-weight: 500;
-    font-size: 48px;
-    text-align: center;
-    color: #FFFFFF;
+.container_open {
+  opacity: 0.5;
 }
 
-.search_container{
-    display:table;
-    margin: 0em auto;
-    margin-top: 1em;
-    width: 820px;
-    height: 65px;
+.container_close {
+  opacity: 1;
 }
 
-
-.container{
-    display: table;
-    margin: 0.5em auto;
+.full_container {
+  display: table;
+  margin: auto;
 }
 
-.search_box{
-    box-sizing: border-box;
-    width: 820px;
-    height: 65px;
-    background: #707070;
-    border: 2px solid #C9FFD1;
-    border-radius: 15px;
+.title {
+  margin-top: 2.25em;
+  font-weight: 500;
+  font-size: 48px;
+  text-align: center;
+  color: #ffffff;
 }
 
-.search_text{
-    font-weight: 200;
-    font-size: 27px;
-    color: #DBDBDB;
-    margin-top: -2em;
-    margin-left: -23em;
-    text-align: center;
+.search_container {
+  display: table;
+  margin: 0em auto;
+  margin-top: 1em;
+  width: 820px;
+  height: 65px;
 }
 
-.img_border{
-    border: #FFFFFF;
-    border-radius: 12px;
-    cursor: pointer;
-    overflow: hidden; 
-    margin-top: -0.55em;
+.container {
+  display: table;
+  margin: 0.5em auto;
 }
 
-.img{
-    height: 8em;
-    width: 100%;
-    object-fit: cover; 
+.search_box {
+  box-sizing: border-box;
+  width: 820px;
+  height: 65px;
+  background: #242424;
+  border: 2px solid #c9ffd1;
+  border-radius: 15px;
+  font-weight: 300;
+  font-size: 22px;
+  padding-left: 1em;
+  color: #ffffff;
 }
 
-.img:hover{
-    transform: scale(1.05);
-    transition-property: transform; 
-    transition-timing-function: ease-in-out;
-    transition-duration: 200ms;
+.search_text {
+  font-weight: 200;
+  font-size: 27px;
+  color: #dbdbdb;
+  margin-top: -2em;
+  margin-left: -23em;
+  text-align: center;
 }
 
-.text_cont{
-    display: flex;
-    justify-content: space-between;
-    padding: 0.5em 1.25em;
-    background-color: rgb(83, 83, 83);
-    margin-top: -0.3em;
-    border-bottom-right-radius: 8px;
-    border-bottom-left-radius: 8px;
+.img_border {
+  border: #ffffff;
+  border-radius: 12px;
+  cursor: pointer;
+  overflow: hidden;
+  margin-top: -0.55em;
 }
 
-.section_text{
-    font-size: 14px;
-    font-weight: 400;
-    color: #FFFFFF;
+.img {
+  height: 8em;
+  width: 100%;
+  object-fit: cover;
 }
 
-.section_title{
-    font-size: 18px;
-    font-weight: 400;
-    color: #C9FFD1;
+.img:hover {
+  transform: scale(1.05);
+  transition-property: transform;
+  transition-timing-function: ease-in-out;
+  transition-duration: 200ms;
 }
 
-.term_sections_cont{
-    display: table;
-    margin: 0.5em auto;
-    
+.text_cont {
+  display: flex;
+  justify-content: space-between;
+  padding: 0.5em 1.25em;
+  background-color: rgb(83, 83, 83);
+  margin-top: -0.3em;
+  border-bottom-right-radius: 8px;
+  border-bottom-left-radius: 8px;
 }
 
-.scroll{
-    height: 400px; /* or any value */
-    overflow-y: scroll;
-    width: 70em;
+.section_text {
+  font-size: 14px;
+  font-weight: 400;
+  color: #ffffff;
+}
+
+.section_title {
+  font-size: 18px;
+  font-weight: 400;
+  color: #c9ffd1;
+}
+
+.term_sections_cont {
+  display: table;
+  margin: 0.5em auto;
+}
+
+.scroll {
+  height: 400px; /* or any value */
+  overflow-y: scroll;
+  width: 70em;
 }
 
 .scroll::-webkit-scrollbar {
-    width: 10px;
-    height: 1px;
+  width: 10px;
+  height: 1px;
 }
 
 .scroll::-webkit-scrollbar-track {
-    background: #999999;
+  background: #999999;
 }
 
 .scroll::-webkit-scrollbar-thumb {
-    background: #C9FFD1;
+  background: #c9ffd1;
 }
 
 .scroll::-webkit-scrollbar-thumb:hover {
-    background: #555;
+  background: #555;
 }
 
 /* .scroll:hover{
     overflow: scroll
 } */
 
-.author_pic{
-    height: 50px;
-    width: 50px;
-    border-radius: 9999px; 
+.author_pic {
+  height: 50px;
+  width: 50px;
+  border-radius: 9999px;
+}
+
+.inline {
+  position: relative;
+  top: 2.75em;
+  left: 39.5em;
+  display: inline-flex;
+  font-weight: 300;
+  font-size: 18px;
+  color: #c8c8c8;
+}
+
+.inline span {
+  color: #818181;
+}
+
+.inline:hover {
+  cursor: pointer;
+}
+
+.close:hover {
+  color: #ffffff;
+}
+
+.close_btn {
+  width: 30px;
+  height: 30px;
+}
+
+.close_btn:hover {
+  border-radius: 100px;
+  background-color: rgb(51, 51, 51);
 }

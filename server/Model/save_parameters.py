@@ -5,13 +5,11 @@ import matplotlib.pyplot as plt
 import pandas as pd
 yf.pdr_override()
 
-start_date = "2022-05-15"
-end_date = "2022-08-30"
-symbol = ["^DJI"]
-index_data = pdr.get_data_yahoo(symbol, start_date, end_date)['Adj Close']
-index_data.to_csv('Model/historical_price/index_data/mete5.csv')
+start_date = "2015-4-15"
+end_date = "2015-12-10"
+symbol = ['AAPL']
+data = pdr.get_data_yahoo(symbol, start_date, end_date)['Adj Close']
+data.to_csv('Model/historical_price/wrkn/normal.csv')
 
-comp_price_df = pd.read_csv("Model/historical_price/index_data/mete5.csv")
-print(len(comp_price_df))
 # plt.plot(base_price)
 # plt.show()

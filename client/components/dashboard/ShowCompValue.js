@@ -42,7 +42,7 @@ function ShowCompValue(props) {
         });
     }, WAIT_TIME);
     return () => clearInterval(data);
-  }, [portfolio]);
+  }, [portfolio, user_uid]);
 
 
   return (

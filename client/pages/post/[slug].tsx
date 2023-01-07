@@ -7,7 +7,10 @@ import { useForm, SubmitHandler } from "react-hook-form";
 import { useState } from "react";
 import styles from "../../styles/post/article.module.css";
 import PageButtom from "../../components/UI/PageButtom/PageButtom";
-
+import Cookies from "universal-cookie";
+import rocket from "../../image/logo/rocket_black.png";
+import message from "../../image/logo/message_black.png";
+import Image from "next/image";
 
 interface IFormInput {
   _id: string;
@@ -22,7 +25,19 @@ interface Props {
 
 function Post({ post }: Props) {
   const [submitted, setSubmitted] = useState(false);
-  // console.log(post)
+  const cookies = new Cookies();
+  const user_uid = cookies.get("user_uid");
+
+  const colors = [
+    "#3f8dd6",
+    "#3f41d6",
+    "#b39431",
+    "#b65353",
+    "#3fd671"
+  ];
+
+  const random = Math.floor(Math.random() * colors.length);
+  console.log(colors[random])
 
   const {
     register,
@@ -36,7 +51,6 @@ function Post({ post }: Props) {
       body: JSON.stringify(data),
     })
       .then(() => {
-        // console.log(data)
         setSubmitted(true);
       })
       .catch((err) => {
@@ -50,12 +64,7 @@ function Post({ post }: Props) {
       <Header />
       <div>
         <div className={styles.test} />
-        {/* <img
-          className={styles.img}
-          src={urlFor(post.mainImage).url()!}
-          alt=""
-        /> */}
-        <div style={{ fontSize: 18 }} >
+        <div style={{ fontSize: 18 }}>
           <article className={styles.article}>
             <div className={styles.intro_div}>
               <img
@@ -83,7 +92,9 @@ function Post({ post }: Props) {
                 content={post.body}
                 className={styles.paragraphs}
                 serializers={{
-                  normal_block: (props: any) => <div className={styles.paragraphs_normal} {...props} />,
+                  normal_block: (props: any) => (
+                    <div className={styles.paragraphs_normal} {...props} />
+                  ),
                   h1: (props: any) => <h1 className={styles.h1} {...props} />,
                   h2: (props: any) => <h2 className={styles.h2} {...props} />,
                   h3: (props: any) => <h3 className={styles.h3} {...props} />,
@@ -94,7 +105,8 @@ function Post({ post }: Props) {
                     <a href={href} className={styles.link}>
                       {children}
                     </a>
-                  )                }}
+                  ),
+                }}
               />
             </div>
           </article>
@@ -120,76 +132,89 @@ function Post({ post }: Props) {
             <h4 className="text-3xl font-bold">Leave a comment below!</h4>
             <hr className="py-3 mt-2" />
 
-            <input
-              {...register("_id")}
-              type="hidden"
-              name="_id"
-              value={post._id}
-            />
-
-            <label className="block mb-5">
-              <span>Name</span>
-              <div className={styles.name_cont}>
-                <input
-                  {...register("name", { required: true })}
-                  className={styles.input_name}
-                  placeholder="Friday Cui"
-                  type="text"
-                />
+            {user_uid == undefined && (
+              <div>
+                <p className={styles.login_sign}>Log in to leave a comment.</p>
               </div>
-            </label>
-            <label className="block mb-5">
-              <span>Email</span>
-              <input
-                {...register("email", { required: true })}
-                className={styles.input_name}
-                placeholder="Friday0717@gmail.come"
-                type="email"
-              />
-            </label>
-            <label className="block mb-5">
-              <span className="text-gray-700">Comment</span>
-              <textarea
-                {...register("comment", { required: true })}
-                className={styles.input_name}
-                placeholder="Try typing some comments here!"
-                rows={8}
-              />
-            </label>
+            )}
 
-            <div className="flex flex-col p-5">
-              {errors.name && (
-                <span className="text-red-500">- A Name Is Required</span>
-              )}
-              {errors.comment && (
-                <span className="text-red-500">
-                  - The Comment Field Is Required
-                </span>
-              )}
-              {errors.email && (
-                <span className="text-red-500">- An Email Is Required</span>
-              )}
-            </div>
+            {user_uid != undefined && (
+              <div>
+                <input
+                  {...register("_id")}
+                  type="hidden"
+                  name="_id"
+                  value={post._id}
+                ></input>
+                <label className="block mb-5">
+                  <span className="text-gray-700">Comment</span>
+                  <textarea
+                    {...register("comment", { required: true })}
+                    className={styles.input_name}
+                    placeholder="Try typing some comments here!"
+                    rows={8}
+                  />
+                </label>
 
-            <input type="submit" className={styles.submit_button} />
+                <div className="flex flex-col p-5">
+                  {errors.name && (
+                    <span className="text-red-500">- A Name Is Required</span>
+                  )}
+                  {errors.comment && (
+                    <span className="text-red-500">
+                      - The Comment Field Is Required
+                    </span>
+                  )}
+                  {errors.email && (
+                    <span className="text-red-500">- An Email Is Required</span>
+                  )}
+                </div>
+
+                <input type="submit" className={styles.submit_button}></input>
+              </div>
+            )}
           </form>
         )}
-
-        <div className={styles.show_comment}>
-          <h3 className="text-4xl">Comments</h3>
-          <hr className="pb-2" />
+        <div className={styles.center}>
+          <p className={styles.comment_header}>Comments</p>
           {post.comments.map((comment) => (
-            <div key={comment._id} style={{ paddingBottom: 20 }}>
-              <p>
-                <span className="text-green-700">{comment.name}</span>:{" "}
-                {comment.comment}
-              </p>
+            <div key={comment._id} className={styles.user_comment}>
+              <div className={styles.inline}>
+                <div
+                  className={styles.comment_profile_pic}
+                  style={{ background: `${colors[random]}` }}
+                >
+                  {comment.name.charAt(0)}
+                </div>
+                <p className={styles.user_name}>{comment.name}</p>
+              </div>
+              <div className={styles.comment_text_section}>
+                <p className={styles.comment_text}>{comment.comment}</p>
+              </div>
+              <div className={styles.inline}>
+                <button
+                  className={styles.like_button}
+                  style={{ paddingTop: "0.25em" }}
+                >
+                  <div className={styles.inline}>
+                    <Image src={rocket} width="22px" height="22px" />
+                    <p className={styles.like_num}>10</p>
+                  </div>
+                </button>
+                <button
+                  className={styles.message_button}
+                  style={{ paddingTop: "0.25em" }}
+                >
+                  <div className={styles.inline}>
+                    <Image src={message} width="22px" height="22px" />
+                    <p className={styles.like_num}>10</p>
+                  </div>
+                </button>
+              </div>
             </div>
           ))}
         </div>
       </div>
-
-      <PageButtom />
     </div>
   );
 }

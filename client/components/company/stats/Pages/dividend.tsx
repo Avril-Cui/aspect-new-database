@@ -28,7 +28,7 @@ function Dividend() {
             </tr>
           </table>
           <div className={styles.graph}>
-            <Image src={graph} width="410px" height="280px" />
+            <Image src={graph} width="410px" height="280px" alt=""/>
           </div>
           <div className={styles.valuation_text}>
             <p style={{ marginBottom: "0.5em" }}>

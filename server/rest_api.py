@@ -1,94 +1,51 @@
 import json
 from flask import Flask, request, jsonify, request
 import pyrebase
-from Model.modified_wave import DayPriceGenerator, MidPriceGenerator, WaveModifier, StockSimulator
-from Model.get_parameters import WRKN_macro, WRKN_micro, JKY_macro, JKY_micro, AST_macro, AST_micro, DSC_macro, DSC_micro, FSIN_macro, FSIN_micro, HHW_macro, HHW_micro, SGO_macro, SGO_micro
 from User.user_database import UserDatabaseCommands
 import time
 import numpy as np
 from flask_cors import CORS
 import uuid
 from datetime import datetime
+from Model.prepare_prices import index_price, ast_price, dsc_price, fsin_price, hhw_price, jky_price, sgo_price, wrkn_price
+from itertools import accumulate
 from functools import reduce
 import operator
 
 seconds = time.time()
-start_time = 1672282432.713603
-end_time = start_time + (60*60*24)*28
+start_time = 1673121765.960407 - 60*60*6
+end_time = start_time + (60*60*24)*27 + 60*60*8
 
-## Set up the price list by calling the class StockSimulator#####
-parameters = {
-    "ast": {
-        "national_positive_policy": {
-            "macro": AST_macro['national_positive_policy'](),
-            "micro": AST_micro['national_positive_policy']
-        }
-    },
-    "dsc": {
-        "acquisition": {
-            "macro": DSC_macro["acquisition"](),
-            "micro": DSC_micro["acquisition"],
-        }
-    },
-    "fsin": {
-        "advertisement": {
-            "macro": FSIN_macro["advertisement"](),
-            "micro": FSIN_micro["advertisement"]
-        }
-    },
-    "hhw": {
-        "pandemic_lockdown": {
-            "macro": HHW_macro["pandemic_lockdown"](),
-            "micro": HHW_micro["pandemic_lockdown"]
-        }
-    },
-    "jky": {
-        "mortage_survival": {
-            "macro": JKY_macro["mortage_survival"](),
-            "micro": JKY_micro["mortage_survival"]
-        }
-    },
-    "sgo": {
-        "new_competition": {
-            "macro": SGO_macro["new_competition"](),
-            "micro": SGO_micro["new_competition"]
-        }
-    },
-    "wrkn": {
-        "IPO": {
-            "macro": WRKN_macro["IPO"](),
-            "micro": WRKN_micro["IPO"]
-        }
-    }
-}
-
-day_price_list = {
-}
-
-adjusted_factor = {
-}
 
 price_list = {
-    "ast": [],
-    "dsc": [],
-    "fsin": [],
-    "hhw": [],
-    "jky": [],
-    "sgo": [],
-    "wrkn": []
-}
-
-current_prices = {
-    "ast": None,
-    "dsc": None,
-    "fsin": None,
-    "hhw": None,
-    "jky": None,
-    "sgo": None,
-    "wrkn": None
+    "index": [index_price[x - y: x] for x, y in zip(
+        accumulate([28800 for _ in range(len(index_price)//28800)]), [28800 for i in range(len(index_price)//28800)])],
+    "ast": [ast_price[x - y: x] for x, y in zip(
+        accumulate([28800 for _ in range(len(ast_price)//28800)]), [28800 for i in range(len(ast_price)//28800)])],
+    "dsc": [dsc_price[x - y: x] for x, y in zip(
+        accumulate([28800 for _ in range(len(dsc_price)//28800)]), [28800 for i in range(len(dsc_price)//28800)])],
+    "fsin": [fsin_price[x - y: x] for x, y in zip(
+        accumulate([28800 for _ in range(len(fsin_price)//28800)]), [28800 for i in range(len(fsin_price)//28800)])],
+    "hhw": [hhw_price[x - y: x] for x, y in zip(
+        accumulate([28800 for _ in range(len(hhw_price)//28800)]), [28800 for i in range(len(hhw_price)//28800)])],
+    "jky": [jky_price[x - y: x] for x, y in zip(
+        accumulate([28800 for _ in range(len(jky_price)//28800)]), [28800 for i in range(len(jky_price)//28800)])],
+    "sgo": [sgo_price[x - y: x] for x, y in zip(
+        accumulate([28800 for _ in range(len(sgo_price)//28800)]), [28800 for i in range(len(sgo_price)//28800)])],
+    "wrkn": [wrkn_price[x - y: x] for x, y in zip(
+        accumulate([28800 for _ in range(len(wrkn_price)//28800)]), [28800 for i in range(len(wrkn_price)//28800)])],
 }
 
 flat_price = {
+    "ast": reduce(operator.concat, price_list["ast"]),
+    "dsc": reduce(operator.concat, price_list["dsc"]),
+    "fsin": reduce(operator.concat, price_list["fsin"]),
+    "hhw": reduce(operator.concat, price_list["hhw"]),
+    "jky": reduce(operator.concat, price_list["jky"]),
+    "sgo": reduce(operator.concat, price_list["sgo"]),
+    "wrkn":reduce(operator.concat, price_list["wrkn"]),
+}
+current_prices = {
     "ast": None,
     "dsc": None,
     "fsin": None,
@@ -110,15 +67,13 @@ tick_price_graph = {
 
 def get_current_prices(company_list):
     current_time = time.time()
-    index_lst = int((current_time-start_time)/3600)
-    index_tmp = int(current_time-start_time)%3600
+    index_lst = int(int((current_time-start_time))/28800)
+    index_tmp = int((current_time-start_time))%28800
     current_prices = {}
     for company in company_list:
         current_prices[company] = price_list[company][index_lst][index_tmp]
     return current_prices
-#################################################################
 
-# Set up some default users by calling the class UserPortfolio
 chat_storeage = {
     "main": {
         "8408dd4a-7039-455f-bfa2-56dec9cace59": {
@@ -146,9 +101,6 @@ chat_storeage = {
     "technical": {}
 }
 
-##################################################################
-
-# Start requests
 app = Flask(__name__, static_url_path='')
 CORS(app)
 app.config["CORS_ORIGINS"] = ["https://aspect.com",
@@ -163,19 +115,10 @@ config = {
 firebase = pyrebase.initialize_app(config)
 auth = firebase.auth()
 
-### Set up some maps for data storage ############################
-current_price_dict = {
-    "wrkn": None
-}
-
-price_history_dict = {
-    "wrkn": None
-}
-
 event = None
 
 @app.route('/')
-def home():  # At the same home function as before
+def home():
     return app.send_static_file('index.html')
 
 @app.route("/result", methods = ["POST", "GET"])
@@ -186,7 +129,7 @@ def result():
         password = result["password"]
         try:
             user = auth.sign_in_with_email_and_password(email, password)
-            return "valid"
+            return user["localId"]
         except:
             return "Invalid user request", 401
 
@@ -204,7 +147,7 @@ def register():
             UserDatabaseCommands.intialize_user(user["localId"], name)
             return user["localId"]
         except:
-            pass
+            return "Invalid user request", 401
 
 @app.route('/is-end-game', methods=['POST'])
 def is_end_game():
@@ -223,8 +166,8 @@ def trade_stock():
     user_uid = trade_data["user_uid"]
 
     current_time = time.time()
-    index_lst = int((current_time-start_time)/3600)
-    index_tmp = int(current_time-start_time)%3600
+    index_lst = int(int((current_time-start_time))/28800)
+    index_tmp = int((current_time-start_time))%28800
     current_price = price_list[comp_name][index_lst][index_tmp]
     if target_price == 0:
         target_price = current_price
@@ -261,62 +204,26 @@ def total_rank():
     user_rank = UserDatabaseCommands.get_total_rank()
     return str(user_rank)
 
-@app.route('/set-price', methods=["POST"])
-def set_price():
-    data = json.loads(request.data)
-    mid_term_params = data["mid_term_events"]
-    base_event_params = data["base_event"]
-    day_price_generator = DayPriceGenerator(parameters[data["comp_name"]][base_event_params["name"]]["macro"])
-    day_price_list[data["comp_name"]] = day_price_generator.price_loop()
-    adjusted_factor[data["comp_name"]] = data["adjust_factor"]/day_price_list[data["comp_name"]][1]
-    MidPrice = MidPriceGenerator(mid_term_params["start_date"], mid_term_params["end_date"], [mid_term_params["symbol"]], mid_term_params["ma_days"])
-    mid_price = MidPrice.generate_mid_price()
-    length = min(mid_term_params['duration'], base_event_params['duration'])
-    wave_1 = {
-        'price_list': day_price_list[data["comp_name"]],
-        'start_point': base_event_params["start_point"],
-        'duration': length,
-        'weight': base_event_params["weight"],
-        'intensity_factor': base_event_params["intensity_factor"]
-    }
-
-    wave_2 = {
-        'price_list': mid_price,
-        'start_point': mid_term_params["start_point"],
-        'duration': length,
-        'weight': mid_term_params["weight"],
-        'intensity_factor': mid_term_params["intensity_factor"]
-    }
-
-    Combinator = WaveModifier()
-    combinated_price = Combinator.price_wave_addition(data["transformation"], data["intensity"], length, wave_1, wave_2)
-
-    final_price_list = []
-    for index in range(len(combinated_price)):
-        if index > 0:
-            price_generator = StockSimulator(adjusted_factor[data["comp_name"]], combinated_price[index], combinated_price, index, parameters[data["comp_name"]][base_event_params["name"]]["micro"])
-            result_price = price_generator.generate_price()
-            final_price_list.append(result_price)
-            
-    user_interaction_modifier = []
-    for index in range(len(final_price_list)):
-        interaction_small_lst = []
-        for inx in range(len(final_price_list[index])):
-            random_modifier = np.random.normal(0, 0.007)
-            interaction_small_lst.append(random_modifier)
-        user_interaction_modifier.append(interaction_small_lst)
-
-    final_price_list = np.add(user_interaction_modifier, final_price_list)
-    price_list[data["comp_name"]] = final_price_list
-    flat_price[data["comp_name"]] = reduce(operator.concat, price_list[data["comp_name"]].tolist())
-    return (str(final_price_list))
-    return str("HI")
+@app.route('/current-all-prices', methods=["POST"])
+def current_all_prices():
+    current_time = time.time()
+    index_lst = int((current_time-start_time)/28800)
+    index_tmp = int((current_time-start_time)%28800)
+    current_price_dict = {}
+    print(index_lst, index_tmp)
+    for key in price_list:
+        open_price = price_list[key][index_lst][0]
+        change = round((price_list[key][index_lst][index_tmp] - open_price),2)
+        pct_change = round((price_list[key][index_lst][index_tmp] - open_price) /open_price * 100,2)
+        print(round(pct_change, 2))
+        current_price_dict[key] = {"price":  round(price_list[key][index_lst][index_tmp], 2), "change": change, "pct_change": pct_change}
+    return jsonify(current_price_dict)
 
 @app.route('/current-price', methods=['POST'])
 def current_price():
     current_time = time.time()
-    index_lst = int((current_time-start_time)/3600)
-    index_tmp = int(current_time-start_time)%3600
+    index_lst = int(int((current_time-start_time))/28800)
+    index_tmp = int((current_time-start_time))%28800
     comp_name = json.loads(request.data)
     current_price = price_list[comp_name][index_lst][index_tmp]
     return {"price": round(current_price, 2)}
@@ -332,11 +239,11 @@ def price_history():
 def tick_graph():
     comp_name = json.loads(request.data)
     current_time = time.time()
-    index_tmp = int(current_time-start_time)
-
-    for index in range(len(flat_price[comp_name][:index_tmp])):
-        if index % (5*60) == 0:
-            tick_price_graph[comp_name].append({"time": (index+start_time), "value": round(flat_price[comp_name][index], 2)})
+    index_lst = int(int((current_time-start_time))/28800)
+    index_tmp = int((current_time-start_time))%28800
+    for index in range(index_tmp):
+        if index % (300) == 0 and index!=28800 and index!=0:
+            tick_price_graph[comp_name].append({"time": (index+start_time), "value": round(price_list[comp_name][index_lst][index], 2)})
     return jsonify(tick_price_graph[comp_name])
 
 @app.route('/set-end-season-info', methods=["POST"])

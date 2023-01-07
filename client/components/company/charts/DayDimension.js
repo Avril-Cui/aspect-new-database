@@ -3,7 +3,7 @@ import { useState, useEffect } from "react";
 import styles from "../../../styles/simulator/company.module.css"
 const DayDimension = (props) => {
   const WAIT_TIME = 1000 * 60 * 60 * 24;
-  const [price, setPrice] = useState([
+  let price = [
   ["07/01/2071 ", 3078.0, 3093.65, 3049.39, 3138.96],
   ["07/02/2071 ", 3079.24, 2939.09, 2938.39, 3096.96],
   ["07/03/2071 ", 2961.51, 3132.41, 2961.51, 3132.54],
@@ -77,21 +77,9 @@ const DayDimension = (props) => {
   ["09/09/2071 ", 1651.24, 1862.27, 1648.29, 1862.27],
   ["09/10/2071 ", 1862.44, 1915.06, 1862.38, 1923.79],
   ["09/11/2071 ", 1915.13, 1965.37, 1887.82, 1968.52],
-  ["09/12/2071 ", 1965.41, 1989.9, 1965.18, 2022.83],]);
+  ["09/12/2071 ", 1965.41, 1989.9, 1965.18, 2022.83],];
 
   console.log(price)
-  // useEffect(() => {
-  //   const data = setInterval(() => {
-  //     fetch(`/api/${props.CompanyName}/dayChart`)
-  //     .then((res) => res.json())
-  //     .then((result_value) => {
-  //       setPrice(result_value)
-  //     })
-
-  //   }, WAIT_TIME);
-  //   return () => clearInterval(data);
-  // }, [price]); 
-  
 
   let option;
 
@@ -169,7 +157,7 @@ const DayDimension = (props) => {
       right: "0%",
       top: "3%",
       bottom: "10%",
-      backgroundColor: "#2D2D2D",
+      backgroundColor: "#141414",
       show: true,
       borderWidth: 0,
     },

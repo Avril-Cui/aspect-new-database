@@ -6,27 +6,26 @@ import Layout from "../components/UI/Layout";
 import { useRouter } from "next/router";
 import store from "../store/store.js";
 import { Provider } from "react-redux";
-const ProtectedRoute = dynamic(
-  () => import("../components/ProtectedRoute"),
-  {
-    ssr: false,
-  }
-);
-const EndSeason = dynamic(
-  () => import("../components/EndSeason"),
-  {
-    ssr: false,
-  }
-);
+import Head from "next/head";
+
+const ProtectedRoute = dynamic(() => import("../components/ProtectedRoute"), {
+  ssr: false,
+});
+const EndSeason = dynamic(() => import("../components/EndSeason"), {
+  ssr: false,
+});
 
 const AuthRequired = ["/dashboard"];
-const EndSeasonRequired= ["/end-season-summary"]
+const EndSeasonRequired = ["/end-season-summary"];
 
 function MyApp({ Component, pageProps }: AppProps) {
   const router = useRouter();
 
   return (
     <Provider store={store}>
+      <Head>
+        <link rel="shortcut icon" href="/logo.png" />
+      </Head>
       <CookiesProvider>
         {AuthRequired.includes(router.pathname) ? (
           <ProtectedRoute>
@@ -45,7 +44,7 @@ function MyApp({ Component, pageProps }: AppProps) {
           </Layout>
         )}
       </CookiesProvider>
-    </Provider >
+    </Provider>
   );
 }
 

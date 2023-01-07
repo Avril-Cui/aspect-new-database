@@ -325,7 +325,7 @@ const EndSeasonSummary = () => {
                     style={{ paddingTop: "0.25em" }}
                   >
                     <div className={styles.inline}>
-                      <Image src={rocket} width="22px" height="22px" />
+                      <Image src={rocket} width="22px" height="22px" alt=""/>
                       <p className={styles.like_num}>10</p>
                     </div>
                   </button>
@@ -334,7 +334,7 @@ const EndSeasonSummary = () => {
                     style={{ paddingTop: "0.25em" }}
                   >
                     <div className={styles.inline}>
-                      <Image src={message} width="22px" height="22px" />
+                      <Image src={message} width="22px" height="22px" alt=""/>
                       <p className={styles.like_num}>10</p>
                     </div>
                   </button>
@@ -361,7 +361,7 @@ const EndSeasonSummary = () => {
                     style={{ paddingTop: "0.25em" }}
                   >
                     <div className={styles.inline}>
-                      <Image src={rocket} width="22px" height="22px" />
+                      <Image src={rocket} width="22px" height="22px" alt=""/>
                       <p className={styles.like_num}>10</p>
                     </div>
                   </button>
@@ -370,7 +370,7 @@ const EndSeasonSummary = () => {
                     style={{ paddingTop: "0.25em" }}
                   >
                     <div className={styles.inline}>
-                      <Image src={message} width="22px" height="22px" />
+                      <Image src={message} width="22px" height="22px" alt=""/>
                       <p className={styles.like_num}>10</p>
                     </div>
                   </button>
@@ -397,7 +397,7 @@ const EndSeasonSummary = () => {
                     style={{ paddingTop: "0.25em" }}
                   >
                     <div className={styles.inline}>
-                      <Image src={rocket} width="22px" height="22px" />
+                      <Image src={rocket} width="22px" height="22px" alt=""/>
                       <p className={styles.like_num}>10</p>
                     </div>
                   </button>
@@ -406,7 +406,7 @@ const EndSeasonSummary = () => {
                     style={{ paddingTop: "0.25em" }}
                   >
                     <div className={styles.inline}>
-                      <Image src={message} width="22px" height="22px" />
+                      <Image src={message} width="22px" height="22px" alt=""/>
                       <p className={styles.like_num}>10</p>
                     </div>
                   </button>

@@ -1,6 +1,6 @@
 import dynamic from "next/dynamic";
 import styles from "../../styles/simulator/company.module.css";
-import stock_valuation from "../../image/snowflask_chart/demo_chart.png";
+import ast_valuation from "../../image/snowflask_chart/ast_chart.png";
 import Image from "next/image";
 import WrknDayChart from "../../components/company/charts/TimelineChart";
 import CompHeader from "../../components/company/charts/comp_header";
@@ -13,7 +13,7 @@ const Chat = dynamic(() => import("../../components/company/chat/Chat"), {
   ssr: false,
 });
 import MainPage from "../../components/company/stats/MainPage";
-import companyProfiles from "../../companyProfile";
+import CompanyInfo from "../../companies";
 
 interface Props {
   individual: any;
@@ -21,6 +21,7 @@ interface Props {
 }
 
 export default function Wakron({ individual, posts }: Props) {
+  console.log(ast_valuation);
   return (
     <div className={styles.container}>
       <div key={individual.id}>
@@ -38,7 +39,7 @@ export default function Wakron({ individual, posts }: Props) {
             </div>
 
             <div className={styles.table}>
-              <p className={styles.title_text}>Ask and Bid Price</p>
+              <p className={styles.title_text}>Ask and Bid Price: Open Soon!</p>
               <div className={styles.table_content}>
                 <table className={styles.ask_bid_table}>
                   <tbody>
@@ -158,7 +159,12 @@ export default function Wakron({ individual, posts }: Props) {
 
             <div className={styles.comp_overview}>
               <div className={styles.dimension_container}>
-                <Image src={stock_valuation} width="270px" height="250px" />
+                <img
+                  src={`/snowflask_chart/${individual.id}_chart.png`}
+                  alt=""
+                  width="270px"
+                  height="250px"
+                />
                 <div style={{ marginLeft: "0.5em", marginBottom: "1em" }}>
                   <p className={styles.multi_dimension}>
                     Multi-Dimension Check
@@ -170,7 +176,9 @@ export default function Wakron({ individual, posts }: Props) {
                 </div>
               </div>
               <div className={styles.overview_content}>
-                <p className={styles.title_text}>WRKN Stock Overview</p>
+                <p className={styles.title_text}>
+                  {individual.id.toUpperCase()} Stock Overview
+                </p>
                 <p className={styles.comp_description}>{individual.overview}</p>
                 <Link href="/company_profile">
                   <p className={styles.company_profile_link}>
@@ -290,7 +298,7 @@ export default function Wakron({ individual, posts }: Props) {
 }
 
 export function getStaticPaths() {
-  const companies = companyProfiles;
+  const companies = CompanyInfo;
 
   return {
     paths: companies.map((company) => {
@@ -307,110 +315,76 @@ export function getStaticPaths() {
 
 export async function getStaticProps({ params }: any) {
   const companies: any = {
-    wrkn: {
-      id: "wrkn",
-      short_name: "W",
-      name: "Wakron, Inc. (WRKN)",
-      overview:
-        "Wakron, Inc. (WRKN) is a technology company headquartered in California, United States. The company develops products for people to connect and socialize with friends, families, and partners. Wakron’s main product WaKO, a decentralized platform for users to chat in text, video calls, and groups.",
-      day_source:
-        "/Users/xiaokeai/Desktop/aspect_website/price_info/wrkn/day.json",
-      // inner_day_source: wrkn_inner,
-      second_source:
-        "/Users/xiaokeai/Desktop/aspect_website/price_info/wrkn/second.json",
-      tick_source:
-        "/Users/xiaokeai/Desktop/aspect_website/price_info/wrkn/tick.json",
-      news_type: "d8488564-bc41-4874-a820-9ac245c07af1",
-    },
-    hhw: {
-      id: "hhw",
-      short_name: "H",
-      name: "Hahawa & Co. (HHW)",
-      overview:
-        "Hahawa & Co. (HHW) is an American chain of department stores founded in 1858 by Chinese immigrant Qing Hou. It became a division of the Philadelphia-based Federated Department Stores in 1995. As of 2021, Hahawa was the largest U.S. department store company by retail sales with 608 physical department stores, including ten flagship stores, 178 magnet stores, 250 core stores, 117 neighborhood stores, and 53 other stores. The company had 125,000 employees and earned annual revenue of $23.3 billion as of Dec. 2021.",
-      day_source:
-        "/Users/xiaokeai/Desktop/aspect_website/price_info/hhw/day.json",
-      // inner_day_source: hhw_inner,
-      second_source:
-        "/Users/xiaokeai/Desktop/aspect_website/price_info/hhw/second.json",
-      tick_source:
-        "/Users/xiaokeai/Desktop/aspect_website/price_info/hhw/tick.json",
-      news_type: "d7e6b3bd-d8a9-46ac-94f6-bb0f7ef94eee",
-    },
-    sgo: {
-      id: "sgo",
-      short_name: "S",
-      name: "Surgo Corporation (SGO)",
-      overview:
-        "Surgo (SGO) is a US-based biomedical company that focuses on three segments: Medical devices, pharmaceuticals, and Consumer Health. It is known for its leading technique in both traditional and novel medical areas. Specifically, Surgo has established its popularity among customers in the Consumer Health industry through its well-known products in body lotion and facial cleansers. In recent years, Surgo invested much of its R&D in the Medical Device and Pharmaceutical industry. Surgo successfully invented AlphaTech, BetaTech, GammaTech, and other advanced surgical technologies within five years. It is currently enlarging its biology lab to process its GeneNext project in the Pharmaceutical industry.",
-      day_source:
-        "/Users/xiaokeai/Desktop/aspect_website/price_info/sgo/day.json",
-      // inner_day_source: sgo_inner,
-      second_source:
-        "/Users/xiaokeai/Desktop/aspect_website/price_info/sgo/second.json",
-      tick_source:
-        "/Users/xiaokeai/Desktop/aspect_website/price_info/sgo/tick.json",
-      news_type: "5da3cc57-215d-413e-bae4-92d6b5d05e74",
-    },
-    fsin: {
-      id: "fsin",
-      short_name: "F",
-      name: "FlashIn, Inc. (FSIN)",
-      overview:
-        "FlashIn, Inc. (FSIN) is a fashion company based in France that designs and produces clothes, accessories, and sneakers across the world. By 2072, FlashIn had started more than 1,000 retail stores worldwide. The company mainly focuses on athletic apparel and streetwear, building a solid customer base among younger generations. Its production series Flash, Inside, and Light are now widely popular and soon became the symbol of pop culture.",
-      day_source:
-        "/Users/xiaokeai/Desktop/aspect_website/price_info/fsin/day.json",
-      // inner_day_source: fsin_inner,
-      second_source:
-        "/Users/xiaokeai/Desktop/aspect_website/price_info/fsin/second.json",
-      tick_source:
-        "/Users/xiaokeai/Desktop/aspect_website/price_info/fsin/tick.json",
-      news_type: "6d3c59be-ec9e-442b-81c9-e4498ee670d2",
-    },
-    jky: {
-      id: "jky",
-      short_name: "J",
-      name: "Jileky Investment, Inc. (JKY)",
-      overview:
-        "Jilepy Investment, Inc. provides financial services for clients across the world. It offers three major businesses: Corporate & Investment Bank (CIB), Commercial Banking (CB), and Asset & Wealth Management (AWM). The company provides services to fulfill various client needs, including investment and lending products, deposit, cash management, risk management solutions, mortgages, retirement products, etc.",
-      day_source:
-        "/Users/xiaokeai/Desktop/aspect_website/price_info/jky/day.json",
-      // inner_day_source: jky_inner,
-      second_source:
-        "/Users/xiaokeai/Desktop/aspect_website/price_infojkyn/second.json",
-      tick_source:
-        "/Users/xiaokeai/Desktop/aspect_website/price_info/jky/tick.json",
-      news_type: "973458a0-eb3a-4e85-bd2a-f7513bf73bab",
-    },
     ast: {
+      index: 0,
       id: "ast",
       short_name: "A",
-      name: "Astral Company Limited (AST)",
+      name: "Astral Company Limited",
       overview:
-        "Astral Company Limited (AST) is a car manufacturer that designs and develops vehicles with new technologies. Astral is headquartered in Shanghai and has various business locations worldwide. Astral’s business operation focuses on three mainstream: automotive, electric vehicle, and batteries. Starting in 2010, the company continues to invest in its electric vehicle and batteries business segments, aiming to establish its leading position in the two areas. Electric vehicles Stellar 100 and Stellar 101 both achieved successful sales. The company is also continuously researching and developing lithium- and nickel batteries and Superchargers for electric cars.",
-      day_source:
-        "/Users/xiaokeai/Desktop/aspect_website/price_info/ast/day.json",
-      // inner_day_source: ast_inner,
-      second_source:
-        "/Users/xiaokeai/Desktop/aspect_website/price_info/ast/second.json",
-      tick_source:
-        "/Users/xiaokeai/Desktop/aspect_website/price_info/ast/tick.json",
+        "Astral Company Limited (AST) is a car manufacturer that focuses on three mainstream: automotive, electric vehicle, and batteries. Starting in 2010, the company continues to invest in its electric vehicle and batteries business segments, aiming to establish its leading position in the two areas.",
       news_type: "31e2f577-9583-4864-b22d-21869fa422a8",
+      industry: "IT",
     },
     dsc: {
+      index: 1,
       id: "dsc",
       short_name: "D",
-      name: "Doshacom Group (DSC)",
+      name: "Doshacom Group",
       overview:
-        "Doshacom is a leading provider of telecommunications, media, and technology services globally. The company offers wireless, wireline, satellite, and strategic data services, including Virtual Private Networks (VPN), Ethernet and broadband services. It is one of the biggest wireline and wireless providers in the US. While having the US supplying the majority of the company's revenue, Doshacom also reaches the Middle East and Asia through subsidiaries and joint ventures.",
-      day_source:
-        "/Users/xiaokeai/Desktop/aspect_website/price_info/dsc/day.json",
-      // inner_day_source: dsc_inner,
-      second_source:
-        "/Users/xiaokeai/Desktop/aspect_website/price_info/dsc/second.json",
-      tick_source:
-        "/Users/xiaokeai/Desktop/aspect_website/price_info/dsc/tick.json",
+        "Doshacom is a leading provider of telecommunications, media, and technology services . The company offers wireless, wireline, satellite, and strategic data services, including Virtual Private Networks (VPN), Ethernet and broadband services. It is one of the biggest wireline and wireless providers in the US.",
       news_type: "534aaba1-a048-4c59-af4f-26ad5a951f9a",
+      industry: "Communications",
+    },
+    fsin: {
+      index: 2,
+      id: "fsin",
+      short_name: "F",
+      name: "FlashIn, Inc.",
+      overview:
+        "FlashIn, Inc. (FSIN) is a fashion company based in France that designs and produces clothes, accessories, and sneakers. By 2072, FlashIn had started more than 1,000 retail stores worldwide. The company focuses on athletic apparel and streetwear, building a solid customer base among younger generations.",
+      news_type: "6d3c59be-ec9e-442b-81c9-e4498ee670d2",
+      industry: "Cons. Disc.",
+    },
+    hhw: {
+      index: 3,
+      id: "hhw",
+      short_name: "W",
+      name: "Hahawa & Co.",
+      overview:
+        "Hahawa & Co. (HHW) is an American chain of department stores founded in 1858 by Chinese immigrant Qing Hou. As of 2021, Hahawa was the largest U.S. department store company by retail sales with 608 physical department stores, including ten flagship stores, 178 magnet, 250 core, and 117 neighborhood stores.",
+      news_type: "d7e6b3bd-d8a9-46ac-94f6-bb0f7ef94eee",
+      industry: "Retail",
+    },
+    jky: {
+      index: 4,
+      id: "jky",
+      short_name: "J",
+      name: "Jileky Investment, Inc.",
+      overview:
+        "Jilepy Investment, Inc.(JKY) offers financial services among three major businesses: Corporate & Investment Bank, Commercial Banking, and Asset & Wealth Management. The company provides services to fulfill various client needs, including investment and lending products, deposit, cash management,…",
+      news_type: "973458a0-eb3a-4e85-bd2a-f7513bf73bab",
+      industry: "Financials",
+    },
+
+    sgo: {
+      index: 5,
+      id: "sgo",
+      short_name: "S",
+      name: "Surgo Corporation",
+      overview:
+        "Surgo (SGO) is a biomedical company that focuses on three segments: Medical devices, pharmaceuticals, and Consumer Health. It has established popularity through products in body lotion and facial cleansers. Recently, Surgo successfully invented AlphaTech, BetaTech, and other advanced surgical techs.",
+      news_type: "5da3cc57-215d-413e-bae4-92d6b5d05e74",
+      industry: "Healthcare",
+    },
+    wrkn: {
+      index: 5,
+      id: "wrkn",
+      short_name: "W",
+      name: "Wakron, Inc.",
+      overview:
+        "Wakron, Inc. (WRKN) is a technology company headquartered in California, United States. The company develops products for people to connect and socialize with friends, families, and partners. Wakron’s main product WaKO, a decentralized platform for users to chat in text, video calls, and groups.",
+      news_type: "d8488564-bc41-4874-a820-9ac245c07af1",
+      industry: "I.T.",
     },
   };
 

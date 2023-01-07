@@ -52,7 +52,7 @@ function ShowPortfolio() {
 
     }, WAIT_TIME);
     return () => clearInterval(data);
-  }, [portfolio]);
+  }, [portfolio, user_uid]);
 
   function round(num) {
     var m = Number((Math.abs(num) * 100).toPrecision(15));

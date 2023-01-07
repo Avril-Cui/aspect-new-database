@@ -13,15 +13,26 @@ function MessageList({ roomId }: any) {
   const [messages, setMessages] = useState([
     {
       name: "Daniel",
-      text: "I love computers.",
+      text: "Wakron is a very good stock, I think it will go up ⬆️.",
       timestamp: 1665433832.401077,
       uid: "7777dd4a-7039-455f-bfa2-56dec9cace59",
+    },
+    {
+      name: "Avril.C",
+      text: "No 😬😬😬, I think it is too risky. I heard its CEO just got into troubles.",
+      timestamp: 1665433832.401077,
+      uid: "7777dd4a-7039-455f-bfa2-56dec9cace50",
+    },
+    {
+      name: "Friday",
+      text: "Lets see what will happen during the IPO then 🔥.",
+      timestamp: 1665433832.401077,
+      uid: "7777dd4a-7039-455f-bfa2-56dec9cace50",
     }
   ]);
 
   useEffect(() => {
     let data = JSON.stringify(roomId);
-    console.log(roomId);
     var config = {
       method: "post",
       url: "http://localhost:5000/get-message",
@@ -38,7 +49,7 @@ function MessageList({ roomId }: any) {
       .catch(function (error) {
         console.log(error);
       });
-  }, []);
+  }, [roomId]);
 
   if (user == null) {
     const user = {

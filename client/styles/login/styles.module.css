@@ -4,6 +4,13 @@
     margin-bottom: 20em;
 }
 
+.wrong_text{
+    margin-top: 1em;
+    color: #ff6767;
+    font-size: 16px;
+    font-weight: 300;
+}
+
 .log_in{
     margin-left: 3em;
 }
@@ -62,7 +69,7 @@
 }
 
 .submit_button{
-    margin-top: 2em;
+    margin-top: 1.5em;
     padding: 5px 30px; 
     background-color: #577A60; 
     color: #ffffff;

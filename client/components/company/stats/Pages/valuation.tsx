@@ -26,7 +26,7 @@ function Valuation() {
             </tbody>
           </table>
           <div className={styles.graph}>
-            <Image src={graph} width="410px" height="310px" />
+            <Image src={graph} width="410px" height="310px" alt=""/>
           </div>
           <div className={styles.valuation_text}>
             <p style={{ marginBottom: "0.5em" }}>

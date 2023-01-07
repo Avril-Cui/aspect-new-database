@@ -34,8 +34,8 @@ export default class LightweightChart extends React.PureComponent {
     var darkTheme = {
       chart: {
         layout: {
-          backgroundColor: "#2D2D2D",
-          lineColor: "#2D2D2D",
+          backgroundColor: "#141414",
+          lineColor: "#141414",
           textColor: "#D9D9D9",
         },
         watermark: {

@@ -8,9 +8,11 @@ import Link from "next/link";
 const Login = () => {
   const router = useRouter();
 
+  const [isError, setIsError] = useState(false)
+
   const [data, setData] = useState({
-    user_uid: "",
     user_email: "",
+    user_name: "",
     password: "",
   });
 
@@ -28,9 +30,11 @@ const Login = () => {
       data: data,
     })
       .then(function (response) {
+        cookies.set("user_uid", response.data, { path: "/" });
         router.push('/dashboard')
       })
       .catch(function (error) {
+        setIsError(true);
         console.log(error);
       });
   };
@@ -77,6 +81,7 @@ const Login = () => {
                 />
               </div>
             </div>
+            {isError? <p className={styles.wrong_text}>Invalid password or email input</p>:(null)}
             <input
               type="submit"
               className={styles.submit_button}

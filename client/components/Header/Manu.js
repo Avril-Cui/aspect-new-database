@@ -2,9 +2,11 @@ import styles from "./Manu.module.css";
 import Button from "../UI/Button";
 import Link from "next/link";
 import Dropdown from "./Dropdown";
-import { Nav } from 'react-bootstrap'
-import { useRouter } from 'next/router';
+import { Nav } from "react-bootstrap";
+import { useRouter } from "next/router";
 import Cookies from "universal-cookie";
+import alien from "../../image/logo/alien.png";
+import Image from "next/image";
 
 const Manu = () => {
   const router = useRouter();
@@ -30,41 +32,30 @@ const Manu = () => {
     three: "Black Scholes",
     four: "Technical",
   };
-  const simulator_sections = {
-    one: "Learn Company",
-    two: "View News",
-    three: "Join Game",
-    four: "Trade",
-  };
 
   const handleLogout = () => {
-    cookies.remove('userData', { path: '/' });
-    var axios = require('axios');
-    var data = '';
+    cookies.remove("userData", { path: "/" });
+    cookies.remove("user_uid", { path: "/" });
 
-    var config = {
-      method: 'post',
-      url: 'http://127.0.0.1:5000/log-out',
-      headers: { },
-      data : data
-    };
-
-    axios(config)
-    .then(function (response) {
-    })
-    .catch(function (error) {
-      console.log(error);
-    });
-    router.push("/")
-    console.log(userData)
+    router.push("/");
   };
 
   return (
     <header className={styles.manu}>
       <Link href="/">
-        <a className={styles.logo}>ASPECT</a>
+        <div className={styles.inline} style={{ marginTop: "0.2em" }}>
+          <a className={styles.logo}>ASPECT</a>
+          <div style={{ marginLeft: "0.5em" }}>
+            <Image src={alien} width="55px" height="45px" alt=""/>
+          </div>
+        </div>
       </Link>
       <div className={styles.sections}>
+        <div>
+          <Link href="/game">
+            <a>Game</a>
+          </Link>
+        </div>
         <div>
           <Dropdown
             link={"/news"}
@@ -95,17 +86,6 @@ const Manu = () => {
           >
             <Link href="/model">
               <a>Model</a>
-            </Link>
-          </Dropdown>
-        </div>
-        <div>
-          <Dropdown
-            link={"/simulator"}
-            content={simulator_sections}
-            className={styles.drop}
-          >
-            <Link href="/simulator">
-              <a>Simulator</a>
             </Link>
           </Dropdown>
         </div>
