@@ -78,7 +78,6 @@ class WaveModifier:
 			price_list = np.add(price_list, weighted_wave)
 		price_list = self.price_wave_intensity(price_list, intensity)
 		price_list = np.add(price_list, transformation)
-		# print(price_list)
 		return price_list
 
 class StockSimulator:
