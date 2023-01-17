@@ -1,6 +1,6 @@
 import styles from "../overview_charts.module.css";
 
-function Index(props: any) {
+function HeaderTemplate(props: any) {
   return (
     <div>
         <button
@@ -9,13 +9,13 @@ function Index(props: any) {
               ? styles.comp_type_container_shadow
               : styles.comp_type_container
           }
-          onClick={() => props.setCategory(1)}
+          onClick={() => props.setCompGraph(1)}
         >
           <div className={styles.inline}>
             <div className={styles.comp_type_profile}>
-              <p>W</p>
+              <p>{props.comp_name.charAt(0)}</p>
             </div>
-            <p className={styles.comp_type_name}>APINX</p>
+            <p className={styles.comp_type_name}>{props.comp_name}</p>
           </div>
           <div className={styles.comp_type_prices}>
             <div className={styles.inline}>
@@ -30,4 +30,4 @@ function Index(props: any) {
   );
 }
 
-export default Index;
+export default HeaderTemplate;

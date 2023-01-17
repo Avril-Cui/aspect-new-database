@@ -13,6 +13,7 @@ import comment from './comment'
 import simulator_news from './simulator_news'
 import news from "./news"
 import index_news from './index_news'
+import end_season_comment from './end_season_comment'
 
 // Then we give our schema to the builder and provide the result to Sanity
 export default createSchema({
@@ -32,6 +33,7 @@ export default createSchema({
     comment,
     simulator_news,
     news,
-    index_news
+    index_news,
+    end_season_comment,
   ]),
 })

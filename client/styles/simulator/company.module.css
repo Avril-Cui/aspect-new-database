@@ -340,6 +340,50 @@
   border: 1px solid #86bf8c;
   border-radius: 3px;
   margin-right: 1.1em;
+  color: #bdbdbd;
+  padding-left: 0.4em;
+  font-weight: 300;
+}
+
+
+.trade_place::-webkit-outer-spin-button,
+.trade_place::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+.trade_place1 {
+  width: 100px;
+  height: 35px;
+  background: rgba(114, 177, 118, 0.05);
+  border: 1px solid #86bf8c;
+  border-radius: 3px;
+  margin-right: 1.1em;
+  color: #bdbdbd;
+  padding-left: 0.4em;
+  font-weight: 300;
+}
+
+
+.trade_place1::-webkit-outer-spin-button,
+.trade_place1::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+.trade_current {
+  height: 2.25em;
+  background: #c3fcc2;
+  border-radius: 5px;
+  margin-left: -0.5em;
+}
+
+.trade_current p {
+  font-size: 16px;
+  font-weight: 400;
+  color: #577a60;
+  text-align: center;
+  padding: 0em 1.1em;
 }
 
 .trade_stock_button {
@@ -355,6 +399,15 @@
   color: #c3fcc2;
   text-align: center;
   padding: 0.3em 6.1em;
+}
+
+.success {
+  color: #c3fcc2;
+  font-size: 16px;
+  font-weight: 300;
+  text-align: center;
+  margin-top: 0.5em;
+  margin-bottom: -0.5em;
 }
 
 .overview_content {

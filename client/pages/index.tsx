@@ -90,13 +90,13 @@ export default function Front({ index, posts, companies }: Props) {
           <div>
             <p
               className={styles.header}
-              style={{ marginBottom: "0.75em", marginLeft: "1.25em " }}
+              style={{ marginBottom: "0.75em", marginLeft: "3em " }}
             >
               Leaderboard
             </p>
             <div
               style={{
-                marginLeft: "2em ",
+                marginLeft: "4em ",
               }}
               className={styles.leader_container}
             >

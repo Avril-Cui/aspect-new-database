@@ -2,13 +2,13 @@ import { useRouter } from "next/router";
 import React, { useState } from "react";
 import styles from "../../styles/login/styles.module.css";
 import axios from "axios";
-import Cookies from 'universal-cookie';
+import Cookies from "universal-cookie";
 import Link from "next/link";
 
 const Login = () => {
   const router = useRouter();
 
-  const [isError, setIsError] = useState(false)
+  const [isError, setIsError] = useState(false);
 
   const [data, setData] = useState({
     user_email: "",
@@ -20,7 +20,9 @@ const Login = () => {
 
   const handleLogin = async (e: any) => {
     e.preventDefault();
-    cookies.set('userData', data, { path: '/' });
+    const email = data.user_email;
+    const user_name = data.user_name;
+    cookies.set("userData", { email, user_name }, { path: "/" });
     axios({
       method: "POST",
       url: "http://127.0.0.1:5000/result",
@@ -31,7 +33,7 @@ const Login = () => {
     })
       .then(function (response) {
         cookies.set("user_uid", response.data, { path: "/" });
-        router.push('/dashboard')
+        router.push("/dashboard");
       })
       .catch(function (error) {
         setIsError(true);
@@ -46,9 +48,26 @@ const Login = () => {
         <div className={styles.log_in}>
           <form onSubmit={handleLogin}>
             <div className={styles.email_input}>
-              <span className={styles.show_text}>Account Email</span>
+              <span className={styles.show_text}>User Name</span>
               <div style={{ marginTop: 10 }}>
                 <input
+                  onChange={(e: any) =>
+                    setData({
+                      ...data,
+                      user_name: e.target.value,
+                    })
+                  }
+                  className={styles.input_name}
+                  value={data["user_name"]}
+                  type="text"
+                  placeholder="Enter username"
+                />
+              </div>
+            </div>
+            <div className={styles.email_input}>
+              <span className={styles.show_text}>Account Email</span>
+              <div style={{ marginTop: 10 }}>
+              <input
                   onChange={(e: any) =>
                     setData({
                       ...data,
@@ -81,7 +100,11 @@ const Login = () => {
                 />
               </div>
             </div>
-            {isError? <p className={styles.wrong_text}>Invalid password or email input</p>:(null)}
+            {isError ? (
+              <p className={styles.wrong_text}>
+                Invalid password or email input
+              </p>
+            ) : null}
             <input
               type="submit"
               className={styles.submit_button}

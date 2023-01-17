@@ -14,14 +14,16 @@ const Chat = dynamic(() => import("../../components/company/chat/Chat"), {
 });
 import MainPage from "../../components/company/stats/MainPage";
 import CompanyInfo from "../../companies";
+import TradeInput from "../../components/company/TradeInput"
 
 interface Props {
   individual: any;
   posts: [Post];
+  company_name: any;
 }
 
-export default function Wakron({ individual, posts }: Props) {
-  console.log(ast_valuation);
+export default function Wakron({ individual, posts, company_name }: Props) {
+  console.log(company_name)
   return (
     <div className={styles.container}>
       <div key={individual.id}>
@@ -112,50 +114,7 @@ export default function Wakron({ individual, posts }: Props) {
 
         <div className={styles.center_container}>
           <div className={styles.second_layer}>
-            <div className={styles.trade_container}>
-              <p className={styles.title_text}>Trade Stock</p>
-              <div className={styles.trade_stock_content}>
-                <div>
-                  <div className={styles.trade_type}>Buy</div>
-                  <div className={styles.trade_input}>
-                    <p className={styles.trade_text}>Share</p>
-                    <div
-                      className={styles.trade_place}
-                      style={{ marginLeft: 70 }}
-                    />
-                  </div>
-                  <div className={styles.trade_input}>
-                    <p className={styles.trade_text}>Price</p>
-                    <div
-                      className={styles.trade_place}
-                      style={{ marginLeft: 75 }}
-                    />
-                  </div>
-                </div>
-
-                <div>
-                  <div className={styles.trade_type}>SELL</div>
-                  <div className={styles.trade_input}>
-                    <p className={styles.trade_text}>Share</p>
-                    <div
-                      className={styles.trade_place}
-                      style={{ marginLeft: 70 }}
-                    />
-                  </div>
-                  <div className={styles.trade_input}>
-                    <p className={styles.trade_text}>Price</p>
-                    <div
-                      className={styles.trade_place}
-                      style={{ marginLeft: 75 }}
-                    />
-                  </div>
-                </div>
-
-                <button className={styles.trade_stock_button}>
-                  <p>Enter Trade</p>
-                </button>
-              </div>
-            </div>
+           <TradeInput comp_name={company_name}/>
 
             <div className={styles.comp_overview}>
               <div className={styles.dimension_container}>
@@ -414,6 +373,7 @@ export async function getStaticProps({ params }: any) {
     props: {
       individual: individual_comp,
       posts,
+      company_name,
     },
   };
 }

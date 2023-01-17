@@ -6,7 +6,6 @@ import PortableText from "react-portable-text";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { useState } from "react";
 import styles from "../../styles/post/article.module.css";
-import PageButtom from "../../components/UI/PageButtom/PageButtom";
 import Cookies from "universal-cookie";
 import rocket from "../../image/logo/rocket_black.png";
 import message from "../../image/logo/message_black.png";
@@ -27,6 +26,7 @@ function Post({ post }: Props) {
   const [submitted, setSubmitted] = useState(false);
   const cookies = new Cookies();
   const user_uid = cookies.get("user_uid");
+  const user_data = cookies.get("userData");
 
   const colors = [
     "#3f8dd6",
@@ -46,6 +46,9 @@ function Post({ post }: Props) {
   } = useForm<IFormInput>();
 
   const onSubmit: SubmitHandler<IFormInput> = (data) => {
+    data["name"] = user_data.user_name
+    data["email"] = user_data.user_email
+    console.log(data)
     fetch("/api/createComment", {
       method: "POST",
       body: JSON.stringify(data),
@@ -157,16 +160,10 @@ function Post({ post }: Props) {
                 </label>
 
                 <div className="flex flex-col p-5">
-                  {errors.name && (
-                    <span className="text-red-500">- A Name Is Required</span>
-                  )}
                   {errors.comment && (
                     <span className="text-red-500">
                       - The Comment Field Is Required
                     </span>
-                  )}
-                  {errors.email && (
-                    <span className="text-red-500">- An Email Is Required</span>
                   )}
                 </div>
 

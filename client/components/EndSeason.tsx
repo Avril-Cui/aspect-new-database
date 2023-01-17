@@ -1,39 +1,36 @@
-import { useRouter } from 'next/router'
-import React, { useEffect, useState } from 'react'
+import { useRouter } from "next/router";
+import React, { useEffect, useState } from "react";
 
 const EndSeason = ({ children }: { children: React.ReactNode }) => {
-  const router = useRouter()
-  const [isEnd, setIsEnd] = useState(false)
-
+  const router = useRouter();
+  const [isEnd, setIsEnd] = useState(false);
 
   useEffect(() => {
-    var axios = require('axios');
-    var data = '';
+    var axios = require("axios");
+    var data = "";
 
     var config = {
-    method: 'post',
-    url: 'http://127.0.0.1:5000/is-end-game',
-    headers: { },
-    data : data
+      method: "post",
+      url: "http://127.0.0.1:5000/is-end-game",
+      headers: {},
+      data: data,
     };
 
     axios(config)
-    .then(function (response: { data: any }) {
-
-        if (JSON.stringify(response.data)=="0"){
-            setIsEnd(true);
-        }
-    })
-    .catch(function (error: any) {
+      .then(function (response: { data: any }) {
+        if (JSON.stringify(response.data) == "0") {
+          setIsEnd(true);
+        } else (
+          router.push("/")
+        )
+      })
+      .catch(function (error: any) {
         console.log(error);
-    });
-    if (!isEnd) {
-        router.push('/')
-      }
-  }, [router, isEnd])
-  console.log(setIsEnd)
+      });
+  }, [router, isEnd]);
+  console.log(isEnd)
 
-  return <>{isEnd ? children : <></>}</>
-}
+  return <>{isEnd ? children : <></>}</>;
+};
 
 export default EndSeason;

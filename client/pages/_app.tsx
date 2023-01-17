@@ -16,7 +16,7 @@ const EndSeason = dynamic(() => import("../components/EndSeason"), {
 });
 
 const AuthRequired = ["/dashboard"];
-const EndSeasonRequired = ["/end-season-summary"];
+const EndSeasonRequired = ["/seasonal-recap"];
 
 function MyApp({ Component, pageProps }: AppProps) {
   const router = useRouter();
@@ -27,21 +27,30 @@ function MyApp({ Component, pageProps }: AppProps) {
         <link rel="shortcut icon" href="/logo.png" />
       </Head>
       <CookiesProvider>
-        {AuthRequired.includes(router.pathname) ? (
-          <ProtectedRoute>
-            <Component {...pageProps} />
-          </ProtectedRoute>
-        ) : (
-          <Layout>
-            <Component {...pageProps} />
-            {/* {EndSeasonRequired.includes(router.pathname) ? (
-              <EndSeason>
+        {EndSeasonRequired.includes(router.pathname) ? (
+          <EndSeason>
+            {AuthRequired.includes(router.pathname) ? (
+              <ProtectedRoute>
                 <Component {...pageProps} />
-              </EndSeason>
+              </ProtectedRoute>
             ) : (
-              <Component {...pageProps} />
-            )} */}
-          </Layout>
+              <Layout>
+                <Component {...pageProps} />
+              </Layout>
+            )}
+          </EndSeason>
+        ) : (
+          <>
+            {AuthRequired.includes(router.pathname) ? (
+              <ProtectedRoute>
+                <Component {...pageProps} />
+              </ProtectedRoute>
+            ) : (
+              <Layout>
+                <Component {...pageProps} />
+              </Layout>
+            )}
+        </>
         )}
       </CookiesProvider>
     </Provider>

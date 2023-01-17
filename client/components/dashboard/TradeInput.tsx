@@ -13,7 +13,7 @@ function TradeInput(props: any) {
   const [sellShares, setSellShares] = useState(undefined);
   const [sellPrice, setSellPrice] = useState(undefined);
   const [sellTicker, setSellTicker] = useState(undefined);
-  
+
   const [isCurrentBuy, setIsCurrentBuy] = useState(false);
   const [isCurrentSell, setIsCurrentSell] = useState(false);
 
@@ -24,7 +24,7 @@ function TradeInput(props: any) {
     setBuyPrice(event.target.value);
   };
   const handleBuyTickerChange = (event: any) => {
-    setBuyTicker(event.target.value);
+    setBuyTicker(event.target.value.toLowerCase());
   };
   const handleSellSharesChange = (event: any) => {
     setSellShares(event.target.value);
@@ -33,14 +33,14 @@ function TradeInput(props: any) {
     setSellPrice(event.target.value);
   };
   const handleSellTickerChange = (event: any) => {
-    setSellTicker(event.target.value);
+    setSellTicker(event.target.value.toLowerCase());
   };
 
   const [isSubmit, setIsSubmit] = useState(false);
   const [message, setMessage] = useState("");
 
-  const setDefaultBuyPriceHandler = (e: { preventDefault: () => void; }) => {
-    setIsCurrentBuy(true)
+  const setDefaultBuyPriceHandler = (e: { preventDefault: () => void }) => {
+    setIsCurrentBuy(true);
     e.preventDefault();
     axios({
       method: "POST",
@@ -58,10 +58,10 @@ function TradeInput(props: any) {
       .catch((error) => {
         console.log(error);
       });
-  }
+  };
 
-  const setDefaultSellPriceHandler = (e: { preventDefault: () => void; }) => {
-    setIsCurrentSell(true)
+  const setDefaultSellPriceHandler = (e: { preventDefault: () => void }) => {
+    setIsCurrentSell(true);
     e.preventDefault();
     axios({
       method: "POST",
@@ -79,7 +79,7 @@ function TradeInput(props: any) {
       .catch((error) => {
         console.log(error);
       });
-  }
+  };
 
   const handleSubmit = (event: any) => {
     event.preventDefault(
@@ -92,9 +92,13 @@ function TradeInput(props: any) {
       sellTicker
     );
     setIsSubmit(true);
-    if (buyShares !== undefined && buyPrice !== undefined && buyTicker !== undefined) {
+    if (
+      buyShares !== undefined &&
+      buyPrice !== undefined &&
+      buyTicker !== undefined
+    ) {
       let buy_shares = parseFloat(buyShares);
-      let buy_price
+      let buy_price;
       if (isCurrentBuy == true) {
         buy_price = 0;
       } else {
@@ -133,16 +137,20 @@ function TradeInput(props: any) {
         });
     }
 
-    if (sellShares !== undefined && sellPrice !== undefined && sellTicker !== undefined) {
+    if (
+      sellShares !== undefined &&
+      sellPrice !== undefined &&
+      sellTicker !== undefined
+    ) {
       let sell_shares = -parseFloat(sellShares);
-      let sell_price
+      let sell_price;
       if (isCurrentSell == true) {
         sell_price = 0;
       } else {
         sell_price = parseFloat(sellPrice);
       }
 
-      var sell_data = JSON.stringify({    
+      var sell_data = JSON.stringify({
         user_uid: user_uid,
         comp_name: sellTicker,
         share_number: sell_shares,
@@ -192,13 +200,22 @@ function TradeInput(props: any) {
               <div className={styles.trade_type}>Buy</div>
               <div className={styles.trade_input}>
                 <div className={styles.trade_input_container}>
-                  <input
-                    type="text"
+                  <select
+                    // type="text"
                     placeholder="Enter stock ticker."
                     onChange={handleBuyTickerChange}
-                    value={buyTicker}
+                    // value={buyTicker}
                     className={styles.trade_place}
-                  />
+                    // list="companies"
+                  >
+                    <option value="AST" >AST</option>
+                    <option value="DSC" >DSC</option>
+                    <option value="FSIN" >FSIN</option>
+                    <option value="HHW" >HHW</option>
+                    <option value="JKY" >JKY</option>
+                    <option value="SGO" >SGO</option>
+                    <option value="WRKN" >WRKN</option>
+                  </select>
                 </div>
                 <div className={styles.trade_input_container}>
                   {" "}
@@ -218,12 +235,15 @@ function TradeInput(props: any) {
                     type="number"
                     step="any"
                     name="price"
-                    placeholder="Enter your trading price."
+                    placeholder="Price"
                     onChange={handleBuyPriceChange}
                     value={buyPrice}
                     className={styles.price_place}
                   />
-                  <button className={styles.trade_current} onClick={setDefaultBuyPriceHandler}>
+                  <button
+                    className={styles.trade_current}
+                    onClick={setDefaultBuyPriceHandler}
+                  >
                     <p>Current</p>
                   </button>
                 </div>
@@ -234,14 +254,19 @@ function TradeInput(props: any) {
               <div className={styles.trade_type}>Sell</div>
               <div className={styles.trade_input}>
                 <div className={styles.trade_input_container}>
-                  {" "}
-                  <input
-                    type="text"
-                    placeholder="Enter stock ticker."
-                    onChange={handleSellTickerChange}
-                    value={sellTicker}
-                    className={styles.trade_place}
-                  />
+                <select
+                placeholder="Enter stock ticker."
+                onChange={handleSellTickerChange}
+                className={styles.trade_place}
+                  >
+                    <option value="AST" >AST</option>
+                    <option value="DSC" >DSC</option>
+                    <option value="FSIN" >FSIN</option>
+                    <option value="HHW" >HHW</option>
+                    <option value="JKY" >JKY</option>
+                    <option value="SGO" >SGO</option>
+                    <option value="WRKN" >WRKN</option>
+                  </select>
                 </div>
                 <div className={styles.trade_input_container}>
                   <input
@@ -260,12 +285,15 @@ function TradeInput(props: any) {
                     type="number"
                     step="any"
                     name="price"
-                    placeholder="Enter your trading price."
+                    placeholder="Price"
                     onChange={handleSellPriceChange}
                     value={sellPrice}
                     className={styles.price_place}
                   />
-                  <button className={styles.trade_current} onClick={setDefaultSellPriceHandler}>
+                  <button
+                    className={styles.trade_current}
+                    onClick={setDefaultSellPriceHandler}
+                  >
                     <p>Current</p>
                   </button>
                 </div>

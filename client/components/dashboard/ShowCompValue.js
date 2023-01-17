@@ -44,7 +44,6 @@ function ShowCompValue(props) {
     return () => clearInterval(data);
   }, [portfolio, user_uid]);
 
-
   return (
     <div className={styles.scroll}>
       <div ref={containerRef}>
@@ -58,26 +57,20 @@ function ShowCompValue(props) {
               <th>Percentage</th>
             </tr>
           </tbody>
-          {Object.keys(portfolio).map((key) => {
-            return key != "portfolio_value" ? (
-              <tbody    className={styles.table_line}>
-                {" "}
-                <Company
-                  company={portfolio[key]}
-                />
-              </tbody>
-            ) : (
-              <tbody key="random"></tbody>
-            );
-          })}
+          <tbody className={styles.table_line}>
+            {Object.keys(portfolio).map((key) => {
+              return key != "portfolio_value" ? (
+                <Company company={portfolio[key]} />
+              ) : (
+                null
+              );
+            })}
+          </tbody>
         </table>
       </div>
     </div>
   );
 }
-
-import classes from "../../styles/portfolio.module.css";
-import axios from "axios";
 
 function Company(props) {
   function round(num) {
@@ -85,7 +78,7 @@ function Company(props) {
     return (Math.round(m) / 100) * Math.sign(num);
   }
 
-  const {category, shares_holding, total_holding, cost} = props.company;  
+  const { category, shares_holding, total_holding, cost } = props.company;
 
   let company_value = null;
   let share_number = null;
@@ -97,15 +90,14 @@ function Company(props) {
     company_value = total_holding;
     share_number = shares_holding;
     comp_name = category;
-    // current_price = price;
     price_change = round(total_holding - cost);
     price_pct_change = round(((total_holding - cost) / cost) * 100);
   }
 
-  if (share_number != 0){
+  if (share_number != 0) {
     return (
       <tr key={category} className={styles.holding_detail}>
-        <td className={classes.comp_link}>{category}</td>
+        <td className={styles.comp_link}>{category.toUpperCase()}</td>
         <td>{share_number}</td>
         <td>{round(company_value)}</td>
         <td
@@ -122,8 +114,8 @@ function Company(props) {
         </td>
       </tr>
     );
-  } else{
-    return <tbody key="random"></tbody>
+  } else {
+    return <tbody key="random"></tbody>;
   }
 }
 export default ShowCompValue;

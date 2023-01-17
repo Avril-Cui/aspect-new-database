@@ -1,165 +1,77 @@
 import React from "react";
 import styles from "./LeaderBoard.module.css";
+import { useEffect, useState } from "react";
 
 function LeaderBoard() {
-  const price_change = 2;
-  const total_change = 0.5;
+  const [ranking, setRanking] = useState({
+    avrilcui: {
+      cash_value: 100000.0,
+      value_change: 0.0,
+      pct_change: 0.0,
+      ranking: 1,
+    },
+  });
+  console.log(typeof ranking);
+  useEffect(() => {
+    var axios = require("axios");
+    var data = "";
+
+    var config = {
+      method: "get",
+      url: "http://127.0.0.1:5000/total-rank",
+      headers: {},
+      data: data,
+    };
+
+    axios(config)
+      .then(function (response: any) {
+        setRanking(response.data);
+      })
+      .catch(function (error: any) {
+        console.log(error);
+      });
+  }, []);
   return (
     <table className={styles.user_table}>
       <tbody>
         <tr>
           <th>Rank</th>
           <th>User Name</th>
-          <th>Account Value</th>
-          <th>Today&#8216;s Change</th>
+          <th>Cash Value</th>
+          <th>Value Change</th>
           <th>Total Change</th>
         </tr>
         <tr>
-          <td className={styles.ranking}>1</td>
-          <td className={styles.normal}>Avril_Cui777</td>
-          <td className={styles.normal}>$500,000</td>
-          <td
-            className={styles.normal}
-            style={
-              price_change < 0 ? { color: "#FD6565" } : { color: "#C9FFD1" }
-            }
-          >
-            +12,000
-          </td>
-          <td
-            className={styles.normal}
-            style={
-              total_change > 0 ? { color: "#C9FFD1" } : { color: "#FD6565" }
-            }
-          >
-            +500%
-          </td>
-        </tr>
-        <tr>
-          <td className={styles.ranking}>2</td>
-          <td className={styles.normal}>KEYL</td>
-          <td className={styles.normal}>$400,000</td>
-          <td
-            className={styles.normal}
-            style={
-              price_change < 0 ? { color: "#FD6565" } : { color: "#C9FFD1" }
-            }
-          >
-            +10,000
-          </td>
-          <td
-            className={styles.normal}
-            style={
-              total_change > 0 ? { color: "#C9FFD1" } : { color: "#FD6565" }
-            }
-          >
-            +400%
-          </td>
-        </tr>
-        <tr>
-          <td className={styles.ranking}>3</td>
-          <td className={styles.normal}>CathieWoods</td>
-          <td className={styles.normal}>$300,000</td>
-          <td
-            className={styles.normal}
-            style={
-              price_change < 0 ? { color: "#FD6565" } : { color: "#C9FFD1" }
-            }
-          >
-            +9,000
-          </td>
-          <td
-            className={styles.normal}
-            style={
-              total_change > 0 ? { color: "#C9FFD1" } : { color: "#FD6565" }
-            }
-          >
-            +300%
-          </td>
-        </tr>
-        <tr>
-          <td className={styles.ranking}>4</td>
-          <td className={styles.normal}>Elon_Musk</td>
-          <td className={styles.normal}>$200,000</td>
-          <td
-            className={styles.normal}
-            style={
-              price_change < 0 ? { color: "#FD6565" } : { color: "#C9FFD1" }
-            }
-          >
-            +5000
-          </td>
-          <td
-            className={styles.normal}
-            style={
-              total_change > 0 ? { color: "#C9FFD1" } : { color: "#FD6565" }
-            }
-          >
-            +100%
-          </td>
-        </tr>
-        <tr>
-          <td className={styles.ranking}>5</td>
-          <td className={styles.normal}>FriFrrrr</td>
-          <td className={styles.normal}>$150,000</td>
-          <td
-            className={styles.normal}
-            style={
-              price_change < 0 ? { color: "#FD6565" } : { color: "#C9FFD1" }
-            }
-          >
-            +3000
-          </td>
-          <td
-            className={styles.normal}
-            style={
-              total_change > 0 ? { color: "#C9FFD1" } : { color: "#FD6565" }
-            }
-          >
-            +50%
-          </td>
-        </tr>
-        <tr>
-          <td className={styles.ranking}>6</td>
-          <td className={styles.normal}>GordonGakko</td>
-          <td className={styles.normal}>$120,000</td>
-          <td
-            className={styles.normal}
-            style={
-              price_change < 0 ? { color: "#FD6565" } : { color: "#C9FFD1" }
-            }
-          >
-            +1000
-          </td>
-          <td
-            className={styles.normal}
-            style={
-              total_change > 0 ? { color: "#C9FFD1" } : { color: "#FD6565" }
-            }
-          >
-            +20%
-          </td>
-        </tr>
-        <tr>
-          <td className={styles.ranking}>7</td>
-          <td className={styles.normal}>GameMaster</td>
-          <td className={styles.normal}>$110,000</td>
-          <td
-            className={styles.normal}
-            style={
-              price_change < 0 ? { color: "#FD6565" } : { color: "#C9FFD1" }
-            }
-          >
-            +3250
-          </td>
-          <td
-            className={styles.normal}
-            style={
-              total_change > 0 ? { color: "#C9FFD1" } : { color: "#FD6565" }
-            }
-          >
-            +10%
-          </td>
+          {Object.entries(ranking).map(
+            ([key, value], i) =>
+              i < 6 && (
+                <>
+                  <td className={styles.ranking}>{value["ranking"]}</td>
+                  <td className={styles.normal}>{key}</td>
+                  <td className={styles.normal}>${value["cash_value"]}</td>
+                  <td
+                    className={styles.normal}
+                    style={
+                      value["value_change"] > 0
+                        ? { color: "#C9FFD1" }
+                        : { color: "#FD6565" }
+                    }
+                  >
+                    {value["value_change"]}
+                  </td>
+                  <td
+                    className={styles.normal}
+                    style={
+                      value["pct_change"] > 0
+                        ? { color: "#C9FFD1" }
+                        : { color: "#FD6565" }
+                    }
+                  >
+                    {value["pct_change"] * 100} %
+                  </td>
+                </>
+              )
+          )}
         </tr>
       </tbody>
     </table>
