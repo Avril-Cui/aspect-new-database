@@ -88,11 +88,11 @@ class StockSimulator:
             day_price_lst: list,
             index: int,
             micro_params: object,
-            index_params: dict,
+            # index_params: dict,
             price_range: Optional[float] = 2,
             minimum_simulation_tick: Optional[float] = 0.01,
             minimum_price_unit: Optional[float] = 0.01,
-            fixed_random_seed: Optional[bool] = True,
+            fixed_random_seed: Optional[bool] = False,
             random_seed: Optional[int] = 17
     ):
 

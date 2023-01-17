@@ -3,6 +3,7 @@ import styles from "../styles/news/news.module.css";
 import Link from "next/link";
 import { sanityClient, urlFor } from "../sanity";
 import { Post } from "../typings";
+import Head from "next/head";
 
 interface Props {
   posts: [Post];
@@ -11,6 +12,9 @@ interface Props {
 export default function News({ posts }: Props) {
   return (
     <div className={styles.news_page}>
+      <Head>
+        <title>Market News</title>
+      </Head>
       <p className={styles.title}>Market News</p>
       <div className={styles.style_description}>
         <p className={styles.description}>

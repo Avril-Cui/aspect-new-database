@@ -11,29 +11,32 @@ from Model.prepare_prices import index_price, ast_price, dsc_price, fsin_price, 
 from itertools import accumulate
 from functools import reduce
 import operator
+import datetime
 
+index_lst = 3
 seconds = time.time()
-start_time = 1673121765.960407 - 60*60*6
-end_time = start_time + (60*60*24)*27 + 60*60*8
-index_lst = 0
+# start_time = 1673406000 - 60*60*24*30
+start_time = 1673406000
+end_time = start_time + (60*60*24)*29 + 36000
+start_date = datetime.datetime.now()
 
 price_list = {
 	"index": [index_price[x - y: x] for x, y in zip(
-		accumulate([28800 for _ in range(len(index_price)//28800)]), [28800 for i in range(len(index_price)//28800)])],
+		accumulate([36000 for _ in range(len(index_price)//36000)]), [36000 for i in range(len(index_price)//36000)])],
 	"ast": [ast_price[x - y: x] for x, y in zip(
-		accumulate([28800 for _ in range(len(ast_price)//28800)]), [28800 for i in range(len(ast_price)//28800)])],
+		accumulate([36000 for _ in range(len(ast_price)//36000)]), [36000 for i in range(len(ast_price)//36000)])],
 	"dsc": [dsc_price[x - y: x] for x, y in zip(
-		accumulate([28800 for _ in range(len(dsc_price)//28800)]), [28800 for i in range(len(dsc_price)//28800)])],
+		accumulate([36000 for _ in range(len(dsc_price)//36000)]), [36000 for i in range(len(dsc_price)//36000)])],
 	"fsin": [fsin_price[x - y: x] for x, y in zip(
-		accumulate([28800 for _ in range(len(fsin_price)//28800)]), [28800 for i in range(len(fsin_price)//28800)])],
+		accumulate([36000 for _ in range(len(fsin_price)//36000)]), [36000 for i in range(len(fsin_price)//36000)])],
 	"hhw": [hhw_price[x - y: x] for x, y in zip(
-		accumulate([28800 for _ in range(len(hhw_price)//28800)]), [28800 for i in range(len(hhw_price)//28800)])],
+		accumulate([36000 for _ in range(len(hhw_price)//36000)]), [36000 for i in range(len(hhw_price)//36000)])],
 	"jky": [jky_price[x - y: x] for x, y in zip(
-		accumulate([28800 for _ in range(len(jky_price)//28800)]), [28800 for i in range(len(jky_price)//28800)])],
+		accumulate([36000 for _ in range(len(jky_price)//36000)]), [36000 for i in range(len(jky_price)//36000)])],
 	"sgo": [sgo_price[x - y: x] for x, y in zip(
-		accumulate([28800 for _ in range(len(sgo_price)//28800)]), [28800 for i in range(len(sgo_price)//28800)])],
+		accumulate([36000 for _ in range(len(sgo_price)//36000)]), [36000 for i in range(len(sgo_price)//36000)])],
 	"wrkn": [wrkn_price[x - y: x] for x, y in zip(
-		accumulate([28800 for _ in range(len(wrkn_price)//28800)]), [28800 for i in range(len(wrkn_price)//28800)])],
+		accumulate([36000 for _ in range(len(wrkn_price)//36000)]), [36000 for i in range(len(wrkn_price)//36000)])],
 }
 
 flat_price = {
@@ -43,7 +46,7 @@ flat_price = {
 	"hhw": reduce(operator.concat, price_list["hhw"]),
 	"jky": reduce(operator.concat, price_list["jky"]),
 	"sgo": reduce(operator.concat, price_list["sgo"]),
-	"wrkn":reduce(operator.concat, price_list["wrkn"]),
+	"wrkn": reduce(operator.concat, price_list["wrkn"]),
 }
 current_prices = {
 	"ast": None,
@@ -55,14 +58,16 @@ current_prices = {
 	"wrkn": None
 }
 
+
 def get_current_prices(company_list):
 	current_time = time.time()
-	index_lst = int(int((current_time-start_time))/28800)
-	index_tmp = int((current_time-start_time))%28800
+	index_lst = int(int((current_time-start_time))/36000)
+	index_tmp = int((current_time-start_time)) % 36000
 	current_prices = {}
 	for company in company_list:
 		current_prices[company] = price_list[company][index_lst][index_tmp]
 	return current_prices
+
 
 chat_storeage = {
 	"main": {
@@ -107,11 +112,13 @@ auth = firebase.auth()
 
 event = None
 
+
 @app.route('/')
 def home():
 	return app.send_static_file('index.html')
 
-@app.route("/result", methods = ["POST", "GET"])
+
+@app.route("/result", methods=["POST", "GET"])
 def result():
 	if request.method == "POST":
 		result = json.loads(request.data)
@@ -123,7 +130,8 @@ def result():
 		except:
 			return "Invalid user request", 401
 
-@app.route("/register", methods = ["POST", "GET"])
+
+@app.route("/register", methods=["POST", "GET"])
 def register():
 	if request.method == "POST":
 		data = json.loads(request.data)
@@ -139,13 +147,6 @@ def register():
 		except:
 			return "Invalid user request", 401
 
-@app.route('/is-end-game', methods=['POST'])
-def is_end_game():
-	current_time = time.time()
-	if current_time >= end_time:
-		return str(0) #True
-	else:
-		return str(1) #False
 
 @app.route('/trade-stock', methods=['POST'])
 def trade_stock():
@@ -156,12 +157,13 @@ def trade_stock():
 	user_uid = trade_data["user_uid"]
 
 	current_time = time.time()
-	index_lst = int(int((current_time-start_time))/28800)
-	index_tmp = int((current_time-start_time))%28800
+	index_lst = int(int((current_time-start_time))/36000)
+	index_tmp = int((current_time-start_time)) % 36000
 	current_price = price_list[comp_name][index_lst][index_tmp]
 	if target_price == 0:
 		target_price = current_price
-	response = UserDatabaseCommands.trade_stock(user_uid, share_number, target_price, current_price, comp_name)
+	response = UserDatabaseCommands.trade_stock(
+		user_uid, share_number, target_price, current_price, comp_name)
 
 	if response == "Invalid 1":
 		return "You do not owe enough shares of this stock.", 401
@@ -172,16 +174,20 @@ def trade_stock():
 	else:
 		company_list = UserDatabaseCommands.get_comp_holding_list(user_uid)
 		current_prices = get_current_prices(company_list)
-		portfolio = UserDatabaseCommands.get_portfolio_info(user_uid, current_prices)
+		portfolio = UserDatabaseCommands.get_portfolio_info(
+			user_uid, current_prices)
 		return jsonify(portfolio)
+
 
 @app.route('/portfolio-detail', methods=['POST'])
 def portfolio_detail():
 	user_uid = json.loads(request.data)
 	company_list = UserDatabaseCommands.get_comp_holding_list(user_uid)
 	current_prices = get_current_prices(company_list)
-	portfolio = UserDatabaseCommands.get_portfolio_info(user_uid, current_prices)
+	portfolio = UserDatabaseCommands.get_portfolio_info(
+		user_uid, current_prices)
 	return jsonify(portfolio)
+
 
 @app.route('/show-ranking', methods=['POST'])
 def show_ranking():
@@ -189,107 +195,219 @@ def show_ranking():
 	rank = UserDatabaseCommands.get_rank_user(user_uid)
 	return str(rank)
 
+
 @app.route('/total-rank', methods=['GET'])
 def total_rank():
 	user_rank = UserDatabaseCommands.get_total_rank()
-	return str(user_rank)
+	return jsonify(user_rank)
+
 
 @app.route('/current-all-prices', methods=["POST"])
 def current_all_prices():
+	global index_lst
 	current_time = time.time()
-	index_tmp = int((current_time-start_time) - index_lst * 28800 - index_lst * 60*60*(24-8))
-	if index_tmp <= 28800:
+	index_tmp = int((current_time-start_time) - index_lst *
+					36000 - index_lst * 60*60*(24-8))
+	if index_tmp <= 36000:
 		current_price_dict = {}
 		for key in price_list:
 			open_price = price_list[key][index_lst][0]
-			change = round((price_list[key][index_lst][index_tmp] - open_price),2)
-			pct_change = round((price_list[key][index_lst][index_tmp] - open_price) /open_price * 100,2)
+			change = round(
+				(price_list[key][index_lst][index_tmp] - open_price), 2)
+			pct_change = round(
+				(price_list[key][index_lst][index_tmp] - open_price) / open_price * 100, 2)
 			current_price = price_list[key][index_lst][index_tmp]
-			current_price_dict[key] = {"price":  round(current_price, 2), "change": change, "pct_change": pct_change}
+			current_price_dict[key] = {"price":  round(
+				current_price, 2), "change": change, "pct_change": pct_change}
 		return jsonify(current_price_dict)
-	elif index_tmp > 28800 and index_tmp < 60*60*24:
+	elif index_tmp > 36000 and index_tmp < 60*60*24:
 		current_price_dict = {}
 		for key in price_list:
 			final_price = price_list[key][index_lst][-1]
-			current_price_dict[key] = {"price":  round(final_price, 2), "change": "N/A", "pct_change": "N/A"}
+			current_price_dict[key] = {"price":  round(
+				final_price, 2), "change": "N/A", "pct_change": "N/A"}
 		return jsonify(current_price_dict)
 
 	else:
 		current_price_dict = {}
 		for key in price_list:
 			final_price = price_list[key][index_lst][-1]
-			current_price_dict[key] = {"price":  round(final_price, 2), "change": "N/A", "pct_change": "N/A"}
-		index_lst+=1
+			current_price_dict[key] = {"price":  round(
+				final_price, 2), "change": "N/A", "pct_change": "N/A"}
+		index_lst += 1
 		return jsonify(current_price_dict)
+
 
 @app.route('/current-price', methods=['POST'])
 def current_price():
 	current_time = time.time()
-	index_tmp = int((current_time-start_time) - index_lst * 28800 - index_lst * 60*60*(24-8))
+	index_tmp = int((current_time-start_time) - index_lst *
+					36000 - index_lst * 60*60*(24-10))
 	comp_name = json.loads(request.data)
-	if index_tmp <= 28800:
+	if index_tmp <= 36000:
 		current_price = price_list[comp_name][index_lst][index_tmp]
 		return {"price": round(current_price, 2)}
 	else:
-		if index_tmp > 28800 and index_tmp < 60*60*24:
+		if index_tmp > 36000 and index_tmp < 60*60*24:
 			return {"price": round(price_list[comp_name][index_lst][-1], 2)}
-		
+
 		else:
 			last_price = round(price_list[comp_name][index_lst][-1], 2)
-			index_lst+=1
 			return {"price": last_price}
 
-# @app.route('/price-history', methods=['POST'])
-# def price_history():
-# 	comp_name = json.loads(request.data)
-# 	second_price_lst = tick_price_graph[comp_name]
-
-# 	return str(second_price_lst)
 
 @app.route('/tick-graph', methods=["POST"])
 def tick_graph():
-    comp_name = json.loads(request.data)
-    current_time = time.time()
-    index_tmp = int((current_time-start_time) - index_lst * 28800 - index_lst * 60*60*(24-8))
-    if index_tmp <= 28800:
-        tick_price_graph = []
-        for index in range(index_tmp):
-            if index % (300) == 0 and index!=28800 and index!=0:
-                tick_price_graph.append({"time": (index+start_time), "value": round(price_list[comp_name][index_lst][index], 2)})
-        return jsonify(tick_price_graph)
-    else:
-        tick_price_graph = []
-        for index in range(28800):
-            if index % (300) == 0 and index!=28800 and index!=0:
-                tick_price_graph.append({"time": (index+start_time), "value": round(price_list[comp_name][index_lst][index], 2)})
-        
-        return jsonify(tick_price_graph)
-        
+	global index_lst
+	comp_name = json.loads(request.data)
+	current_time = time.time()
+	index_tmp = int((current_time-start_time) - index_lst *
+					36000 - index_lst * 60*60*(24-10))
+	if index_tmp <= 36000:
+		tick_price_graph = []
+		for index in range(index_tmp):
+			if index % (300) == 0 and index != 36000 and index != 0:
+				tick_price_graph.append({"time": (
+					index+start_time), "value": round(price_list[comp_name][index_lst][index], 2)})
+		return jsonify(tick_price_graph)
+	else:
+		tick_price_graph = []
+		for index in range(36000):
+			if index % (300) == 0 and index != 36000 and index != 0:
+				tick_price_graph.append({"time": (
+					index+start_time), "value": round(price_list[comp_name][index_lst][index], 2)})
 
-@app.route('/set-end-season-info', methods=["POST"])
-def set_end_season_info():
-	"""
-		{
-			"event_name": "Metadefect Virus Attact",
-			"highlight": ["Pandemic", "Market Crash", "IPO", "Short", "Long", "ESG", "Stability", "Value", "Growth"]
-		}
-	"""
-	global end_season_info
-	end_season_info = json.loads(request.data)
-	return jsonify(end_season_info)
+		return jsonify(tick_price_graph)
 
-@app.route('/get-end-season-info', methods=["POST"])
-def get_end_season_info():
-	return jsonify(end_season_info)
+
+@app.route('/day-graph', methods=["POST"])
+def day_graph():
+	global index_lst
+	comp_name = json.loads(request.data)
+	graph_lst = []
+
+	for index in range(index_lst):
+		high = round(max(price_list[comp_name][index]))
+		low = round(min(price_list[comp_name][index]))
+		open_p = round(price_list[comp_name][index][0])
+		close_p = round(price_list[comp_name][index][-1])
+		if index > (31-int(start_date.day)):
+			month = int(start_date.month) + 1
+			day = index - ((31-int(start_date.day)))
+			month = f"{month:02d}"
+			day = f"{day:02d}"
+			date = f"{day}/{month}/2073"
+		else:
+			month = int(start_date.month)
+			day = int(start_date.day) + index
+			month = f"{month:02d}"
+			day = f"{day:02d}"
+			date = f"{day}/{month}/2073"
+		graph_lst.append([date, open_p, close_p, low, high])
+	return jsonify(graph_lst)
+
+
+@app.route('/hour-graph', methods=["POST"])
+def hour_graph():
+	global index_lst
+	comp_name = json.loads(request.data)
+	graph_lst = []
+
+	for index in range(index_lst):
+		for inx in range(len(price_list[comp_name][index])+1):
+			if inx % 3600 == 0 and inx != 36000 and inx != 0:
+				price_chunk = price_list[comp_name][index][int(
+					inx):int(inx+3600)]
+				high = round(max(price_chunk), 2)
+				low = round(min(price_chunk), 2)
+				open_p = round(price_chunk[0], 2)
+				close_p = round(price_chunk[-1], 2)
+				timestamp = start_time + (index)*60*60*24 + inx
+				dt_object = datetime.datetime.fromtimestamp(timestamp)
+				date = f"{dt_object.day}/{dt_object.month} {dt_object.time()}"
+				graph_lst.append([date, open_p, close_p, low, high])
+	return jsonify(graph_lst)
+
+
+@app.route('/tick-graphs', methods=["POST"])
+def tick_graphs():
+	global index_lst
+	current_time = time.time()
+	index_tmp = int((current_time-start_time) - index_lst *
+					36000 - index_lst * 60*60*(24-10))
+	if index_tmp <= 36000:
+		graphs = {}
+		for key in price_list:
+			tick_price_graph = []
+			for index in range(index_tmp):
+				if index % (300) == 0 and index != 36000 and index != 0:
+					tick_price_graph.append(
+						{"time": (index+start_time), "value": round(price_list[key][index_lst][index], 2)})
+			graphs[key] = tick_price_graph
+		return jsonify(graphs)
+	else:
+		graphs = {}
+		for key in price_list:
+			tick_price_graph = []
+			for index in range(36000):
+				if index % (300) == 0 and index != 36000 and index != 0:
+					tick_price_graph.append(
+						{"time": (index+start_time), "value": round(price_list[key][index_lst][index], 2)})
+			graphs[key] = tick_price_graph
+		return jsonify(graphs)
+
+@app.route('/is-end-game', methods=['POST'])
+def is_end_game():
+	current_time = time.time()
+	if current_time >= end_time:
+		return str(0) #True
+	else:
+		return str(1) #False
+
+@app.route('/end-all-prices', methods=["POST"])
+def end_all_prices():
+	price_dict = {}
+	for key in price_list:
+			change = round(
+				(price_list[key][-1][-1] - price_list[key][0][0]), 1)
+			pct_change = round(
+				(price_list[key][-1][-1] - price_list[key][0][0]) / price_list[key][0][0] * 100, 1)
+			price_dict[key] = {"price":  round(
+				price_list[key][-1][-1], 2), "change": change, "pct_change": pct_change}
+	return jsonify(price_dict)
+
+
+@app.route('/end-season-index-graph', methods=["POST"])
+def end_season_index_graph():
+	graph_lst = []
+	for index in range(len(price_list["index"])):
+		high = round(max(price_list["index"][index]))
+		low = round(min(price_list["index"][index]))
+		open_p = round(price_list["index"][index][0])
+		close_p = round(price_list["index"][index][-1])
+		if index > (31-int(start_date.day)):
+			month = int(start_date.month) + 1
+			day = index - ((31-int(start_date.day)))
+			month = f"{month:02d}"
+			day = f"{day:02d}"
+			date = f"{day}/{month}/2073"
+		else:
+			month = int(start_date.month)
+			day = int(start_date.day) + index
+			month = f"{month:02d}"
+			day = f"{day:02d}"
+			date = f"{day}/{month}/2073"
+		graph_lst.append([date, open_p, close_p, low, high])
+	return jsonify(graph_lst)
 
 @app.route('/send-message', methods=['POST'])
 def send_message():
 	"""
-		message = {
-			"section": "main",
-			"name": "Avril",
-			"text": "Hello world"
-		}
+			message = {
+					"section": "main",
+					"name": "Avril",
+					"text": "Hello world"
+			}
 	"""
 	data = json.loads(request.data)
 	uid = uuid.uuid4()
@@ -302,6 +420,7 @@ def send_message():
 	}
 
 	return jsonify(chat_storeage[data["section"]][str(uid)])
+
 
 @app.route('/get-message', methods=['POST'])
 def get_message():
@@ -327,4 +446,5 @@ def get_message():
 			})
 	return jsonify(list(message_lst))
 
-app.run(port=5000, debug=True)
+
+app.run(port=5000)

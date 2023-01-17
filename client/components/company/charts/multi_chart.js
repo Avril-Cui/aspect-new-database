@@ -9,7 +9,7 @@ const MultiChart = (props) => {
 
   const WAIT_TIME = 3000;
 
-  const [priceData, setPriceData] = useState([{"time": 0, "value": 0}])
+  const [priceData, setPriceData] = useState([{ time: 0, value: 0 }]);
   let LightweightChart = dynamic(() => import("./compMinChart"), {
     ssr: false,
   });
@@ -23,25 +23,24 @@ const MultiChart = (props) => {
       var data = '"wrkn"';
 
       var config = {
-        method: 'post',
-        url: 'http://localhost:5000/tick-graph',
-        headers: { 
-          'Content-Type': 'text/plain'
+        method: "post",
+        url: "http://localhost:5000/tick-graph",
+        headers: {
+          "Content-Type": "text/plain",
         },
-        data : data
+        data: data,
       };
 
       axios(config)
-      .then(function (response) {
-        setPriceData(response.data);
-      })
-      .catch(function (error) {
-        console.log(error);
-      });
+        .then(function (response) {
+          setPriceData(response.data);
+        })
+        .catch(function (error) {
+          console.log(error);
+        });
     }, WAIT_TIME);
     return () => clearInterval(data);
   }, [priceData]);
-
 
   return (
     <div>
@@ -55,12 +54,9 @@ const MultiChart = (props) => {
                   <button>3 MIN</button>
                 </td>
                 <td onClick={() => setChart(2)} className={styles.types}>
-                  <button>ADJUSTED</button>
+                  <button>HOUR</button>
                 </td>
-                <td
-                  className={styles.types}
-                  onClick={() => setChart(3)}
-                >
+                <td className={styles.types} onClick={() => setChart(3)}>
                   <button>DAY</button>
                 </td>
               </tr>
@@ -69,13 +65,10 @@ const MultiChart = (props) => {
         </div>
       </div>
 
-      {chart === 1 && (
-          priceData[0]["time"] !== 0 && (
-            <div>
-              <LightweightChart priceData={priceData} />
-            </div>
-          )
-
+      {chart === 1 && priceData[0]["time"] !== 0 && (
+        <div>
+          <LightweightChart priceData={priceData} />
+        </div>
       )}
       {chart === 2 && (
         <div>

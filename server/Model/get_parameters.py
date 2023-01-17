@@ -90,9 +90,8 @@ for index in range(len(file_names_index)):
 		"fund_weight": fund_weights_index[index]
 	}
 
-
 file_names_ast = ['gov_policy', 'normal', 'insider', 'normal', 'fs']
-length_ast = [80, 30, 70, 30, 100]
+length_ast = [85, 30, 75, 30, 100]
 fund_weights_ast = [0.6, 1, 0.75, 1, 0.75]
 params_ast = {}
 for index in range(len(file_names_ast)):
@@ -105,7 +104,7 @@ for index in range(len(file_names_ast)):
     }
 
 file_names_dsc = ['acquisition', 'normal', 'chip', 'normal']
-length_dsc = [140, 30, 100, 30]
+length_dsc = [145, 30, 105, 30]
 fund_weights_dsc = [0.9, 0.9, 0.9,1]
 params_dsc = {}
 for index in range(len(file_names_dsc)):

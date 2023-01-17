@@ -5,6 +5,7 @@ import { sanityClient, urlFor } from "../sanity";
 import { Post } from "../typings";
 import { useState, useEffect, useRef } from "react";
 import Search from "../components/search/search";
+import Head from "next/head";
 
 interface Props {
   posts: [Post];
@@ -13,7 +14,7 @@ interface Props {
 export default function Terminology({ posts }: Props) {
   const [isOpen, setIsOpen] = useState(false);
   const [searchField, setSearchField] = useState("");
-  const formRef:any = useRef();
+  const formRef: any = useRef();
 
   const togglePopup = () => {
     setIsOpen(true);
@@ -33,7 +34,7 @@ export default function Terminology({ posts }: Props) {
   };
 
   try {
-    const html:any = document.querySelector("html");
+    const html: any = document.querySelector("html");
     if (isOpen == true) {
       html.style.overflow = "hidden";
     } else {
@@ -43,6 +44,9 @@ export default function Terminology({ posts }: Props) {
 
   return (
     <div style={{ marginBottom: 200 }} className={styles.full_container}>
+      <Head>
+        <title>Financial Terminologies</title>
+      </Head>
       <p
         className={styles.title}
         style={isOpen ? { marginBottom: "-0.63em" } : { marginBottom: "0em" }}

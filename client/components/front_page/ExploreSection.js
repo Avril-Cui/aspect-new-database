@@ -8,8 +8,18 @@ import ExploreComp from "../simulator/ExploreComp";
 function ExploreSection(props) {
   const change = 1;
   const dispatch = useDispatch();
-  const WAIT_TIME = 3000;
+  const WAIT_TIME = 4000;
   let price_data = useSelector((state) => state.price.value);
+
+  const [graphData, setGraphData] = useState({
+    ast: [{ time: 0, value: 0 }],
+    dsc: [{ time: 0, value: 0 }],
+    fsin: [{ time: 0, value: 0 }],
+    hhw: [{ time: 0, value: 0 }],
+    jky: [{ time: 0, value: 0 }],
+    sgo: [{ time: 0, value: 0 }],
+    wrkn: [{ time: 0, value: 0 }],
+  });
 
   const [isPrice, setIsPrice] = useState(false);
   const loadingPrice = "N/A";
@@ -17,9 +27,27 @@ function ExploreSection(props) {
     const data = setInterval(() => {
       dispatch(requestPrice());
       setIsPrice(true);
+
+      var axios = require("axios");
+      var data = "";
+
+      var config = {
+        method: "post",
+        url: "http://127.0.0.1:5000/tick-graphs",
+        headers: {},
+        data: data,
+      };
+
+      axios(config)
+        .then(function (response) {
+          setGraphData(response.data);
+        })
+        .catch(function (error) {
+          console.log(error);
+        });
     }, WAIT_TIME);
     return () => clearInterval(data);
-  }, [isPrice, dispatch]);
+  }, [isPrice, dispatch, graphData]);
 
   const formatter = new Intl.NumberFormat("en-US", {
     minimumFractionDigits: 2,
@@ -49,6 +77,7 @@ function ExploreSection(props) {
               ? "#C9FFD1"
               : "#FD6565"
           }
+          data={graphData["ast"]}
         />
         <ExploreComp
           company={companies.dsc}
@@ -69,6 +98,7 @@ function ExploreSection(props) {
               ? "#C9FFD1"
               : "#FD6565"
           }
+          data={graphData["dsc"]}
         />
         <ExploreComp
           company={companies.fsin}
@@ -89,6 +119,7 @@ function ExploreSection(props) {
               ? "#C9FFD1"
               : "#FD6565"
           }
+          data={graphData["fsin"]}
         />
         <ExploreComp
           company={companies.hhw}
@@ -109,6 +140,7 @@ function ExploreSection(props) {
               ? "#C9FFD1"
               : "#FD6565"
           }
+          data={graphData["hhw"]}
         />
         <ExploreComp
           company={companies.jky}
@@ -129,6 +161,7 @@ function ExploreSection(props) {
               ? "#C9FFD1"
               : "#FD6565"
           }
+          data={graphData["jky"]}
         />
         <ExploreComp
           company={companies.sgo}
@@ -149,6 +182,7 @@ function ExploreSection(props) {
               ? "#C9FFD1"
               : "#FD6565"
           }
+          data={graphData["sgo"]}
         />
         <ExploreComp
           company={companies.wrkn}
@@ -169,6 +203,7 @@ function ExploreSection(props) {
               ? "#C9FFD1"
               : "#FD6565"
           }
+          data={graphData["wrkn"]}
         />
       </div>
     </div>

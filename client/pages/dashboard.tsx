@@ -1,18 +1,13 @@
 import { useState, useEffect } from "react";
 import TradeInput from "../components/dashboard/TradeInput";
 import ShowPortfolio from "../components/dashboard/ShowPortfolio";
-import dynamic from "next/dynamic";
+import Head from "next/head";
 import ShowCompValue from "../components/dashboard/ShowCompValue";
 import styles from "../styles/portfolio.module.css";
 import axios from "axios";
 import Cookies from "universal-cookie";
 import Header from "../components/Header/Header";
-const PortfolioChart = dynamic(
-  () => import("../components/dashboard/PortfolioChart"),
-  {
-    ssr: false,
-  }
-);
+import LeaderBoard3 from "../components/simulator/LeaderBoard3";
 
 const Home = (props: any) => {
   const cookies = new Cookies();
@@ -49,6 +44,9 @@ const Home = (props: any) => {
 
   return (
     <div>
+      <Head>
+        <title>Dashboard</title>
+      </Head>
       <Header />
       <div className={styles.container}>
         <div className={styles.center_container}>
@@ -76,11 +74,7 @@ const Home = (props: any) => {
                   <button className={styles.trade_btn} onClick={togglePopup}>
                     <p>Trade Stocks</p>
                   </button>
-                  {isOpen && (
-                    <TradeInput
-                      toggleClose={togglePopup}
-                    />
-                  )}
+                  {isOpen && <TradeInput toggleClose={togglePopup} />}
                 </div>
               </div>
             </div>
@@ -94,90 +88,11 @@ const Home = (props: any) => {
         </div>
 
         <div className={styles.center_container}>
-          <div
-            className={styles.inline}
-            style={{ marginTop: "1.5em", marginBottom: "7em" }}
-          >
-            <div>
-              <p className={styles.header}>PORTFOLIO PERFORMANCE CHART</p>
-              <div className={styles.chart_container}>
-                <div className={styles.chart}>
-                  <PortfolioChart />
-                </div>
-              </div>
-            </div>
+          <div style={{ marginTop: "1.5em", marginBottom: "7em" }}>
             <div style={{ marginLeft: "1em" }}>
               <p className={styles.header}>GAME RANKING</p>
-              <div className={styles.ranking_container}>
-                <table className={styles.user_table}>
-                  <tbody>
-                    <tr>
-                      <th>Rank</th>
-                      <th>User Name</th>
-                      <th>Net Worth</th>
-                    </tr>
-                    <tr>
-                      <td className={styles.ranking}>1</td>
-                      <td className={styles.normal}>Avril_Cui777</td>
-                      <td className={styles.normal}>$100,000,000</td>
-                    </tr>
-                    <tr>
-                      <td className={styles.ranking}>2</td>
-                      <td className={styles.normal}>KEYL</td>
-                      <td className={styles.normal}>$52,000,000</td>
-                    </tr>
-                    <tr>
-                      <td className={styles.ranking}>3</td>
-                      <td className={styles.normal}>CathieWoods</td>
-                      <td className={styles.normal}>$32,000,000</td>
-                    </tr>
-                    <tr>
-                      <td className={styles.ranking}>4</td>
-                      <td className={styles.normal}>Elon_Musk</td>
-                      <td className={styles.normal}>$22,000,000</td>
-                    </tr>
-                    <tr>
-                      <td className={styles.ranking}>5</td>
-                      <td className={styles.normal}>FriFrrrr</td>
-                      <td className={styles.normal}>$19,000,000</td>
-                    </tr>
-                    <tr>
-                      <td className={styles.ranking}>6</td>
-                      <td className={styles.normal}>GordonGakko</td>
-                      <td className={styles.normal}>$12,000,000</td>
-                    </tr>
-                    <tr>
-                      <td className={styles.ranking}>7</td>
-                      <td className={styles.normal}>GameMaster</td>
-                      <td className={styles.normal}>$10,000,000</td>
-                    </tr>
-                    <tr>
-                      <td className={styles.ranking}>8</td>
-                      <td className={styles.normal}>Krayon_?</td>
-                      <td className={styles.normal}>$8,000,000</td>
-                    </tr>
-                    <tr>
-                      <td className={styles.ranking}>9</td>
-                      <td className={styles.normal}>Friday_Cute</td>
-                      <td className={styles.normal}>$6,000,000</td>
-                    </tr>
-                    <tr>
-                      <td className={styles.ranking}>10</td>
-                      <td className={styles.normal}>Kelly777</td>
-                      <td className={styles.normal}>$5,000,000</td>
-                    </tr>
-                    <tr>
-                      <td className={styles.ranking}>11</td>
-                      <td className={styles.normal}>IceBreaker</td>
-                      <td className={styles.normal}>$4,000,000</td>
-                    </tr>
-                    <tr>
-                      <td className={styles.ranking}>12</td>
-                      <td className={styles.normal}>Dimond?</td>
-                      <td className={styles.normal}>$3,000,000</td>
-                    </tr>
-                  </tbody>
-                </table>
+              <div className={styles.leaderboard}>
+                <LeaderBoard3 />
               </div>
             </div>
           </div>

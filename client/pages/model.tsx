@@ -4,6 +4,7 @@ import TermsSection from "../components/terminology/terms_section";
 import Link from "next/link";
 import { sanityClient, urlFor } from "../sanity";
 import { Post } from "../typings";
+import Head from "next/head";
 
 interface Props {
   posts: [Post];
@@ -12,11 +13,14 @@ interface Props {
 export default function Model({ posts }: Props) {
   return (
     <div>
+      <Head>
+        <title>Model</title>
+      </Head>
       <p className={styles.title}>Useful Models For Financial Analysis</p>
       <div className={styles.style_description}>
         <p className={styles.description}>
-          Apply financial concepts and theories in investment decisions through Excel or programming
-          algorithms.
+          Apply financial concepts and theories in investment decisions through
+          Excel or programming algorithms.
         </p>
       </div>
 
@@ -26,41 +30,45 @@ export default function Model({ posts }: Props) {
         intro_text="This section introduces the classical Discounted Cash Flow Model (DCF). DCF commonly used in fundamental valuation approach and it looks for the 'intrinsic' value of companies. The model is built based on the Time Value of Money (TVM) theory, so we will first learn the TVM. Then, different components inside DCF will be introduced. By the end of this section, you will be able to construct your own DCF model using Excel."
         start_link="/post/swot"
       />
-      <div className={styles.container} style={{marginBottom: 100}}>
-      <div className={styles.scroll}>
-        <div className={styles.term_sections_cont}>
-          <div
-            className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 md:gap-6"
-            style={{ width: 1060 }}
-          >
-            {posts.map((post) => (
-              post.categories != null && post.categories._ref == "e242b86d-7cea-49b1-aeb9-312d45b3d319" ?
-              (<Link key={post._id} href={`/post/${post.slug.current}`}>
-                <div className={styles.img_border}>
-                  <img
-                    className={styles.img}
-                    src={urlFor(post.mainImage).url()!}
-                    alt=""
-                  />
-                  <div className={styles.text_cont}>
-                    <div>
-                      <p className={styles.section_title}>{post.title}</p>
-                      <p className={styles.section_text}>{post.description}</p>
+      <div className={styles.container} style={{ marginBottom: 100 }}>
+        <div className={styles.scroll}>
+          <div className={styles.term_sections_cont}>
+            <div
+              className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 md:gap-6"
+              style={{ width: 1060 }}
+            >
+              {posts.map((post) =>
+                post.categories != null &&
+                post.categories._ref ==
+                  "e242b86d-7cea-49b1-aeb9-312d45b3d319" ? (
+                  <Link key={post._id} href={`/post/${post.slug.current}`}>
+                    <div className={styles.img_border}>
+                      <img
+                        className={styles.img}
+                        src={urlFor(post.mainImage).url()!}
+                        alt=""
+                      />
+                      <div className={styles.text_cont}>
+                        <div>
+                          <p className={styles.section_title}>{post.title}</p>
+                          <p className={styles.section_text}>
+                            {post.description}
+                          </p>
+                        </div>
+                        <img
+                          className={styles.author_pic}
+                          src={urlFor(post.author.image).url()!}
+                          alt=""
+                        />
+                      </div>
                     </div>
-                    <img
-                      className={styles.author_pic}
-                      src={urlFor(post.author.image).url()!}
-                      alt=""
-                    />
-                  </div>
-                </div>
-              </Link>):null
-            ))}
+                  </Link>
+                ) : null
+              )}
+            </div>
           </div>
         </div>
       </div>
-      </div>
-
 
       <TermsSection
         section_num="Section Two"
@@ -69,44 +77,47 @@ export default function Model({ posts }: Props) {
         start_link="/post/swot"
       />
       <div className={styles.container}>
-      <div className={styles.scroll}>
-        <div className={styles.term_sections_cont}>
-          <div
-            className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 md:gap-6"
-            style={{ width: 1060 }}
-          >
-            {posts.map((post) => (
-              post.categories != null && post.categories._ref == "abc7e3c9-97a5-4ea7-9e0f-200a04849e30" ?
-              (<Link key={post._id} href={`/post/${post.slug.current}`}>
-                <div className={styles.img_border}>
-                  <img
-                    className={styles.img}
-                    src={urlFor(post.mainImage).url()!}
-                    alt=""
-                  />
-                  <div className={styles.text_cont}>
-                    <div>
-                      <p className={styles.section_title}>{post.title}</p>
-                      <p className={styles.section_text}>{post.description}</p>
+        <div className={styles.scroll}>
+          <div className={styles.term_sections_cont}>
+            <div
+              className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 md:gap-6"
+              style={{ width: 1060 }}
+            >
+              {posts.map((post) =>
+                post.categories != null &&
+                post.categories._ref ==
+                  "abc7e3c9-97a5-4ea7-9e0f-200a04849e30" ? (
+                  <Link key={post._id} href={`/post/${post.slug.current}`}>
+                    <div className={styles.img_border}>
+                      <img
+                        className={styles.img}
+                        src={urlFor(post.mainImage).url()!}
+                        alt=""
+                      />
+                      <div className={styles.text_cont}>
+                        <div>
+                          <p className={styles.section_title}>{post.title}</p>
+                          <p className={styles.section_text}>
+                            {post.description}
+                          </p>
+                        </div>
+                        <img
+                          className={styles.author_pic}
+                          src={urlFor(post.author.image).url()!}
+                          alt=""
+                        />
+                      </div>
                     </div>
-                    <img
-                      className={styles.author_pic}
-                      src={urlFor(post.author.image).url()!}
-                      alt=""
-                    />
-                  </div>
-                </div>
-              </Link>):null
-            ))}
+                  </Link>
+                ) : null
+              )}
+            </div>
           </div>
         </div>
       </div>
-      </div>
-
-
     </div>
   );
-};
+}
 
 export const getStaticProps = async () => {
   const query = `*[_type == "post"]{
@@ -131,4 +142,3 @@ export const getStaticProps = async () => {
     },
   };
 };
-

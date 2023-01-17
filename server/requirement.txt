@@ -6,4 +6,4 @@ datetime==4.7
 flask_httpauth==4.7.0
 numpy==1.22.3
 pandas
-sklearn
+scikit-learn

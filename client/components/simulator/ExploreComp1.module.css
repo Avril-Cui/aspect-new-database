@@ -1,0 +1,209 @@
+.container {
+  margin-left: -1.5em;
+}
+
+.header {
+  font-size: 18px;
+  font-weight: 300;
+  color: #c9ffd1;
+  padding-left: 1em;
+  padding-top: 0.5em;
+}
+
+.inline {
+  display: inline-flex;
+}
+
+.logo_container {
+  width: 54px;
+  height: 54px;
+  border: 2px solid #707070;
+  border-radius: 100px;
+}
+
+.logo_container {
+  font-weight: 500;
+  font-size: 28px;
+  text-align: center;
+  padding: 5px 0;
+  color: #4b4b4b;
+}
+
+.comp_name {
+  color: #ffffff;
+  font-size: 24px;
+  font-weight: 400;
+  margin-left: 0.25em;
+  margin-top: -0.25em;
+}
+
+.comp_full_name {
+  color: #a5a5a5;
+  font-size: 16px;
+  font-weight: 300;
+  margin-left: 0.5em;
+  margin-top: -0.3em;
+}
+
+.price {
+  margin-top: 0.4em;
+  color: #ffffff;
+  font-size: 28px;
+  font-weight: 400;
+  margin-left: 0.25em;
+}
+
+.price span {
+  color: #a5a5a5;
+  font-size: 16px;
+  font-weight: 300;
+}
+
+.price_change {
+  margin-top: 1.9em;
+  margin-left: 1em;
+  color: #c9ffd1;
+  font-size: 14px;
+  font-weight: 300;
+}
+
+.stats_table {
+  margin-left: -0.75em;
+  margin-top: 0.5em;
+}
+
+.stats_table_left {
+  text-align: left;
+  padding: 0.35em 1em;
+  color: #a5a5a5;
+  font-size: 14px;
+  font-weight: 300;
+}
+
+.stats_table_right {
+  text-align: right;
+  padding: 0.35em 1em;
+  font-size: 14px;
+  font-weight: 300;
+  color: #ffffff;
+}
+
+.overview {
+  font-size: 18px;
+  font-weight: 400;
+  color: #eeeeee;
+  margin-left: 3em;
+  margin-top: 0.5em;
+}
+
+.overview_text {
+  font-size: 14px;
+  font-weight: 300;
+  color: #a5a5a5;
+  margin-left: 4em;
+  margin-top: 0.5em;
+  width: 450px;
+}
+
+.split {
+  height: 2em;
+  width: 100%;
+  border-top: 1px solid #a5a5a5;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+.container_news {
+  padding-left: 1em;
+  padding-right: 1em;
+  padding-top: 0.7em;
+  margin-bottom: 1em;
+  border-radius: 10px;
+  margin-left: 1em;
+  margin-right: 1em;
+  border: 0.6px solid #2e2e2e;;
+}
+
+.container_news:hover {
+  border: 0.75px solid #c9ffd1;;
+  cursor: pointer;
+}
+
+.section_title_comp {
+  color: #e7e7e7;
+  font-size: 18px;
+  font-weight: 400;
+}
+
+.section_text_comp {
+  color: #c1c1c1;
+  font-size: 14px;
+  font-weight: 300;
+  width: 20em;
+  padding-top: 1.5em;
+  height: 4.25em;
+}
+
+.post_detail_comp {
+  color: #c9ffd1;
+  font-size: 16px;
+  font-weight: 400;
+  margin-top: 0.25em;
+  margin-left: 0.7em;
+}
+
+.author_pic{
+  width: 34px;
+  height: 34px;
+  border-radius: 100px;
+}
+
+.date_passage {
+  color: #aaaaaa;
+  font-size: 14px;
+  font-weight: 400;
+  margin-top: 0.5em;
+  margin-left: 11em;
+}
+
+.like_button {
+  width: 4em;
+  height: 2em;
+  border: 1px solid #515151;
+  border-radius: 10px;
+  /* margin-left: 1em; */
+  margin-top: 0.25em;
+  margin-bottom: 0.5em;
+}
+
+.like_button:focus {
+  background-color: #3f9d57;
+}
+
+.like_num {
+  font-family: "Roboto";
+  font-style: normal;
+  font-weight: 300;
+  font-size: 14px;
+  color: #ffffff;
+  padding-left: 0.5em;
+}
+
+.message_button {
+  width: 4em;
+  height: 2em;
+  border: 1px solid #515151;
+  border-radius: 10px;
+  margin-left: 1em;
+  margin-top: 0.25em;
+  margin-bottom: 0.5em;
+}

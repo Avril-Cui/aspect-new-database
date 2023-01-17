@@ -2,12 +2,11 @@ import React from "react";
 import styles from "./ExploreComp.module.css";
 import dynamic from "next/dynamic";
 
-const OverviewMiniChart = dynamic(() => import("./OverviewChart"), {
+const OverviewChart = dynamic(() => import("./OverviewMiniChart"), {
   ssr: false,
 });
 
 function ExploreComp(props: any) {
-  // console.log(props.company.price)
   return (
     <div className={styles.container}>
       <div
@@ -79,8 +78,8 @@ function ExploreComp(props: any) {
           <p className={styles.overview}>Company Overview</p>
           <div className={styles.overview_text}>{props.company.overview2}</div>
         </div>
-        <div style={{ marginLeft: "2em" }}>
-          <OverviewMiniChart comp_name={props.company.id}/>
+        <div style={{ marginLeft: "4em" }}>
+          <OverviewChart {...props} data={props.data}></OverviewChart>;
         </div>
       </div>
     </div>

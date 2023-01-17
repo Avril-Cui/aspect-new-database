@@ -5,10 +5,11 @@
 }
 
 .wrong_text{
-    margin-top: 1em;
+    margin-top: 0.5em;
     color: #ff6767;
     font-size: 16px;
     font-weight: 300;
+    margin-bottom: -1.75em;
 }
 
 .log_in{
@@ -87,7 +88,7 @@
 
 .sign_in{
     font-weight: 300;
-    font-size: 20px;
+    font-size: 18px;
     text-align: center;
     color: #FFFFFF;
 }
@@ -101,6 +102,6 @@
 }
 
 .sign_in_container{
-    margin-top: -7em;
     text-align: center;
+    margin-top: -3em;
 }
