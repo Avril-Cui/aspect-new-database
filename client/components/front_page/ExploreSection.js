@@ -88,7 +88,7 @@ function ExploreSection(props) {
           pct_change={
             isPrice ? formatter.format(price_data["dsc"]["pct_change"]) : "N/A"
           }
-          background="#9bf3ff"
+          background="#F2C14E"
           color={
             isPrice
               ? price_data["dsc"]["change"] > 0
@@ -109,7 +109,7 @@ function ExploreSection(props) {
           pct_change={
             isPrice ? formatter.format(price_data["fsin"]["pct_change"]) : "N/A"
           }
-          background="#91a1fb"
+          background="#F1FFC4"
           color={
             isPrice
               ? price_data["fsin"]["change"] > 0
@@ -130,7 +130,7 @@ function ExploreSection(props) {
           pct_change={
             isPrice ? formatter.format(price_data["hhw"]["pct_change"]) : "N/A"
           }
-          background="#b691fb"
+          background="#C6E2E9"
           color={
             isPrice
               ? price_data["hhw"]["change"] > 0
@@ -151,7 +151,7 @@ function ExploreSection(props) {
           pct_change={
             isPrice ? formatter.format(price_data["jky"]["pct_change"]) : "N/A"
           }
-          background="#cc78e6"
+          background="#8EF9F3"
           color={
             isPrice
               ? price_data["jky"]["change"] > 0
@@ -172,7 +172,7 @@ function ExploreSection(props) {
           pct_change={
             isPrice ? formatter.format(price_data["sgo"]["pct_change"]) : "N/A"
           }
-          background="#e67878"
+          background="#FFFC99"
           color={
             isPrice
               ? price_data["sgo"]["change"] > 0
@@ -193,7 +193,7 @@ function ExploreSection(props) {
           pct_change={
             isPrice ? formatter.format(price_data["wrkn"]["pct_change"]) : "N/A"
           }
-          background="#e6d278"
+          background="#B1F8F2"
           color={
             isPrice
               ? price_data["wrkn"]["change"] > 0

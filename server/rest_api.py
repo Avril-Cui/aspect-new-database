@@ -3,7 +3,7 @@ from flask import Flask, request, jsonify, request
 import pyrebase
 from User.user_database import UserDatabaseCommands
 import time
-import numpy as np
+# import numpy as np
 from flask_cors import CORS
 import uuid
 from datetime import datetime
@@ -447,4 +447,4 @@ def get_message():
 	return jsonify(list(message_lst))
 
 
-app.run(port=5000)
+app.run(port=3000)

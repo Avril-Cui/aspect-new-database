@@ -70,6 +70,7 @@
   height: 10em;
   width: 100%;
   object-fit: cover;
+  margin-bottom: 0.25em;
 }
 
 .img:hover {

@@ -367,7 +367,7 @@ export default function Terminology({ posts }: Props) {
       <TermsSection
         section_num="Section Seven"
         section_name="OTHER"
-        intro_text="This section will contain the miscellaneous topics in finance. Some of the covered topics include commonly used qualitative framework and introduction to the ESG analysis. These topics are small but are either popular or essential in finance, therefore, it is important to understand these concepts and incorporate them in our financial analysis. In the future, it is possible that these topics will form their own categories."
+        intro_text="This section will contain the miscellaneous topics in finance. Some of the covered topics include commonly used qualitative framework and introduction to computational models. These topics are small but are either popular or essential in finance, therefore, it is important to understand these concepts and incorporate them in our financial analysis. In the future, it is possible that these topics will form their own categories."
         start_link="/post/swot"
       />
       <div className={styles.container}>

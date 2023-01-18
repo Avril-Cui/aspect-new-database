@@ -1,12 +1,12 @@
 import React from "react";
-import graph from "../../../../image/stats/balance.png";
-import Image from "next/image";
+// import graph from "../../../../image/stats/balance.png";
+// import Image from "next/image";
 import styles from "../stats.module.css";
 import { useState } from "react";
 import Income from "./is";
 import CashFlow from "./cs";
 
-function Balance() {
+function Balance(props:any) {
   const [chart, setChart] = useState("balance");
   return (
     <div>
@@ -29,7 +29,13 @@ function Balance() {
             </tr>
           </table>
           <div className={styles.graph} style={{ marginTop: "-3em" }}>
-            <Image src={graph} width="400px" height="320px" alt=""/>
+            <img
+              src={`/stats/${props.company_name}/balance.png`}
+              alt=""
+              width="400px"
+              height="320px"
+            />
+            {/* <Image src={graph} width="400px" height="320px" alt="" /> */}
           </div>
           <div className={styles.valuation_text}>
             <p style={{ marginBottom: "0.5em" }}>
