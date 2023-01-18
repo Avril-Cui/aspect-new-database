@@ -5,7 +5,7 @@ uuid==1.30
 datetime==4.7
 flask_httpauth==4.7.0
 numpy==1.21.6
+psycopg2-binary~=2.8.6
 pandas
 scikit-learn
 pyrebase 
-psycopg2
