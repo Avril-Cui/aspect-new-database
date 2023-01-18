@@ -19,4 +19,4 @@ RUN npm run build
 
 WORKDIR /app/server
 ENV FLASK_APP = rest_api.py
-CMD [ "python", "rest_api.py" ]
+CMD [ "python3.7", "rest_api.py" ]
