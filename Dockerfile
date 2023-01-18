@@ -1,10 +1,14 @@
-FROM node:16-alpine
+FROM node:16-buster
 ENV PYTHONUNBUFFERED=1
-RUN apk add --update --no-cache python3 python3-dev py3-pip gcc gfortran g++ libgfortran openblas-dev openblas musl-dev linux-headers g++
+RUN apt update
+RUN apt install -y --no-install-recommends python3.7-minimal python3.7 
+RUN apt install -y --no-install-recommends python3.7-numpy python3-pandas python3-pip
+RUN apt install -y python3-setuptools
 
 WORKDIR /app/server
 COPY server/requirement.txt server/
-RUN pip --disable-pip-version-check install --no-compile -r server/requirement.txt
+RUN pip3 install --upgrade pip
+RUN pip3 install -r server/requirement.txt
 
 WORKDIR /app
 COPY . .
