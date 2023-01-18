@@ -1,35 +1,19 @@
+version: "2.1"
 
-version: '3.8'
 services:
-  db:
-    image: postgres:14.1-alpine
-    restart: always
+  postgres:
+    image: postgres
+    container_name: postgres
     environment:
-      - POSTGRES_USER=postgres
-      - POSTGRES_PASSWORD=Xiaokeai0717
-      - POSTGRES_DB=aspect
+      POSTGRES_PASSWORD: example
+      POSTGRES_USER: postgres
     ports:
-      - '10:10'
-    volumes: 
-      - db:/var/lib/postgresql/data
-      - ./db/init.sql:/docker-entrypoint-initdb.d/create_tables.sql
-  api:
-    container_name: aspect
-    build: ./
-    depends_on:
-      - db
+      - 5432:5432
+    mem_limit: 128m
+
+  postgres_admin:
+    image: adminer
+    container_name: postgres-admin
     ports:
-      - 3000:3000
-    environment:
-      DB_HOST: db
-      DB_PORT: 10
-      DB_USER: postgres
-      DB_PASSWORD: Xiaokeai0717
-      DB_NAME: aspect
-    links:
-      - db
-    volumes:
-      - './:/src'
-volumes:
-  db:
-    driver: local
+      - 9095:8080
+    mem_limit: 128m
