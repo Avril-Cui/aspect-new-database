@@ -8,4 +8,4 @@ numpy==1.21.6
 pandas
 scikit-learn
 pyrebase
-psycopg2-binary
+psycopg2

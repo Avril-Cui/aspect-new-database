@@ -2,7 +2,7 @@ FROM node:16-buster
 ENV PYTHONUNBUFFERED=1
 RUN apt update
 RUN apt install -y --no-install-recommends python3.7-minimal python3.7 
-RUN apt install -y --no-install-recommends python3.7-numpy python3-pandas python3-pip
+RUN apt install -y --no-install-recommends python3.7-numpy python3-pandas python3-pip libpq-dev python3-dev
 RUN apt install -y python3-setuptools
 
 WORKDIR /app/server
