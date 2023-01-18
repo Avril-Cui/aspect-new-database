@@ -5,7 +5,7 @@ services:
     image: postgres
     container_name: postgres
     environment:
-      POSTGRES_PASSWORD: example
+      POSTGRES_PASSWORD: Xiaokeai0717
       POSTGRES_USER: postgres
     ports:
       - 5432:5432
