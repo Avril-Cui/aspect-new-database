@@ -14,7 +14,8 @@ const Chat = dynamic(() => import("../../components/company/chat/Chat"), {
 });
 import MainPage from "../../components/company/stats/MainPage";
 import CompanyInfo from "../../companies";
-import TradeInput from "../../components/company/TradeInput"
+import TradeInput from "../../components/company/TradeInput";
+import Head from "next/head";
 
 interface Props {
   individual: any;
@@ -23,15 +24,20 @@ interface Props {
 }
 
 export default function Wakron({ individual, posts, company_name }: Props) {
-  console.log(company_name)
+  console.log(company_name);
   return (
     <div className={styles.container}>
+      <Head>
+        <title>{company_name.toUpperCase()} Profile</title>
+      </Head>
       <div key={individual.id}>
-        <CompHeader
-          CompanyName={individual.id}
-          CompanyShortName={individual.short_name}
-          CompanyFullName={individual.name}
-        />
+        <div className={styles.center}>
+          <CompHeader
+            CompanyName={individual.id}
+            CompanyShortName={individual.short_name}
+            CompanyFullName={individual.name}
+          />
+        </div>
         <div className={styles.center_container}>
           <div className={styles.first_layer}>
             <div className={styles.price_chart}>
@@ -114,7 +120,7 @@ export default function Wakron({ individual, posts, company_name }: Props) {
 
         <div className={styles.center_container}>
           <div className={styles.second_layer}>
-           <TradeInput comp_name={company_name}/>
+            <TradeInput comp_name={company_name} />
 
             <div className={styles.comp_overview}>
               <div className={styles.dimension_container}>
@@ -175,7 +181,7 @@ export default function Wakron({ individual, posts, company_name }: Props) {
 
         <div className={styles.center_container}>
           <div className={styles.day_chart}>
-            <p className={styles.title_text}>Company Activity Timeline</p>
+            <p className={styles.title_text}>Company Activity Timeline - Will Be Refined Next Season!</p>
             <WrknDayChart CompanyName={individual.id} />
           </div>
         </div>
@@ -188,7 +194,7 @@ export default function Wakron({ individual, posts, company_name }: Props) {
 
             <div className={styles.stats_container}>
               <p className={styles.title_text}>Company Statistics</p>
-              <MainPage />
+              <MainPage company_name={company_name}/>
             </div>
           </div>
         </div>

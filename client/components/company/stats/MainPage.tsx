@@ -6,7 +6,7 @@ import CashFlow from "./Pages/cs";
 import Valuation from "./Pages/valuation";
 import { useState } from "react";
 
-const MainPage = () => {
+const MainPage = (props:any) => {
   const [chart, setChart] = useState("valuation");
 
   return (
@@ -37,11 +37,11 @@ const MainPage = () => {
         </div>
       </div>
 
-      {chart === "valuation" && <div><Valuation/></div>}
-      {chart === "income" && <div><Income /></div>}
-      {chart === "balance" && <div><Balance /></div>}
-      {chart === "cashflow" && <div><CashFlow /></div>}
-      {chart === "dividend" && <div><Dividend /></div>}
+      {chart === "valuation" && <div><Valuation company_name={props.company_name}/></div>}
+      {chart === "income" && <div><Income company_name={props.company_name}/></div>}
+      {chart === "balance" && <div><Balance company_name={props.company_name}/></div>}
+      {chart === "cashflow" && <div><CashFlow company_name={props.company_name}/></div>}
+      {chart === "dividend" && <div><Dividend company_name={props.company_name}/></div>}
 
 
     </div>

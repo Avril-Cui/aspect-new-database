@@ -2,6 +2,11 @@
   margin-top: 4.5em;
 }
 
+.center{
+  display: table;
+  margin: 0em auto;
+}
+
 .center_container {
   display: table;
   margin: 0em auto 1.5em auto;
@@ -12,26 +17,26 @@
 }
 
 .top_container {
+  /* width: 100%; */
   display: table;
-  margin: 0em auto 1.5em auto;
+  margin: 1.5em auto;
+  /* margin-left: -8em; */
   padding: 0.3em 0em;
+  margin-top: 0em;
   margin-bottom: 2.25em;
 }
 
 .header_container {
-  /* width: 75em; */
-  width: 98.6vw;
+  width: 100vw;
   background-color: #1b1b1b;
-  /* border-radius: 10px; */
   opacity: 1;
-  /* margin-top: 1.5em; */
   padding-bottom: 2em;
   padding-top: 2em;
 }
 
 .container_mid{
   width: 75em;
-  margin-left: 7em;
+  /* margin-left: 7em; */
 }
 
 .comp_logo {
@@ -289,7 +294,7 @@
 }
 
 .trade_container {
-  background-color: #2d2d2d;
+  background-color: #1d1d1d;
   border-radius: 6px;
   opacity: 1;
   padding-bottom: 1.1em;
@@ -297,7 +302,7 @@
 }
 
 .trade_stock_content {
-  background-color: #292929;
+  background-color: #1d1d1d;
   margin-left: 1em;
   margin-top: 1em;
   margin-right: 1em;

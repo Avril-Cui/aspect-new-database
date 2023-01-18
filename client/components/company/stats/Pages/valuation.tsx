@@ -1,11 +1,11 @@
 import React from "react";
-import graph from "../../../../image/stats/valuation.png";
-import Image from "next/image";
+// import graph from "../../../../image/stats/valuation.png";
+// import Image from "next/image";
 import styles from "../stats.module.css";
 import { useState } from "react";
 import Income from "./is";
 
-function Valuation() {
+function Valuation(props: any) {
   const [chart, setChart] = useState("valuation");
 
   return (
@@ -15,18 +15,24 @@ function Valuation() {
           {" "}
           <table className={styles.info_table}>
             <tbody>
-            <tr>
-              <th>Last Updated Data</th>
-              <th>Next Update</th>
-            </tr>
-            <tr>
-              <td className={styles.normal_color}>Jul 15, 2022</td>
-              <td className={styles.normal_color}>TBD</td>
-            </tr>
+              <tr>
+                <th>Last Updated Data</th>
+                <th>Next Update</th>
+              </tr>
+              <tr>
+                <td className={styles.normal_color}>Jul 15, 2022</td>
+                <td className={styles.normal_color}>TBD</td>
+              </tr>
             </tbody>
           </table>
-          <div className={styles.graph}>
-            <Image src={graph} width="410px" height="310px" alt=""/>
+          <div className={styles.graph} style={{marginTop: "-3.5em"}}>
+            <img
+              src={`/stats/${props.company_name}/valuation.png` }
+              alt=""
+              width="410px"
+              height="280px"
+            />
+            {/* <Image src={graph} width="410px" height="310px" alt=""/> */}
           </div>
           <div className={styles.valuation_text}>
             <p style={{ marginBottom: "0.5em" }}>
@@ -48,18 +54,18 @@ function Valuation() {
           <div style={{ marginTop: "-21em" }}>
             <table className={styles.stats_data_table}>
               <tbody>
-              <tr>
-                <td className={styles.data_type}>Price-to-Earning (P/E)</td>
-                <td className={styles.data}>73.8</td>
-              </tr>
-              <tr>
-                <td className={styles.data_type}>Price-to-Book (P/B)</td>
-                <td className={styles.data}>4.54</td>
-              </tr>
-              <tr>
-                <td className={styles.data_type_l}>Price-to-Sales (P/S)</td>
-                <td className={styles.data_l}>8.24</td>
-              </tr>
+                <tr>
+                  <td className={styles.data_type}>Price-to-Earning (P/E)</td>
+                  <td className={styles.data}>73.8</td>
+                </tr>
+                <tr>
+                  <td className={styles.data_type}>Price-to-Book (P/B)</td>
+                  <td className={styles.data}>4.54</td>
+                </tr>
+                <tr>
+                  <td className={styles.data_type_l}>Price-to-Sales (P/S)</td>
+                  <td className={styles.data_l}>8.24</td>
+                </tr>
               </tbody>
             </table>
           </div>

@@ -1,11 +1,11 @@
 import React from "react";
-import graph from "../../../../image/stats/dividend.png";
-import Image from "next/image";
+// import graph from "../../../../image/stats/dividend.png";
+// import Image from "next/image";
 import styles from "../stats.module.css";
 import { useState } from "react";
 import CashFlow from "./cs";
 
-function Dividend() {
+function Dividend(props: any) {
   const [chart, setChart] = useState("dividend");
   return (
     <div>
@@ -28,16 +28,24 @@ function Dividend() {
             </tr>
           </table>
           <div className={styles.graph}>
-            <Image src={graph} width="410px" height="280px" alt=""/>
+            <img
+              src={`/stats/${props.company_name}/dividend.png`}
+              alt=""
+              width="410px"
+              height="280px"
+            />
+            {/* <Image src={graph} width="410px" height="280px" alt="" /> */}
           </div>
           <div className={styles.valuation_text}>
             <p style={{ marginBottom: "0.5em" }}>
               <span className={styles.symbol_g}>✓</span>{" "}
-              <span className={styles.ratio_type_g}>Market:</span> Above-market-average dividend rate.
+              <span className={styles.ratio_type_g}>Market:</span>{" "}
+              Above-market-average dividend rate.
             </p>
             <p style={{ marginBottom: "0.5em" }}>
               <span className={styles.symbol_g}>✓</span>{" "}
-              <span className={styles.ratio_type_g}>Industry:</span> Above-industry-average dividend rate.
+              <span className={styles.ratio_type_g}>Industry:</span>{" "}
+              Above-industry-average dividend rate.
             </p>
           </div>
           <div style={{ marginTop: "-18.5em" }}>

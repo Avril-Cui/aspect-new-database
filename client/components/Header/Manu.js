@@ -14,12 +14,12 @@ const Manu = () => {
   const cookies = new Cookies();
   const userData = cookies.get("userData");
 
-  const news_sections = {
-    one: "Today's News",
-    two: "Global Market",
-    three: "Economics",
-    four: "Technology",
-  };
+  // const news_sections = {
+  //   one: "Today's News",
+  //   two: "Global Market",
+  //   three: "Economics",
+  //   four: "Technology",
+  // };
   const terms_sections = {
     one: "Accounting",
     two: "Valuation",
@@ -56,7 +56,7 @@ const Manu = () => {
             <a>Game</a>
           </Link>
         </div>
-        <div>
+        {/* <div>
           <Dropdown
             link={"/news"}
             content={news_sections}
@@ -66,7 +66,7 @@ const Manu = () => {
               <a className={styles.news}>News</a>
             </Link>
           </Dropdown>
-        </div>
+        </div> */}
         <div>
           <Dropdown
             link={"/terms"}

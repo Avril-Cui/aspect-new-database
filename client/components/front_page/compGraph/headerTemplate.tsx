@@ -1,8 +1,14 @@
 import styles from "../overview_charts.module.css";
+import Link from "next/link";
 
 function HeaderTemplate(props: any) {
+  const comp_name = props.comp_name.toLowerCase()
+  let route = "/"
+  if (comp_name != "apinx"){
+    route = `/company/${comp_name}`
+  }
   return (
-    <div>
+    <Link href={route}>
         <button
           className={
             props.category == 1
@@ -26,7 +32,7 @@ function HeaderTemplate(props: any) {
             </div>
           </div>
         </button>
-      </div>
+      </Link>
   );
 }
 

@@ -2,7 +2,7 @@ import psycopg2
 import time
 
 conn = psycopg2.connect(
-    host="localhost",
+    host="0.0.0.0",
     database="aspect",
     user="postgres",
     password="Xiaokeai0717")
@@ -243,7 +243,7 @@ UserDatabaseCommands.create_user_table()
 UserDatabaseCommands.create_portfolio_table()
 UserDatabaseCommands.create_trade_history_table()
 
-UserDatabaseCommands.intialize_user('Avril', 'avrilcui')
+# UserDatabaseCommands.intialize_user('Avril', 'avrilcui')
 # print(UserDatabaseCommands.get_total_rank())
 # # UserDatabaseCommands.trade_stock('Avril', 10, 50, 50, "wrkn")
 # # time.sleep(1)

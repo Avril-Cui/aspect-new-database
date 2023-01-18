@@ -1,12 +1,12 @@
 import React from "react";
-import graph from "../../../../image/stats/cashflow.png";
-import Image from "next/image";
+// import graph from "../../../../image/stats/cashflow.png";
+// import Image from "next/image";
 import styles from "../stats.module.css";
 import { useState } from "react";
 import Balance from "./bs";
 import Dividend from "./dividend";
 
-function CashFlow() {
+function CashFlow(props: any) {
   const [chart, setChart] = useState("cashflow");
   return (
     <div>
@@ -29,7 +29,13 @@ function CashFlow() {
             </tr>
           </table>
           <div className={styles.graph}>
-            <Image src={graph} width="410px" height="280px" alt=""/>
+            <img
+              src={`/stats/${props.company_name}/cashflow.png`}
+              alt=""
+              width="410px"
+              height="280px"
+            />
+            {/* <Image src={graph} width="410px" height="280px" alt=""/> */}
           </div>
           <div className={styles.valuation_text}>
             <p style={{ marginBottom: "0.5em" }}>
