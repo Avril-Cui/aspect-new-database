@@ -17,8 +17,6 @@ WORKDIR /app/client
 RUN npm i next
 RUN npm run build
 
-RUN pip install urllib3
-RUN pip3 install pyrebase
 WORKDIR /app/server
 ENV FLASK_APP = rest_api.py
 CMD [ "python", "rest_api.py" ]

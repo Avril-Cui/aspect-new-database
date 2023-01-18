@@ -7,5 +7,3 @@ flask_httpauth==4.7.0
 numpy==1.21.6
 pandas
 scikit-learn
-psycopg2-binary~=2.9.5
-pyrebase
