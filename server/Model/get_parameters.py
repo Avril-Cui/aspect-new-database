@@ -13,7 +13,7 @@ from sklearn.linear_model import LinearRegression
 
 def macro(file):
     comp_price_df = pd.read_csv(file)
-    stock_price = comp_price_df["Adj Close"].to_list()
+    stock_price = comp_price_df["Adj Close"].tolist()
 
     sampling_price_list = []
     for index in range(len(stock_price)):
@@ -84,7 +84,7 @@ index_params_index = {}
 for index in range(len(file_names_index)):
 	name = file_names_index[index]
 	index_params_index[name] = {
-		"macro": macro(f"server/Model/historical_price/index_data/{name}.csv"),
+		"macro": macro("/app/server/Model/historical_price/index_data/{}.csv".format(name)),
 		"scale_lamb": 120,
 		"scale_mu": 130,
 		"fund_weight": fund_weights_index[index]
@@ -97,7 +97,7 @@ params_ast = {}
 for index in range(len(file_names_ast)):
     name = file_names_ast[index]
     params_ast[name] = {
-        "macro": macro(f"server/Model/historical_price/AST/{name}.csv"),
+        "macro": macro("/app/server/Model/historical_price/AST/{}.csv".format(name)),
         "scale_lamb": 100,
         "scale_mu": 110,
         "fund_weight": fund_weights_ast[index]
@@ -110,7 +110,7 @@ params_dsc = {}
 for index in range(len(file_names_dsc)):
     name = file_names_dsc[index]
     params_dsc[name] = {
-        "macro": macro(f"server/Model/historical_price/DSC/{name}.csv"),
+        "macro": macro("/app/server/Model/historical_price/DSC/{}.csv".format(name)),
         "scale_lamb": 100,
         "scale_mu": 110,
         "fund_weight": fund_weights_dsc[index]
@@ -123,7 +123,8 @@ params_fsin = {}
 for index in range(len(file_names_fsin)):
     name = file_names_fsin[index]
     params_fsin[name] = {
-        "macro": macro(f"server/Model/historical_price/FSIN/{name}.csv"),
+        "macro": macro("/app/server/Model/historical_price/FSIN/{}.csv".format(name)),
+        
         "scale_lamb": 100,
         "scale_mu": 110,
         "fund_weight": fund_weights_fsin[index]
@@ -136,7 +137,7 @@ params_hhw = {}
 for index in range(len(file_names_hhw)):
     name = file_names_hhw[index]
     params_hhw[name] = {
-        "macro": macro(f"server/Model/historical_price/HHW/{name}.csv"),
+        "macro": macro("/app/server/Model/historical_price/HHW/{}.csv".format(name)),
         "scale_lamb": 100,
         "scale_mu": 110,
         "fund_weight": fund_weights_hhw[index]
@@ -149,7 +150,7 @@ params_jky = {}
 for index in range(len(file_names_jky)):
     name = file_names_jky[index]
     params_jky[name] = {
-        "macro": macro(f"server/Model/historical_price/JKY/{name}.csv"),
+        "macro": macro("/app/server/Model/historical_price/JKY/{}.csv".format(name)),
         "scale_lamb": 100,
         "scale_mu": 110,
         "fund_weight": fund_weights_jky[index]
@@ -162,7 +163,7 @@ params_sgo = {}
 for index in range(len(file_names_sgo)):
     name = file_names_sgo[index]
     params_sgo[name] = {
-        "macro": macro(f"server/Model/historical_price/SGO/{name}.csv"),
+        "macro": macro("/app/server/Model/historical_price/SGO/{}.csv".format(name)),
         "scale_lamb": 100,
         "scale_mu": 110,
         "fund_weight": fund_weights_sgo[index]
@@ -175,7 +176,7 @@ params_wrkn = {}
 for index in range(len(file_names_wrkn)):
     name = file_names_wrkn[index]
     params_wrkn[name] = {
-        "macro": macro(f"server/Model/historical_price/WRKN/{name}.csv"),
+        "macro": macro("/app/server/Model/historical_price/WRKN/{}.csv".format(name)),
         "scale_lamb": 100,
         "scale_mu": 110,
         "fund_weight": fund_weights_wrkn[index]

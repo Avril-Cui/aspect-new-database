@@ -1,7 +1,12 @@
 version: "2.1"
 
 services:
-  postgres:
+  web:
+    build: .
+    ports:
+      - 5000:5000
+
+  db:
     image: postgres
     container_name: postgres
     environment:

@@ -2,13 +2,26 @@ import psycopg2
 import time
 
 conn = psycopg2.connect(
-    host="localhost",
-    database="aspect",
+    host="db",
+    database="postgres",
     user="postgres",
     password="Xiaokeai0717")
+conn.autocommit = True
 
 cur = conn.cursor()
+cur.execute("DROP DATABASE IF EXISTS aspectdatabase;")
+sql = ''' CREATE database aspectdatabase ''';
+cur.execute(sql)
+conn.commit()
 
+conn = psycopg2.connect(
+    host="db",
+    database="aspectdatabase",
+    user="postgres",
+    password="Xiaokeai0717")
+conn.autocommit = True
+
+cur = conn.cursor()
 
 class UserDatabaseCommands:
 
