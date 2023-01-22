@@ -13,7 +13,7 @@ services:
       POSTGRES_PASSWORD: Xiaokeai0717
       POSTGRES_USER: postgres
     ports:
-      - 5432:5432
+      - 5433:5432
     mem_limit: 128m
 
   postgres_admin:
