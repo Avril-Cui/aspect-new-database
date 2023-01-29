@@ -16,7 +16,7 @@ import datetime
 index_lst = 3
 seconds = time.time()
 # start_time = 1673406000 - 60*60*24*30
-start_time = 1673406000
+start_time = time.time() - (60*60*24) * 10
 end_time = start_time + (60*60*24)*29 + 36000
 start_date = datetime.datetime.now()
 
@@ -447,4 +447,5 @@ def get_message():
 	return jsonify(list(message_lst))
 
 
-app.run(port=3000)
+if __name__ == '__main__':
+    app.run(host='0.0.0.0')

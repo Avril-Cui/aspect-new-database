@@ -1,11 +1,14 @@
-FLASK==2.2.2
+flask==2.2.2
 werkzeug==2.2.2
 flask_cors==3.0.10
 uuid==1.30
 datetime==4.7
 flask_httpauth==4.7.0
 numpy==1.21.6
-psycopg2-binary~=2.8.6
 pandas
 scikit-learn
-pyrebase 
+pyrebase
+psycopg2
+pandas_datareader
+yfinance
+PyJWT

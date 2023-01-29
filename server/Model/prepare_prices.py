@@ -1,6 +1,5 @@
 import Model.get_parameters
 from Model.modified_wave import MidPriceGenerator, DayPriceGenerator, WaveModifier, StockSimulator
-import matplotlib.pyplot as plt
 import numpy as np
 micro = Model.get_parameters.micro
 

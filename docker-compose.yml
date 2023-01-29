@@ -1,17 +1,24 @@
+version: "2.1"
+
 services:
-  database:
-    image: postgres
-    ports:
-      - "54321:5432"
-    restart: always
-    environment:
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: Xiaokeai0717
-      POSTGRES_DB: aspect
-  
   web:
     build: .
     ports:
-      - "3000:3000"
-    volumes:
-      - .:/code
+      - 5000:5000
+
+  db:
+    image: postgres
+    container_name: postgres
+    environment:
+      POSTGRES_PASSWORD: Xiaokeai0717
+      POSTGRES_USER: postgres
+    ports:
+      - 5433:5432
+    mem_limit: 128m
+
+  postgres_admin:
+    image: adminer
+    container_name: postgres-admin
+    ports:
+      - 9095:8080
+    mem_limit: 128m

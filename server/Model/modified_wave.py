@@ -3,8 +3,6 @@ Note from 12/23: pandas datareader get_data_yahoo has some bug.
 pdr_override is used to temperarily fix this bug.
 This issue might be fixed by yahoo later.
 """
-
-import matplotlib.pyplot as plt
 from typing import Optional
 import numpy as np
 from copy import deepcopy
