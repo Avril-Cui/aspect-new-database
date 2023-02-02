@@ -3,7 +3,6 @@ from flask import Flask, request, jsonify, request
 import pyrebase
 from User.user_database import UserDatabaseCommands
 import time
-# import numpy as np
 from flask_cors import CORS
 import uuid
 from datetime import datetime

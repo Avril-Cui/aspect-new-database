@@ -11,14 +11,11 @@ RUN pip3 install --upgrade pip
 RUN pip3 install -r server/requirement.txt
 
 WORKDIR /app
-COPY client ./client
+COPY . .
 
 WORKDIR /app/client
 RUN npm i next
 RUN npm run build
-
-WORKDIR /app
-COPY server ./server
 
 WORKDIR /app/server
 ENV FLASK_APP = rest_api.py
