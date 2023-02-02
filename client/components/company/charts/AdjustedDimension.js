@@ -56,7 +56,7 @@ const AdjustedDimension = (props) => {
   }
   let start_label1 = 0;
   let start_label2 = 0;
-  let end_label = 1000;
+  let end_label = 150;
 
   const upColor = "#72B176";
   const upBorderColor = "#72B176";
