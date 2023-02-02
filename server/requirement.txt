@@ -5,6 +5,7 @@ uuid==1.30
 datetime==4.7
 flask_httpauth==4.7.0
 numpy==1.21.6
+decouple==22.3.1
 pandas
 scikit-learn
 pyrebase

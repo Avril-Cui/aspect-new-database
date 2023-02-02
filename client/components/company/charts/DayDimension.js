@@ -43,14 +43,18 @@ const DayDimension = (props) => {
 
   let option;
 
+  if (price == null || undefined || price.length == 0) {
+    price = [["01/01/2071 ", 0, 0, 0, 0]];
+  }
+
   if(price.length < 5){
     for (let i = price.length; i < 10; i++) {
       price[i] = [i, null, null, null, null, null]
     }
   }
-  let start_label1 = 0
-  let start_label2 = 0
-  let end_label = 150;
+  // let start_label1 = price.length*4-60;
+  // let start_label2 = price.length*4-60;
+  // let end_label = price.length*4;
 
   const upColor = "#72B176";
   const upBorderColor = "#72B176";
@@ -130,20 +134,20 @@ const DayDimension = (props) => {
         }
       },
     },
-    dataZoom: [
-      {
-        type: "inside",
-        start: start_label1,
-        end: end_label,
-      },
-      {
-        show: false,
-        type: "slider",
-        top: "90%",
-        start: start_label2,
-        end: end_label,
-      },
-    ],
+    // dataZoom: [
+    //   {
+    //     type: "inside",
+    //     start: start_label1,
+    //     end: end_label,
+    //   },
+    //   {
+    //     show: false,
+    //     type: "slider",
+    //     top: "90%",
+    //     start: start_label2,
+    //     end: end_label,
+    //   },
+    // ],
     series: [
       {
         name: "Daily Price",

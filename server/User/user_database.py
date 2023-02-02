@@ -1,11 +1,19 @@
 import psycopg2
 import time
+from decouple import config
+
+DATABASE_HOST = config("DATABASE_HOST")
+DATABASE_USER = config("DATABASE_USER")
+DATABASE_PASSWORD = config("DATABASE_PASSWORD")
+DATABASE_ROOT_NAME = config("DATABASE_ROOT_NAME")
+DATABASE_NAME = config("DATABASE_NAME")
 
 conn = psycopg2.connect(
-    host="db",
-    database="postgres",
-    user="postgres",
-    password="Xiaokeai0717")
+    host=DATABASE_HOST if DATABASE_HOST!=None else "localhost",
+    database=DATABASE_ROOT_NAME if DATABASE_ROOT_NAME!=None else "postgres",
+    user=DATABASE_USER if DATABASE_USER!=None else "postgres",
+    password=DATABASE_USER if DATABASE_PASSWORD!=None else "Xiaokeai0717"
+    )
 conn.autocommit = True
 
 cur = conn.cursor()
@@ -15,10 +23,11 @@ cur.execute(sql)
 conn.commit()
 
 conn = psycopg2.connect(
-    host="db",
-    database="aspectdatabase",
-    user="postgres",
-    password="Xiaokeai0717")
+    host=DATABASE_HOST if DATABASE_HOST!=None else "localhost",
+    database=DATABASE_NAME if DATABASE_NAME!=None else "aspectdatabase",
+    user=DATABASE_USER if DATABASE_USER!=None else "postgres",
+    password=DATABASE_USER if DATABASE_PASSWORD!=None else "Xiaokeai0717"
+    )
 conn.autocommit = True
 
 cur = conn.cursor()

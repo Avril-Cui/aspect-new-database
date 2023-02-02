@@ -56,9 +56,9 @@ const AdjustedDimension = (props) => {
       price[0] = ["01/01/2071 ", 0, 0, 0, 0];
     }
   }
-  let start_label1 = 0;
-  let start_label2 = 0;
-  let end_label = 200;
+  let start_label1 = price.length*4-90;
+  let start_label2 = price.length*4-90;
+  let end_label = price.length*4;
 
   const upColor = "#72B176";
   const upBorderColor = "#72B176";
@@ -134,6 +134,7 @@ const AdjustedDimension = (props) => {
     dataZoom: [
       {
         type: "inside",
+        xAxisIndex: [0, 1],
         start: start_label1,
         end: end_label,
       },
