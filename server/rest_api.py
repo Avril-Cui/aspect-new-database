@@ -6,7 +6,8 @@ import time
 from flask_cors import CORS
 import uuid
 from datetime import datetime
-from Model.prepare_prices import index_price, ast_price, dsc_price, fsin_price, hhw_price, jky_price, sgo_price, wrkn_price
+from Model.price import get_price_from_database
+# from Model.prepare_prices import index_price, ast_price, dsc_price, fsin_price, hhw_price, jky_price, sgo_price, wrkn_price
 from itertools import accumulate
 from functools import reduce
 import operator
@@ -14,10 +15,19 @@ import datetime
 
 index_lst = 3
 seconds = time.time()
-# start_time = 1673406000 - 60*60*24*30
 start_time = time.time() - (60*60*24) * 10
 end_time = start_time + (60*60*24)*29 + 36000
 start_date = datetime.datetime.now()
+
+index_price = get_price_from_database("index")
+ast_price = get_price_from_database("ast")
+dsc_price = get_price_from_database("dsc")
+fsin_price = get_price_from_database("fsin")
+hhw_price = get_price_from_database("hhw")
+jky_price = get_price_from_database("jky")
+sgo_price = get_price_from_database("sgo")
+wrkn_price = get_price_from_database("wrkn")
+
 
 price_list = {
 	"index": [index_price[x - y: x] for x, y in zip(
@@ -56,7 +66,6 @@ current_prices = {
 	"sgo": None,
 	"wrkn": None
 }
-
 
 def get_current_prices(company_list):
 	current_time = time.time()
@@ -111,11 +120,11 @@ auth = firebase.auth()
 
 event = None
 
+company_names = ["ast", "dsc", "fsin", "hhw", "jky", "sgo", "wrkn"]
 
 @app.route('/')
 def home():
 	return app.send_static_file('index.html')
-
 
 @app.route("/result", methods=["POST", "GET"])
 def result():

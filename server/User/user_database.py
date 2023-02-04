@@ -1,18 +1,18 @@
 import psycopg2
 import time
-from decouple import config
+import os
 
-DATABASE_HOST = config("DATABASE_HOST")
-DATABASE_USER = config("DATABASE_USER")
-DATABASE_PASSWORD = config("DATABASE_PASSWORD")
-DATABASE_ROOT_NAME = config("DATABASE_ROOT_NAME")
-DATABASE_NAME = config("DATABASE_NAME")
+DATABASE_HOST = os.getenv('DATABASE_HOST')
+DATABASE_USER = os.getenv("DATABASE_USER")
+DATABASE_PASSWORD = os.getenv("DATABASE_PASSWORD")
+DATABASE_ROOT_NAME = os.getenv("DATABASE_ROOT_NAME")
+DATABASE_NAME = os.getenv("DATABASE_NAME")
 
 conn = psycopg2.connect(
     host=DATABASE_HOST if DATABASE_HOST!=None else "localhost",
     database=DATABASE_ROOT_NAME if DATABASE_ROOT_NAME!=None else "postgres",
     user=DATABASE_USER if DATABASE_USER!=None else "postgres",
-    password=DATABASE_USER if DATABASE_PASSWORD!=None else "Xiaokeai0717"
+    password=DATABASE_PASSWORD if DATABASE_PASSWORD!=None else "Xiaokeai0717"
     )
 conn.autocommit = True
 
@@ -26,7 +26,7 @@ conn = psycopg2.connect(
     host=DATABASE_HOST if DATABASE_HOST!=None else "localhost",
     database=DATABASE_NAME if DATABASE_NAME!=None else "aspectdatabase",
     user=DATABASE_USER if DATABASE_USER!=None else "postgres",
-    password=DATABASE_USER if DATABASE_PASSWORD!=None else "Xiaokeai0717"
+    password=DATABASE_PASSWORD if DATABASE_PASSWORD!=None else "Xiaokeai0717"
     )
 conn.autocommit = True
 

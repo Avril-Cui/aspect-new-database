@@ -8,7 +8,7 @@ import ExploreComp from "../simulator/ExploreComp";
 function ExploreSection(props) {
   const change = 1;
   const dispatch = useDispatch();
-  const WAIT_TIME = 4000;
+  const WAIT_TIME = 3000;
   let price_data = useSelector((state) => state.price.value);
 
   const [graphData, setGraphData] = useState({
