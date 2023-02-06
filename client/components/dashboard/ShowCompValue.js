@@ -17,7 +17,7 @@ function ShowCompValue(props) {
     },
   });
 
-  const WAIT_TIME = 3000;
+  const WAIT_TIME = 5000;
 
   useEffect(() => {
     const data = setInterval(() => {

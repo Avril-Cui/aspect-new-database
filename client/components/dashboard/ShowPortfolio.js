@@ -24,7 +24,7 @@ function ShowPortfolio() {
   const cookies = new Cookies();
   const user_uid = cookies.get("user_uid");
 
-  const WAIT_TIME = 3000;
+  const WAIT_TIME = 5000;
 
   useEffect(() => {
     if (portfolio.accountValue != undefined) {

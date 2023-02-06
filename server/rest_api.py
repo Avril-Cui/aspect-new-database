@@ -1,13 +1,50 @@
+from User.user_database import UserDatabaseCommands
+import psycopg2
+import os
+
+DATABASE_HOST = os.getenv('DATABASE_HOST')
+DATABASE_USER = os.getenv("DATABASE_USER")
+DATABASE_PASSWORD = os.getenv("DATABASE_PASSWORD")
+DATABASE_ROOT_NAME = os.getenv("DATABASE_ROOT_NAME")
+DATABASE_NAME = os.getenv("DATABASE_NAME")
+
+conn = psycopg2.connect(
+    host=DATABASE_HOST if DATABASE_HOST!=None else "localhost",
+    database=DATABASE_ROOT_NAME if DATABASE_ROOT_NAME!=None else "postgres",
+    user=DATABASE_USER if DATABASE_USER!=None else "postgres",
+    password=DATABASE_PASSWORD if DATABASE_PASSWORD!=None else "Xiaokeai0717"
+    )
+conn.autocommit = True
+
+cur = conn.cursor()
+cur.execute("DROP DATABASE IF EXISTS aspectdatabase;")
+sql = ''' CREATE database aspectdatabase ''';
+cur.execute(sql)
+conn.commit()
+
+conn = psycopg2.connect(
+    host=DATABASE_HOST if DATABASE_HOST!=None else "localhost",
+    database=DATABASE_NAME if DATABASE_NAME!=None else "aspectdatabase",
+    user=DATABASE_USER if DATABASE_USER!=None else "postgres",
+    password=DATABASE_PASSWORD if DATABASE_PASSWORD!=None else "Xiaokeai0717"
+    )
+conn.autocommit = True
+
+cur = conn.cursor()
+
+user_database_commands = UserDatabaseCommands(conn, cur)
+user_database_commands.create_user_table()
+user_database_commands.create_portfolio_table()
+user_database_commands.create_trade_history_table()
+
 import json
 from flask import Flask, request, jsonify, request
 import pyrebase
-from User.user_database import UserDatabaseCommands
 import time
 from flask_cors import CORS
 import uuid
 from datetime import datetime
 from Model.price import get_price_from_database
-# from Model.prepare_prices import index_price, ast_price, dsc_price, fsin_price, hhw_price, jky_price, sgo_price, wrkn_price
 from itertools import accumulate
 from functools import reduce
 import operator
@@ -56,15 +93,6 @@ flat_price = {
 	"jky": reduce(operator.concat, price_list["jky"]),
 	"sgo": reduce(operator.concat, price_list["sgo"]),
 	"wrkn": reduce(operator.concat, price_list["wrkn"]),
-}
-current_prices = {
-	"ast": None,
-	"dsc": None,
-	"fsin": None,
-	"hhw": None,
-	"jky": None,
-	"sgo": None,
-	"wrkn": None
 }
 
 def get_current_prices(company_list):
@@ -150,7 +178,7 @@ def register():
 		try:
 			auth.create_user_with_email_and_password(email, password)
 			user = auth.sign_in_with_email_and_password(email, password)
-			UserDatabaseCommands.intialize_user(user["localId"], name)
+			user_database_commands.intialize_user(user["localId"], name)
 			return user["localId"]
 		except:
 			return "Invalid user request", 401
@@ -170,7 +198,7 @@ def trade_stock():
 	current_price = price_list[comp_name][index_lst][index_tmp]
 	if target_price == 0:
 		target_price = current_price
-	response = UserDatabaseCommands.trade_stock(
+	response = user_database_commands.trade_stock(
 		user_uid, share_number, target_price, current_price, comp_name)
 
 	if response == "Invalid 1":
@@ -180,9 +208,9 @@ def trade_stock():
 	elif response == "Invalid 3":
 		return "Currently no shares available for trade. Your transaction will enter the pending state.", 403
 	else:
-		company_list = UserDatabaseCommands.get_comp_holding_list(user_uid)
+		company_list = user_database_commands.get_comp_holding_list(user_uid)
 		current_prices = get_current_prices(company_list)
-		portfolio = UserDatabaseCommands.get_portfolio_info(
+		portfolio = user_database_commands.get_portfolio_info(
 			user_uid, current_prices)
 		return jsonify(portfolio)
 
@@ -190,9 +218,9 @@ def trade_stock():
 @app.route('/portfolio-detail', methods=['POST'])
 def portfolio_detail():
 	user_uid = json.loads(request.data)
-	company_list = UserDatabaseCommands.get_comp_holding_list(user_uid)
+	company_list = user_database_commands.get_comp_holding_list(user_uid)
 	current_prices = get_current_prices(company_list)
-	portfolio = UserDatabaseCommands.get_portfolio_info(
+	portfolio = user_database_commands.get_portfolio_info(
 		user_uid, current_prices)
 	return jsonify(portfolio)
 
@@ -200,15 +228,15 @@ def portfolio_detail():
 @app.route('/show-ranking', methods=['POST'])
 def show_ranking():
 	user_uid = json.loads(request.data)
-	rank = UserDatabaseCommands.get_rank_user(user_uid)
+	rank = user_database_commands.get_rank_user(user_uid)
 	return str(rank)
 
 
-@app.route('/total-rank', methods=['GET'])
+@app.route('/total-rank', methods=['POST'])
 def total_rank():
-	user_rank = UserDatabaseCommands.get_total_rank()
-	return jsonify(user_rank)
-
+	user_rank = user_database_commands.get_total_rank()
+	print(user_rank)
+	return user_rank
 
 @app.route('/current-all-prices', methods=["POST"])
 def current_all_prices():
@@ -456,4 +484,4 @@ def get_message():
 
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0')
+    app.run(host="localhost", port=5000)

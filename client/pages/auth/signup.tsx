@@ -112,6 +112,13 @@ const Login = () => {
           </form>
         </div>
       </div>
+      <div className={styles.sign_in_container} style={{marginTop: "-3em"}}>
+        <Link href="/auth/login">
+          <a className={styles.sign_in}>
+            Already has an account? <span className={styles.register}>Log in</span>
+          </a>
+        </Link>
+      </div>
     </div>
   );
 };

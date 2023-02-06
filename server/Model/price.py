@@ -1,6 +1,7 @@
 from Model.prepare_prices import index_price, ast_price, dsc_price, fsin_price, hhw_price, jky_price, sgo_price, wrkn_price
 import psycopg2
 import os
+import numpy as np
 
 DATABASE_HOST = os.getenv('DATABASE_HOST')
 DATABASE_USER = os.getenv("DATABASE_USER")
@@ -68,4 +69,5 @@ def get_price_from_database(company_name):
             SELECT price_list FROM prices WHERE company_id='{company_name}';
         """)
     price_list = list(cur.fetchone()[0])
+    price_list = [float(i) for i in price_list]
     return price_list

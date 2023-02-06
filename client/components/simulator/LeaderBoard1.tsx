@@ -16,7 +16,7 @@ function LeaderBoard1() {
     var data = "";
 
     var config = {
-      method: "get",
+      method: "POST",
       url: "http://127.0.0.1:5000/total-rank",
       headers: {},
       data: data,

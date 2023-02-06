@@ -56,8 +56,8 @@ const AdjustedDimension = (props) => {
       price[0] = ["01/01/2071 ", 0, 0, 0, 0];
     }
   }
-  let start_label1 = price.length*4-90;
-  let start_label2 = price.length*4-90;
+  let start_label1 = price.length*4-65;
+  let start_label2 = price.length*4-65;
   let end_label = price.length*4;
 
   const upColor = "#72B176";

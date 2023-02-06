@@ -1,63 +1,35 @@
-import psycopg2
 import time
-import os
-
-DATABASE_HOST = os.getenv('DATABASE_HOST')
-DATABASE_USER = os.getenv("DATABASE_USER")
-DATABASE_PASSWORD = os.getenv("DATABASE_PASSWORD")
-DATABASE_ROOT_NAME = os.getenv("DATABASE_ROOT_NAME")
-DATABASE_NAME = os.getenv("DATABASE_NAME")
-
-conn = psycopg2.connect(
-    host=DATABASE_HOST if DATABASE_HOST!=None else "localhost",
-    database=DATABASE_ROOT_NAME if DATABASE_ROOT_NAME!=None else "postgres",
-    user=DATABASE_USER if DATABASE_USER!=None else "postgres",
-    password=DATABASE_PASSWORD if DATABASE_PASSWORD!=None else "Xiaokeai0717"
-    )
-conn.autocommit = True
-
-cur = conn.cursor()
-cur.execute("DROP DATABASE IF EXISTS aspectdatabase;")
-sql = ''' CREATE database aspectdatabase ''';
-cur.execute(sql)
-conn.commit()
-
-conn = psycopg2.connect(
-    host=DATABASE_HOST if DATABASE_HOST!=None else "localhost",
-    database=DATABASE_NAME if DATABASE_NAME!=None else "aspectdatabase",
-    user=DATABASE_USER if DATABASE_USER!=None else "postgres",
-    password=DATABASE_PASSWORD if DATABASE_PASSWORD!=None else "Xiaokeai0717"
-    )
-conn.autocommit = True
-
-cur = conn.cursor()
 
 class UserDatabaseCommands:
 
-    def create_user_table():
-        cur.execute('DROP TABLE IF EXISTS users;')
-        cur.execute("""
+    def __init__(self, conn, cur):
+        self.conn = conn
+        self.cur = cur
+
+    def create_user_table(self):
+        self.cur.execute('DROP TABLE IF EXISTS users;')
+        self.cur.execute("""
             CREATE TABLE users (
             uid varchar (100) PRIMARY KEY,
             user_name varchar (100) NOT NULL,
             cashValue NUMERIC NOT NULL);
         """)
 
-        conn.commit()
+        self.conn.commit()
 
-    def create_portfolio_table():
-        cur.execute(f'DROP TABLE IF EXISTS portfolio;')
-        cur.execute(f"""
+    def create_portfolio_table(self):
+        self.cur.execute(f'DROP TABLE IF EXISTS portfolio;')
+        self.cur.execute(f"""
             CREATE TABLE portfolio (uid varchar (100),
             company_id varchar (100) NOT NULL,
             shares_holding NUMERIC NOT NULL,
             cost NUMERIC NOT NULL);
         """)
-        conn.commit()
+        self.conn.commit()
 
-    def create_trade_history_table():
-        cur.execute(f'DROP TABLE IF EXISTS trade_history;')
-        cur.execute(f"""
+    def create_trade_history_table(self ):
+        self.cur.execute(f'DROP TABLE IF EXISTS trade_history;')
+        self.cur.execute(f"""
             CREATE TABLE trade_history (
                 uid varchar (100),
                 company_id varchar (100),
@@ -66,33 +38,34 @@ class UserDatabaseCommands:
                 value NUMERIC NOT NULL
             );
         """)
-        conn.commit()
+        self.conn.commit()
 
-    def intialize_user(uid, user_name):
-        cur.execute(f"""
+    def intialize_user(self, uid, user_name):
+        self.cur.execute(f"""
             INSERT INTO users
             VALUES (
                 '{uid}', '{user_name}', 100000
             );
         """)
-        conn.commit()
+        self.conn.commit()
 
     def trade_stock(
+        self,
         user_uid: str,
         share_number: float,
         target_price: float,
         current_price: float,
         comp_name: str
     ):
-        cur.execute(f"""
+        self.cur.execute(f"""
           SELECT cashvalue from users WHERE uid='{user_uid}';
         """)
-        cash_value = float(cur.fetchone()[0])
+        cash_value = float(self.cur.fetchone()[0])
 
-        cur.execute(f"""
+        self.cur.execute(f"""
           SELECT shares_holding from portfolio WHERE uid='{user_uid}' and company_id='{comp_name}';
         """)
-        portfolio_data = cur.fetchone()
+        portfolio_data = self.cur.fetchone()
         if portfolio_data != None:
             shares_holding = float(portfolio_data[0])
 
@@ -109,7 +82,7 @@ class UserDatabaseCommands:
 
         elif share_number > 0:
             if portfolio_data != None:
-                cur.execute(f"""
+                self.cur.execute(f"""
                     INSERT INTO trade_history VALUES (
                         '{user_uid}',
                         '{comp_name}',
@@ -124,9 +97,9 @@ class UserDatabaseCommands:
                     UPDATE portfolio SET cost = (cost+{round(target_price*share_number,2)})
                     WHERE uid='{user_uid}' and company_id='{comp_name}';
                 """)
-                conn.commit()
+                self.conn.commit()
             else:
-                cur.execute(f"""
+                self.cur.execute(f"""
                     INSERT INTO trade_history VALUES (
                         '{user_uid}',
                         '{comp_name}',
@@ -143,14 +116,14 @@ class UserDatabaseCommands:
                         {round(target_price*share_number,2)}
                     );
                 """)
-                conn.commit()
+                self.conn.commit()
 
         else:
             if portfolio_data != None:
                 if abs(share_number) > shares_holding:
                     return "Invalid 1"
                 else:
-                    cur.execute(f"""
+                    self.cur.execute(f"""
                         INSERT INTO trade_history VALUES (
                             '{user_uid}',
                             '{comp_name}',
@@ -166,33 +139,33 @@ class UserDatabaseCommands:
                         WHERE uid='{user_uid}' and company_id='{comp_name}';
                         
                     """)
-                    conn.commit()
+                    self.conn.commit()
             else:
                 return "Invalid 1"
 
-    def get_comp_holding_list(user_uid):
-        cur.execute(f"""
+    def get_comp_holding_list(self, user_uid):
+        self.cur.execute(f"""
             SELECT company_id from portfolio WHERE uid = '{user_uid}';
         """)
-        result = list(cur.fetchall())
+        result = list(self.cur.fetchall())
         company_list = []
         for index in range(len(result)):
             company_list.append(result[index][0])
         return company_list
 
-    def get_portfolio_info(user_uid, company_prices):
-        cur.execute(f"""
+    def get_portfolio_info(self, user_uid, company_prices):
+        self.cur.execute(f"""
             SELECT users.cashvalue, portfolio.company_id, portfolio.shares_holding, portfolio.cost
             FROM users JOIN portfolio on users.uid = portfolio.uid and 
             users.uid = '{user_uid}' and portfolio.uid = '{user_uid}';
         """)
 
-        result = list(cur.fetchall())
+        result = list(self.cur.fetchall())
         if result == []:
-            cur.execute(f"""
+            self.cur.execute(f"""
                 SELECT cashvalue FROM users WHERE uid = '{user_uid}';
             """)
-            cash_value = float(cur.fetchone()[0])
+            cash_value = float(self.cur.fetchone()[0])
             user_portfolio = {
                 "portfolio_value": {
                     "cashValue": cash_value,
@@ -231,12 +204,12 @@ class UserDatabaseCommands:
 
             return user_portfolio
 
-    def get_total_rank():
+    def get_total_rank(self ):
         # Format: [('friday', Decimal('100000'), 1), ('avrilcui', Decimal('99250'), 2)]
-        cur.execute(f"""
+        self.cur.execute(f"""
             SELECT user_name, cashvalue, RANK() OVER (ORDER BY cashvalue DESC) as rank FROM users;
         """)
-        result = list(cur.fetchall())
+        result = list(self.cur.fetchall())
         ranking = {}
         for index in range(len(result)):
             ranking[result[index][0]] = {
@@ -247,8 +220,8 @@ class UserDatabaseCommands:
             }
         return ranking
 
-    def get_rank_user(user_uid):
-        cur.execute(f"""
+    def get_rank_user(self, user_uid):
+        self.cur.execute(f"""
             SELECT uid, user_name, cashvalue, rank
             FROM (
             SELECT uid, user_name, cashvalue, RANK() OVER (ORDER BY cashvalue DESC) as rank
@@ -256,14 +229,10 @@ class UserDatabaseCommands:
             ) subquery
             WHERE uid = '{user_uid}';
         """)
-        result = cur.fetchone()
+        result = self.cur.fetchone()
         rank = result[3]
         return rank
 
-
-UserDatabaseCommands.create_user_table()
-UserDatabaseCommands.create_portfolio_table()
-UserDatabaseCommands.create_trade_history_table()
 
 # UserDatabaseCommands.intialize_user('Avril', 'avrilcui')
 # print(UserDatabaseCommands.get_total_rank())
