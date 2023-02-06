@@ -482,6 +482,6 @@ def get_message():
 			})
 	return jsonify(list(message_lst))
 
-
 if __name__ == '__main__':
-    app.run(host="localhost", port=5000)
+	app.run()
+    # app.run(host="localhost", port=5000)
