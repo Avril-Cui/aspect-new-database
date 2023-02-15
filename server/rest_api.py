@@ -1,4 +1,4 @@
-from User.user_database import UserDatabaseCommands
+from Model.User.user_database import UserDatabaseCommands
 import psycopg2
 import os
 from dotenv import load_dotenv

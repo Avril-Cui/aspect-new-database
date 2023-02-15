@@ -1,3 +1,4 @@
+from User.user_database import UserDatabaseCommands
 from prepare_prices import index_price, ast_price, dsc_price, fsin_price, hhw_price, jky_price, sgo_price, wrkn_price
 import psycopg2
 import os
@@ -18,7 +19,6 @@ conn = psycopg2.connect(
 
 cur = conn.cursor()
 
-from server.User.user_database import UserDatabaseCommands
 user_database_commands = UserDatabaseCommands(conn, cur)
 user_database_commands.create_user_table()
 user_database_commands.create_portfolio_table()
