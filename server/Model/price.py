@@ -18,7 +18,7 @@ conn = psycopg2.connect(
 
 cur = conn.cursor()
 
-from User.user_database import UserDatabaseCommands
+from server.User.user_database import UserDatabaseCommands
 user_database_commands = UserDatabaseCommands(conn, cur)
 user_database_commands.create_user_table()
 user_database_commands.create_portfolio_table()
