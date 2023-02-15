@@ -47,7 +47,7 @@ function LeaderBoard3() {
       </tbody>
       <tbody>
         {Object.entries(ranking).map(([key, value], i) => (
-          <tr>
+          <tr key={key}>
             <td className={styles.ranking}>{value["ranking"]}</td>
             <td className={styles.normal}>{key}</td>
             <td className={styles.normal}>${value["cash_value"]}</td>

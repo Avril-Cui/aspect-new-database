@@ -1,36 +1,29 @@
 from User.user_database import UserDatabaseCommands
 import psycopg2
 import os
+from dotenv import load_dotenv
+load_dotenv()
 
-DATABASE_HOST = os.getenv('DATABASE_HOST')
+DATABASE_HOST = os.getenv("DATABASE_HOST")
 DATABASE_USER = os.getenv("DATABASE_USER")
 DATABASE_PASSWORD = os.getenv("DATABASE_PASSWORD")
 DATABASE_ROOT_NAME = os.getenv("DATABASE_ROOT_NAME")
-DATABASE_NAME = os.getenv("DATABASE_NAME")
 
 conn = psycopg2.connect(
     host=DATABASE_HOST if DATABASE_HOST!=None else "localhost",
-    database=DATABASE_ROOT_NAME if DATABASE_ROOT_NAME!=None else "postgres",
+    database=DATABASE_ROOT_NAME if DATABASE_ROOT_NAME!=None else "aspectdatabase",
     user=DATABASE_USER if DATABASE_USER!=None else "postgres",
     password=DATABASE_PASSWORD if DATABASE_PASSWORD!=None else "Xiaokeai0717"
-    )
-conn.autocommit = True
+)
 
 cur = conn.cursor()
-cur.execute("DROP DATABASE IF EXISTS aspectdatabase;")
-sql = ''' CREATE database aspectdatabase ''';
-cur.execute(sql)
-conn.commit()
+def get_price_from_database(company_id):
+	cur.execute(f"""
+          SELECT price_list from prices WHERE company_id='{company_id}';
+        """)
+	price = list(cur.fetchone()[0])
+	return price
 
-conn = psycopg2.connect(
-    host=DATABASE_HOST if DATABASE_HOST!=None else "localhost",
-    database=DATABASE_NAME if DATABASE_NAME!=None else "aspectdatabase",
-    user=DATABASE_USER if DATABASE_USER!=None else "postgres",
-    password=DATABASE_PASSWORD if DATABASE_PASSWORD!=None else "Xiaokeai0717"
-    )
-conn.autocommit = True
-
-cur = conn.cursor()
 
 user_database_commands = UserDatabaseCommands(conn, cur)
 user_database_commands.create_user_table()
@@ -44,12 +37,10 @@ import time
 from flask_cors import CORS
 import uuid
 from datetime import datetime
-from Model.price import get_price_from_database
 from itertools import accumulate
 from functools import reduce
 import operator
 import datetime
-
 index_lst = 3
 seconds = time.time()
 start_time = time.time() - (60*60*24) * 10
@@ -65,7 +56,7 @@ jky_price = get_price_from_database("jky")
 sgo_price = get_price_from_database("sgo")
 wrkn_price = get_price_from_database("wrkn")
 
-
+# print("prices generated")
 price_list = {
 	"index": [index_price[x - y: x] for x, y in zip(
 		accumulate([36000 for _ in range(len(index_price)//36000)]), [36000 for i in range(len(index_price)//36000)])],
@@ -134,7 +125,7 @@ chat_storeage = {
 
 app = Flask(__name__, static_url_path='')
 CORS(app)
-app.config["CORS_ORIGINS"] = ["https://aspect.com",
+app.config["CORS_ORIGINS"] = ["https://aspect-finance.com",
 							  "http://localhost:8080", "http://127.0.0.1:5000/"]
 config = {
 	"apiKey": "AIzaSyAHY-ZeX87ObL6y3y_2n76GLNxU-24hHs0",
@@ -150,9 +141,9 @@ event = None
 
 company_names = ["ast", "dsc", "fsin", "hhw", "jky", "sgo", "wrkn"]
 
-@app.route('/')
-def home():
-	return app.send_static_file('index.html')
+# @app.route('/')
+# def home():
+# 	return app.send_static_file('index.html')
 
 @app.route("/result", methods=["POST", "GET"])
 def result():
@@ -341,7 +332,6 @@ def day_graph():
 			date = f"{day}/{month}/2073"
 		graph_lst.append([date, open_p, close_p, low, high])
 	return jsonify(graph_lst)
-
 
 @app.route('/hour-graph', methods=["POST"])
 def hour_graph():

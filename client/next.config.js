@@ -4,12 +4,12 @@ const nextConfig = {
   swcMinify: true,
 }
 
-// module.exports = nextConfig
+module.exports = nextConfig
 
-module.exports = {
-  distDir: 'build',
-  images: {
-    loader: 'akamai',
-    path: '/',
-  },
-}
+// module.exports = {
+//   distDir: 'build',
+//   images: {
+//     loader: 'akamai',
+//     path: '/',
+//   },
+// }

@@ -232,13 +232,3 @@ class UserDatabaseCommands:
         result = self.cur.fetchone()
         rank = result[3]
         return rank
-
-
-# UserDatabaseCommands.intialize_user('Avril', 'avrilcui')
-# print(UserDatabaseCommands.get_total_rank())
-# # UserDatabaseCommands.trade_stock('Avril', 10, 50, 50, "wrkn")
-# # time.sleep(1)
-# # UserDatabaseCommands.trade_stock('Avril', 5, 50, 50, "sgo")
-# # UserDatabaseCommands.intialize_user('Friday', 'friday')
-# UserDatabaseCommands.get_portfolio_info('Avril', {})
-# UserDatabaseCommands.get_rank_user('Friday')
