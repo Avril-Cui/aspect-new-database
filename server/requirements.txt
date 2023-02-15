@@ -4,12 +4,11 @@ flask_cors==3.0.10
 uuid==1.30
 datetime==4.7
 flask_httpauth==4.7.0
-numpy==1.21.6
-scikit-learn==1.0.1
+numpy
+scikit-learn
 pandas
-pyrebase
-psycopg2
+pycryptodome
+pyrebase4
+psycopg2-binary
 pandas_datareader
 yfinance
-PyJWT
-gunicorn

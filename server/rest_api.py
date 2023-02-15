@@ -24,12 +24,7 @@ def get_price_from_database(company_id):
 	price = list(cur.fetchone()[0])
 	return price
 
-
 user_database_commands = UserDatabaseCommands(conn, cur)
-user_database_commands.create_user_table()
-user_database_commands.create_portfolio_table()
-user_database_commands.create_trade_history_table()
-
 import json
 from flask import Flask, request, jsonify, request
 import pyrebase
@@ -46,6 +41,7 @@ seconds = time.time()
 start_time = time.time() - (60*60*24) * 10
 end_time = start_time + (60*60*24)*29 + 36000
 start_date = datetime.datetime.now()
+
 
 index_price = get_price_from_database("index")
 ast_price = get_price_from_database("ast")
