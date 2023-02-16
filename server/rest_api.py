@@ -17,12 +17,47 @@ conn = psycopg2.connect(
 )
 
 cur = conn.cursor()
-def get_price_from_database(company_id):
-	cur.execute(f"""
+def get_current_prices(company_list):
+	index_lst = int(int((current_time-start_time))/86400)
+	current_time = time.time()
+	index_tmp = int(current_time-start_time-index_lst*86400)
+	current_prices = {}
+	for company in company_list:
+		cur.execute(f"""
+          SELECT price_list from prices WHERE company_id='{company}';
+        """)
+		price_list = list(cur.fetchone()[0])
+		price_list = [price_list[x - y: x] for x, y in zip(
+		accumulate([36000 for _ in range(len(price_list)//36000)]), [36000 for i in range(len(price_list)//36000)])]
+		current_prices[company] = price_list[index_lst][index_tmp]
+	return current_prices
+
+def get_current_price(company_id, index_lst, index_tmp):
+    cur.execute(f"""
           SELECT price_list from prices WHERE company_id='{company_id}';
         """)
-	price = list(cur.fetchone()[0])
-	return price
+    price_list = list(cur.fetchone()[0])
+    price_list = [price_list[x - y: x] for x, y in zip(
+    accumulate([36000 for _ in range(len(price_list)//36000)]), [36000 for i in range(len(price_list)//36000)])]
+    current_price = price_list[index_lst][index_tmp]
+    return current_price
+
+def get_day_price_list(company_id, index):
+    cur.execute(f"""
+          SELECT price_list from prices WHERE company_id='{company_id}';
+        """)
+    price_list = list(cur.fetchone()[0])
+    price_list = [price_list[x - y: x] for x, y in zip(
+    accumulate([36000 for _ in range(len(price_list)//36000)]), [36000 for i in range(len(price_list)//36000)])]
+    price_list = price_list[index]
+    return price_list
+# def get_price_from_database(company_id):
+# 	cur.execute(f"""
+#           SELECT price_list from prices WHERE company_id='{company_id}';
+#         """)
+# 	price = list(cur.fetchone()[0])
+# 	# price = [price[x - y: x] for x, y in zip(accumulate([36000 for _ in range(len(index_price)//36000)]), [36000 for i in range(len(index_price)//36000)])]
+# 	return price
 
 user_database_commands = UserDatabaseCommands(conn, cur)
 import json
@@ -33,63 +68,63 @@ from flask_cors import CORS
 import uuid
 from datetime import datetime
 from itertools import accumulate
-from functools import reduce
-import operator
+# from functools import reduce
+# import operator
 import datetime
-index_lst = 3
+# index_lst = 0
 seconds = time.time()
-start_time = time.time() - (60*60*24) * 10
+start_time = time.time() - (60*60*24)-60*60*24 -1
 end_time = start_time + (60*60*24)*29 + 36000
 start_date = datetime.datetime.now()
 
 
-index_price = get_price_from_database("index")
-ast_price = get_price_from_database("ast")
-dsc_price = get_price_from_database("dsc")
-fsin_price = get_price_from_database("fsin")
-hhw_price = get_price_from_database("hhw")
-jky_price = get_price_from_database("jky")
-sgo_price = get_price_from_database("sgo")
-wrkn_price = get_price_from_database("wrkn")
+# index_price = get_price_from_database("index")
+# ast_price = get_price_from_database("ast")
+# dsc_price = get_price_from_database("dsc")
+# fsin_price = get_price_from_database("fsin")
+# hhw_price = get_price_from_database("hhw")
+# jky_price = get_price_from_database("jky")
+# sgo_price = get_price_from_database("sgo")
+# wrkn_price = get_price_from_database("wrkn")
 
-# print("prices generated")
-price_list = {
-	"index": [index_price[x - y: x] for x, y in zip(
-		accumulate([36000 for _ in range(len(index_price)//36000)]), [36000 for i in range(len(index_price)//36000)])],
-	"ast": [ast_price[x - y: x] for x, y in zip(
-		accumulate([36000 for _ in range(len(ast_price)//36000)]), [36000 for i in range(len(ast_price)//36000)])],
-	"dsc": [dsc_price[x - y: x] for x, y in zip(
-		accumulate([36000 for _ in range(len(dsc_price)//36000)]), [36000 for i in range(len(dsc_price)//36000)])],
-	"fsin": [fsin_price[x - y: x] for x, y in zip(
-		accumulate([36000 for _ in range(len(fsin_price)//36000)]), [36000 for i in range(len(fsin_price)//36000)])],
-	"hhw": [hhw_price[x - y: x] for x, y in zip(
-		accumulate([36000 for _ in range(len(hhw_price)//36000)]), [36000 for i in range(len(hhw_price)//36000)])],
-	"jky": [jky_price[x - y: x] for x, y in zip(
-		accumulate([36000 for _ in range(len(jky_price)//36000)]), [36000 for i in range(len(jky_price)//36000)])],
-	"sgo": [sgo_price[x - y: x] for x, y in zip(
-		accumulate([36000 for _ in range(len(sgo_price)//36000)]), [36000 for i in range(len(sgo_price)//36000)])],
-	"wrkn": [wrkn_price[x - y: x] for x, y in zip(
-		accumulate([36000 for _ in range(len(wrkn_price)//36000)]), [36000 for i in range(len(wrkn_price)//36000)])],
-}
+print("prices generated")
+# price_list = {
+# 	"index": [index_price[x - y: x] for x, y in zip(
+# 		accumulate([36000 for _ in range(len(index_price)//36000)]), [36000 for i in range(len(index_price)//36000)])],
+# 	"ast": [ast_price[x - y: x] for x, y in zip(
+# 		accumulate([36000 for _ in range(len(ast_price)//36000)]), [36000 for i in range(len(ast_price)//36000)])],
+# 	"dsc": [dsc_price[x - y: x] for x, y in zip(
+# 		accumulate([36000 for _ in range(len(dsc_price)//36000)]), [36000 for i in range(len(dsc_price)//36000)])],
+# 	"fsin": [fsin_price[x - y: x] for x, y in zip(
+# 		accumulate([36000 for _ in range(len(fsin_price)//36000)]), [36000 for i in range(len(fsin_price)//36000)])],
+# 	"hhw": [hhw_price[x - y: x] for x, y in zip(
+# 		accumulate([36000 for _ in range(len(hhw_price)//36000)]), [36000 for i in range(len(hhw_price)//36000)])],
+# 	"jky": [jky_price[x - y: x] for x, y in zip(
+# 		accumulate([36000 for _ in range(len(jky_price)//36000)]), [36000 for i in range(len(jky_price)//36000)])],
+# 	"sgo": [sgo_price[x - y: x] for x, y in zip(
+# 		accumulate([36000 for _ in range(len(sgo_price)//36000)]), [36000 for i in range(len(sgo_price)//36000)])],
+# 	"wrkn": [wrkn_price[x - y: x] for x, y in zip(
+# 		accumulate([36000 for _ in range(len(wrkn_price)//36000)]), [36000 for i in range(len(wrkn_price)//36000)])],
+# }
 
-flat_price = {
-	"ast": reduce(operator.concat, price_list["ast"]),
-	"dsc": reduce(operator.concat, price_list["dsc"]),
-	"fsin": reduce(operator.concat, price_list["fsin"]),
-	"hhw": reduce(operator.concat, price_list["hhw"]),
-	"jky": reduce(operator.concat, price_list["jky"]),
-	"sgo": reduce(operator.concat, price_list["sgo"]),
-	"wrkn": reduce(operator.concat, price_list["wrkn"]),
-}
+# flat_price = {
+# 	"ast": reduce(operator.concat, price_list["ast"]),
+# 	"dsc": reduce(operator.concat, price_list["dsc"]),
+# 	"fsin": reduce(operator.concat, price_list["fsin"]),
+# 	"hhw": reduce(operator.concat, price_list["hhw"]),
+# 	"jky": reduce(operator.concat, price_list["jky"]),
+# 	"sgo": reduce(operator.concat, price_list["sgo"]),
+# 	"wrkn": reduce(operator.concat, price_list["wrkn"]),
+# }
 
-def get_current_prices(company_list):
-	current_time = time.time()
-	index_lst = int(int((current_time-start_time))/36000)
-	index_tmp = int((current_time-start_time)) % 36000
-	current_prices = {}
-	for company in company_list:
-		current_prices[company] = price_list[company][index_lst][index_tmp]
-	return current_prices
+# def get_current_prices(company_list):
+# 	current_time = time.time()
+# 	index_lst = int(int((current_time-start_time))/36000)
+# 	index_tmp = int((current_time-start_time)) % 36000
+# 	current_prices = {}
+# 	for company in company_list:
+# 		current_prices[company] = price_list[company][index_lst][index_tmp]
+# 	return current_prices
 
 
 chat_storeage = {
@@ -178,11 +213,11 @@ def trade_stock():
 	target_price = trade_data["target_price"]
 	comp_name = trade_data["comp_name"]
 	user_uid = trade_data["user_uid"]
-
+	
 	current_time = time.time()
-	index_lst = int(int((current_time-start_time))/36000)
-	index_tmp = int((current_time-start_time)) % 36000
-	current_price = price_list[comp_name][index_lst][index_tmp]
+	index_lst = int(int((current_time-start_time))/86400)
+	index_tmp = int(current_time-start_time-index_lst*86400)
+	current_price = get_current_price(comp_name, index_lst, index_tmp)
 	if target_price == 0:
 		target_price = current_price
 	response = user_database_commands.trade_stock(
@@ -227,34 +262,38 @@ def total_rank():
 
 @app.route('/current-all-prices', methods=["POST"])
 def current_all_prices():
-	global index_lst
 	current_time = time.time()
-	index_tmp = int((current_time-start_time) - index_lst *
-					36000 - index_lst * 60*60*(24-8))
+	index_lst = int(int((current_time-start_time))/86400)
+	index_tmp = int(current_time-start_time-index_lst*86400)
+	print(index_lst)
+	print(index_tmp)
 	if index_tmp <= 36000:
 		current_price_dict = {}
-		for key in price_list:
-			open_price = price_list[key][index_lst][0]
+		for key in company_names:
+			open_price = get_current_price(key, index_lst, 0)
+			current_price = get_current_price(key, index_lst, index_tmp)
 			change = round(
-				(price_list[key][index_lst][index_tmp] - open_price), 2)
+				(current_price - open_price), 2)
 			pct_change = round(
-				(price_list[key][index_lst][index_tmp] - open_price) / open_price * 100, 2)
-			current_price = price_list[key][index_lst][index_tmp]
+				(current_price - open_price) / open_price * 100, 2)
 			current_price_dict[key] = {"price":  round(
 				current_price, 2), "change": change, "pct_change": pct_change}
 		return jsonify(current_price_dict)
-	elif index_tmp > 36000 and index_tmp < 60*60*24:
+	elif index_tmp > 36000 and index_tmp < 86400:
+		print("middle")
 		current_price_dict = {}
-		for key in price_list:
-			final_price = price_list[key][index_lst][-1]
+		for key in company_names:
+			final_price = get_current_price(key, index_lst, -1)
 			current_price_dict[key] = {"price":  round(
 				final_price, 2), "change": "N/A", "pct_change": "N/A"}
 		return jsonify(current_price_dict)
 
 	else:
+		print("bottom")
+		print(index_tmp)
 		current_price_dict = {}
-		for key in price_list:
-			final_price = price_list[key][index_lst][-1]
+		for key in company_names:
+			final_price = get_current_price(key, index_lst, -1)
 			current_price_dict[key] = {"price":  round(
 				final_price, 2), "change": "N/A", "pct_change": "N/A"}
 		index_lst += 1
@@ -264,56 +303,57 @@ def current_all_prices():
 @app.route('/current-price', methods=['POST'])
 def current_price():
 	current_time = time.time()
-	index_tmp = int((current_time-start_time) - index_lst *
-					36000 - index_lst * 60*60*(24-10))
+	index_lst = int(int((current_time-start_time))/86400)
+	index_tmp = int(current_time-start_time-index_lst*86400)
 	comp_name = json.loads(request.data)
 	if index_tmp <= 36000:
-		current_price = price_list[comp_name][index_lst][index_tmp]
+		current_price = get_current_price(comp_name, index_lst, index_tmp)
 		return {"price": round(current_price, 2)}
 	else:
 		if index_tmp > 36000 and index_tmp < 60*60*24:
-			return {"price": round(price_list[comp_name][index_lst][-1], 2)}
+			return {"price": round(get_current_price(comp_name, index_lst, -1), 2)}
 
 		else:
-			last_price = round(price_list[comp_name][index_lst][-1], 2)
+			last_price = round(get_current_price(comp_name, index_lst, -1), 2)
 			return {"price": last_price}
 
 
 @app.route('/tick-graph', methods=["POST"])
 def tick_graph():
-	global index_lst
 	comp_name = json.loads(request.data)
 	current_time = time.time()
-	index_tmp = int((current_time-start_time) - index_lst *
-					36000 - index_lst * 60*60*(24-10))
+	index_lst = int(int((current_time-start_time))/86400)
+	index_tmp = int(current_time-start_time-index_lst*86400)
 	if index_tmp <= 36000:
 		tick_price_graph = []
 		for index in range(index_tmp):
 			if index % (300) == 0 and index != 36000 and index != 0:
 				tick_price_graph.append({"time": (
-					index+start_time), "value": round(price_list[comp_name][index_lst][index], 2)})
+					index+start_time), "value": round(get_current_price(comp_name, index_lst, index), 2)})
 		return jsonify(tick_price_graph)
 	else:
 		tick_price_graph = []
 		for index in range(36000):
 			if index % (300) == 0 and index != 36000 and index != 0:
 				tick_price_graph.append({"time": (
-					index+start_time), "value": round(price_list[comp_name][index_lst][index], 2)})
+					index+start_time), "value": round(get_current_price(comp_name, index_lst, index), 2)})
 
 		return jsonify(tick_price_graph)
 
 
 @app.route('/day-graph', methods=["POST"])
 def day_graph():
-	global index_lst
+	current_time = time.time()
+	index_lst = int(int((current_time-start_time))/86400)
 	comp_name = json.loads(request.data)
 	graph_lst = []
 
 	for index in range(index_lst):
-		high = round(max(price_list[comp_name][index]))
-		low = round(min(price_list[comp_name][index]))
-		open_p = round(price_list[comp_name][index][0])
-		close_p = round(price_list[comp_name][index][-1])
+		inner_day_lst = get_day_price_list(comp_name, index)
+		high = round(max(inner_day_lst))
+		low = round(min(inner_day_lst))
+		open_p = round(inner_day_lst[0])
+		close_p = round(inner_day_lst[-1])
 		if index > (31-int(start_date.day)):
 			month = int(start_date.month) + 1
 			day = index - ((31-int(start_date.day)))
@@ -331,14 +371,15 @@ def day_graph():
 
 @app.route('/hour-graph', methods=["POST"])
 def hour_graph():
-	global index_lst
+	current_time = time.time()
+	index_lst = int(int((current_time-start_time))/86400)
 	comp_name = json.loads(request.data)
 	graph_lst = []
-
+	inner_day_lst = get_day_price_list(comp_name, index)
 	for index in range(index_lst):
-		for inx in range(len(price_list[comp_name][index])+1):
+		for inx in range(len(inner_day_lst)+1):
 			if inx % 3600 == 0 and inx != 36000 and inx != 0:
-				price_chunk = price_list[comp_name][index][int(
+				price_chunk = inner_day_lst[int(
 					inx):int(inx+3600)]
 				high = round(max(price_chunk), 2)
 				low = round(min(price_chunk), 2)
@@ -353,28 +394,27 @@ def hour_graph():
 
 @app.route('/tick-graphs', methods=["POST"])
 def tick_graphs():
-	global index_lst
 	current_time = time.time()
-	index_tmp = int((current_time-start_time) - index_lst *
-					36000 - index_lst * 60*60*(24-10))
+	index_lst = int(int((current_time-start_time))/86400)
+	index_tmp = int(current_time-start_time-index_lst*86400)
 	if index_tmp <= 36000:
 		graphs = {}
-		for key in price_list:
+		for key in company_names:
 			tick_price_graph = []
 			for index in range(index_tmp):
 				if index % (300) == 0 and index != 36000 and index != 0:
 					tick_price_graph.append(
-						{"time": (index+start_time), "value": round(price_list[key][index_lst][index], 2)})
+						{"time": (index+start_time), "value": round(get_current_price(key, index_lst, index), 2)})
 			graphs[key] = tick_price_graph
 		return jsonify(graphs)
 	else:
 		graphs = {}
-		for key in price_list:
+		for key in company_names:
 			tick_price_graph = []
 			for index in range(36000):
 				if index % (300) == 0 and index != 36000 and index != 0:
 					tick_price_graph.append(
-						{"time": (index+start_time), "value": round(price_list[key][index_lst][index], 2)})
+						{"time": (index+start_time), "value": round(get_current_price(key, index_lst, index), 2)})
 			graphs[key] = tick_price_graph
 		return jsonify(graphs)
 
@@ -389,24 +429,31 @@ def is_end_game():
 @app.route('/end-all-prices', methods=["POST"])
 def end_all_prices():
 	price_dict = {}
-	for key in price_list:
+	start_price = get_current_price(key, 0, 0)
+	end_price = get_current_price(key, -1, -1)
+	for key in company_names:
 			change = round(
-				(price_list[key][-1][-1] - price_list[key][0][0]), 1)
+				
+				(end_price - start_price), 1)
 			pct_change = round(
-				(price_list[key][-1][-1] - price_list[key][0][0]) / price_list[key][0][0] * 100, 1)
+				(end_price - start_price) / start_price * 100, 1)
 			price_dict[key] = {"price":  round(
-				price_list[key][-1][-1], 2), "change": change, "pct_change": pct_change}
+				end_price, 2), "change": change, "pct_change": pct_change}
 	return jsonify(price_dict)
 
 
 @app.route('/end-season-index-graph', methods=["POST"])
 def end_season_index_graph():
 	graph_lst = []
-	for index in range(len(price_list["index"])):
-		high = round(max(price_list["index"][index]))
-		low = round(min(price_list["index"][index]))
-		open_p = round(price_list["index"][index][0])
-		close_p = round(price_list["index"][index][-1])
+	cur.execute(f"""
+          SELECT price_list from prices WHERE company_id='index';
+        """)
+	price_list = list(cur.fetchone()[0])
+	for index in range(len(price_list)):
+		high = round(max(price_list[index]))
+		low = round(min(price_list[index]))
+		open_p = round(price_list[index][0])
+		close_p = round(price_list[index][-1])
 		if index > (31-int(start_date.day)):
 			month = int(start_date.month) + 1
 			day = index - ((31-int(start_date.day)))

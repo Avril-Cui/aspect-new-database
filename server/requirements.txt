@@ -12,3 +12,5 @@ pyrebase4
 psycopg2-binary
 pandas_datareader
 yfinance
+gunicorn
+python-dotenv

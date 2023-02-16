@@ -1,1 +1,1 @@
-web: gunicorn rest_api:app --log-file=-
+web: gunicorn --bind 0.0.0.0:$PORT rest_api:app
