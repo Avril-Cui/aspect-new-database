@@ -2,7 +2,6 @@ import ReactEcharts from "echarts-for-react";
 import { useEffect, useState } from "react";
 const AdjustedDimension = (props) => {
   const WAIT_TIME = 1000*60*60;
-  const [price_data, setPrice] = useState([["01/01/2071 ", 0, 0, 0, 0]])
 
   useEffect(() => {
     var axios = require("axios");
@@ -40,25 +39,27 @@ const AdjustedDimension = (props) => {
         });
     }, WAIT_TIME);
     return () => clearInterval(data);
-  }, [WAIT_TIME, props.comp_name, price_data]);
+  }, [WAIT_TIME, props.comp_name]);
 
   let price = JSON.parse(window.localStorage.getItem(`"${props.comp_name}"`));
 
   let option;
 
   if (price == null || undefined || price.length == 0) {
-    price = price_data;
+    price = [["01/01/2071 ", 0, 0, 0, 0]];
   }
 
-  if (price.length < 10) {
-    for (let i = price.length; i < 10; i++) {
-      price[i] = [i, null, null, null, null, null];
-      price[0] = ["01/01/2071 ", 0, 0, 0, 0];
+  if (price.length < 20) {
+    for (let i = price.length; i < 20; i++) {
+      price[i] = [undefined, undefined, undefined, undefined, undefined, undefined];
+      price[0] = ["01/01/2071 ", null, null, null, null];
     }
   }
-  let start_label1 = price.length*4-65;
-  let start_label2 = price.length*4-65;
+  
+  let start_label1 = price.length*4-30*4;
+  let start_label2 = price.length*4-30*4;
   let end_label = price.length*4;
+  console.log(price.length)
 
   const upColor = "#72B176";
   const upBorderColor = "#72B176";

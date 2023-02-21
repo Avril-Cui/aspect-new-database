@@ -7,7 +7,7 @@ import time
 from datetime import datetime
 import datetime
 seconds = time.time()
-start_time = time.time() - (60*60*24)*10 - 20000
+start_time = time.time() - (60*60*24)*25 - 20000
 end_time = start_time + (60*60*24)*29 + 36000
 start_date = datetime.datetime.now()
 
