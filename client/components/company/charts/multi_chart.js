@@ -24,7 +24,7 @@ const MultiChart = (props) => {
 
       var config = {
         method: "post",
-        url: "http://localhost:5000/tick-graph",
+        url: "https://aspect-server.onrender.com/tick-graph",
         headers: {
           "Content-Type": "text/plain",
         },
@@ -65,7 +65,7 @@ const MultiChart = (props) => {
         </div>
       </div>
 
-      {chart === 1 && priceData[0]["time"] !== 0 && (
+      {chart === 1  && (
         <div>
           <LightweightChart priceData={priceData} />
         </div>

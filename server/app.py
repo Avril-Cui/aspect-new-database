@@ -353,7 +353,7 @@ def tick_graphs():
 			for index in range(index_tmp):
 				if index % (300) == 0 and index != 36000 and index != 0:
 					tick_price_graph.append(
-						{"time": (index+start_time), "value": round(price_list[key][index_lst][index], 2)})
+						{"time": (index+start_time+(index_lst)*(86400)-5*60*60), "value": round(price_list[key][index_lst][index], 2)})
 			graphs[key] = tick_price_graph
 		return jsonify(graphs)
 	else:
@@ -363,7 +363,7 @@ def tick_graphs():
 			for index in range(36000):
 				if index % (300) == 0 and index != 36000 and index != 0:
 					tick_price_graph.append(
-						{"time": (index+start_time), "value": round(price_list[key][index_lst][index], 2)})
+						{"time": (index+start_time+(index_lst)*(86400)-5*60*60), "value": round(price_list[key][index_lst][index], 2)})
 			graphs[key] = tick_price_graph
 		return jsonify(graphs)
 
