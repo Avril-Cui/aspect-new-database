@@ -37,7 +37,7 @@ export default function Front({ index, posts, companies }: Props) {
   ];
   let current_month = month[today.getMonth()];
   const dispatch = useDispatch();
-  const WAIT_TIME = 10000;
+  const WAIT_TIME = 4000;
   let price_data = useSelector((state) => state.price.value);
 
   const [isPrice, setIsPrice] = useState(false);
@@ -63,7 +63,7 @@ export default function Front({ index, posts, companies }: Props) {
         <p className={styles.header}>News - Market Information</p>
         <News index={index} />
       </div>
-{/* 
+
       <div className={styles.layer_one} style={{ marginTop: "3em" }}>
         <p className={styles.header}>Terms of the Week</p>
         <div className={styles.terms_section} style={{ marginTop: "1em" }}>
@@ -100,7 +100,7 @@ export default function Front({ index, posts, companies }: Props) {
               Stock Screener
             </p>
             <div className={styles.screener_table}>
-              <ScreenerTable />
+              <ScreenerTable isPrice={isPrice} price_data={price_data}/>
             </div>
           </div>
           <div>
@@ -121,7 +121,7 @@ export default function Front({ index, posts, companies }: Props) {
           </div>
         </div>
       </div>
-      <ExploreSection companies={companies} /> */}
+      <ExploreSection companies={companies} isPrice={isPrice} price_data={price_data}/>
     </div>
   );
 }

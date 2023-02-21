@@ -1,8 +1,5 @@
 import styles from "../overview_charts.module.css";
 import Link from "next/link";
-import { useSelector, useDispatch } from "react-redux";
-import { requestPrice } from "../../../features/newPrice.js";
-import { useState, useEffect } from "react";
 
 function HeaderTemplate(props) {
   const price_data=props.price_data

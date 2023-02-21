@@ -245,7 +245,7 @@ def current_all_prices():
 		for key in price_list:
 			final_price = price_list[key][index_lst][-1]
 			current_price_dict[key] = {"price":  round(
-				final_price, 2), "change": "N/A", "pct_change": "N/A"}
+				final_price, 2), "change": "N/A", "pct_change": "Market Closed"}
 		return jsonify(current_price_dict)
 
 

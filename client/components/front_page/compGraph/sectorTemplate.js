@@ -1,12 +1,11 @@
 import React from "react";
 import styles from "../overview_charts.module.css";
-// import ChartTemplate from "./chartTemplate";
 import dynamic from "next/dynamic";
 import HeaderTemplate from "./headerTemplate";
 
-// const ChartTemplate = dynamic(() => import("./chartTemplate.js"), {
-//   ssr: false,
-// });
+const ChartTemplate = dynamic(() => import("./chartTemplate.js"), {
+  ssr: false,
+});
 
 function SectorTemplate(props) {
   const comp_names = props.comp_names;
@@ -32,11 +31,11 @@ function SectorTemplate(props) {
         </div>
       </div>
 
-      {/* {props.compGraph == 1 && (
+      {props.compGraph == 1 && (
         <div>
           <ChartTemplate comp_name={name} />
         </div>
-      )} */}
+      )}
     </div>
   );
 }

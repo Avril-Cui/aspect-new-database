@@ -1,15 +1,11 @@
 import React from "react";
 import styles from "../../styles/front.module.css";
-import { useSelector, useDispatch } from "react-redux";
-import { requestPrice } from "../../features/newPrice.js";
 import { useState, useEffect } from "react";
 import ExploreComp from "../simulator/ExploreComp";
 
 function ExploreSection(props) {
   const change = 1;
-  const dispatch = useDispatch();
-  const WAIT_TIME = 3000;
-  let price_data = useSelector((state) => state.price.value);
+  const WAIT_TIME = 4000;
 
   const [graphData, setGraphData] = useState({
     ast: [{ time: 0, value: 0 }],
@@ -21,20 +17,15 @@ function ExploreSection(props) {
     wrkn: [{ time: 0, value: 0 }],
   });
 
-  const [isPrice, setIsPrice] = useState(false);
   const loadingPrice = "N/A";
   useEffect(() => {
     const data = setInterval(() => {
-      dispatch(requestPrice());
-      setIsPrice(true);
-
       var axios = require("axios");
       var data = "";
 
       var config = {
         method: "post",
-        url: "http://127.0.0.1:5000/tick-graphs",
-        headers: {},
+        url: "https://aspect-server.onrender.com/tick-graphs",
         data: data,
       };
 
@@ -47,7 +38,7 @@ function ExploreSection(props) {
         });
     }, WAIT_TIME);
     return () => clearInterval(data);
-  }, [isPrice, dispatch, graphData]);
+  }, [graphData]);
 
   const formatter = new Intl.NumberFormat("en-US", {
     minimumFractionDigits: 2,
@@ -60,17 +51,17 @@ function ExploreSection(props) {
         <p className={styles.header}>Explore Companies</p>
         <ExploreComp
           company={companies.ast}
-          price={isPrice ? price_data["ast"]["price"] : loadingPrice}
+          price={props.isPrice ? props.price_data["ast"]["price"] : loadingPrice}
           change={
-            isPrice ? formatter.format(price_data["ast"]["change"]) : "N/A"
+            props.isPrice ? formatter.format(props.price_data["ast"]["change"]) : "N/A"
           }
           pct_change={
-            isPrice ? formatter.format(price_data["ast"]["pct_change"]) : "N/A"
+            props.isPrice ? formatter.format(props.price_data["ast"]["pct_change"]) : "N/A"
           }
           background="#c9ffd1"
           color={
-            isPrice
-              ? price_data["ast"]["change"] > 0
+            props.isPrice
+              ? props.price_data["ast"]["change"] > 0
                 ? "#C9FFD1"
                 : "#FD6565"
               : change > 0
@@ -81,17 +72,17 @@ function ExploreSection(props) {
         />
         <ExploreComp
           company={companies.dsc}
-          price={isPrice ? price_data["dsc"]["price"] : loadingPrice}
+          price={props.isPrice ? props.price_data["dsc"]["price"] : loadingPrice}
           change={
-            isPrice ? formatter.format(price_data["dsc"]["change"]) : "N/A"
+            props.isPrice ? formatter.format(props.price_data["dsc"]["change"]) : "N/A"
           }
           pct_change={
-            isPrice ? formatter.format(price_data["dsc"]["pct_change"]) : "N/A"
+            props.isPrice ? formatter.format(props.price_data["dsc"]["pct_change"]) : "N/A"
           }
           background="#F2C14E"
           color={
-            isPrice
-              ? price_data["dsc"]["change"] > 0
+            props.isPrice
+              ? props.price_data["dsc"]["change"] > 0
                 ? "#C9FFD1"
                 : "#FD6565"
               : change > 0
@@ -102,17 +93,17 @@ function ExploreSection(props) {
         />
         <ExploreComp
           company={companies.fsin}
-          price={isPrice ? price_data["fsin"]["price"] : loadingPrice}
+          price={props.isPrice ? props.price_data["fsin"]["price"] : loadingPrice}
           change={
-            isPrice ? formatter.format(price_data["fsin"]["change"]) : "N/A"
+            props.isPrice ? formatter.format(props.price_data["fsin"]["change"]) : "N/A"
           }
           pct_change={
-            isPrice ? formatter.format(price_data["fsin"]["pct_change"]) : "N/A"
+            props.isPrice ? formatter.format(props.price_data["fsin"]["pct_change"]) : "N/A"
           }
           background="#F1FFC4"
           color={
-            isPrice
-              ? price_data["fsin"]["change"] > 0
+            props.isPrice
+              ? props.price_data["fsin"]["change"] > 0
                 ? "#C9FFD1"
                 : "#FD6565"
               : change > 0
@@ -123,17 +114,17 @@ function ExploreSection(props) {
         />
         <ExploreComp
           company={companies.hhw}
-          price={isPrice ? price_data["hhw"]["price"] : loadingPrice}
+          price={props.isPrice ? props.price_data["hhw"]["price"] : loadingPrice}
           change={
-            isPrice ? formatter.format(price_data["hhw"]["change"]) : "N/A"
+            props.isPrice ? formatter.format(props.price_data["hhw"]["change"]) : "N/A"
           }
           pct_change={
-            isPrice ? formatter.format(price_data["hhw"]["pct_change"]) : "N/A"
+            props.isPrice ? formatter.format(props.price_data["hhw"]["pct_change"]) : "N/A"
           }
           background="#C6E2E9"
           color={
-            isPrice
-              ? price_data["hhw"]["change"] > 0
+            props.isPrice
+              ? props.price_data["hhw"]["change"] > 0
                 ? "#C9FFD1"
                 : "#FD6565"
               : change > 0
@@ -144,17 +135,17 @@ function ExploreSection(props) {
         />
         <ExploreComp
           company={companies.jky}
-          price={isPrice ? price_data["jky"]["price"] : loadingPrice}
+          price={props.isPrice ? props.price_data["jky"]["price"] : loadingPrice}
           change={
-            isPrice ? formatter.format(price_data["jky"]["change"]) : "N/A"
+            props.isPrice ? formatter.format(props.price_data["jky"]["change"]) : "N/A"
           }
           pct_change={
-            isPrice ? formatter.format(price_data["jky"]["pct_change"]) : "N/A"
+            props.isPrice ? formatter.format(props.price_data["jky"]["pct_change"]) : "N/A"
           }
           background="#8EF9F3"
           color={
-            isPrice
-              ? price_data["jky"]["change"] > 0
+            props.isPrice
+              ? props.price_data["jky"]["change"] > 0
                 ? "#C9FFD1"
                 : "#FD6565"
               : change > 0
@@ -165,17 +156,17 @@ function ExploreSection(props) {
         />
         <ExploreComp
           company={companies.sgo}
-          price={isPrice ? price_data["sgo"]["price"] : loadingPrice}
+          price={props.isPrice ? props.price_data["sgo"]["price"] : loadingPrice}
           change={
-            isPrice ? formatter.format(price_data["sgo"]["change"]) : "N/A"
+            props.isPrice ? formatter.format(props.price_data["sgo"]["change"]) : "N/A"
           }
           pct_change={
-            isPrice ? formatter.format(price_data["sgo"]["pct_change"]) : "N/A"
+            props.isPrice ? formatter.format(props.price_data["sgo"]["pct_change"]) : "N/A"
           }
           background="#FFFC99"
           color={
-            isPrice
-              ? price_data["sgo"]["change"] > 0
+            props.isPrice
+              ? props.price_data["sgo"]["change"] > 0
                 ? "#C9FFD1"
                 : "#FD6565"
               : change > 0
@@ -186,17 +177,17 @@ function ExploreSection(props) {
         />
         <ExploreComp
           company={companies.wrkn}
-          price={isPrice ? price_data["wrkn"]["price"] : loadingPrice}
+          price={props.isPrice ? props.price_data["wrkn"]["price"] : loadingPrice}
           change={
-            isPrice ? formatter.format(price_data["wrkn"]["change"]) : "N/A"
+            props.isPrice ? formatter.format(props.price_data["wrkn"]["change"]) : "N/A"
           }
           pct_change={
-            isPrice ? formatter.format(price_data["wrkn"]["pct_change"]) : "N/A"
+            props.isPrice ? formatter.format(props.price_data["wrkn"]["pct_change"]) : "N/A"
           }
           background="#B1F8F2"
           color={
-            isPrice
-              ? price_data["wrkn"]["change"] > 0
+            props.isPrice
+              ? props.price_data["wrkn"]["change"] > 0
                 ? "#C9FFD1"
                 : "#FD6565"
               : change > 0

@@ -10,7 +10,7 @@ const AdjustedDimension = (props) => {
 
     var config = {
       method: "post",
-      url: "https://aspect-server.herokuapp.com/day-graph",
+      url: "https://aspect-server.onrender.com/day-graph",
       headers: {
         "Content-Type": "text/plain",
       },
