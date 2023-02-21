@@ -7,7 +7,7 @@ import time
 from datetime import datetime
 import datetime
 seconds = time.time()
-start_time = time.time() - (60*60*24)*10 - 20
+start_time = time.time() - (60*60*24)*10 - 20000
 end_time = start_time + (60*60*24)*29 + 36000
 start_date = datetime.datetime.now()
 
@@ -298,10 +298,10 @@ def day_graph():
 	graph_lst = []
 
 	for index in range(index_lst):
-		high = round(max(price_list[comp_name][index]))
-		low = round(min(price_list[comp_name][index]))
-		open_p = round(price_list[comp_name][index][0])
-		close_p = round(price_list[comp_name][index][-1])
+		high = round(max(price_list[comp_name][index]), 2)
+		low = round(min(price_list[comp_name][index]), 2)
+		open_p = round(price_list[comp_name][index][0], 2)
+		close_p = round(price_list[comp_name][index][-1], 2)
 		if index > (31-int(start_date.day)):
 			month = int(start_date.month) + 1
 			day = index - ((31-int(start_date.day)))
