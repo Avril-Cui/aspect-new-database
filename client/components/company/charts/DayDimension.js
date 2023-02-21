@@ -9,7 +9,7 @@ const DayDimension = (props) => {
 
     var config = {
       method: "post",
-      url: "http://127.0.0.1:5000/day-graph",
+      url: "https://aspect-server.onrender.com/day-graph",
       headers: {
         "Content-Type": "text/plain",
       },
@@ -47,9 +47,10 @@ const DayDimension = (props) => {
     price = [["01/01/2071 ", 0, 0, 0, 0]];
   }
 
-  if(price.length < 5){
-    for (let i = price.length; i < 10; i++) {
-      price[i] = [i, null, null, null, null, null]
+  if (price.length < 30) {
+    for (let i = price.length; i < 30; i++) {
+      price[i] = [undefined, undefined, undefined, undefined, undefined, undefined];
+      price[0] = ["01/01/2071 ", null, null, null, null];
     }
   }
   // let start_label1 = price.length*4-60;

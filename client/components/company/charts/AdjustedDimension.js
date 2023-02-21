@@ -10,7 +10,7 @@ const AdjustedDimension = (props) => {
 
     var config = {
       method: "post",
-      url: "http://127.0.0.1:5000/hour-graph",
+      url: "https://aspect-server.onrender.com/hour-graph",
       headers: {
         "Content-Type": "text/plain",
       },
@@ -54,8 +54,8 @@ const AdjustedDimension = (props) => {
       price[0] = ["01/01/2071 ", 0, 0, 0, 0];
     }
   }
-  let start_label1 = price.length*4-60;
-  let start_label2 = price.length*4-60;
+  let start_label1 = price.length*4-30;
+  let start_label2 = price.length*4-30;
   let end_label = price.length*4;
 
   const upColor = "#72B176";

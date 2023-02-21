@@ -7,7 +7,8 @@ import time
 from datetime import datetime
 import datetime
 seconds = time.time()
-start_time = time.time() - (60*60*24)*25 - 20000
+start_time = 1675170000
+print(start_time)
 end_time = start_time + (60*60*24)*29 + 36000
 start_date = datetime.datetime.now()
 
@@ -278,17 +279,17 @@ def tick_graph():
 		for index in range(index_tmp):
 			if index % (300) == 0 and index != 36000 and index != 0:
 				tick_price_graph.append({"time": (
-					index+start_time), "value": round(price_list[comp_name][index_lst][index], 2)})
+					index+start_time+(index_lst)*(86400)-5*60*60), "value": round(price_list[comp_name][index_lst][index], 2)})
+		if tick_price_graph == []:
+			tick_price_graph.append({"time": 0, "value": 0})
 		return jsonify(tick_price_graph)
 	else:
 		tick_price_graph = []
 		for index in range(36000):
 			if index % (300) == 0 and index != 36000 and index != 0:
 				tick_price_graph.append({"time": (
-					index+start_time), "value": round(price_list[comp_name][index_lst][index], 2)})
-
+					index+start_time+(index_lst)*(86400)-5*60*60), "value": round(price_list[comp_name][index_lst][index], 2)})
 		return jsonify(tick_price_graph)
-
 
 @app.route('/day-graph', methods=["POST"])
 def day_graph():

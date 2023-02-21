@@ -33,7 +33,7 @@ function ExploreComp(props: any) {
               </div>
             </div>
           </div>
-          <div>
+          <div style={{width: "14em"}}>
             <div className={styles.inline}>
               <p className={styles.price}>
                 {props.price} <span>ASD</span>
