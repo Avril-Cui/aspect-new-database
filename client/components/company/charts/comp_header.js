@@ -6,8 +6,9 @@ import { requestPrice } from "../../../features/newPrice.js";
 const CompHeader = (props) => {
   const change = 1;
   const dispatch = useDispatch();
-  const WAIT_TIME = 3000;
+  const WAIT_TIME = 10000;
   let price_data = useSelector((state) => state.price.value);
+  console.log(price_data)
 
   const [isPrice, setIsPrice] = useState(false);
   const loadingPrice = "N/A";

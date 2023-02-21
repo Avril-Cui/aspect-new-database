@@ -27,7 +27,8 @@
     "react-hook-form": "^7.39.1",
     "react-portable-text": "^0.5.1",
     "react-redux": "^8.0.4",
-    "react-tradingview-embed": "^3.0.6"
+    "react-tradingview-embed": "^3.0.6",
+    "serve": "^14.2.0"
   },
   "devDependencies": {
     "@types/babel__core": "^7.1.19",

@@ -7,7 +7,10 @@ import Terms from "../components/front_page/terms";
 import ScreenerTable from "../components/simulator/screener_table";
 import LeaderBoard from "../components/simulator/LeaderBoard";
 import Head from "next/head";
-import ExploreSection from "../components/front_page/ExploreSection"
+import ExploreSection from "../components/front_page/ExploreSection";
+import { useSelector, useDispatch } from "react-redux";
+import { requestPrice } from "../features/newPrice.js";
+import { useState, useEffect } from "react";
 
 interface Props {
   index: [Post];
@@ -33,6 +36,19 @@ export default function Front({ index, posts, companies }: Props) {
     "Dec",
   ];
   let current_month = month[today.getMonth()];
+  const dispatch = useDispatch();
+  const WAIT_TIME = 10000;
+  let price_data = useSelector((state) => state.price.value);
+
+  const [isPrice, setIsPrice] = useState(false);
+  const loadingPrice = "N/A";
+  useEffect(() => {
+    const data = setInterval(() => {
+      dispatch(requestPrice());
+      setIsPrice(true);
+    }, WAIT_TIME);
+    return () => clearInterval(data);
+  }, [isPrice, dispatch]);
   return (
     <div className={styles.container}>
       <Head>
@@ -40,14 +56,14 @@ export default function Front({ index, posts, companies }: Props) {
       </Head>
       <div className={styles.layer_one}>
         <p className={styles.header}>Market Overview</p>
-        <OverviewChart />
+        <OverviewChart price_data={price_data} isPrice={isPrice}/>
       </div>
 
       <div className={styles.layer_one} style={{ marginTop: "3em" }}>
         <p className={styles.header}>News - Market Information</p>
         <News index={index} />
       </div>
-
+{/* 
       <div className={styles.layer_one} style={{ marginTop: "3em" }}>
         <p className={styles.header}>Terms of the Week</p>
         <div className={styles.terms_section} style={{ marginTop: "1em" }}>
@@ -105,8 +121,7 @@ export default function Front({ index, posts, companies }: Props) {
           </div>
         </div>
       </div>
-      <ExploreSection companies={companies}/>
-
+      <ExploreSection companies={companies} /> */}
     </div>
   );
 }

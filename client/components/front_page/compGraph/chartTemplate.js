@@ -10,7 +10,7 @@ const AdjustedDimension = (props) => {
 
     var config = {
       method: "post",
-      url: "http://127.0.0.1:5000/hour-graph",
+      url: "https://aspect-server.herokuapp.com/day-graph",
       headers: {
         "Content-Type": "text/plain",
       },
@@ -40,7 +40,7 @@ const AdjustedDimension = (props) => {
         });
     }, WAIT_TIME);
     return () => clearInterval(data);
-  }, [WAIT_TIME, props.comp_name]);
+  }, [WAIT_TIME, props.comp_name, price_data]);
 
   let price = JSON.parse(window.localStorage.getItem(`"${props.comp_name}"`));
 

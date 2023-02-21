@@ -5,6 +5,8 @@ import { requestPrice } from "../../../features/newPrice.js";
 import { useState, useEffect } from "react";
 
 function HeaderTemplate(props) {
+  const price_data=props.price_data
+  const isPrice = props.isPrice
   let comp_name = props.comp_name.toLowerCase();
   let route = "/";
   if (comp_name != "apinx") {
@@ -14,20 +16,6 @@ function HeaderTemplate(props) {
   }
 
   const change = 1;
-  const dispatch = useDispatch();
-  const WAIT_TIME = 3000;
-  let price_data = useSelector((state) => state.price.value);
-  console.log(price_data);
-
-  const [isPrice, setIsPrice] = useState(false);
-  const loadingPrice = "N/A";
-  useEffect(() => {
-    const data = setInterval(() => {
-      dispatch(requestPrice());
-      setIsPrice(true);
-    }, WAIT_TIME);
-    return () => clearInterval(data);
-  }, [isPrice, dispatch]);
 
   const formatter = new Intl.NumberFormat("en-US", {
     minimumFractionDigits: 2,
@@ -52,13 +40,13 @@ function HeaderTemplate(props) {
         <div className={styles.comp_type_prices}>
           <div className={styles.inline}>
             <p className={styles.comp_type_price}>
-              {isPrice ? price_data[comp_name]["price"] : "N/A"}{" "}
+              {(props.price_data[comp_name]!=undefined) ? props.price_data[comp_name]["price"] : "N/A"}{" "}
               <span>ASD</span>
             </p>
             <p
               className={styles.comp_type_pct_change}
               style={
-                isPrice
+                (price_data[comp_name]!=undefined)
                   ? price_data[comp_name]["change"] < 0
                     ? { color: "#FD6565" }
                     : { color: "#C9FFD1" }
@@ -67,7 +55,7 @@ function HeaderTemplate(props) {
                   : { color: "#C9FFD1" }
               }
             >
-              {isPrice
+              {(price_data[comp_name]!=undefined)
                 ? formatter.format(price_data[comp_name]["pct_change"])
                 : "N/A"}
               %

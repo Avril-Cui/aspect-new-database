@@ -4,9 +4,9 @@ import styles from "../overview_charts.module.css";
 import dynamic from "next/dynamic";
 import HeaderTemplate from "./headerTemplate";
 
-const ChartTemplate = dynamic(() => import("./chartTemplate.js"), {
-  ssr: false,
-});
+// const ChartTemplate = dynamic(() => import("./chartTemplate.js"), {
+//   ssr: false,
+// });
 
 function SectorTemplate(props) {
   const comp_names = props.comp_names;
@@ -24,17 +24,19 @@ function SectorTemplate(props) {
                 category={props.compGraph}
                 setCompGraph={props.setCompGraph}
                 comp_name={comp_name}
+                price_data={props.price_data}
+                isPrice={props.isPrice}
               />
             </div>
           ))}
         </div>
       </div>
 
-      {props.compGraph == 1 && (
+      {/* {props.compGraph == 1 && (
         <div>
           <ChartTemplate comp_name={name} />
         </div>
-      )}
+      )} */}
     </div>
   );
 }

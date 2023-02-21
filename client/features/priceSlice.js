@@ -43,7 +43,12 @@ export const priceSlice = createSlice({
           "change": null,
           "pct_change": null,
           "price": null
-      }
+      },
+      "index": {
+        "change": null,
+        "pct_change": null,
+        "price": null
+    }
   },
     price_change: "N/A" ,
   },
@@ -58,7 +63,7 @@ export const priceSlice = createSlice({
 });
 
 // Action creators are generated for each case reducer function
-export const { setNewPrice, increment, decrement, incrementByAmount } =
+export const { setNewPrice } =
 priceSlice.actions;
 
 export default priceSlice.reducer;

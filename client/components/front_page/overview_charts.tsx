@@ -2,7 +2,7 @@ import styles from "./overview_charts.module.css";
 import { useState } from "react";
 import SectorTemplate from "./compGraph/sectorTemplate";
 
-const OverviewChart = () => {
+const OverviewChart = (props:any) => {
   const [category, setCategory] = useState(1);
   const [compGraph, setCompGraph] = useState(1);
 
@@ -77,6 +77,9 @@ const OverviewChart = () => {
             setCompGraph={setCompGraph}
             category={category}
             comp_names={["APINX"]}
+            price_data={props.price_data}
+            isPrice={props.isPrice}
+            indexDayChart={props.indexDayChart}
           />
         </div>
       )}
@@ -95,6 +98,9 @@ const OverviewChart = () => {
             setCompGraph={setCompGraph}
             category={category}
             comp_names={["WRKN"]}
+            price_data={props.price_data}
+            isPrice={props.isPrice}
+            indexDayChart={props.indexDayChart}
           />
         </div>
       )}
@@ -113,6 +119,9 @@ const OverviewChart = () => {
             setCompGraph={setCompGraph}
             category={category}
             comp_names={["SGO"]}
+            price_data={props.price_data}
+            isPrice={props.isPrice}
+            indexDayChart={props.indexDayChart}
           />
         </div>
       )}
@@ -131,6 +140,9 @@ const OverviewChart = () => {
             setCompGraph={setCompGraph}
             category={category}
             comp_names={["JKY"]}
+            price_data={props.price_data}
+            isPrice={props.isPrice}
+            indexDayChart={props.indexDayChart}
           />
         </div>
       )}
@@ -149,6 +161,9 @@ const OverviewChart = () => {
             setCompGraph={setCompGraph}
             category={category}
             comp_names={["HHW"]}
+            price_data={props.price_data}
+            isPrice={props.isPrice}
+            indexDayChart={props.indexDayChart}
           />
         </div>
       )}
@@ -167,6 +182,9 @@ const OverviewChart = () => {
             setCompGraph={setCompGraph}
             category={category}
             comp_names={["FSIN"]}
+            price_data={props.price_data}
+            isPrice={props.isPrice}
+            indexDayChart={props.indexDayChart}
           />
         </div>
       )}
@@ -185,6 +203,9 @@ const OverviewChart = () => {
             setCompGraph={setCompGraph}
             category={category}
             comp_names={["DSC"]}
+            price_data={props.price_data}
+            isPrice={props.isPrice}
+            indexDayChart={props.indexDayChart}
           />
         </div>
       )}

@@ -5,7 +5,7 @@ export const requestPrice = () => {
     return (dispatch) => {
       axios({
         method: 'post',
-        url: 'http://localhost:5000/current-all-prices',
+        url: 'https://aspect-server.herokuapp.com/current-all-prices',
         headers: {}
       })
         .then((response) => {
