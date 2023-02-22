@@ -21,7 +21,7 @@ function LeaderBoard3() {
     var axios = require("axios");
     var config = {
       method: "POST",
-      url: "https://aspect-server.onrender.com/total-rank",
+      url: "http://127.0.0.1:5000/total-rank",
       headers: {},
     };
 

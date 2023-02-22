@@ -122,6 +122,7 @@ app = Flask(__name__, static_url_path='')
 CORS(app)
 app.config["CORS_ORIGINS"] = ["https://aspect-finance.com",
 							  "http://localhost:8080", "http://127.0.0.1:5000/"]
+app.config['JSON_SORT_KEYS'] = False
 config = {
 	"apiKey": "AIzaSyAHY-ZeX87ObL6y3y_2n76GLNxU-24hHs0",
 	"authDomain": "aspect-fb6c9.firebaseapp.com",
@@ -221,7 +222,7 @@ def show_ranking():
 @app.route('/total-rank', methods=['POST'])
 def total_rank():
 	user_rank = user_database_commands.get_total_rank()
-	return json.dumps(user_rank)
+	return user_rank
 
 @app.route('/current-all-prices', methods=["POST"])
 def current_all_prices():
