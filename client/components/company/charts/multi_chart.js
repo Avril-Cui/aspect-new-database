@@ -65,7 +65,7 @@ const MultiChart = (props) => {
         </div>
       </div>
 
-      {chart === 1  && (
+      {chart === 1 && priceData[0]["time"] !== 0 && (
         <div>
           <LightweightChart priceData={priceData} />
         </div>

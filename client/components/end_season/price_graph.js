@@ -7,7 +7,7 @@ const EndSeasonChart = (props) => {
 
     var config = {
       method: "post",
-      url: "http://127.0.0.1:5000/end-season-index-graph",
+      url: "https://aspect-server.onrender.com/end-season-index-graph",
       headers: {
         "Content-Type": "text/plain",
       },

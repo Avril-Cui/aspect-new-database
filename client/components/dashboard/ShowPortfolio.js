@@ -35,7 +35,7 @@ function ShowPortfolio() {
       let data = JSON.stringify(user_uid);
       var config = {
         method: "post",
-        url: "http://127.0.0.1:5000/portfolio-detail",
+        url: "https://aspect-server.onrender.com/portfolio-detail",
         headers: {
           "Content-Type": "text/plain",
         },

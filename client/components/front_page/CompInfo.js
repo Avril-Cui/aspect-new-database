@@ -25,7 +25,7 @@ function CompInfo(props) {
 
       var config = {
         method: "post",
-        url: "http://127.0.0.1:5000/end-all-prices",
+        url: "https://aspect-server.onrender.com/end-all-prices",
         headers: {
           "Content-Type": "text/plain",
         },

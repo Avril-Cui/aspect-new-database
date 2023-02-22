@@ -17,7 +17,7 @@ function LeaderBoard1() {
 
     var config = {
       method: "POST",
-      url: "http://127.0.0.1:5000/total-rank",
+      url: "https://aspect-server.onrender.com/total-rank",
       headers: {},
       data: data,
     };

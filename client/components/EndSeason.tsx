@@ -11,7 +11,7 @@ const EndSeason = ({ children }: { children: React.ReactNode }) => {
 
     var config = {
       method: "post",
-      url: "http://127.0.0.1:5000/is-end-game",
+      url: "https://aspect-server.onrender.com/is-end-game",
       headers: {},
       data: data,
     };

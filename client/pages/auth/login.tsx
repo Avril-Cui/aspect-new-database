@@ -25,7 +25,7 @@ const Login = () => {
     cookies.set("userData", { email, user_name }, { path: "/" });
     axios({
       method: "POST",
-      url: "http://127.0.0.1:5000/result",
+      url: "https://aspect-server.onrender.com/result",
       headers: {
         "Content-Type": "text/plain",
       },

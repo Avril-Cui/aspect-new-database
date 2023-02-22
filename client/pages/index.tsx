@@ -38,13 +38,13 @@ export default function Front({ index, posts, companies }: Props) {
   let current_month = month[today.getMonth()];
   const dispatch = useDispatch();
   const WAIT_TIME = 4000;
-  let price_data = useSelector((state) => state.price.value);
+  let price_data = useSelector((state:any) => state.price.value);
 
   const [isPrice, setIsPrice] = useState(false);
-  const loadingPrice = "N/A";
+  // const loadingPrice = "N/A";
   useEffect(() => {
     const data = setInterval(() => {
-      dispatch(requestPrice());
+      dispatch(requestPrice() as any);
       setIsPrice(true);
     }, WAIT_TIME);
     return () => clearInterval(data);

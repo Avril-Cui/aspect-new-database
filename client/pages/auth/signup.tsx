@@ -22,7 +22,7 @@ const Login = () => {
     cookies.set("userData", data, { path: "/" });
     axios({
       method: "POST",
-      url: "http://127.0.0.1:5000/register",
+      url: "https://aspect-server.onrender.com/register",
       headers: {
         "Content-Type": "text/plain",
       },

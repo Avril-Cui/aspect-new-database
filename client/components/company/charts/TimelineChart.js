@@ -10,7 +10,7 @@ const DayDimension = (props) => {
 
     var config = {
       method: "post",
-      url: "http://127.0.0.1:5000/hour-graph",
+      url: "https://aspect-server.onrender.com/hour-graph",
       headers: {
         "Content-Type": "text/plain",
       },
@@ -52,14 +52,14 @@ const DayDimension = (props) => {
     price = [["01/01/2071 ", 0, 0, 0, 0]];
   }
 
-  if (price.length < 10) {
-    for (let i = price.length; i < 10; i++) {
-      price[i] = [i, null, null, null, null, null];
-      price[0] = ["01/01/2071 ", 0, 0, 0, 0];
+  if (price.length < 30) {
+    for (let i = price.length; i < 30; i++) {
+      price[i] = [undefined, undefined, undefined, undefined, undefined, undefined];
+      price[0] = ["01/01/2071 ", null, null, null, null];
     }
   }
-  let start_label1 = price.length*4-90;
-  let start_label2 = price.length*4-90;
+  let start_label1 = price.length*4-50;
+  let start_label2 = price.length*4-50;
   let end_label = price.length*4;
 
   const upColor = "#72B176";

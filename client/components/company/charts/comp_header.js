@@ -86,7 +86,7 @@ const CompHeader = (props) => {
             </div>
 
             <p className={styles.market_state}>
-              MARKET CLOSED <span>(SEASON STARTED ON JAN 1ST, 2023)</span>
+              {(price_data[props.CompanyName]["pct_change"] != "Market Closed") ? "Market OPEN" : "MARKET CLOSED"}
             </p>
 
             <table className={styles.price_info_table}>
