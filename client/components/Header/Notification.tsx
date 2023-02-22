@@ -9,7 +9,7 @@ const Notification = () => {
         <Link href="/game">
           <a className={styles.link}>Stock Simulator</a>
         </Link>
-        . Market Open From 8:00AM EST to 5:00PM EST.
+        . Market Open From 8:00AM to 6:00PM EST.
       </p>
     </div>
   );
