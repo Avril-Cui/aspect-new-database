@@ -33,19 +33,20 @@ function LeaderBoard() {
   }, []);
   return (
     <table className={styles.user_table}>
-      <tbody>
-        <tr>
-          <th>Rank</th>
-          <th>User Name</th>
-          <th>Cash Value</th>
-          <th>Value Change</th>
-          <th>Total Change</th>
-        </tr>
-        <tr>
+        <tbody>
+          <tr>
+            <th>Rank</th>
+            <th>User Name</th>
+            <th>Cash Value</th>
+            <th>Value Change</th>
+            <th>Total Change</th>
+          </tr>
+        </tbody>
+        <tbody>
           {Object.entries(ranking).map(
             ([key, value], i) =>
               i < 6 && (
-                <>
+                <tr key={key}>
                   <td className={styles.ranking}>{value["ranking"]}</td>
                   <td className={styles.normal}>{key}</td>
                   <td className={styles.normal}>${value["cash_value"]}</td>
@@ -69,11 +70,11 @@ function LeaderBoard() {
                   >
                     {value["pct_change"] * 100} %
                   </td>
-                </>
+                </tr>
               )
           )}
-        </tr>
-      </tbody>
+        </tbody>
+      
     </table>
   );
 }

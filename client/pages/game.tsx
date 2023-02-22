@@ -12,6 +12,7 @@ import leaderboard from "../image/screenshot/leaderboard.png";
 import trade from "../image/screenshot/trade.png";
 import news from "../image/screenshot/news.png";
 import chat from "../image/screenshot/chat.png";
+import logo from "../image/logo/alien.png";
 
 const Product = () => {
   return (
@@ -179,7 +180,7 @@ const Product = () => {
         </div>
       </div>
 
-      <div className={styles.layer_five} style={{marginLeft: "2em"}}>
+      <div className={styles.layer_five} style={{ marginLeft: "2em" }}>
         <div className={styles.inline}>
           <div className={styles.charts1} style={{ marginRight: "2em" }}>
             <h2 className={styles.sub_subheader}>
@@ -222,6 +223,42 @@ const Product = () => {
         <div className={styles.display_game}>
           <div className={styles.screenshot_main}>
             <Image src={dict} width="1200px" height="630px" />
+          </div>
+        </div>
+      </div>
+
+      <div className={styles.comment_from_developer}>
+        <h2 className={styles.subsubheader}>
+          Notes From Developer [GAME MASTER]
+        </h2>
+        <div className={styles.inline}>
+          <div className={styles.logo_img}>
+            <div style={{ marginTop: "1.25em", marginLeft: "0.65em" }}>
+              <Image src={logo} width="300pz" height="230px" />
+            </div>
+          </div>
+          <div className={styles.contact_info}>
+            <p className={styles.name}>Avril Cui</p>
+            <p className={styles.contact}>Founder</p>
+            <p className={styles.contact1}>AvrilCui17@gmail.com</p>
+          </div>
+          <div style={{marginTop:"5em"}}>
+            <p className={styles.description}>
+              This website is created by <b>Avril Cui</b>. I am currently a
+              16-year-old high school junior.
+            </p>
+            <p className={styles.description} style={{marginTop:"1em"}}>
+              I created this website because my own finance-learning experience
+              inspired me. Learning finance is always a challenging task.
+              Complicated terminologies, intense market fluctuations, various
+              models...
+            </p>
+            <p className={styles.description} style={{marginTop:"1em"}}>
+              I hope Aspect can help simplify the learning process through
+              gaming. The game will have the best effect when playing on a
+              computer. In the future season, more features will be constantly
+              updated.
+            </p>
           </div>
         </div>
       </div>
