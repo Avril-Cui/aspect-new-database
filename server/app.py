@@ -221,8 +221,7 @@ def show_ranking():
 @app.route('/total-rank', methods=['POST'])
 def total_rank():
 	user_rank = user_database_commands.get_total_rank()
-	print(user_rank)
-	return user_rank
+	return json.dumps(user_rank)
 
 @app.route('/current-all-prices', methods=["POST"])
 def current_all_prices():

@@ -20,18 +20,18 @@ const Manu = () => {
   //   three: "Economics",
   //   four: "Technology",
   // };
-  const terms_sections = {
-    one: "Accounting",
-    two: "Valuation",
-    three: "Portfolio",
-    four: "De-Fi",
-  };
-  const model_sections = {
-    one: "Excel",
-    two: "Portfolio",
-    three: "Black Scholes",
-    four: "Technical",
-  };
+  // const terms_sections = {
+  //   one: "Accounting",
+  //   two: "Valuation",
+  //   three: "Portfolio",
+  //   four: "De-Fi",
+  // };
+  // const model_sections = {
+  //   one: "Excel",
+  //   two: "Portfolio",
+  //   three: "Black Scholes",
+  //   four: "Technical",
+  // };
 
   const handleLogout = () => {
     cookies.remove("userData", { path: "/" });
@@ -70,7 +70,6 @@ const Manu = () => {
         <div>
           <Dropdown
             link={"/terms"}
-            content={terms_sections}
             className={styles.drop}
           >
             <Link href="/terms">
@@ -81,7 +80,6 @@ const Manu = () => {
         <div>
           <Dropdown
             link={"/model"}
-            content={model_sections}
             className={styles.drop}
           >
             <Link href="/model">
