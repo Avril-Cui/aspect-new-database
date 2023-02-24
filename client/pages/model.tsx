@@ -42,26 +42,29 @@ export default function Model({ posts }: Props) {
                 post.categories._ref ==
                   "e242b86d-7cea-49b1-aeb9-312d45b3d319" ? (
                   <Link key={post._id} href={`/post/${post.slug.current}`}>
-                    <div className={styles.img_border}>
-                      <img
-                        className={styles.img}
-                        src={urlFor(post.mainImage).url()!}
-                        alt=""
-                      />
-                      <div className={styles.text_cont}>
-                        <div>
-                          <p className={styles.section_title}>{post.title}</p>
-                          <p className={styles.section_text}>
-                            {post.description}
-                          </p>
-                        </div>
+                    <a>
+                      {" "}
+                      <div className={styles.img_border}>
                         <img
-                          className={styles.author_pic}
-                          src={urlFor(post.author.image).url()!}
+                          className={styles.img}
+                          src={urlFor(post.mainImage).url()!}
                           alt=""
                         />
+                        <div className={styles.text_cont}>
+                          <div>
+                            <p className={styles.section_title}>{post.title}</p>
+                            <p className={styles.section_text}>
+                              {post.description}
+                            </p>
+                          </div>
+                          <img
+                            className={styles.author_pic}
+                            src={urlFor(post.author.image).url()!}
+                            alt=""
+                          />
+                        </div>
                       </div>
-                    </div>
+                    </a>
                   </Link>
                 ) : null
               )}
@@ -88,26 +91,29 @@ export default function Model({ posts }: Props) {
                 post.categories._ref ==
                   "abc7e3c9-97a5-4ea7-9e0f-200a04849e30" ? (
                   <Link key={post._id} href={`/post/${post.slug.current}`}>
-                    <div className={styles.img_border}>
-                      <img
-                        className={styles.img}
-                        src={urlFor(post.mainImage).url()!}
-                        alt=""
-                      />
-                      <div className={styles.text_cont}>
-                        <div>
-                          <p className={styles.section_title}>{post.title}</p>
-                          <p className={styles.section_text}>
-                            {post.description}
-                          </p>
-                        </div>
+                    <a>
+                      {" "}
+                      <div className={styles.img_border}>
                         <img
-                          className={styles.author_pic}
-                          src={urlFor(post.author.image).url()!}
+                          className={styles.img}
+                          src={urlFor(post.mainImage).url()!}
                           alt=""
                         />
+                        <div className={styles.text_cont}>
+                          <div>
+                            <p className={styles.section_title}>{post.title}</p>
+                            <p className={styles.section_text}>
+                              {post.description}
+                            </p>
+                          </div>
+                          <img
+                            className={styles.author_pic}
+                            src={urlFor(post.author.image).url()!}
+                            alt=""
+                          />
+                        </div>
                       </div>
-                    </div>
+                    </a>
                   </Link>
                 ) : null
               )}

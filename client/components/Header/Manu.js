@@ -23,55 +23,56 @@ const Manu = () => {
 
   return (
     <header className={styles.manu}>
-      <Link href="/">
-        <a className={styles.inline} style={{ marginTop: "0.2em" }}>
-          <p className={styles.logo}>ASPECT</p>
-          <div style={{ marginLeft: "0.5em" }}>
-            <Image src={alien} width="55px" height="45px" alt=""/>
+      <div className={styles.center}>
+        <Link href="/">
+          <a className={styles.inline} style={{ marginTop: "0.2em" }}>
+            <p className={styles.logo}>ASPECT</p>
+            <div style={{ marginLeft: "0.5em" }}>
+              <Image src={alien} width="55px" height="45px" alt="" />
+            </div>
+          </a>
+        </Link>
+        <div className={styles.sections}>
+          <div>
+            <Link href="/game">
+              <a>Game</a>
+            </Link>
           </div>
-        </a>
-      </Link>
-      <div className={styles.sections}>
-        <div>
-          <Link href="/game">
-            <a>Game</a>
-          </Link>
-        </div>
-        <div>
-          <Dropdown
-            link={"/terms"}
-            className={styles.drop}
-          >
-            <Link href="/terms">
-              <a>Terminology</a>
-            </Link>
-          </Dropdown>
-        </div>
-        <div>
-          <Dropdown
-            link={"/model"}
-            className={styles.drop}
-          >
-            <Link href="/model">
-              <a>Model</a>
-            </Link>
-          </Dropdown>
-        </div>
-      </div>
-
-      <Button>
-        <p className={styles.style_but}>
+          <div>
+            <Dropdown link={"/terms"} className={styles.drop}>
+              <Link href="/terms">
+                <a>Terminology</a>
+              </Link>
+            </Dropdown>
+          </div>
+          <div>
+            <Dropdown link={"/model"} className={styles.drop}>
+              <Link href="/model">
+                <a>Model</a>
+              </Link>
+            </Dropdown>
+          </div>
           {userData ? (
-            <Nav.Link className={styles.text} onClick={handleLogout}>
-             <a>Log Out</a>
-            </Nav.Link>
-          ) : (
-            <Nav.Link className={styles.text} href="/auth/login">
-              <a className={styles.login_text}>Log In</a>
-            </Nav.Link>
-          )}
-        </p>
-      </Button>
+            <Link href="/dashboard">
+              <a>Dashboard</a>
+            </Link>
+          ) : null}
+        </div>
+
+        <Button>
+          <p className={styles.style_but}>
+            {userData ? (
+              <Nav.Link className={styles.text} onClick={handleLogout}>
+                <a>Log Out</a>
+              </Nav.Link>
+            ) : (
+              <Nav.Link className={styles.text} href="/auth/login">
+                <a className={styles.login_text}>Log In</a>
+              </Nav.Link>
+            )}
+          </p>
+        </Button>
+      </div>
     </header>
   );
 };

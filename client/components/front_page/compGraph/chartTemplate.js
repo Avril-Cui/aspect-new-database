@@ -51,7 +51,7 @@ const AdjustedDimension = (props) => {
 
   if (price.length < 20) {
     for (let i = price.length; i < 20; i++) {
-      price[i] = [undefined, undefined, undefined, undefined, undefined, undefined];
+      price[i] = ["", undefined, undefined, undefined, undefined, undefined];
       price[0] = ["01/01/2071 ", null, null, null, null];
     }
   }
@@ -59,7 +59,6 @@ const AdjustedDimension = (props) => {
   let start_label1 = price.length*4-30*4;
   let start_label2 = price.length*4-30*4;
   let end_label = price.length*4;
-  console.log(price.length)
 
   const upColor = "#72B176";
   const upBorderColor = "#72B176";

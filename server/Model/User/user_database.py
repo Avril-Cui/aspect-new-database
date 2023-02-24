@@ -71,13 +71,13 @@ class UserDatabaseCommands:
         print(portfolio_data)
 
         trade_value = share_number * target_price
-        available_shares = 50
+        # available_shares = 50
 
         if current_price != target_price:
             return "Invalid 3"
 
-        if abs(share_number) > available_shares:
-            return "Invalid 3"
+        # if abs(share_number) > available_shares:
+        #     return "Invalid 3"
         elif trade_value > cash_value and share_number > 0:
             return "Invalid 2"
 

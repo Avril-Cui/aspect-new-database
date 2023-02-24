@@ -49,7 +49,7 @@ const DayDimension = (props) => {
 
   if (price.length < 30) {
     for (let i = price.length; i < 30; i++) {
-      price[i] = [undefined, undefined, undefined, undefined, undefined, undefined];
+      price[i] = ["", undefined, undefined, undefined, undefined, undefined];
       price[0] = ["01/01/2071 ", null, null, null, null];
     }
   }

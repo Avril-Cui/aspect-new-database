@@ -106,26 +106,28 @@ export default function Terminology({ posts }: Props) {
                 post.categories._ref ==
                   "6e871277-aa9f-4a1c-b947-97d92579d7ab" ? (
                   <Link key={post._id} href={`/post/${post.slug.current}`}>
-                    <div className={styles.img_border}>
-                      <img
-                        className={styles.img}
-                        src={urlFor(post.mainImage).url()!}
-                        alt=""
-                      />
-                      <div className={styles.text_cont}>
-                        <div>
-                          <p className={styles.section_title}>{post.title}</p>
-                          <p className={styles.section_text}>
-                            {post.description}
-                          </p>
-                        </div>
+                    <a>
+                      <div className={styles.img_border}>
                         <img
-                          className={styles.author_pic}
-                          src={urlFor(post.author.image).url()!}
+                          className={styles.img}
+                          src={urlFor(post.mainImage).url()!}
                           alt=""
                         />
+                        <div className={styles.text_cont}>
+                          <div>
+                            <p className={styles.section_title}>{post.title}</p>
+                            <p className={styles.section_text}>
+                              {post.description}
+                            </p>
+                          </div>
+                          <img
+                            className={styles.author_pic}
+                            src={urlFor(post.author.image).url()!}
+                            alt=""
+                          />
+                        </div>
                       </div>
-                    </div>
+                    </a>
                   </Link>
                 ) : null
               )}
@@ -152,26 +154,29 @@ export default function Terminology({ posts }: Props) {
                 post.categories._ref ==
                   "8480489c-3a97-43b9-9c33-21d78304b12a" ? (
                   <Link key={post._id} href={`/post/${post.slug.current}`}>
-                    <div className={styles.img_border}>
-                      <img
-                        className={styles.img}
-                        src={urlFor(post.mainImage).url()!}
-                        alt=""
-                      />
-                      <div className={styles.text_cont}>
-                        <div>
-                          <p className={styles.section_title}>{post.title}</p>
-                          <p className={styles.section_text}>
-                            {post.description}
-                          </p>
-                        </div>
+                    <a>
+                      {" "}
+                      <div className={styles.img_border}>
                         <img
-                          className={styles.author_pic}
-                          src={urlFor(post.author.image).url()!}
+                          className={styles.img}
+                          src={urlFor(post.mainImage).url()!}
                           alt=""
                         />
+                        <div className={styles.text_cont}>
+                          <div>
+                            <p className={styles.section_title}>{post.title}</p>
+                            <p className={styles.section_text}>
+                              {post.description}
+                            </p>
+                          </div>
+                          <img
+                            className={styles.author_pic}
+                            src={urlFor(post.author.image).url()!}
+                            alt=""
+                          />
+                        </div>
                       </div>
-                    </div>
+                    </a>
                   </Link>
                 ) : null
               )}
@@ -198,26 +203,29 @@ export default function Terminology({ posts }: Props) {
                 post.categories._ref ==
                   "9684989a-9b82-4f91-b012-fd375a389ef0" ? (
                   <Link key={post._id} href={`/post/${post.slug.current}`}>
-                    <div className={styles.img_border}>
-                      <img
-                        className={styles.img}
-                        src={urlFor(post.mainImage).url()!}
-                        alt=""
-                      />
-                      <div className={styles.text_cont}>
-                        <div>
-                          <p className={styles.section_title}>{post.title}</p>
-                          <p className={styles.section_text}>
-                            {post.description}
-                          </p>
-                        </div>
+                    <a>
+                      {" "}
+                      <div className={styles.img_border}>
                         <img
-                          className={styles.author_pic}
-                          src={urlFor(post.author.image).url()!}
+                          className={styles.img}
+                          src={urlFor(post.mainImage).url()!}
                           alt=""
                         />
+                        <div className={styles.text_cont}>
+                          <div>
+                            <p className={styles.section_title}>{post.title}</p>
+                            <p className={styles.section_text}>
+                              {post.description}
+                            </p>
+                          </div>
+                          <img
+                            className={styles.author_pic}
+                            src={urlFor(post.author.image).url()!}
+                            alt=""
+                          />
+                        </div>
                       </div>
-                    </div>
+                    </a>
                   </Link>
                 ) : null
               )}
@@ -244,26 +252,29 @@ export default function Terminology({ posts }: Props) {
                 post.categories._ref ==
                   "92150e2c-d600-4c64-8995-5f754c479391" ? (
                   <Link key={post._id} href={`/post/${post.slug.current}`}>
-                    <div className={styles.img_border}>
-                      <img
-                        className={styles.img}
-                        src={urlFor(post.mainImage).url()!}
-                        alt=""
-                      />
-                      <div className={styles.text_cont}>
-                        <div>
-                          <p className={styles.section_title}>{post.title}</p>
-                          <p className={styles.section_text}>
-                            {post.description}
-                          </p>
-                        </div>
+                    <a>
+                      {" "}
+                      <div className={styles.img_border}>
                         <img
-                          className={styles.author_pic}
-                          src={urlFor(post.author.image).url()!}
+                          className={styles.img}
+                          src={urlFor(post.mainImage).url()!}
                           alt=""
                         />
+                        <div className={styles.text_cont}>
+                          <div>
+                            <p className={styles.section_title}>{post.title}</p>
+                            <p className={styles.section_text}>
+                              {post.description}
+                            </p>
+                          </div>
+                          <img
+                            className={styles.author_pic}
+                            src={urlFor(post.author.image).url()!}
+                            alt=""
+                          />
+                        </div>
                       </div>
-                    </div>
+                    </a>
                   </Link>
                 ) : null
               )}
@@ -290,26 +301,29 @@ export default function Terminology({ posts }: Props) {
                 post.categories._ref ==
                   "aa97ff9e-1c13-4f34-9359-03d50bbe5dee" ? (
                   <Link key={post._id} href={`/post/${post.slug.current}`}>
-                    <div className={styles.img_border}>
-                      <img
-                        className={styles.img}
-                        src={urlFor(post.mainImage).url()!}
-                        alt=""
-                      />
-                      <div className={styles.text_cont}>
-                        <div>
-                          <p className={styles.section_title}>{post.title}</p>
-                          <p className={styles.section_text}>
-                            {post.description}
-                          </p>
-                        </div>
+                    <a>
+                      {" "}
+                      <div className={styles.img_border}>
                         <img
-                          className={styles.author_pic}
-                          src={urlFor(post.author.image).url()!}
+                          className={styles.img}
+                          src={urlFor(post.mainImage).url()!}
                           alt=""
                         />
+                        <div className={styles.text_cont}>
+                          <div>
+                            <p className={styles.section_title}>{post.title}</p>
+                            <p className={styles.section_text}>
+                              {post.description}
+                            </p>
+                          </div>
+                          <img
+                            className={styles.author_pic}
+                            src={urlFor(post.author.image).url()!}
+                            alt=""
+                          />
+                        </div>
                       </div>
-                    </div>
+                    </a>
                   </Link>
                 ) : null
               )}
@@ -336,26 +350,29 @@ export default function Terminology({ posts }: Props) {
                 post.categories._ref ==
                   "5d65abaa-003b-464d-82bf-a438c3b5d0a2" ? (
                   <Link key={post._id} href={`/post/${post.slug.current}`}>
-                    <div className={styles.img_border}>
-                      <img
-                        className={styles.img}
-                        src={urlFor(post.mainImage).url()!}
-                        alt=""
-                      />
-                      <div className={styles.text_cont}>
-                        <div>
-                          <p className={styles.section_title}>{post.title}</p>
-                          <p className={styles.section_text}>
-                            {post.description}
-                          </p>
-                        </div>
+                    <a>
+                      {" "}
+                      <div className={styles.img_border}>
                         <img
-                          className={styles.author_pic}
-                          src={urlFor(post.author.image).url()!}
+                          className={styles.img}
+                          src={urlFor(post.mainImage).url()!}
                           alt=""
                         />
+                        <div className={styles.text_cont}>
+                          <div>
+                            <p className={styles.section_title}>{post.title}</p>
+                            <p className={styles.section_text}>
+                              {post.description}
+                            </p>
+                          </div>
+                          <img
+                            className={styles.author_pic}
+                            src={urlFor(post.author.image).url()!}
+                            alt=""
+                          />
+                        </div>
                       </div>
-                    </div>
+                    </a>
                   </Link>
                 ) : null
               )}
@@ -382,26 +399,29 @@ export default function Terminology({ posts }: Props) {
                 post.categories._ref ==
                   "2fa03938-7680-4329-8fd8-25684c6fbad1" ? (
                   <Link key={post._id} href={`/post/${post.slug.current}`}>
-                    <div className={styles.img_border}>
-                      <img
-                        className={styles.img}
-                        src={urlFor(post.mainImage).url()!}
-                        alt=""
-                      />
-                      <div className={styles.text_cont}>
-                        <div>
-                          <p className={styles.section_title}>{post.title}</p>
-                          <p className={styles.section_text}>
-                            {post.description}
-                          </p>
-                        </div>
+                    <a>
+                      {" "}
+                      <div className={styles.img_border}>
                         <img
-                          className={styles.author_pic}
-                          src={urlFor(post.author.image).url()!}
+                          className={styles.img}
+                          src={urlFor(post.mainImage).url()!}
                           alt=""
                         />
+                        <div className={styles.text_cont}>
+                          <div>
+                            <p className={styles.section_title}>{post.title}</p>
+                            <p className={styles.section_text}>
+                              {post.description}
+                            </p>
+                          </div>
+                          <img
+                            className={styles.author_pic}
+                            src={urlFor(post.author.image).url()!}
+                            alt=""
+                          />
+                        </div>
                       </div>
-                    </div>
+                    </a>
                   </Link>
                 ) : null
               )}

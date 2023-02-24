@@ -1,6 +1,7 @@
 import React from "react";
 import styles from "./ExploreComp.module.css";
 import dynamic from "next/dynamic";
+import Link from "next/link";
 
 const OverviewChart = dynamic(() => import("./OverviewMiniChart"), {
   ssr: false,
@@ -14,34 +15,38 @@ function ExploreComp(props: any) {
         style={{ marginTop: "0.75em", marginBottom: "2em" }}
       >
         <div style={{ marginLeft: "1.5em", marginTop: "0.75em" }}>
-          <div className={styles.inline}>
-            <div className={styles.logo_container} style={{background:props.background}}>
-              <p className={styles.logo}>{props.company.name2.charAt(0)}</p>
-            </div>
-            <div>
-              <p className={styles.comp_name}>{props.company.name2}</p>
+          <Link href={`/company/${props.company.id}`}>
+            <a>
               <div className={styles.inline}>
-                <p className={styles.comp_full_name}>
-                  {props.company.id.toUpperCase()}
-                </p>
-                <p
-                  className={styles.comp_full_name}
-                  style={{ marginLeft: "2.25em" }}
+                <div
+                  className={styles.logo_container}
+                  style={{ background: props.background }}
                 >
-                  ASPDX
-                </p>
+                  <p className={styles.logo}>{props.company.name2.charAt(0)}</p>
+                </div>
+                <div>
+                  <p className={styles.comp_name}>{props.company.name2}</p>
+                  <div className={styles.inline}>
+                    <p className={styles.comp_full_name}>
+                      {props.company.id.toUpperCase()}
+                    </p>
+                    <p
+                      className={styles.comp_full_name}
+                      style={{ marginLeft: "2.25em" }}
+                    >
+                      ASPDX
+                    </p>
+                  </div>
+                </div>
               </div>
-            </div>
-          </div>
-          <div style={{width: "14em"}}>
+            </a>
+          </Link>
+          <div style={{ width: "14em" }}>
             <div className={styles.inline}>
               <p className={styles.price}>
                 {props.price} <span>ASD</span>
               </p>
-              <p
-                className={styles.price_change}
-                style={{ color: props.color }}
-              >
+              <p className={styles.price_change} style={{ color: props.color }}>
                 {props.change} ({props.pct_change}%)
               </p>
             </div>

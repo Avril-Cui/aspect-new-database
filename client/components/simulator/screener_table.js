@@ -9,7 +9,6 @@ const ScreenerTable = (props) => {
     minimumFractionDigits: 2,
     maximumFractionDigits: 2,
   });
-  console.log(props.price_data['wrkn'])
   return (
     <div>
       <table className={styles.screener_table}>

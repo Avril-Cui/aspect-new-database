@@ -11,7 +11,6 @@ function LeaderBoard() {
       ranking: 1,
     },
   });
-  console.log(typeof ranking);
   useEffect(() => {
     var axios = require("axios");
     var data = "";

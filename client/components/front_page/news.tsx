@@ -8,7 +8,7 @@ import { useRef } from "react";
 
 export default function Simulator(props: any) {
   const index = props.index;
-  const elementRef:any = useRef(null);
+  const elementRef: any = useRef(null);
 
   function handleScrollLeft() {
     elementRef.current.scrollLeft -= 1250;
@@ -39,41 +39,43 @@ export default function Simulator(props: any) {
       >
         {index.map((post: any) => (
           <Link key={post._id} href={`/simulator_news/${post.slug.current}`}>
-            <div className={styles.container}>
-              <img
-                className={styles.img_news}
-                src={urlFor(post.mainImage).url()!}
-                alt=""
-              />
-              <p className={styles.section_title_comp}>{post.title}</p>
-              <p className={styles.section_text_comp}>{post.description}</p>
-              <div className={styles.inline}>
-                <div>
-                  <p className={styles.post_detail_comp}>
-                    by <span>{post.author.name}</span>
-                  </p>
-                  <p className={styles.date}>April 2nd</p>
+            <a>
+              <div className={styles.container}>
+                <img
+                  className={styles.img_news}
+                  src={urlFor(post.mainImage).url()!}
+                  alt=""
+                />
+                <p className={styles.section_title_comp}>{post.title}</p>
+                <p className={styles.section_text_comp}>{post.description}</p>
+                <div className={styles.inline}>
+                  <div>
+                    <p className={styles.post_detail_comp}>
+                      by <span>{post.author.name}</span>
+                    </p>
+                    <p className={styles.date}>April 2nd</p>
+                  </div>
+                  <button
+                    className={styles.like_button}
+                    style={{ paddingTop: "0.25em" }}
+                  >
+                    <div className={styles.inline}>
+                      <Image src={rocket} width="22px" height="22px" alt="" />
+                      <p className={styles.like_num}>10</p>
+                    </div>
+                  </button>
+                  <button
+                    className={styles.message_button}
+                    style={{ paddingTop: "0.25em" }}
+                  >
+                    <div className={styles.inline}>
+                      <Image src={message} width="22px" height="22px" alt="" />
+                      <p className={styles.like_num}>10</p>
+                    </div>
+                  </button>
                 </div>
-                <button
-                  className={styles.like_button}
-                  style={{ paddingTop: "0.25em" }}
-                >
-                  <div className={styles.inline}>
-                    <Image src={rocket} width="22px" height="22px" alt="" />
-                    <p className={styles.like_num}>10</p>
-                  </div>
-                </button>
-                <button
-                  className={styles.message_button}
-                  style={{ paddingTop: "0.25em" }}
-                >
-                  <div className={styles.inline}>
-                    <Image src={message} width="22px" height="22px" alt="" />
-                    <p className={styles.like_num}>10</p>
-                  </div>
-                </button>
               </div>
-            </div>
+            </a>
           </Link>
         ))}
       </div>
