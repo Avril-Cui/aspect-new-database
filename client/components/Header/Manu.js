@@ -14,25 +14,6 @@ const Manu = () => {
   const cookies = new Cookies();
   const userData = cookies.get("userData");
 
-  // const news_sections = {
-  //   one: "Today's News",
-  //   two: "Global Market",
-  //   three: "Economics",
-  //   four: "Technology",
-  // };
-  // const terms_sections = {
-  //   one: "Accounting",
-  //   two: "Valuation",
-  //   three: "Portfolio",
-  //   four: "De-Fi",
-  // };
-  // const model_sections = {
-  //   one: "Excel",
-  //   two: "Portfolio",
-  //   three: "Black Scholes",
-  //   four: "Technical",
-  // };
-
   const handleLogout = () => {
     cookies.remove("userData", { path: "/" });
     cookies.remove("user_uid", { path: "/" });
@@ -43,12 +24,12 @@ const Manu = () => {
   return (
     <header className={styles.manu}>
       <Link href="/">
-        <div className={styles.inline} style={{ marginTop: "0.2em" }}>
-          <a className={styles.logo}>ASPECT</a>
+        <a className={styles.inline} style={{ marginTop: "0.2em" }}>
+          <p className={styles.logo}>ASPECT</p>
           <div style={{ marginLeft: "0.5em" }}>
             <Image src={alien} width="55px" height="45px" alt=""/>
           </div>
-        </div>
+        </a>
       </Link>
       <div className={styles.sections}>
         <div>
@@ -56,17 +37,6 @@ const Manu = () => {
             <a>Game</a>
           </Link>
         </div>
-        {/* <div>
-          <Dropdown
-            link={"/news"}
-            content={news_sections}
-            className={styles.drop}
-          >
-            <Link href="/news">
-              <a className={styles.news}>News</a>
-            </Link>
-          </Dropdown>
-        </div> */}
         <div>
           <Dropdown
             link={"/terms"}
@@ -93,7 +63,7 @@ const Manu = () => {
         <p className={styles.style_but}>
           {userData ? (
             <Nav.Link className={styles.text} onClick={handleLogout}>
-              Log Out
+             <a>Log Out</a>
             </Nav.Link>
           ) : (
             <Nav.Link className={styles.text} href="/auth/login">

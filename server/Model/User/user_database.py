@@ -60,12 +60,12 @@ class UserDatabaseCommands:
         self.cur.execute(f"""
           SELECT cashvalue from users WHERE uid='{user_uid}';
         """)
-        cash_value = float(self.cur.fetchone())
+        cash_value = float(self.cur.fetchone()[0])
 
         self.cur.execute(f"""
           SELECT shares_holding from portfolio WHERE uid='{user_uid}' and company_id='{comp_name}';
         """)
-        portfolio_data = self.cur.fetchone()
+        portfolio_data = self.cur.fetchone()[0]
         if portfolio_data != None:
             shares_holding = float(portfolio_data[0])
 
