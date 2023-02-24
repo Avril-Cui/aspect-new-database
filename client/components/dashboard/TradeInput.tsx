@@ -44,7 +44,7 @@ function TradeInput(props: any) {
     e.preventDefault();
     axios({
       method: "POST",
-      url: "http://127.0.0.1:5000/current-price",
+      url: "https://aspect-server.onrender.com/current-price",
       headers: {
         "Content-Type": "text/plain",
       },
@@ -65,7 +65,7 @@ function TradeInput(props: any) {
     e.preventDefault();
     axios({
       method: "POST",
-      url: "http://127.0.0.1:5000/current-price",
+      url: "https://aspect-server.onrender.com/current-price",
       headers: {
         "Content-Type": "text/plain",
       },
@@ -112,7 +112,7 @@ function TradeInput(props: any) {
       });
       var buy_config = {
         method: "post",
-        url: "http://127.0.0.1:5000/trade-stock",
+        url: "https://aspect-server.onrender.com/trade-stock",
         headers: {
           "Content-Type": "text/plain",
         },
@@ -158,7 +158,7 @@ function TradeInput(props: any) {
       });
       var sell_config = {
         method: "post",
-        url: "http://127.0.0.1:5000/trade-stock",
+        url: "https://aspect-server.onrender.com/trade-stock",
         headers: {
           "Content-Type": "text/plain",
         },
@@ -201,20 +201,19 @@ function TradeInput(props: any) {
               <div className={styles.trade_input}>
                 <div className={styles.trade_input_container}>
                   <select
-                    // type="text"
-                    placeholder="Enter stock ticker."
                     onChange={handleBuyTickerChange}
-                    // value={buyTicker}
                     className={styles.trade_place}
-                    // list="companies"
                   >
-                    <option value="AST" >AST</option>
-                    <option value="DSC" >DSC</option>
-                    <option value="FSIN" >FSIN</option>
-                    <option value="HHW" >HHW</option>
-                    <option value="JKY" >JKY</option>
-                    <option value="SGO" >SGO</option>
-                    <option value="WRKN" >WRKN</option>
+                    <option value="" disabled selected>
+                      Enter stock ticker.
+                    </option>
+                    <option value="AST">AST</option>
+                    <option value="DSC">DSC</option>
+                    <option value="FSIN">FSIN</option>
+                    <option value="HHW">HHW</option>
+                    <option value="JKY">JKY</option>
+                    <option value="SGO">SGO</option>
+                    <option value="WRKN">WRKN</option>
                   </select>
                 </div>
                 <div className={styles.trade_input_container}>
@@ -254,18 +253,20 @@ function TradeInput(props: any) {
               <div className={styles.trade_type}>Sell</div>
               <div className={styles.trade_input}>
                 <div className={styles.trade_input_container}>
-                <select
-                placeholder="Enter stock ticker."
-                onChange={handleSellTickerChange}
-                className={styles.trade_place}
+                  <select
+                    onChange={handleSellTickerChange}
+                    className={styles.trade_place}
                   >
-                    <option value="AST" >AST</option>
-                    <option value="DSC" >DSC</option>
-                    <option value="FSIN" >FSIN</option>
-                    <option value="HHW" >HHW</option>
-                    <option value="JKY" >JKY</option>
-                    <option value="SGO" >SGO</option>
-                    <option value="WRKN" >WRKN</option>
+                    <option value="" disabled selected>
+                      Enter stock ticker.
+                    </option>
+                    <option value="AST">AST</option>
+                    <option value="DSC">DSC</option>
+                    <option value="FSIN">FSIN</option>
+                    <option value="HHW">HHW</option>
+                    <option value="JKY">JKY</option>
+                    <option value="SGO">SGO</option>
+                    <option value="WRKN">WRKN</option>
                   </select>
                 </div>
                 <div className={styles.trade_input_container}>

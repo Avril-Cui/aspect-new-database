@@ -182,7 +182,17 @@ def trade_stock():
 	current_time = time.time()
 	index_lst = int(int((current_time-start_time))/86400)
 	index_tmp = int(current_time-start_time-index_lst*86400)
-	current_price = price_list[comp_name][index_lst][index_tmp]
+	comp_name = json.loads(request.data)
+	if index_tmp <= 36000:
+		current_price = price_list[comp_name][index_lst][index_tmp]
+		return {"price": round(current_price, 2)}
+	else:
+		if index_tmp > 36000 and index_tmp <= 86400:
+			current_price = round(price_list[comp_name][index_lst][-1], 2)
+
+		else:
+			current_price = round(price_list[comp_name][index_lst][-1], 2)
+
 	if target_price == 0:
 		target_price = current_price
 	response = user_database_commands.trade_stock(
