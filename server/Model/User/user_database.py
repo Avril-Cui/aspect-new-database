@@ -60,7 +60,7 @@ class UserDatabaseCommands:
         self.cur.execute(f"""
           SELECT cashvalue from users WHERE uid='{user_uid}';
         """)
-        cash_value = float(self.cur.fetchone()[0])
+        cash_value = float(self.cur.fetchone())
 
         self.cur.execute(f"""
           SELECT shares_holding from portfolio WHERE uid='{user_uid}' and company_id='{comp_name}';
@@ -191,10 +191,10 @@ class UserDatabaseCommands:
                 company = result[index][1]
                 shares_holding = float(result[index][2])
                 cost = float(result[index][3])
-                holding_value += company_prices[company] * shares_holding
+                holding_value += float(company_prices[company]) * float(shares_holding)
                 user_portfolio[company] = {
                     "shares_holding": shares_holding,
-                    "total_holding": company_prices[company] * shares_holding,
+                    "total_holding": float(company_prices[company]) * float(shares_holding),
                     "cost": cost,
                     "category": company
                 }
