@@ -45,7 +45,7 @@ function LeaderBoard() {
         <tbody>
           {Object.entries(ranking).map(
             ([key, value], i) =>
-              i < 6 && (
+              i < 7 && (
                 <tr key={key}>
                   <td className={styles.ranking}>{value["ranking"]}</td>
                   <td className={styles.normal}>{key}</td>

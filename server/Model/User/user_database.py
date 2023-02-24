@@ -65,9 +65,10 @@ class UserDatabaseCommands:
         self.cur.execute(f"""
           SELECT shares_holding from portfolio WHERE uid='{user_uid}' and company_id='{comp_name}';
         """)
-        portfolio_data = self.cur.fetchone()[0]
+        portfolio_data = self.cur.fetchone()
         if portfolio_data != None:
             shares_holding = float(portfolio_data[0])
+        print(portfolio_data)
 
         trade_value = share_number * target_price
         available_shares = 50
