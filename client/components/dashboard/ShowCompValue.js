@@ -2,6 +2,7 @@ import { useRef } from "react";
 import styles from "../../styles/portfolio.module.css";
 import { useState, useEffect } from "react";
 import Cookies from "universal-cookie";
+import Link from "next/link";
 
 function ShowCompValue(props) {
   const cookies = new Cookies();
@@ -61,9 +62,7 @@ function ShowCompValue(props) {
             {Object.keys(portfolio).map((key) => {
               return key != "portfolio_value" ? (
                 <Company company={portfolio[key]} />
-              ) : (
-                null
-              );
+              ) : null;
             })}
           </tbody>
         </table>
@@ -97,7 +96,11 @@ function Company(props) {
   if (share_number != 0) {
     return (
       <tr key={category} className={styles.holding_detail}>
-        <td className={styles.comp_link}>{category.toUpperCase()}</td>
+        <Link href={`/company/${category}`}>
+          <a>
+            <td className={styles.comp_link}>{category.toUpperCase()}</td>
+          </a>
+        </Link>
         <td>{share_number}</td>
         <td>{round(company_value)}</td>
         <td
