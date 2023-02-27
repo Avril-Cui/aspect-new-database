@@ -21,6 +21,18 @@
   padding-left: 0.5em;
 }
 
+.header span {
+  font-size: 18px;
+  background-color: #c3fcc254;
+  color: #dadada;
+  padding: 0em 0.35em;
+  border-radius: 100px;
+}
+
+.header span:hover {
+  cursor: pointer;
+}
+
 .title {
   color: #ffffff;
   font-size: 15px;
@@ -144,6 +156,62 @@
   color: #161616;
   text-align: center;
   padding: 0.3em 5.2em;
+}
+
+.pop_up_container1 {
+  position: fixed;
+  /* background: #00000050; */
+  width: 100%;
+  height: 100vh;
+  top: 0;
+  left: 0;
+}
+
+.box1 {
+  width: 34.5em;
+  margin: 0 auto;
+  height: 12em;
+  margin-top: 15em;
+  background-color: #2c2c2c;
+  border-radius: 6px;
+  padding: 10px 20px;
+  z-index: 99999;
+  overflow: auto;
+  padding-bottom: 0em;
+}
+
+.explore_section{
+  display: table;
+  margin-left: 8.25em;
+  margin-top: 2em;
+}
+
+.game_intro {
+  color: #c3fcc2;
+  font-weight: 500;
+  font-size: 20px;
+}
+
+.game_intro_text {
+  color: #a3a3a3;
+  font-size: 18px;
+  margin-bottom: 0.5em;
+  margin-top: 0.5em;
+}
+
+.quit_intro {
+  background-color: #1a1a1a;
+  color: #e0e0e0;
+  padding: 0.25em 0.5em;
+  border-radius: 6px;
+}
+
+.start_tutorial {
+  background-color: #577a60;
+  color: #e0e0e0;
+  padding: 0.25em 0.5em;
+  border-radius: 6px;
+  margin-left: 2em;
 }
 
 .pop_up_container {

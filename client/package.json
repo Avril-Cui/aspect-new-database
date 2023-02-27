@@ -29,13 +29,16 @@
     "react-portable-text": "^0.5.1",
     "react-redux": "^8.0.4",
     "react-tradingview-embed": "^3.0.6",
-    "serve": "^14.2.0"
+    "reactour": "^1.19.0",
+    "serve": "^14.2.0",
+    "styled-components": "^5.3.6"
   },
   "devDependencies": {
     "@types/babel__core": "^7.1.19",
     "@types/node": "18.7.13",
     "@types/react": "18.0.17",
     "@types/react-dom": "18.0.6",
+    "@types/reactour": "^1.18.2",
     "autoprefixer": "^10.4.13",
     "eslint": "8.23.0",
     "eslint-config-next": "12.2.5",

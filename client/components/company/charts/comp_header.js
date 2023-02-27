@@ -35,7 +35,7 @@ const CompHeader = (props) => {
               <div className={styles.comp_logo}>
                 <p>{props.CompanyShortName}</p>
               </div>
-              <p className={styles.comp_name}>{props.CompanyFullName}</p>
+              <p className={styles.comp_name}>{props.CompanyFullName} &#8192;<span onClick={props.togglePopup}>?</span></p>
               <div className={styles.buttons}>
                 <div>
                   <button className={styles.watch_list}>

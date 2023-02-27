@@ -11,8 +11,8 @@ import ExploreSection from "../components/front_page/ExploreSection";
 import { useSelector, useDispatch } from "react-redux";
 import { requestPrice } from "../features/newPrice.js";
 import { useState, useEffect } from "react";
-import { Steps } from "intro.js-react";
-
+import dynamic from "next/dynamic";
+const Tour = dynamic(() => import("reactour"), { ssr: false });
 interface Props {
   index: [Post];
   posts: [Post];
@@ -96,28 +96,51 @@ export default function Front({ index, posts, companies }: Props) {
     setIsOpen4(false);
   };
 
-  try {
-    const html: any = document.querySelector("html");
-    if (
-      isOpen == true ||
-      isOpen1 == true ||
-      isOpen2 == true ||
-      isOpen3 == true ||
-      isOpen4 == true
-    ) {
-      html.style.overflow = "hidden";
-    } else {
-      html.style.overflow = "auto";
-    }
-  } catch (error) {}
+  const [enabled, setEnabled] = useState(false);
+
+  const toggleStartTutorial = () => {
+    setEnabled(true);
+    setIsOpen(false);
+  };
+  const onExit = () => {
+    setEnabled(false);
+  };
+  const steps = [
+    {
+      selector: "#index_graph",
+      content: "Hover over the graph to the the daily price trends.",
+    },
+    {
+      selector: "#news",
+      content: "Read and analyze news to make investment decisions.",
+    },
+    {
+      selector: "#terms",
+      content: "Learn terminologies to assist financial analysis.",
+    },
+    {
+      selector: "#companies",
+      content: "Explore companies with various characteristics and businesses.",
+    },
+    {
+      selector: "#screener",
+      content:
+        "View companies' real-time prices and click on the links to view the profile page of each company.",
+    },
+    {
+      selector: "#leaderboard",
+      content: "See top users' rankings in the game.",
+    },
+  ];
 
   return (
     <div className={styles.container}>
       <Head>
         <title>Aspect - Learn Financial Knowledge</title>
       </Head>
+      <Tour steps={steps} isOpen={enabled} onRequestClose={onExit} />
       <div className={styles.layer_one}>
-        <p className={styles.header}>
+        <p className={styles.header} id="index_graph">
           Market Overview &#8192;<span onClick={togglePopup}>?</span>
         </p>
         {isOpen && (
@@ -134,7 +157,10 @@ export default function Front({ index, posts, companies }: Props) {
                 <button className={styles.quit_intro} onClick={togglePopclose}>
                   Quit Intro
                 </button>
-                <button className={styles.start_tutorial}>
+                <button
+                  className={styles.start_tutorial}
+                  onClick={toggleStartTutorial}
+                >
                   Start Tutorial
                 </button>
               </div>
@@ -146,7 +172,9 @@ export default function Front({ index, posts, companies }: Props) {
 
       <div className={styles.layer_one} style={{ marginTop: "3em" }}>
         <div className={styles.inline}>
-          <p className={styles.header}>News - Market Information</p>
+          <p className={styles.header} id="news">
+            News - Market Information
+          </p>
           <span onClick={togglePopup1} className={styles.question_mark}>
             ?
           </span>
@@ -179,7 +207,7 @@ export default function Front({ index, posts, companies }: Props) {
 
       <div className={styles.layer_one} style={{ marginTop: "3em" }}>
         <div className={styles.inline}>
-          <p className={styles.header}>Terms of the Week</p>
+          <p className={styles.header} id="terms">Terms of the Week</p>
           <span onClick={togglePopup2} className={styles.question_mark}>
             ?
           </span>
@@ -188,7 +216,9 @@ export default function Front({ index, posts, companies }: Props) {
           <div className={styles.pop_up_container}>
             <div className={styles.box2}>
               <div className={styles.inline}>
-                <p className={styles.game_intro1}>Terms</p>
+                <p className={styles.game_intro1}>
+                  Terms
+                </p>
                 <button
                   className={styles.close_candlestick}
                   onClick={togglePopclose2}
@@ -236,7 +266,7 @@ export default function Front({ index, posts, companies }: Props) {
         <div className={styles.inline} style={{ marginTop: "1em" }}>
           <div>
             <div className={styles.inline}>
-              <p className={styles.header} style={{ marginBottom: "0.75em" }}>
+              <p className={styles.header} style={{ marginBottom: "0.75em" }} id="screener">
                 Stock Screener
               </p>
               <span onClick={togglePopup3} className={styles.question_mark}>
@@ -275,6 +305,7 @@ export default function Front({ index, posts, companies }: Props) {
               <p
                 className={styles.header}
                 style={{ marginBottom: "0.75em", marginLeft: "3em " }}
+                id="leaderboard"
               >
                 Leaderboard
               </p>
@@ -315,11 +346,13 @@ export default function Front({ index, posts, companies }: Props) {
           </div>
         </div>
       </div>
-      <ExploreSection
-        companies={companies}
-        isPrice={isPrice}
-        price_data={price_data}
-      />
+      <div id="companies">
+        <ExploreSection
+          companies={companies}
+          isPrice={isPrice}
+          price_data={price_data}
+        />
+      </div>
     </div>
   );
 }

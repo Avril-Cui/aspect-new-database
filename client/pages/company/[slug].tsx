@@ -16,6 +16,8 @@ import MainPage from "../../components/company/stats/MainPage";
 import CompanyInfo from "../../companies";
 import TradeInput from "../../components/company/TradeInput";
 import Head from "next/head";
+const Tour = dynamic(() => import("reactour"), { ssr: false });
+import { useState } from "react";
 
 interface Props {
   individual: any;
@@ -24,29 +26,120 @@ interface Props {
 }
 
 export default function Wakron({ individual, posts, company_name }: Props) {
-  console.log(company_name);
+  const [isOpen, setIsOpen] = useState(false);
+  const togglePopup = () => {
+    setIsOpen(true);
+  };
+
+  const togglePopclose = () => {
+    setIsOpen(false);
+  };
+
+  const [enabled, setEnabled] = useState(false);
+
+  const toggleStartTutorial = () => {
+    setEnabled(true);
+    setIsOpen(false);
+  };
+
+  const onExit = () => {
+    setEnabled(false);
+  };
+  const steps = [
+    {
+      selector: "#header",
+      content:
+        "Learn the real-time price of company. If price is N/A, then the market is closed.",
+    },
+    {
+      selector: "#graphs",
+      content:
+        "Read and analyze the graphs from 3 min (updates once every 3 minutes), hour (updates once every hour), and day (updates once every day).",
+    },
+    {
+      selector: "#ask_bid",
+      content:
+        "Learn and analysis the market supply and demand through the statistics provided by the ordered books. The feature will be added during Season 2!",
+    },
+    {
+      selector: "#trade",
+      content:
+        "Enter your desired price and trade stock! In the current version of the game, trade will become successful if current-price is clicked.",
+    },
+    {
+      selector: "#snowflask",
+      content:
+        "Learn the strength and weakness of the company and its business through the snowflask analysis.",
+    },
+    {
+      selector: "#timeline",
+      content: "See the timeline of the events of the stock. This graph will also be enabled during Season 2. Currently, this graph only shows the tick-dimension stock price.",
+    },
+    {
+      selector: "#chat",
+      content: "Chat with other users in the game and share your opinions or investment decisions on the company or on the overall market! Chat feature is still in testing stage and will open during next season!",
+    },
+    {
+      selector: "#stats",
+      content: "Learn and analysis the companies financial statistics from various dimensions to help forming investment decisions!",
+    },
+    {
+      selector: "#news",
+      content: "Read and analyze news to make investment decisions. News are critical to making high return rates in the game!",
+    },
+  ];
+
   return (
     <div className={styles.container}>
       <Head>
         <title>{company_name.toUpperCase()} Profile</title>
       </Head>
+      <Tour steps={steps} isOpen={enabled} onRequestClose={onExit} />
       <div key={individual.id}>
-        <div className={styles.center}>
+        <div className={styles.center} id="header">
           <CompHeader
             CompanyName={individual.id}
             CompanyShortName={individual.short_name}
             CompanyFullName={individual.name}
+            togglePopup={togglePopup}
           />
+          {isOpen && (
+            <div className={styles.pop_up_container}>
+              <div className={styles.box}>
+                <p className={styles.game_intro}>
+                  Guide on the company profile page
+                </p>
+                <p className={styles.game_intro_text}>
+                  Learn and analysis information related to individual companies
+                  to assist making investment decisions.
+                </p>
+                <div className={styles.inline}>
+                  <button
+                    className={styles.quit_intro}
+                    onClick={togglePopclose}
+                  >
+                    Quit Intro
+                  </button>
+                  <button
+                    className={styles.start_tutorial}
+                    onClick={toggleStartTutorial}
+                  >
+                    Start Tutorial
+                  </button>
+                </div>
+              </div>
+            </div>
+          )}
         </div>
         <div className={styles.center_container}>
           <div className={styles.first_layer}>
-            <div className={styles.price_chart}>
+            <div className={styles.price_chart} id="graphs">
               <div className={styles.price_chart_content}>
                 <MultiChart id={individual.id} />
               </div>
             </div>
 
-            <div className={styles.table}>
+            <div className={styles.table} id="ask_bid">
               <p className={styles.title_text}>Ask and Bid Price: Open Soon!</p>
               <div className={styles.table_content}>
                 <table className={styles.ask_bid_table}>
@@ -120,9 +213,12 @@ export default function Wakron({ individual, posts, company_name }: Props) {
 
         <div className={styles.center_container}>
           <div className={styles.second_layer}>
-            <TradeInput comp_name={company_name} />
+            <div id="trade">
+              {" "}
+              <TradeInput comp_name={company_name} />
+            </div>
 
-            <div className={styles.comp_overview}>
+            <div className={styles.comp_overview} id="snowflask">
               <div className={styles.dimension_container}>
                 <img
                   src={`/snowflask_chart/${individual.id}_chart.png`}
@@ -180,27 +276,29 @@ export default function Wakron({ individual, posts, company_name }: Props) {
         </div>
 
         <div className={styles.center_container}>
-          <div className={styles.day_chart}>
-            <p className={styles.title_text}>Company Activity Timeline - Will Be Refined Next Season!</p>
+          <div className={styles.day_chart} id="timeline">
+            <p className={styles.title_text}>
+              Company Activity Timeline - Will Be Refined Next Season!
+            </p>
             <WrknDayChart CompanyName={individual.id} />
           </div>
         </div>
 
         <div className={styles.center_container}>
           <div className={styles.fourth_layer}>
-            <div className={styles.chat_box}>
+            <div className={styles.chat_box} id="chat">
               <Chat />
             </div>
 
-            <div className={styles.stats_container}>
+            <div className={styles.stats_container} id="stats">
               <p className={styles.title_text}>Company Statistics</p>
-              <MainPage company_name={company_name}/>
+              <MainPage company_name={company_name} />
             </div>
           </div>
         </div>
 
         <div className={styles.center_container}>
-          <div className={styles.news}>
+          <div className={styles.news} id="news">
             <p className={styles.title_text}>Important Events</p>
             {posts.map((post) =>
               post.categories != null &&
