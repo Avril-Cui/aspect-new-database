@@ -7,6 +7,7 @@ import { useRouter } from "next/router";
 import store from "../store/store.js";
 import { Provider } from "react-redux";
 import Head from "next/head";
+import "intro.js/introjs.css"
 
 const ProtectedRoute = dynamic(() => import("../components/ProtectedRoute"), {
   ssr: false,

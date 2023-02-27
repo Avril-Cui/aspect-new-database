@@ -11,6 +11,7 @@ import ExploreSection from "../components/front_page/ExploreSection";
 import { useSelector, useDispatch } from "react-redux";
 import { requestPrice } from "../features/newPrice.js";
 import { useState, useEffect } from "react";
+import { Steps } from "intro.js-react";
 
 interface Props {
   index: [Post];
@@ -38,10 +39,9 @@ export default function Front({ index, posts, companies }: Props) {
   let current_month = month[today.getMonth()];
   const dispatch = useDispatch();
   const WAIT_TIME = 4000;
-  let price_data = useSelector((state:any) => state.price.value);
+  let price_data = useSelector((state: any) => state.price.value);
 
   const [isPrice, setIsPrice] = useState(false);
-  // const loadingPrice = "N/A";
   useEffect(() => {
     const data = setInterval(() => {
       dispatch(requestPrice() as any);
@@ -49,23 +49,162 @@ export default function Front({ index, posts, companies }: Props) {
     }, WAIT_TIME);
     return () => clearInterval(data);
   }, [isPrice, dispatch]);
+
+  const [isOpen, setIsOpen] = useState(false);
+  const [isOpen1, setIsOpen1] = useState(false);
+  const [isOpen2, setIsOpen2] = useState(false);
+  const [isOpen3, setIsOpen3] = useState(false);
+  const [isOpen4, setIsOpen4] = useState(false);
+
+  const togglePopup = () => {
+    setIsOpen(true);
+  };
+
+  const togglePopclose = () => {
+    setIsOpen(false);
+  };
+
+  const togglePopup1 = () => {
+    setIsOpen1(true);
+  };
+
+  const togglePopclose1 = () => {
+    setIsOpen1(false);
+  };
+
+  const togglePopup2 = () => {
+    setIsOpen2(true);
+  };
+
+  const togglePopclose2 = () => {
+    setIsOpen2(false);
+  };
+
+  const togglePopup3 = () => {
+    setIsOpen3(true);
+  };
+
+  const togglePopclose3 = () => {
+    setIsOpen3(false);
+  };
+
+  const togglePopup4 = () => {
+    setIsOpen4(true);
+  };
+
+  const togglePopclose4 = () => {
+    setIsOpen4(false);
+  };
+
+  try {
+    const html: any = document.querySelector("html");
+    if (
+      isOpen == true ||
+      isOpen1 == true ||
+      isOpen2 == true ||
+      isOpen3 == true ||
+      isOpen4 == true
+    ) {
+      html.style.overflow = "hidden";
+    } else {
+      html.style.overflow = "auto";
+    }
+  } catch (error) {}
+
   return (
     <div className={styles.container}>
       <Head>
         <title>Aspect - Learn Financial Knowledge</title>
       </Head>
       <div className={styles.layer_one}>
-        <p className={styles.header}>Market Overview</p>
-        <OverviewChart price_data={price_data} isPrice={isPrice}/>
+        <p className={styles.header}>
+          Market Overview &#8192;<span onClick={togglePopup}>?</span>
+        </p>
+        {isOpen && (
+          <div className={styles.pop_up_container}>
+            <div className={styles.box}>
+              <p className={styles.game_intro}>
+                Welcome to Aspect Market Game!
+              </p>
+              <p className={styles.game_intro_text}>
+                Join game to learn trading and finance by experiencing various
+                events in a virtual, dynamic stock market.
+              </p>
+              <div className={styles.inline}>
+                <button className={styles.quit_intro} onClick={togglePopclose}>
+                  Quit Intro
+                </button>
+                <button className={styles.start_tutorial}>
+                  Start Tutorial
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
+        <OverviewChart price_data={price_data} isPrice={isPrice} />
       </div>
 
       <div className={styles.layer_one} style={{ marginTop: "3em" }}>
-        <p className={styles.header}>News - Market Information</p>
+        <div className={styles.inline}>
+          <p className={styles.header}>News - Market Information</p>
+          <span onClick={togglePopup1} className={styles.question_mark}>
+            ?
+          </span>
+        </div>
+        {isOpen1 && (
+          <div className={styles.pop_up_container}>
+            <div className={styles.box1}>
+              <div className={styles.inline}>
+                <p className={styles.game_intro1}>News</p>
+                <button
+                  className={styles.close_candlestick}
+                  onClick={togglePopclose1}
+                >
+                  X
+                </button>
+              </div>
+              <p className={styles.game_intro_text1}>
+                News in this section report and analysis companies and markets
+                from various dimensions, including management, business,
+                financials, economics, and products. Read the news and make
+                investment decisions based on information provided by the news!
+                These articles reveal essential information that is highly
+                related to market prices.
+              </p>
+            </div>
+          </div>
+        )}
         <News index={index} />
       </div>
 
       <div className={styles.layer_one} style={{ marginTop: "3em" }}>
-        <p className={styles.header}>Terms of the Week</p>
+        <div className={styles.inline}>
+          <p className={styles.header}>Terms of the Week</p>
+          <span onClick={togglePopup2} className={styles.question_mark}>
+            ?
+          </span>
+        </div>
+        {isOpen2 && (
+          <div className={styles.pop_up_container}>
+            <div className={styles.box2}>
+              <div className={styles.inline}>
+                <p className={styles.game_intro1}>Terms</p>
+                <button
+                  className={styles.close_candlestick}
+                  onClick={togglePopclose2}
+                >
+                  X
+                </button>
+              </div>
+              <p className={styles.game_intro_text1}>
+                Terms in this section provide explanations of important
+                terminologies and concepts related to market prices. Learning
+                these terms is essential to gain a high stock return rate in
+                season 1 of Aspect market game.
+              </p>
+            </div>
+          </div>
+        )}
         <div className={styles.terms_section} style={{ marginTop: "1em" }}>
           <div className={styles.inline}>
             <div>
@@ -96,20 +235,75 @@ export default function Front({ index, posts, companies }: Props) {
       <div className={styles.layer_one} style={{ marginTop: "3em" }}>
         <div className={styles.inline} style={{ marginTop: "1em" }}>
           <div>
-            <p className={styles.header} style={{ marginBottom: "0.75em" }}>
-              Stock Screener
-            </p>
+            <div className={styles.inline}>
+              <p className={styles.header} style={{ marginBottom: "0.75em" }}>
+                Stock Screener
+              </p>
+              <span onClick={togglePopup3} className={styles.question_mark}>
+                ?
+              </span>
+            </div>
+            {isOpen3 && (
+              <div className={styles.pop_up_container}>
+                <div className={styles.box2}>
+                  <div className={styles.inline}>
+                    <p className={styles.game_intro1}>Screener</p>
+                    <button
+                      style={{ marginLeft: "18.5em" }}
+                      className={styles.close_candlestick}
+                      onClick={togglePopclose3}
+                    >
+                      X
+                    </button>
+                  </div>
+                  <p className={styles.game_intro_text1}>
+                    The stock screener reveals the real-time price updates of
+                    all companies within the Aspect market game. It helps track
+                    the company prices and find the best buy or sell
+                    opportunity!
+                  </p>
+                </div>
+              </div>
+            )}
+
             <div className={styles.screener_table}>
-              <ScreenerTable isPrice={isPrice} price_data={price_data}/>
+              <ScreenerTable isPrice={isPrice} price_data={price_data} />
             </div>
           </div>
           <div>
-            <p
-              className={styles.header}
-              style={{ marginBottom: "0.75em", marginLeft: "3em " }}
-            >
-              Leaderboard
-            </p>
+            <div className={styles.inline}>
+              <p
+                className={styles.header}
+                style={{ marginBottom: "0.75em", marginLeft: "3em " }}
+              >
+                Leaderboard
+              </p>
+              <span onClick={togglePopup4} className={styles.question_mark}>
+                ?
+              </span>
+            </div>
+            {isOpen4 && (
+              <div className={styles.pop_up_container}>
+                <div className={styles.box3}>
+                  <div className={styles.inline}>
+                    <p className={styles.game_intro1}>Ranking</p>
+                    <button
+                      style={{ marginLeft: "15.5em" }}
+                      className={styles.close_candlestick}
+                      onClick={togglePopclose4}
+                    >
+                      X
+                    </button>
+                  </div>
+                  <p className={styles.game_intro_text1}>
+                    Check out the real-time portfolio value (cash value) of the
+                    highest-ranking users. Login to your dashboard to see your
+                    and more users' ranks in the game!
+                  </p>
+                </div>
+              </div>
+            )}
+
             <div
               style={{
                 marginLeft: "4em ",
@@ -121,7 +315,11 @@ export default function Front({ index, posts, companies }: Props) {
           </div>
         </div>
       </div>
-      <ExploreSection companies={companies} isPrice={isPrice} price_data={price_data}/>
+      <ExploreSection
+        companies={companies}
+        isPrice={isPrice}
+        price_data={price_data}
+      />
     </div>
   );
 }

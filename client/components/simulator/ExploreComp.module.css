@@ -14,6 +14,22 @@
   display: inline-flex;
 }
 
+.question_mark {
+  font-size: 18px;
+  height: 28px;
+  background-color: #c3fcc254;
+  color: #afafaf;
+  padding: 0em 0.55em;
+  border-radius: 100px;
+  margin-left: 1em;
+  margin-top: 0.2em;
+}
+
+
+.question_mark:hover {
+  cursor: pointer;
+}
+
 .logo_container {
   width: 54px;
   height: 54px;

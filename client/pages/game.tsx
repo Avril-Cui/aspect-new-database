@@ -35,7 +35,7 @@ const Product = () => {
             </div>
             <p className={styles.inline_header}>Explore Companies</p>
             <p className={styles.inline_text}>
-              Analysis interesting companies with unqiue traits.
+              Analysis interesting companies with unique traits.
             </p>
           </div>
 
