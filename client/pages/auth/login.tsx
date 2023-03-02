@@ -40,30 +40,12 @@ const Login = () => {
         console.log(error);
       });
   };
-
   return (
     <div className={styles.container}>
       <div className={styles.login_container}>
         <h1 className={styles.login_text}>Log in to Website</h1>
         <div className={styles.log_in}>
           <form onSubmit={handleLogin}>
-            <div className={styles.email_input}>
-              <span className={styles.show_text}>User Name</span>
-              <div style={{ marginTop: 10 }}>
-                <input
-                  onChange={(e: any) =>
-                    setData({
-                      ...data,
-                      user_name: e.target.value,
-                    })
-                  }
-                  className={styles.input_name}
-                  value={data["user_name"]}
-                  type="text"
-                  placeholder="Enter username"
-                />
-              </div>
-            </div>
             <div className={styles.email_input}>
               <span className={styles.show_text}>Account Email</span>
               <div style={{ marginTop: 10 }}>
@@ -106,6 +88,7 @@ const Login = () => {
               </p>
             ) : null}
             <input
+              style={{marginTop:"5em"}}
               type="submit"
               className={styles.submit_button}
               value="Log In"

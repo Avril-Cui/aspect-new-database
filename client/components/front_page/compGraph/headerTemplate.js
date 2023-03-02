@@ -68,16 +68,16 @@ function HeaderTemplate(props) {
                   className={styles.game_intro_text}
                   style={{ marginBottom: "-0.1em" }}
                 >
-                  See detail:{" "}
+                  See detail:
                   <Link
-                    href={"http://www.aspect-game.com/post/trading-overview"}
+                    href={`http://www.aspect-game.com/post/trading-overview`}
                   >
                     <a>Candlestick and MA</a>
                   </Link>
                 </p>
                 <p className={styles.game_intro_text}>
                   A candlestick graph is a financial chart used to represent the
-                  price movement of an asset over time, where each "candlestick"
+                  price movement of an asset over time, where each &ldquo;candlestick&rdquo;
                   represents a period of time (such as a day) and displays the
                   opening, closing, highest, and lowest prices within that
                   period. Moving average (MA) indicates the average value of

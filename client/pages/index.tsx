@@ -329,7 +329,7 @@ export default function Front({ index, posts, companies }: Props) {
                   <p className={styles.game_intro_text1}>
                     Check out the real-time portfolio value (cash value) of the
                     highest-ranking users. Login to your dashboard to see your
-                    and more users' ranks in the game!
+                    and more users&apos; ranks in the game!
                   </p>
                 </div>
               </div>

@@ -8,7 +8,6 @@ from datetime import datetime
 import datetime
 seconds = time.time()
 start_time = 1676552400
-print(start_time)
 end_time = start_time + (60*60*24)*29 + 36000
 start_date = datetime.datetime.now()
 
@@ -51,7 +50,6 @@ jky_price = get_price_from_database("jky")
 sgo_price = get_price_from_database("sgo")
 wrkn_price = get_price_from_database("wrkn")
 
-# print("prices generated")
 price_list = {
 	"index": [index_price[x - y: x] for x, y in zip(
 		accumulate([36000 for _ in range(len(index_price)//36000)]), [36000 for i in range(len(index_price)//36000)])],
@@ -143,10 +141,6 @@ event = None
 
 company_names = ["ast", "dsc", "fsin", "hhw", "jky", "sgo", "wrkn"]
 
-# @app.route('/')
-# def home():
-# 	return app.send_static_file('index.html')
-
 @app.route("/result", methods=["POST", "GET"])
 def result():
 	if request.method == "POST":
@@ -192,7 +186,6 @@ def trade_stock():
 		current_price = price_list[comp_name][index_lst][index_tmp]
 	else:
 		if index_tmp > 36000 and index_tmp <= 86400:
-			print(price_list[comp_name][index_lst][-1])
 			current_price = round(price_list[comp_name][index_lst][-1], 2)
 
 		else:

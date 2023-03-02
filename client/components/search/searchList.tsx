@@ -2,7 +2,6 @@ import React from "react";
 import Link from "next/link";
 import styles from "./search.module.css";
 import { urlFor } from "../../sanity";
-import { useState } from "react";
 import Image from "next/image";
 import alien from "../../image/logo/alien.png";
 
