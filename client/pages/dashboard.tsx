@@ -225,11 +225,14 @@ export default function Home() {
       <Header />
       <Tour steps={steps} isOpen={enabled} onRequestClose={onExit} />
       <div className={styles.container}>
+        <div className={styles.tutorial} onClick={togglePopup1}>
+          <button>Start Tutorial ⭐</button>
+        </div>
         <div className={styles.center_container}>
           <div className={styles.inline}>
             <div style={{ marginRight: "2.75em" }}>
               <p className={styles.header}>
-                PORTFOLIO OVERVIEW &#8192;<span onClick={togglePopup1}>?</span>
+                PORTFOLIO OVERVIEW
               </p>
               {isOpen1 && (
                 <div className={styles.pop_up_container1}>
@@ -294,13 +297,16 @@ export default function Home() {
             </div>
           </div>
         </div>
-
-        <div id="companies" className={styles.explore_section}>
-          <ExploreSection
-            companies={companies}
-            isPrice={isPrice}
-            price_data={price_data}
-          />
+        <div style={{ marginLeft: "-7.5em" }}>
+          <div className={styles.center_container}>
+            <div id="companies" className={styles.explore_section}>
+              <ExploreSection
+                companies={companies}
+                isPrice={isPrice}
+                price_data={price_data}
+              />
+            </div>
+          </div>
         </div>
 
         <div className={styles.center_container}>

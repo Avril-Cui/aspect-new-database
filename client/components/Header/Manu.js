@@ -33,6 +33,11 @@ const Manu = () => {
           </a>
         </Link>
         <div className={styles.sections}>
+          {userData ? (
+            <Link href="/dashboard">
+              <a style={{color: "#c3fcc2"}}>Dashboard</a>
+            </Link>
+          ) : null}
           <div>
             <Link href="/game">
               <a>Game</a>
@@ -52,11 +57,6 @@ const Manu = () => {
               </Link>
             </Dropdown>
           </div>
-          {userData ? (
-            <Link href="/dashboard">
-              <a>Dashboard</a>
-            </Link>
-          ) : null}
         </div>
 
         <Button>

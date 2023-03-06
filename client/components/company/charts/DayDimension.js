@@ -50,12 +50,9 @@ const DayDimension = (props) => {
   if (price.length < 30) {
     for (let i = price.length; i < 30; i++) {
       price[i] = ["", undefined, undefined, undefined, undefined, undefined];
-      price[0] = ["01/01/2071 ", null, null, null, null];
+      price[0] = ["", null, null, null, null];
     }
   }
-  // let start_label1 = price.length*4-60;
-  // let start_label2 = price.length*4-60;
-  // let end_label = price.length*4;
 
   const upColor = "#72B176";
   const upBorderColor = "#72B176";

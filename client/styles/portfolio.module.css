@@ -21,6 +21,23 @@
   padding-left: 0.5em;
 }
 
+.tutorial {
+  font-size: 18px;
+  width: 10em;
+  background-color: #c3fcc254;
+  color: #dadada;
+  padding: 0em 0.35em;
+  border-radius: 7px;
+  margin-left: 19em;
+  text-align: center;
+  margin-bottom: 1em;
+}
+
+.tutorial:hover {
+  cursor: pointer;
+  background-color: #c3fcc286;;
+}
+
 .header span {
   font-size: 18px;
   background-color: #c3fcc254;

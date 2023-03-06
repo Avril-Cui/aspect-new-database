@@ -140,9 +140,12 @@ export default function Front({ index, posts, companies }: Props) {
       </Head>
       <Tour steps={steps} isOpen={enabled} onRequestClose={onExit} />
       <div className={styles.layer_one}>
-        <p className={styles.header} id="index_graph">
-          Market Overview &#8192;<span onClick={togglePopup}>?</span>
-        </p>
+        <div className={styles.inline}>
+          <p className={styles.header} id="index_graph">
+            Market Overview
+          </p>
+          <button onClick={togglePopup} className={styles.tutorial}>Start Tutorial ⭐</button>
+        </div>
         {isOpen && (
           <div className={styles.pop_up_container}>
             <div className={styles.box}>
@@ -207,7 +210,9 @@ export default function Front({ index, posts, companies }: Props) {
 
       <div className={styles.layer_one} style={{ marginTop: "3em" }}>
         <div className={styles.inline}>
-          <p className={styles.header} id="terms">Terms of the Week</p>
+          <p className={styles.header} id="terms">
+            Terms of the Week
+          </p>
           <span onClick={togglePopup2} className={styles.question_mark}>
             ?
           </span>
@@ -216,9 +221,7 @@ export default function Front({ index, posts, companies }: Props) {
           <div className={styles.pop_up_container}>
             <div className={styles.box2}>
               <div className={styles.inline}>
-                <p className={styles.game_intro1}>
-                  Terms
-                </p>
+                <p className={styles.game_intro1}>Terms</p>
                 <button
                   className={styles.close_candlestick}
                   onClick={togglePopclose2}
@@ -266,7 +269,11 @@ export default function Front({ index, posts, companies }: Props) {
         <div className={styles.inline} style={{ marginTop: "1em" }}>
           <div>
             <div className={styles.inline}>
-              <p className={styles.header} style={{ marginBottom: "0.75em" }} id="screener">
+              <p
+                className={styles.header}
+                style={{ marginBottom: "0.75em" }}
+                id="screener"
+              >
                 Stock Screener
               </p>
               <span onClick={togglePopup3} className={styles.question_mark}>

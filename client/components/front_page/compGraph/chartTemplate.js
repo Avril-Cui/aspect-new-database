@@ -57,7 +57,7 @@ const AdjustedDimension = (props) => {
     if (price.length < 20) {
       for (let i = price.length; i < 20; i++) {
         price[i] = ["", undefined, undefined, undefined, undefined, undefined];
-        price[0] = ["01/01/2071 ", null, null, null, null];
+        price[0] = ["", null, null, null, null];
       }
     }
 
