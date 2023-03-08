@@ -37,7 +37,6 @@ function Post({ post }: Props) {
   ];
 
   const random = Math.floor(Math.random() * colors.length);
-  console.log(colors[random])
 
   const {
     register,
@@ -48,7 +47,6 @@ function Post({ post }: Props) {
   const onSubmit: SubmitHandler<IFormInput> = (data) => {
     data["name"] = user_data.user_name
     data["email"] = user_data.user_email
-    console.log(data)
     fetch("/api/createComment", {
       method: "POST",
       body: JSON.stringify(data),
@@ -227,7 +225,6 @@ export const getStaticPaths = async () => {
       }`;
 
   const posts = await sanityClient.fetch(query);
-  // console.log(posts)
   const paths = posts.map((post: Post) => {
     return {
       params: {

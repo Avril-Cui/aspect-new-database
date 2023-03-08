@@ -15,23 +15,26 @@ export default function SearchList(props: any) {
   }
 
   const mappedItems = posts.map((post: any) => {
-    if (post.title.includes(searchField) || post.title.includes(searchField.substring(1, searchField.length))) {
+    if (
+      post.title.includes(searchField) ||
+      post.title.includes(searchField.substring(1, searchField.length))
+    ) {
       return (
-        <Link key={post._id} href={`/post/${post.slug.current}`}>
-          <div className={styles.img_border}>
-            <img
-              className={styles.img}
-              src={urlFor(post.mainImage).url()!}
-              alt=""
-            />
-            <div className={styles.text_cont}>
-              <div>
-                <p className={styles.section_title}>{post.title}</p>
-                <p className={styles.section_text}>{post.description}</p>
+          <a key={post._id} href={`/post/${post.slug.current}`}>
+            <div className={styles.img_border}>
+              <img
+                className={styles.img}
+                src={urlFor(post.mainImage).url()!}
+                alt=""
+              />
+              <div className={styles.text_cont}>
+                <div>
+                  <p className={styles.section_title}>{post.title}</p>
+                  <p className={styles.section_text}>{post.description}</p>
+                </div>
               </div>
             </div>
-          </div>
-        </Link>
+          </a>
       );
     } else {
       return null;
@@ -49,7 +52,7 @@ export default function SearchList(props: any) {
             justifyContent: "center",
           }}
         >
-          <Image src={alien} width="210px" height="150px" alt=""/>
+          <Image src={alien} width="210px" height="150px" alt="" />
         </div>
         <p className={styles.no_text}>{text}</p>
       </div>
