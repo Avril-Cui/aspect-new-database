@@ -68,7 +68,6 @@ class UserDatabaseCommands:
         portfolio_data = self.cur.fetchone()
         if portfolio_data != None:
             shares_holding = float(portfolio_data[0])
-        print(portfolio_data)
 
         trade_value = share_number * target_price
         # available_shares = 50
