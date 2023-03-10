@@ -225,15 +225,13 @@ export default function Home() {
       <Header />
       <Tour steps={steps} isOpen={enabled} onRequestClose={onExit} />
       <div className={styles.container}>
-        <div className={styles.tutorial} onClick={togglePopup1}>
-          <button>Start Tutorial ⭐</button>
-        </div>
         <div className={styles.center_container}>
+          <div className={styles.tutorial} onClick={togglePopup1}>
+            <button>Start Tutorial ⭐</button>
+          </div>
           <div className={styles.inline}>
             <div style={{ marginRight: "2.75em" }}>
-              <p className={styles.header}>
-                PORTFOLIO OVERVIEW
-              </p>
+              <p className={styles.header}>PORTFOLIO OVERVIEW</p>
               {isOpen1 && (
                 <div className={styles.pop_up_container1}>
                   <div className={styles.box1}>
