@@ -13,6 +13,9 @@ import ExploreSection from "../components/front_page/ExploreSection";
 const Tour = dynamic(() => import("reactour"), { ssr: false });
 import { useSelector, useDispatch } from "react-redux";
 import { requestPrice } from "../features/newPrice.js";
+import Trade from "../components/dashboard/Trade";
+import AskBidTable from "../components/dashboard/AskBidTable";
+import CompanyChart from "../components/dashboard/company_chart"
 
 export default function Home() {
   const companies: any = {
@@ -274,16 +277,16 @@ export default function Home() {
                   style={{
                     paddingLeft: "1em",
                     paddingTop: "0.5em",
-                    paddingBottom: "0.75em",
+                    paddingBottom: "1.9em",
                   }}
                   id="rank"
                 >
                   <p className={styles.title}>CURRENT RANK</p>
                   <p className={styles.account_value}>{rank}</p>
-                  <button className={styles.trade_btn} onClick={togglePopup}>
+                  {/* <button className={styles.trade_btn} onClick={togglePopup}>
                     <p>Trade Stocks</p>
                   </button>
-                  {isOpen && <TradeInput toggleClose={togglePopup} />}
+                  {isOpen && <TradeInput toggleClose={togglePopup} />} */}
                 </div>
               </div>
             </div>
@@ -295,6 +298,20 @@ export default function Home() {
             </div>
           </div>
         </div>
+
+        <div style={{marginLeft: "8.5em"}}>
+          <div style={{ marginTop: "1.5em", marginBottom: "0em" }}>
+            <div>
+              <p className={styles.header1}>Trade</p>
+              <div className={styles.inline}>
+                <Trade />
+                <AskBidTable />
+                <CompanyChart />
+              </div>
+            </div>
+          </div>
+        </div>
+
         <div style={{ marginLeft: "-7.5em" }}>
           <div className={styles.center_container}>
             <div id="companies" className={styles.explore_section}>
@@ -310,13 +327,14 @@ export default function Home() {
         <div className={styles.center_container}>
           <div style={{ marginTop: "1.5em", marginBottom: "7em" }}>
             <div style={{ marginLeft: "1em" }}>
-              <p className={styles.header}>GAME RANKING</p>
+              <p className={styles.header1}>GAME RANKING</p>
               <div className={styles.leaderboard} id="leaderboard">
                 <LeaderBoard3 />
               </div>
             </div>
           </div>
         </div>
+
       </div>
     </div>
   );

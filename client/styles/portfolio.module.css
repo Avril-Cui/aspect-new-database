@@ -1,5 +1,5 @@
 .container {
-  margin-top: 7em;
+  margin-top: 7.5em;
 }
 
 .center_container{
@@ -19,6 +19,13 @@
   font-weight: 300;
   padding-bottom: 0.35em;
   padding-left: 0.5em;
+}
+
+.header1 {
+  color: #fff;
+  font-size: 22px;
+  font-weight: 400;
+  padding-bottom: 0.5em;
 }
 
 .tutorial {
@@ -59,7 +66,7 @@
 
 .account_value {
   color: #ffffff;
-  font-size: 36px;
+  font-size: 48px;
   font-weight: 300;
   margin-top: -0.15em;
 }

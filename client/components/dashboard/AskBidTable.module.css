@@ -1,0 +1,49 @@
+.order_table{
+  border-collapse: collapse;
+  margin-left: 1em;
+}
+
+.order_table th{
+  color: rgb(156, 156, 156);
+  font-weight: 300;
+  font-size: 16px;
+  padding-bottom: 0.5em;
+  width: 9.7em;
+}
+
+.buy_price_header{
+  width: 10em;
+  text-align: left;
+  padding-left: 0.5em;
+}
+
+.buy_price{
+  color: #FD6565;
+  font-weight: 300;
+  font-size: 14px;
+  padding: 0.35em;
+}
+
+.sell_price{
+  color: #C9FFD1;
+  font-weight: 300;
+  font-size: 14px;
+  padding: 0.35em;
+}
+
+.quantity {
+  color: rgb(200, 200, 200);
+  font-weight: 300;
+  font-size: 14px;
+  text-align: right;
+}
+
+.buy_quantity_bg{
+  background-color: #fd656541;
+  margin-left: 0.5em;
+}
+
+.sell_quantity_bg{
+  background-color: #86bf8c40;
+  margin-left: 0.5em;
+}
