@@ -24,7 +24,7 @@ function ShowPortfolio() {
   const cookies = new Cookies();
   const user_uid = cookies.get("user_uid");
 
-  const WAIT_TIME = 5000;
+  const WAIT_TIME = 3000;
 
   useEffect(() => {
     if (portfolio.accountValue != undefined) {
@@ -35,7 +35,7 @@ function ShowPortfolio() {
       let data = JSON.stringify(user_uid);
       var config = {
         method: "post",
-        url: "https://aspect-server.onrender.com/portfolio-detail",
+        url: "http://127.0.0.1:5000/portfolio-detail",
         headers: {
           "Content-Type": "text/plain",
         },

@@ -4,21 +4,14 @@ import { useState, useEffect } from "react";
 import Cookies from "universal-cookie";
 import Link from "next/link";
 
-function ShowCompValue(props) {
+function PendingOrders(props) {
   const cookies = new Cookies();
   const user_uid = cookies.get("user_uid");
 
   const containerRef = useRef(null);
-  const [portfolio, setPortfolio] = useState({
-    portfolio_value: {
-      accountValue: 0,
-      cashValue: 0,
-      category: "portfolio_value",
-      holdingValue: 0,
-    },
-  });
+  const [orders, setOrders] = useState([[undefined, "", undefined, undefined]]);
 
-  const WAIT_TIME = 5000;
+  const WAIT_TIME = 3000;
 
   useEffect(() => {
     const data = setInterval(() => {
@@ -27,7 +20,7 @@ function ShowCompValue(props) {
 
       var config = {
         method: "post",
-        url: "http://127.0.0.1:5000/portfolio-detail",
+        url: "http://127.0.0.1:5000/get-user-pending-orders",
         headers: {
           "Content-Type": "text/plain",
         },
@@ -36,15 +29,14 @@ function ShowCompValue(props) {
 
       axios(config)
         .then(function (response) {
-          setPortfolio(response.data);
+          setOrders(response.data);
         })
         .catch(function (error) {
           console.log(error);
         });
     }, WAIT_TIME);
     return () => clearInterval(data);
-  }, [portfolio, user_uid]);
-
+  }, [orders, user_uid]);
   return (
     <div className={styles.scroll}>
       <div ref={containerRef}>
@@ -52,17 +44,15 @@ function ShowCompValue(props) {
           <tbody>
             <tr>
               <th>Ticker</th>
+              <th>Price</th>
               <th>Shares</th>
               <th>Total Value</th>
-              <th>Change</th>
-              <th>Percentage</th>
+              <th></th>
             </tr>
           </tbody>
           <tbody className={styles.table_line}>
-            {Object.keys(portfolio).map((key) => {
-              return key != "portfolio_value" ? (
-                <Company company={portfolio[key]} />
-              ) : null;
+            {orders.map((order) => {
+              return <Company order={order} />;
             })}
           </tbody>
         </table>
@@ -77,43 +67,48 @@ function Company(props) {
     return (Math.round(m) / 100) * Math.sign(num);
   }
 
-  const { category, shares_holding, total_holding, cost } = props.company;
+  const id = props.order[0];
+  const category = props.order[1];
+  const price = props.order[2];
+  const shares_holding = props.order[3];
 
-  let company_value = null;
-  let share_number = null;
-  let comp_name = category;
-  let price_pct_change = 0;
-  let price_change = 0;
+  let total_value = shares_holding * price;
+  let share_number = shares_holding;
 
-  if (category != "portfolio_value") {
-    company_value = total_holding;
-    share_number = shares_holding;
-    comp_name = category;
-    price_change = round(total_holding - cost);
-    price_pct_change = round(((total_holding - cost) / cost) * 100);
-  }
-
-  if (share_number != 0) {
+  const handleCancelOrder = () => {
+    var axios = require("axios");
+    var data = JSON.stringify(id);
+    var config = {
+      method: "POST",
+      url: "http://127.0.0.1:5000/cancel-order",
+      headers: {
+        "Content-Type": "text/plain",
+      },
+      data: data,
+    };
+    axios(config)
+      .then(function (response) {
+        console.log("order canceled");
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
+  };
+  if (share_number != undefined) {
     return (
-      <tr key={category} className={styles.holding_detail}>
+      <tr key={id} className={styles.holding_detail1}>
         <Link href={`/company/${category}`}>
           <a>
             <td className={styles.comp_link}>{category.toUpperCase()}</td>
           </a>
         </Link>
+        <td>{price}</td>
         <td>{share_number}</td>
-        <td>{round(company_value)}</td>
-        <td
-          style={price_change > 0 ? { color: "#C9FFD1" } : { color: "#FD6565" }}
-        >
-          {price_change}
-        </td>
-        <td
-          style={
-            price_pct_change > 0 ? { color: "#C9FFD1" } : { color: "#FD6565" }
-          }
-        >
-          {price_pct_change}%
+        <td>{total_value}</td>
+        <td>
+          <button className={styles.cancel} onClick={handleCancelOrder}>
+            <p>CANCEL ORDER </p>
+          </button>
         </td>
       </tr>
     );
@@ -121,4 +116,4 @@ function Company(props) {
     return <tbody key="random"></tbody>;
   }
 }
-export default ShowCompValue;
+export default PendingOrders;

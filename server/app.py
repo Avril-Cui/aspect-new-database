@@ -6,11 +6,11 @@ load_dotenv()
 import time
 from datetime import datetime
 import datetime
+from Model.House.auction_house import AuctionHouse
 seconds = time.time()
-start_time = 1676552400
+start_time = 1678429717
 end_time = start_time + (60*60*24)*29 + 36000
 start_date = datetime.datetime.now()
-
 DATABASE_HOST = os.getenv("DATABASE_HOST")
 DATABASE_USER = os.getenv("DATABASE_USER")
 DATABASE_PASSWORD = os.getenv("DATABASE_PASSWORD")
@@ -24,6 +24,7 @@ conn = psycopg2.connect(
 )
 
 cur = conn.cursor()
+house = AuctionHouse(conn, cur)
 def get_price_from_database(company_id):
 	cur.execute(f"""
           SELECT price_list from prices WHERE company_id='{company_id}';
@@ -170,6 +171,23 @@ def register():
 		except:
 			return "Invalid user request", 401
 
+@app.route('/get-active-orders', methods=['POST'])
+def active_orders():
+	company_name = json.loads(request.data)
+	orders = house.get_all_active_orders(company_name)
+	return orders
+
+@app.route('/get-order-book', methods=['POST'])
+def order_book():
+	company_name = json.loads(request.data)
+	order_book = house.get_order_book(company_name)
+	return jsonify(order_book)
+
+@app.route('/get-user-pending-orders', methods=['POST'])
+def pending_orders():
+	user_uid = json.loads(request.data)
+	pending_orders = house.get_user_pending_orders(user_uid)
+	return jsonify(pending_orders)
 
 @app.route('/trade-stock', methods=['POST'])
 def trade_stock():
@@ -193,22 +211,28 @@ def trade_stock():
 
 	if target_price == 0:
 		target_price = current_price
-	response = user_database_commands.trade_stock(
-		user_uid, share_number, target_price, current_price, comp_name)
-
-	if response == "Invalid 1":
-		return "You do not owe enough shares of this stock.", 401
-	elif response == "Invalid 2":
-		return "You do not have enough money for this trade", 402
-	elif response == "Invalid 3":
-		return "Currently no shares available for trade. Your transaction will enter the pending state.", 403
+		response = house.trade_stock(user_uid, share_number, target_price, comp_name)
+		if response == "Invalid 1":
+			return "You do not owe enough shares of this stock.", 401
+		elif response == "Invalid 2":
+			return "You do not have enough money for this trade", 402
+		elif response == "Invalid 3":
+			return "Currently no shares available for trade. Your transaction will enter the pending state.", 403
+		else:
+			company_list = user_database_commands.get_comp_holding_list(user_uid)
+			current_prices = get_current_prices(company_list)
+			portfolio = user_database_commands.get_portfolio_info(
+				user_uid, current_prices)
+			return jsonify(portfolio)
 	else:
-		company_list = user_database_commands.get_comp_holding_list(user_uid)
-		current_prices = get_current_prices(company_list)
-		portfolio = user_database_commands.get_portfolio_info(
-			user_uid, current_prices)
-		return jsonify(portfolio)
+		house.put_order(user_uid, share_number, target_price, comp_name)
+		return "0"
 
+@app.route('/cancel-order', methods=['POST'])
+def cancel_order():
+	order_id = json.loads(request.data)
+	house.cancel_order(order_id)
+	return "Order canceled."
 
 @app.route('/portfolio-detail', methods=['POST'])
 def portfolio_detail():

@@ -2,19 +2,17 @@ import ReactEcharts from "echarts-for-react";
 import { useEffect } from "react";
 import styles from "../../styles/simulator/company.module.css";
 const CompanyChart = (props) => {
-  const WAIT_TIME = 1000*60*60;
 
   useEffect(() => {
     var axios = require("axios");
-    var request = `"$wrkn"`;
 
     var config = {
       method: "post",
-      url: "https://aspect-server.onrender.com/hour-graph",
+      url: "http://127.0.0.1:5000/hour-graph",
       headers: {
         "Content-Type": "text/plain",
       },
-      data: request,
+      data: `"${props.comp_name}"`,
     };
 
     axios(config)
@@ -24,21 +22,7 @@ const CompanyChart = (props) => {
       .catch(function (error) {
         console.log(error);
       });
-    const data = setInterval(() => {
-
-      axios(config)
-        .then(function (response) {
-          window.localStorage.setItem(
-            "dayData",
-            JSON.stringify(response.data)
-          );
-        })
-        .catch(function (error) {
-          console.log(error);
-        });
-    }, WAIT_TIME);
-    return () => clearInterval(data);
-  }, [WAIT_TIME]);
+  }, [props.comp_name]);
 
   let price = JSON.parse(window.localStorage.getItem("dayData"));
 

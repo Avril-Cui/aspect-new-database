@@ -59,13 +59,78 @@ class AuctionHouse:
 		""")
 		self.conn.commit()
 	
-	def get_all_active_orders(self):
+	def get_order_book(self, comp_name):
 		self.cur.execute(f"""
-			SELECT order_id, user_uid,company_name,price, shares, timestamp, action
-			FROM orders WHERE accepted={False};
+			SELECT sum (shares) AS total_shares from orders WHERE action='buy';
+		""")
+		total_buy_shares = float(self.cur.fetchone()[0])
+
+		self.cur.execute(f"""
+			SELECT sum (shares) AS total_shares from orders WHERE action='sell';
+		""")
+		total_sell_shares = float(self.cur.fetchone()[0])
+
+
+		self.cur.execute(f"""
+			SELECT price, shares, RANK() OVER (ORDER BY price DESC) as rank FROM orders WHERE 
+			accepted={False} AND company_name='{comp_name}' AND action='buy';
+		""")
+		buy_orders = list(self.cur.fetchall())
+		buy_five_orders = []
+		price = buy_orders[0][0]
+
+		for index in range(len(buy_orders)):
+			if buy_orders[index][0] != price or index==0:
+				buy_five_orders.append([float(buy_orders[index][0]), float(buy_orders[index][1]), round(float(buy_orders[index][1])/total_buy_shares * 100, 2)])
+				price = buy_orders[index][0]
+			else:
+				buy_five_orders[-1][1] += float(buy_orders[index][1])
+				buy_five_orders[-1][2] = round(buy_five_orders[-1][1]/total_buy_shares * 100, 2)
+
+		try:
+			lowest_buy = buy_five_orders[-1][0]
+		except:
+			lowest_buy = 100
+
+		if len(buy_five_orders) <= 5:
+			for i in range(5-len(buy_five_orders)):
+				buy_five_orders.append([float(lowest_buy)-0.01*(i+1), 0, 0])
+
+
+		self.cur.execute(f"""
+			SELECT price, shares, RANK() OVER (ORDER BY price DESC) as rank FROM orders WHERE 
+			accepted={False} AND company_name='{comp_name}' AND action='sell';
+		""")
+		sell_orders = list(self.cur.fetchall())
+		sell_five_orders = []
+		price = sell_orders[0][0]
+
+		for index in range(len(sell_orders)):
+			if sell_orders[index][0] != price or index==0:
+				sell_five_orders.append([float(sell_orders[index][0]), float(sell_orders[index][1]), round(float(sell_orders[index][1])/total_sell_shares * 100, 2)])
+				price = sell_orders[index][0]
+			else:
+				sell_five_orders[-1][1] += float(sell_orders[index][1])
+				sell_five_orders[-1][2] = round(sell_five_orders[-1][1]/total_sell_shares * 100, 2)
+
+		try:
+			highest_sell = sell_orders[0][0]
+		except:
+			highest_sell = 100
+		if len(sell_five_orders) <= 5:
+			for i in range(5-len(sell_five_orders)):
+				sell_five_orders.insert(0, [float(highest_sell)+0.01*(i+1), 0, 0])
+		
+		order_book = [sell_five_orders, buy_five_orders]
+		return order_book
+	
+	def get_all_active_orders(self, comp_name):
+		self.cur.execute(f"""
+			SELECT order_id, user_uid, company_name, price, shares, timestamp, action
+			FROM orders WHERE accepted={False} AND company_name='{comp_name}';
 		""")
 		active_orders = self.cur.fetchall()
-		print(active_orders)
+		return active_orders
 
 	def trade_stock(
 		self,
@@ -155,6 +220,13 @@ class AuctionHouse:
 			else:
 				return "Invalid 1"
 
+	def get_user_pending_orders(self, user_uid):
+		self.cur.execute(f"""
+			SELECT order_id, company_name, price, shares FROM orders WHERE accepted={False} and user_uid='{user_uid}';
+		""")
+		pending_orders = self.cur.fetchall()
+		return pending_orders
+
 import psycopg2
 conn = psycopg2.connect(
     host="localhost",
@@ -165,10 +237,27 @@ conn = psycopg2.connect(
 cur = conn.cursor()
 
 house = AuctionHouse(conn, cur)
-# house.create_order_table()
-house.put_order("Avril", 10, 100, "wrkn")
-house.put_order("Friday", 20, 200, "sgo")
-house.put_order("GameMaster", 30, 300, "ast")
+house.create_order_table()
+# house.put_order("Avril", 10, 100, "wrkn")
+# house.put_order("Friday", 20, 200, "wrkn")
+# house.put_order("GameMaster", 30, 300, "wrkn")
+# house.put_order("Face", 50, 300, "wrkn")
+# house.put_order("Fuqi", -30, 99, "wrkn")
+# house.put_order("Face", -10, 180, "wrkn")
 
-house.get_all_active_orders()
-# house.cancel_order("9e9bf8fb-87eb-428a-8a99-37a7158eb9c9")
+# house.put_order("Avril", 40, 100, "ast")
+# house.put_order("Friday", 10, 200, "ast")
+# house.put_order("GameMaster", 80, 300, "ast")
+# house.put_order("Face", 10, 300, "ast")
+# house.put_order("Fuqi", -60, 99, "ast")
+# house.put_order("Face", -10, 180, "ast")
+
+# house.put_order("Avril", 30, 100, "dsc")
+# house.put_order("Friday", 10, 200, "dsc")
+# house.put_order("GameMaster", 60, 300, "dsc")
+# house.put_order("Face", 80, 300, "dsc")
+# house.put_order("Fuqi", -20, 99, "dsc")
+# house.put_order("Face", -90, 180, "dsc")
+
+# # house.get_order_book("wrkn")
+# # house.cancel_order("9e9bf8fb-87eb-428a-8a99-37a7158eb9c9")

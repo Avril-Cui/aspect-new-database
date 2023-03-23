@@ -1,5 +1,4 @@
 import { useState, useEffect } from "react";
-import TradeInput from "../components/dashboard/TradeInput";
 import ShowPortfolio from "../components/dashboard/ShowPortfolio";
 import Head from "next/head";
 import ShowCompValue from "../components/dashboard/ShowCompValue";
@@ -15,9 +14,28 @@ import { useSelector, useDispatch } from "react-redux";
 import { requestPrice } from "../features/newPrice.js";
 import Trade from "../components/dashboard/Trade";
 import AskBidTable from "../components/dashboard/AskBidTable";
-import CompanyChart from "../components/dashboard/company_chart"
+import CompanyChart from "../components/dashboard/company_chart";
+import PendingOrders from "../components/dashboard/PendingOrders";
 
 export default function Home() {
+  var today = new Date();
+  var dd = String(today.getDate()).padStart(2, "0");
+  const month = [
+    "Jan",
+    "Feb",
+    "Mar",
+    "Apr",
+    "May",
+    "Jun",
+    "Jul",
+    "Aug",
+    "Sep",
+    "Oct",
+    "Nov",
+    "Dec",
+  ];
+  let current_month = month[today.getMonth()];
+
   const companies: any = {
     ast: {
       index: 0,
@@ -155,7 +173,7 @@ export default function Home() {
   const [rank, setRank] = useState(0);
 
   const dispatch = useDispatch();
-  const WAIT_TIME = 4000;
+  const WAIT_TIME = 3000;
   let price_data = useSelector((state: any) => state.price.value);
 
   const [isPrice, setIsPrice] = useState(false);
@@ -171,7 +189,7 @@ export default function Home() {
     var data = JSON.stringify(user_uid);
     var config = {
       method: "post",
-      url: "https://aspect-server.onrender.com/show-ranking",
+      url: "http://127.0.0.1:5000/show-ranking",
       headers: {
         "Content-Type": "text/plain",
       },
@@ -220,6 +238,11 @@ export default function Home() {
       content: "See all users' rankings in the game.",
     },
   ];
+
+  const [compName, setCompName] = useState("ast");
+  const handleTickerChange = (event: any) => {
+    setCompName(event.target.value.toLowerCase());
+  };
   return (
     <div>
       <Head>
@@ -283,30 +306,54 @@ export default function Home() {
                 >
                   <p className={styles.title}>CURRENT RANK</p>
                   <p className={styles.account_value}>{rank}</p>
-                  {/* <button className={styles.trade_btn} onClick={togglePopup}>
-                    <p>Trade Stocks</p>
-                  </button>
-                  {isOpen && <TradeInput toggleClose={togglePopup} />} */}
+                </div>
+              </div>
+              <div style={{ marginTop: "1em" }}>
+                <p className={styles.header}>DATE</p>
+                <div
+                  className={styles.value_container}
+                  style={{
+                    paddingLeft: "1em",
+                    paddingTop: "2em",
+                    paddingBottom: "2em",
+                  }}
+                >
+                  <p className={styles.date}>
+                    {current_month}, {dd}
+                  </p>
                 </div>
               </div>
             </div>
             <div style={{ marginLeft: "1em" }}>
-              <p className={styles.header}>HOLDING DETAIL</p>
-              <div className={styles.holdings_container} id="holding">
-                <ShowCompValue />
+              <div>
+                <p className={styles.header}>HOLDING DETAIL</p>
+                <div className={styles.holdings_container} id="holding">
+                  <ShowCompValue />
+                </div>
+              </div>
+
+              <div style={{ marginTop: "0.5em" }}>
+                <p className={styles.header}>PENDING ORDERS</p>
+                <div className={styles.holdings_container} id="holding">
+                  <PendingOrders />
+                </div>
               </div>
             </div>
           </div>
         </div>
 
-        <div style={{marginLeft: "8.5em"}}>
+        <div style={{ marginLeft: "8.5em" }}>
           <div style={{ marginTop: "1.5em", marginBottom: "0em" }}>
             <div>
               <p className={styles.header1}>Trade</p>
               <div className={styles.inline}>
-                <Trade />
-                <AskBidTable />
-                <CompanyChart />
+                <Trade
+                  handleTickerChange={handleTickerChange}
+                  ticker={compName}
+                  setTicker={setCompName}
+                />
+                <AskBidTable comp_name={compName} />
+                <CompanyChart comp_name={compName} />
               </div>
             </div>
           </div>
@@ -334,7 +381,6 @@ export default function Home() {
             </div>
           </div>
         </div>
-
       </div>
     </div>
   );
