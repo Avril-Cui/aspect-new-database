@@ -225,8 +225,15 @@ def trade_stock():
 				user_uid, current_prices)
 			return jsonify(portfolio)
 	else:
-		house.put_order(user_uid, share_number, target_price, comp_name)
-		return "0"
+		response = house.put_order(user_uid, share_number, target_price, comp_name)
+		if response == "Invalid 1":
+			return "You do not owe enough shares of this stock.", 401
+		elif response == "Invalid 2":
+			return "You do not have enough money for this trade", 402
+		elif response == "Invalid 3":
+			return "Currently no shares available for trade. Your transaction will enter the pending state.", 403
+		else:
+			return "0"
 
 @app.route('/cancel-order', methods=['POST'])
 def cancel_order():

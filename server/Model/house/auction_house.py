@@ -37,19 +37,77 @@ class AuctionHouse:
 		order_id = str(uuid.uuid4())
 
 		self.cur.execute(f"""
-			INSERT INTO orders VALUES(
-				'{order_id}',
-				'{user_uid}',
-				'{comp_name}',
-				{round(trade_price, 2)},
-				{abs(round(share_number, 2))},
-				{round(float(time.time()), 2)},
-				'{action}',
-				{False}
-			);
+		  SELECT cashvalue from users WHERE uid='{user_uid}';
 		""")
-		self.conn.commit()
-	
+		cash_value = float(self.cur.fetchone()[0])
+
+		self.cur.execute(f"""
+		  SELECT shares_holding from portfolio WHERE uid='{user_uid}' and company_id='{comp_name}';
+		""")
+		portfolio_data = self.cur.fetchone()
+		if portfolio_data != None:
+			shares_holding = float(portfolio_data[0])
+
+		trade_value = share_number * trade_price
+
+		if trade_value > cash_value and share_number > 0:
+			return "Invalid 2"
+
+		elif share_number > 0:
+			self.cur.execute(f"""
+				INSERT INTO orders VALUES(
+					'{order_id}',
+					'{user_uid}',
+					'{comp_name}',
+					{round(trade_price, 2)},
+					{abs(round(share_number, 2))},
+					{round(float(time.time()), 2)},
+					'{action}',
+					{False}
+				);
+			""")
+			self.conn.commit()
+			if portfolio_data != None:
+				self.cur.execute(f"""
+					UPDATE users SET cashvalue = (cashvalue-{round(trade_value, 2)})
+					WHERE uid='{user_uid}';
+				""")
+				self.conn.commit()
+			else:
+				self.cur.execute(f"""
+					UPDATE users SET cashvalue = (cashvalue-{round(trade_value, 2)})
+					WHERE uid='{user_uid}';
+				""")
+				self.conn.commit()
+			
+		
+
+		else:
+			if portfolio_data != None:
+				if abs(share_number) > shares_holding:
+					return "Invalid 1"
+				else:
+					self.cur.execute(f"""
+						INSERT INTO orders VALUES(
+							'{order_id}',
+							'{user_uid}',
+							'{comp_name}',
+							{round(trade_price, 2)},
+							{abs(round(share_number, 2))},
+							{round(float(time.time()), 2)},
+							'{action}',
+							{False}
+						);
+					""")
+					self.conn.commit()	
+					self.cur.execute(f"""
+						UPDATE users SET cashvalue = (cashvalue+{abs(round(trade_value, 2))})
+						WHERE uid='{user_uid}';						
+					""")
+					self.conn.commit()
+			else:
+				return "Invalid 1"
+
 	def cancel_order(
 		self,
 		order_id
