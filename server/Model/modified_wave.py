@@ -81,43 +81,41 @@ class WaveModifier:
 class StockSimulator:
     def __init__(
             self,
-            adjusted_factor: float,
-            initial_price: float,
+            target_price: float,
             day_price_lst: list,
-            index: int,
+            sigma: float,
             fixed_random_seed: Optional[bool] = False,
             random_seed: Optional[int] = 17
     ):
 
         # price storage
-        self.adjusted_factor = adjusted_factor
-        self.initial_price = initial_price - adjusted_factor
-        self.second_price = initial_price - adjusted_factor
+        self.target_price = target_price
+        self.second_price = target_price
         self.second_price_lst = []
-        self.index = index
 
         self.day_price_lst = day_price_lst
         self.modified_lst = []
+
+        self.sigma = sigma
         # set random seed
         if fixed_random_seed:
             np.random.seed(random_seed)
 
     def generate_price(self):
-        adjust_price =  self.day_price_lst[self.index] - self.adjusted_factor
-        adjusted_last = self.day_price_lst[self.index-1] - self.adjusted_factor 
-        drift = (adjust_price - adjusted_last)/(adjusted_last)
-        sigma = 0.0001
-        dt = 1/(60*60)
-        num = int(1/dt)
-        tmp_bm_coeff = np.random.normal(0,1) * (dt)
-        daily_price = []
-        for _ in range(num):
-            self.second_price += drift * self.second_price * dt + sigma *(self.second_price) * tmp_bm_coeff
-            daily_price.append(round(self.second_price, 2))
-
-        # daily_price[-1] = adjust_price
-        self.second_price_lst = daily_price
-        return daily_price
+        price_list = []
+        adjusted_factor = self.target_price / self.day_price_lst [0]
+        for index in range(1, len(self.day_price_lst)):
+            adjust_price = self.day_price_lst[index]
+            adjusted_last = self.day_price_lst[index-1] 
+            drift = (adjust_price - adjusted_last)/(adjusted_last) * adjusted_factor
+            dt = 1/(60*60)
+            num = int(1/dt)
+            daily_price = []
+            for _ in range(num):
+                self.second_price += drift * self.second_price * dt + np.random.normal(0,1) * np.sqrt(dt) * self.sigma
+                daily_price.append(self.second_price)
+            price_list.extend(daily_price)
+        return price_list
 
 from get_parameters import index_params_index
 import matplotlib.pyplot as plt
@@ -128,8 +126,9 @@ macro = index_params_index[event_name]["macro"]
 stock_simulator = DayPriceGenerator(macro)
 price = stock_simulator.price_loop()
 print(price[0])
-per_second_simulator = StockSimulator(300, price[0], price, 0)
+per_second_simulator = StockSimulator(1000, price, 5)
 price_list = per_second_simulator.generate_price()
-
 plt.plot(price_list)
+plt.show()
+plt.plot(price)
 plt.show()
