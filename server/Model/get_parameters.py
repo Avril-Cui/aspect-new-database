@@ -9,12 +9,10 @@ For demonstration purpose, the 1929 Roaring Twenties scenario + Facebook 2012 IP
 import pandas as pd
 import numpy as np
 from sklearn.linear_model import LinearRegression
-import matplotlib.pyplot as plt
+
 def macro(file):
     comp_price_df = pd.read_csv(file)
     stock_price = comp_price_df["Adj Close"].tolist()
-    plt.plot(stock_price)
-    plt.show()
 
     sampling_price_list = []
     for index in range(len(stock_price)):
@@ -78,7 +76,7 @@ def micro(
 
     return parameter_dict
 
-file_names_index = ['mete1_1']
+file_names_index = ['normal1', 'mete1_1', 'mete1_2', 'mete2', 'mete3', 'mete4', 'mete5']
 length_index = [120, 50, 30, 50, 50, 60, 60]
 fund_weights_index = [0.5, 0.6, 0.85, 0.85, 0.7, 0.65, 0.7, 0.85]
 index_params_index = {}
