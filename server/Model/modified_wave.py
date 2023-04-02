@@ -6,7 +6,6 @@ This issue might be fixed by yahoo later.
 from typing import Optional
 import numpy as np
 from copy import deepcopy
-# import pandas_datareader as web
 from pandas_datareader import data as pdr
 import yfinance as yf
 np.random.seed(17)
@@ -22,9 +21,11 @@ class DayPriceGenerator:
         self.macro_params = macro_params
         self.price = macro_params['original_price']
         self.price_list = []
+        self.minimum_simulation_tick = 0.01
 
-    def ontk_price(self, theta, mu):
-        simulated_price = self.price + theta * (mu-self.price)
+    def ontk_price(self, theta, mu, sigma):
+        tmp_bm_coeff = np.random.normal(0,1) * np.sqrt(self.minimum_simulation_tick)
+        simulated_price = self.price + theta * (mu-self.price) * self.minimum_simulation_tick + sigma * tmp_bm_coeff 
         return simulated_price
 
     def price_loop(
@@ -32,17 +33,18 @@ class DayPriceGenerator:
     ):
         mu_lst = self.macro_params["mu_sde"]
         theta_lst = self.macro_params["theta"]
+        sigma_lst = self.macro_params["sigma"]
         time_length = self.macro_params["time"]
 
         for index in range(time_length):
             mu = mu_lst[index]
             theta = theta_lst[index]
-            next_price = self.ontk_price(theta, mu)
+            sigma = sigma_lst[index]
+            next_price = self.ontk_price(theta, mu, sigma)
             self.price = next_price
             self.price_list.append(next_price)
 
         return (self.price_list)
-
 
 class MidPriceGenerator:
     def generate_mid_price(start_date, end_date, symbol, ma_days):
@@ -51,7 +53,6 @@ class MidPriceGenerator:
         convolution_wave = mid_price.rolling(window=ma_days).mean()[
             ma_days:].to_list()
         return convolution_wave
-
 
 class WaveModifier:
 	def __init__(self) -> None:
@@ -304,3 +305,16 @@ class StockSimulator:
                 else:
                     continue
         return ask_bid_list
+
+from get_parameters import index_params_index
+import matplotlib.pyplot as plt
+
+file_names_index = ['normal1', 'mete1_1', 'mete1_2', 'mete2', 'mete3', 'mete4', 'mete5']
+event_name = "mete1_1"
+macro = index_params_index[event_name]["macro"]
+print(macro)
+stock_simulator = DayPriceGenerator(macro)
+price = stock_simulator.price_loop()
+
+plt.plot(price)
+plt.show()

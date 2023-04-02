@@ -14,7 +14,7 @@ const AdjustedDimension = (props) => {
 
     var config = {
       method: "post",
-      url: "https://aspect-server.onrender.com/day-graph",
+      url: "http://127.0.0.1:5000/day-graph",
       headers: {
         "Content-Type": "text/plain",
       },
