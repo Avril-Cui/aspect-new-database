@@ -8,7 +8,7 @@ from datetime import datetime
 import datetime
 from Model.House.auction_house import AuctionHouse
 seconds = time.time()
-start_time = 1678429717
+start_time = 1680646552
 end_time = start_time + (60*60*24)*29 + 36000
 start_date = datetime.datetime.now()
 DATABASE_HOST = os.getenv("DATABASE_HOST")
@@ -33,6 +33,8 @@ def get_price_from_database(company_id):
 	return price
 
 user_database_commands = UserDatabaseCommands(conn, cur)
+user_database_commands.create_user_table()
+user_database_commands.create_portfolio_table()
 import json
 from flask import Flask, request, jsonify, request
 import pyrebase

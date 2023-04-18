@@ -128,7 +128,35 @@ price = stock_simulator.price_loop()
 print(price[0])
 per_second_simulator = StockSimulator(1000, price, 5)
 price_list = per_second_simulator.generate_price()
-plt.plot(price_list)
-plt.show()
-plt.plot(price)
-plt.show()
+# plt.plot(price_list)
+# plt.show()
+# plt.plot(price)
+# plt.show()
+
+import psycopg2
+
+conn = psycopg2.connect(
+    host="localhost",
+    database="aspectdatabase",
+    user="postgres",
+    password="Xiaokeai0717"
+)
+
+cur = conn.cursor()
+
+cur.execute(f'DROP TABLE IF EXISTS test_prices;')
+cur.execute(f"""
+    CREATE TABLE test_prices (
+    company_id varchar (100) PRIMARY KEY,
+    price_list NUMERIC [] NOT NULL
+    );
+""")
+conn.commit()
+
+cur.execute(f"""
+    INSERT INTO test_prices VALUES (
+        'index',
+        ARRAY {price_list}
+    );
+""")
+conn.commit()

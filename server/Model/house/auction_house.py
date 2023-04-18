@@ -79,8 +79,6 @@ class AuctionHouse:
 					WHERE uid='{user_uid}';
 				""")
 				self.conn.commit()
-			
-		
 
 		else:
 			if portfolio_data != None:
@@ -126,8 +124,10 @@ class AuctionHouse:
 		self.cur.execute(f"""
 			SELECT sum (shares) AS total_shares from orders WHERE action='sell';
 		""")
-		total_sell_shares = float(self.cur.fetchone()[0])
-
+		if self.cur.fetchone()[0] != None:
+			total_sell_shares = float(self.cur.fetchone()[0])
+		else:
+			total_sell_shares = 0
 
 		self.cur.execute(f"""
 			SELECT price, shares, RANK() OVER (ORDER BY price DESC) as rank FROM orders WHERE 
@@ -189,6 +189,192 @@ class AuctionHouse:
 		""")
 		active_orders = self.cur.fetchall()
 		return active_orders
+
+	def accept_order(self, price, trade_action, user_uid, comp_name, shares):
+		if trade_action == "sell":
+			action = "buy"
+		elif trade_action == "buy":
+			action = "sell"
+		cur.execute(f"""
+			SELECT order_id, user_uid FROM orders WHERE price={price} AND action='{action}';
+		""")
+		ids = list(cur.fetchall())
+		share_number = 0
+		for index in range(len(ids)):
+			order_id = ids[index][0]
+			cur.execute(f"""
+				SELECT shares FROM orders WHERE order_id='{order_id}' AND action='{action}' AND price={price};
+			""")
+			shares=float(cur.fetchone()[0])
+			if action == "buy":
+				share_number+=shares
+			elif action == "sell":
+				share_number-=shares
+		
+		if abs(share_number) > abs(shares):
+			cur.execute(f"""
+				SELECT cashvalue from users WHERE uid='{user_uid}';
+			""")
+			cash_value = float(cur.fetchone()[0])
+			cur.execute(f"""
+				SELECT shares_holding from portfolio WHERE uid='{user_uid}' and company_id='{comp_name}';
+			""")
+			portfolio_data = cur.fetchone()
+			if portfolio_data != None:
+				shares_holding = float(portfolio_data[0])
+			trade_value = shares * price
+			invalid = False
+			if trade_value > cash_value and shares > 0:
+				invalid = True
+				return "Invalid 2"  
+			elif shares > 0:
+				if portfolio_data != None:
+					cur.execute(f"""
+						INSERT INTO trade_history VALUES (
+							'{user_uid}',
+							'{comp_name}',
+							{round(float(time.time()), 2)},
+							{round(shares,2)},
+							{round(trade_value,2)}
+						);
+						UPDATE users SET cashvalue = (cashvalue-{round(trade_value, 2)})
+						WHERE uid='{user_uid}';
+						UPDATE portfolio SET shares_holding = (shares_holding+{round(shares,2)})
+						WHERE uid='{user_uid}' and company_id='{comp_name}';
+						UPDATE portfolio SET cost = (cost+{round(shares,2)})
+						WHERE uid='{user_uid}' and company_id='{comp_name}';
+					""")
+					conn.commit()
+				else:
+					cur.execute(f"""
+						INSERT INTO trade_history VALUES (
+							'{user_uid}',
+							'{comp_name}',
+							{round(float(time.time()), 2)},
+							{round(shares,2)},
+							{round(trade_value,2)}
+						);
+						UPDATE users SET cashvalue = (cashvalue-{round(trade_value, 2)})
+						WHERE uid='{user_uid}';
+						INSERT INTO portfolio VALUES (
+							'{user_uid}',
+							'{comp_name}',
+							{round(shares,2)},
+							{round(trade_value,2)}
+						);
+					""")
+					conn.commit()
+			else:
+				if portfolio_data != None:
+					if abs(shares) > shares_holding:
+						invalid = True
+						return "Invalid 1"
+					else:
+						cur.execute(f"""
+							INSERT INTO trade_history VALUES (
+								'{user_uid}',
+								'{comp_name}',
+								{round(float(time.time()), 2)},
+								{round(shares,2)},
+								{round(trade_value,2)}
+							);
+							UPDATE users SET cashvalue = (cashvalue+{abs(round(trade_value, 2))})
+							WHERE uid='{user_uid}';
+							UPDATE portfolio SET shares_holding = (shares_holding+{round(shares,2)})
+							WHERE uid='{user_uid}' and company_id='{comp_name}';
+							UPDATE portfolio SET cost = (cost+{round(trade_value,2)})
+							WHERE uid='{user_uid}' and company_id='{comp_name}';
+							
+						""")
+						conn.commit()
+				else:
+					invalid = True
+					return "Invalid 1"
+
+			if invalid == False:
+				cur.execute(f"""
+					SELECT order_id, user_uid FROM orders WHERE price={price} AND action='{action}';
+				""")
+				ids = list(cur.fetchall())
+				total_shares = 0
+				for index in range(len(ids)):
+					if total_shares <= shares:
+						order_id = ids[index][0]
+						user_uid = ids[index][1]
+						cur.execute(f"""
+							UPDATE orders SET accepted={True} WHERE order_id='{order_id}';
+						""")
+						conn.commit()  
+						cur.execute(f"""
+							SELECT SUM (shares) as total_shares FROM orders WHERE action='{action}' AND price={price} AND user_uid='{user_uid}';
+						""")
+						conn.commit()
+						order_shares = float(cur.fetchone()[0])
+						trade_value = order_shares * price
+						if total_shares + order_shares > shares and total_shares < shares:
+							trade_share_number = shares - total_shares
+							if action == 'buy':
+								cur.execute(f"""
+									INSERT INTO trade_history VALUES (
+										'{user_uid}',
+										'{comp_name}',
+										{round(float(time.time()), 2)},
+										{round(trade_share_number,2)},
+										{round(trade_value,2)}
+									);
+									UPDATE portfolio SET shares_holding = (shares_holding+{round(trade_share_number,2)})
+									WHERE uid='{user_uid}' and company_id='{comp_name}';
+									UPDATE portfolio SET cost = (cost+{round(trade_value,2)})
+									WHERE uid='{user_uid}' and company_id='{comp_name}';
+								""")
+								conn.commit()
+							else:
+								cur.execute(f"""
+									INSERT INTO trade_history VALUES (
+										'{user_uid}',
+										'{comp_name}',
+										{round(float(time.time()), 2)},
+										{-round(trade_share_number,2)},
+										{-round(trade_value,2)}
+									);
+									UPDATE portfolio SET shares_holding = (shares_holding-{round(trade_share_number,2)})
+									WHERE uid='{user_uid}' and company_id='{comp_name}';
+									UPDATE portfolio SET cost = (cost-{round(trade_value,2)})
+									WHERE uid='{user_uid}' and company_id='{comp_name}';
+								""")
+								conn.commit()
+						else:
+							if action == 'buy':
+								cur.execute(f"""
+									INSERT INTO trade_history VALUES (
+										'{user_uid}',
+										'{comp_name}',
+										{round(float(time.time()), 2)},
+										{round(order_shares,2)},
+										{round(trade_value,2)}
+									);
+									UPDATE portfolio SET shares_holding = (shares_holding+{round(order_shares,2)})
+									WHERE uid='{user_uid}' and company_id='{comp_name}';
+									UPDATE portfolio SET cost = (cost+{round(trade_value,2)})
+									WHERE uid='{user_uid}' and company_id='{comp_name}';
+								""")
+								conn.commit()
+							else:
+								cur.execute(f"""
+									INSERT INTO trade_history VALUES (
+										'{user_uid}',
+										'{comp_name}',
+										{round(float(time.time()), 2)},
+										{-round(order_shares,2)},
+										{-round(trade_value,2)}
+									);
+									UPDATE portfolio SET shares_holding = (shares_holding-{round(order_shares,2)})
+									WHERE uid='{user_uid}' and company_id='{comp_name}';
+									UPDATE portfolio SET cost = (cost-{round(trade_value,2)})
+									WHERE uid='{user_uid}' and company_id='{comp_name}';
+								""")
+								conn.commit()
+							total_shares += order_shares
 
 	def trade_stock(
 		self,
