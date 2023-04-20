@@ -198,6 +198,42 @@ def pending_orders():
 	pending_orders = house.get_user_pending_orders(user_uid)
 	return jsonify(pending_orders)
 
+@app.route('/bot-actions', methods=['POST'])
+def bot_actions():
+	action = json.loads(request.data)
+	current_time = time.time()
+	index_lst = int(int((current_time-start_time))/86400)
+	index_tmp = int(current_time-start_time-index_lst*86400)
+	if index_tmp <= 36000:
+		current_price = {
+			"ast": price_list["ast"][index_lst][index_tmp],
+			"dsc": price_list["dsc"][index_lst][index_tmp],
+			"fsin": price_list["fsin"][index_lst][index_tmp],
+			"hhw": price_list["hhw"][index_lst][index_tmp],
+			"jky": price_list["jky"][index_lst][index_tmp],
+			"sgo": price_list["sgo"][index_lst][index_tmp],
+			"wrkn": price_list["wrkn"][index_lst][index_tmp],
+		}
+	else:
+		current_price = {
+			"ast":round(price_list["ast"][index_lst][-1], 2),
+			"dsc": round(price_list["dsc"][index_lst][-1], 2),
+			"fsin": round(price_list["fsin"][index_lst][-1], 2),
+			"hhw": round(price_list["hhw"][index_lst][-1], 2),
+			"jky": round(price_list["jky"][index_lst][-1], 2),
+			"sgo": round(price_list["sgo"][index_lst][-1], 2),
+			"wrkn": round(price_list["wrkn"][index_lst][-1], 2),
+		}
+	
+	response = house.bot_actions(action, current_price)
+	if response == "Invalid 1":
+			return "Bot do not owe enough shares of this stock.", 401
+	elif response == "Invalid 2":
+		return "Bot do not have enough money for this trade", 402
+	elif response == "Invalid 3":
+		return "Currently no shares available for trade. Bot's transaction will enter the pending state.", 403
+
+
 @app.route('/trade-stock', methods=['POST'])
 def trade_stock():
 	trade_data = json.loads(request.data)

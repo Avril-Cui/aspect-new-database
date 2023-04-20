@@ -567,7 +567,7 @@ class AuctionHouse:
 				share_number = action["trader"][company][bot]["share_number"]
 				target_price = action["trader"][company][bot]["target_price"]
 				if target_price == 0:
-					target_price = current_price
+					target_price = current_price[company]
 
 				trade_value = share_number * target_price
 
