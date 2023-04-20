@@ -175,6 +175,11 @@ def register():
 		except:
 			return "Invalid user request", 401
 
+@app.route("/register-bot", methods=["POST"])
+def register_bots():
+	bot_name = json.loads(request.data)
+	house.intialize_bot(bot_name)
+
 @app.route('/get-active-orders', methods=['POST'])
 def active_orders():
 	company_name = json.loads(request.data)
