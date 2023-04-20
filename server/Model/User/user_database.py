@@ -49,6 +49,7 @@ class UserDatabaseCommands:
         """)
         self.conn.commit()
 
+
     # def trade_stock(
     #     self,
     #     user_uid: str,

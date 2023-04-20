@@ -5,6 +5,7 @@ class AuctionHouse:
 	def __init__(self, conn, cur):
 		self.conn = conn
 		self.cur = cur
+		self.bot_initial_asset = 100000000000000
 	
 	def create_order_table(self):
 		self.cur.execute(f'DROP TABLE IF EXISTS orders;')
@@ -471,12 +472,46 @@ class AuctionHouse:
 		pending_orders = self.cur.fetchall()
 		return pending_orders
 
+	def create_bot_table(self):
+		self.cur.execute('DROP TABLE IF EXISTS bots;')
+		self.cur.execute("""
+			CREATE TABLE bots (
+			bot_id varchar (100) PRIMARY KEY,
+			bot_name varchar (100) NOT NULL,
+			cashValue NUMERIC NOT NULL);
+		""")
+		self.conn.commit()
+
+	def intialize_bot(self, bot_id, bot_name):
+		self.cur.execute(f"""
+			INSERT INTO bots
+			VALUES (
+				'{bot_id}', '{bot_name}', {self.bot_initial_asset}
+			);
+		""")
+		self.conn.commit()
+	
+	def get_total_rank(self ):
+		self.cur.execute(f"""
+			SELECT bot_name, cashvalue, RANK() OVER (ORDER BY cashvalue DESC) as rank FROM bots;
+		""")
+		result = list(self.cur.fetchall())
+		ranking = {}
+		for index in range(len(result)):
+			ranking[result[index][0]] = {
+				"cash_value": float(round(result[index][1], 2)),
+				"value_change": float(round(result[index][1]-self.bot_initial_asset, 2)),
+				"pct_change": float(round((result[index][1]-self.bot_initial_asset)/self.bot_initial_asset, 4)),
+				"ranking": int(round(result[index][2]))
+			}
+		return ranking
+
 import psycopg2
 conn = psycopg2.connect(
-    host="localhost",
-    database="aspectdatabase",
-    user="postgres",
-    password="Xiaokeai0717"
+	host="localhost",
+	database="aspectdatabase",
+	user="postgres",
+	password="Xiaokeai0717"
 )
 cur = conn.cursor()
 

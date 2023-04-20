@@ -35,6 +35,8 @@ def get_price_from_database(company_id):
 user_database_commands = UserDatabaseCommands(conn, cur)
 user_database_commands.create_user_table()
 user_database_commands.create_portfolio_table()
+user_database_commands.create_trade_history_table()
+
 import json
 from flask import Flask, request, jsonify, request
 import pyrebase
