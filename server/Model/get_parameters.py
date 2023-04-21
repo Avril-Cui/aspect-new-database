@@ -84,8 +84,6 @@ for index in range(len(file_names_index)):
 	name = file_names_index[index]
 	index_params_index[name] = {
 		"macro": macro("server/Model/historical_price/index_data/{}.csv".format(name)),
-		"scale_lamb": 120,
-		"scale_mu": 130,
 		"fund_weight": fund_weights_index[index]
 	}
 

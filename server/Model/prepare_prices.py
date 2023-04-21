@@ -44,7 +44,6 @@ def get_stock_price(
         else:
             adjust_factor = price_list[-1]
 
-        print("HERE")
         print(len(combinated_price))
         final_price_list = []
         price_generator = StockSimulator(adjust_factor, combinated_price, sigma)
@@ -59,11 +58,9 @@ mid_price_index1 = MidPriceGenerator.generate_mid_price("2015-3-9", "2017-1-1", 
 mid_prices_index = [mid_price_index1, mid_price_index1, mid_price_index1,
                     mid_price_index1, mid_price_index1, mid_price_index1, mid_price_index1]
 mid_start = [120, 50, 30, 50, 50, 60, 60]
-intensity = [1,1,1,1,1,1,1]
+intensity = [1,1,1,1,1,1,10]
 index_price = get_stock_price(get_parameters.file_names_index, get_parameters.index_params_index, intensity, get_parameters.length_index,
 get_parameters.fund_weights_index, mid_prices_index, mid_start, [600, 700, 700, 750, 750, 700, 3200], 1200, 5)
-plt.figure()
-plt.plot(index_price)
 plt.figure()
 plt.plot(index_price)
 plt.show()
