@@ -25,6 +25,11 @@ conn = psycopg2.connect(
 
 cur = conn.cursor()
 house = AuctionHouse(conn, cur)
+house.create_bot_table()
+house.create_bot_portfolio_table()
+house.create_bot_trade_history_table()
+house.create_bot_order_table()
+
 def get_price_from_database(company_id):
 	cur.execute(f"""
           SELECT price_list from prices WHERE company_id='{company_id}';
@@ -177,8 +182,11 @@ def register():
 
 @app.route("/register-bot", methods=["POST"])
 def register_bots():
-	bot_name = json.loads(request.data)
-	house.intialize_bot(bot_name)
+	data = json.loads(request.data)
+	bot_name = data["bot_name"]
+	initial_price = data["initial_price"]
+	house.initialize_bot(bot_name, initial_price)
+	return "Bot registered!"
 
 @app.route('/get-active-orders', methods=['POST'])
 def active_orders():
@@ -206,23 +214,25 @@ def bot_actions():
 	index_tmp = int(current_time-start_time-index_lst*86400)
 	if index_tmp <= 36000:
 		current_price = {
+			"index": price_list["index"][index_lst][index_tmp],
 			"ast": price_list["ast"][index_lst][index_tmp],
 			"dsc": price_list["dsc"][index_lst][index_tmp],
 			"fsin": price_list["fsin"][index_lst][index_tmp],
 			"hhw": price_list["hhw"][index_lst][index_tmp],
 			"jky": price_list["jky"][index_lst][index_tmp],
 			"sgo": price_list["sgo"][index_lst][index_tmp],
-			"wrkn": price_list["wrkn"][index_lst][index_tmp],
+			"wrkn": price_list["wrkn"][index_lst][index_tmp]
 		}
 	else:
 		current_price = {
+			"index":round(price_list["index"][index_lst][-1], 2),
 			"ast":round(price_list["ast"][index_lst][-1], 2),
 			"dsc": round(price_list["dsc"][index_lst][-1], 2),
 			"fsin": round(price_list["fsin"][index_lst][-1], 2),
 			"hhw": round(price_list["hhw"][index_lst][-1], 2),
 			"jky": round(price_list["jky"][index_lst][-1], 2),
 			"sgo": round(price_list["sgo"][index_lst][-1], 2),
-			"wrkn": round(price_list["wrkn"][index_lst][-1], 2),
+			"wrkn": round(price_list["wrkn"][index_lst][-1], 2)
 		}
 	
 	response = house.bot_actions(action, current_price)
@@ -232,6 +242,8 @@ def bot_actions():
 		return "Bot do not have enough money for this trade", 402
 	elif response == "Invalid 3":
 		return "Currently no shares available for trade. Bot's transaction will enter the pending state.", 403
+	else:
+		return "Success!"
 
 
 @app.route('/trade-stock', methods=['POST'])
