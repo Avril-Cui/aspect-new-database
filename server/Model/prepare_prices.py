@@ -1,6 +1,8 @@
 import get_parameters
 from modified_wave import MidPriceGenerator, DayPriceGenerator, WaveModifier, StockSimulator
 import numpy as np
+import matplotlib.pyplot as plt
+
 micro = get_parameters.micro
 
 def get_stock_price(
@@ -8,7 +10,7 @@ def get_stock_price(
 	intensity, length, weights, 
 	mid_prices, mid_starts, 
 	event_intensity, 
-	adjust_price, random1, random2):
+	target_price, sigma):
 
     price_list = []
     for i in range(len(file_names)):
@@ -21,36 +23,34 @@ def get_stock_price(
             'start_point': 0,
             'duration': length[i],
             'weight': weights[i],
-            'intensity_factor': 1
+            'intensity_factor': intensity
         }
 
-        # wave_2 = {
-        #     'price_list': mid_prices[i],
-        #     'start_point': mid_starts[i],
-        #     'duration': length[i],
-        #     'weight': 1-weights[i],
-        #     'intensity_factor': 1
-        # }
-        # print(name)
+        wave_2 = {
+            'price_list': mid_prices[i],
+            'start_point': mid_starts[i],
+            'duration': length[i],
+            'weight': 1-weights[i],
+            'intensity_factor': intensity
+        }
+        print(name)
 
-        combinated_price = base_price
-        # Combinator = WaveModifier()
-        # combinated_price = Combinator.price_wave_addition(
-        #     0, event_intensity[i], length[i], wave_1, wave_2)
+        Combinator = WaveModifier()
+        combinated_price = Combinator.price_wave_addition(
+            0, event_intensity[i], length[i], wave_1, wave_2)
         
         if len(price_list) == 0:
-            adjust_factor = adjust_price
+            adjust_factor = target_price
         else:
             adjust_factor = price_list[-1]
 
+        print("HERE")
+        print(len(combinated_price))
         final_price_list = []
-        for index in range(len(combinated_price)):
-            if index > 0:
-                price_generator = StockSimulator(
-                    combinated_price[1]-adjust_factor, combinated_price[index], combinated_price, index, micro)
-                result_price = price_generator.generate_price()
-                final_price_list.extend(result_price)
-
+        price_generator = StockSimulator(adjust_factor, combinated_price, sigma)
+        result_price = price_generator.generate_price()
+        final_price_list.extend(result_price)
+                
         price_list.extend(final_price_list)
 
     return price_list
@@ -61,8 +61,12 @@ mid_prices_index = [mid_price_index1, mid_price_index1, mid_price_index1,
 mid_start = [120, 50, 30, 50, 50, 60, 60]
 intensity = [1,1,1,1,1,1,1]
 index_price = get_stock_price(get_parameters.file_names_index, get_parameters.index_params_index, intensity, get_parameters.length_index,
-get_parameters.fund_weights_index, mid_prices_index, mid_start, [600, 700, 700, 750, 750, 700, 3200], 1200, 0.5, 0.25
-)
+get_parameters.fund_weights_index, mid_prices_index, mid_start, [600, 700, 700, 750, 750, 700, 3200], 1200, 5)
+plt.figure()
+plt.plot(index_price)
+plt.figure()
+plt.plot(index_price)
+plt.show()
 
 # mid_price_index1 = MidPriceGenerator.generate_mid_price("2019-1-1", "2019-10-20", ["^GSPC"], 15)
 # mid_price_index2 = MidPriceGenerator.generate_mid_price("2019-6-19", "2019-10-28", ["^GSPC"], 15)
