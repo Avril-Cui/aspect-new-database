@@ -21,11 +21,11 @@ class DayPriceGenerator:
         self.macro_params = macro_params
         self.price = macro_params['original_price']
         self.price_list = []
-        self.minimum_simulation_tick = 0.01
+        self.minimum_simulation_tick = 1
 
     def ontk_price(self, theta, mu, sigma):
         tmp_bm_coeff = np.random.normal(0,1) * np.sqrt(self.minimum_simulation_tick)
-        simulated_price = self.price + theta * (mu-self.price) * self.minimum_simulation_tick + sigma * tmp_bm_coeff 
+        simulated_price = self.price + theta * (mu-self.price) + sigma * tmp_bm_coeff 
         return simulated_price
 
     def price_loop(
