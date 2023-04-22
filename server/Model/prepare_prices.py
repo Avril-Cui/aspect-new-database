@@ -3,18 +3,17 @@ from modified_wave import MidPriceGenerator, DayPriceGenerator, WaveModifier, St
 import numpy as np
 import matplotlib.pyplot as plt
 
-micro = get_parameters.micro
 
 def get_stock_price(
-	file_names, params, 
-	intensity, length, weights, 
+	file_names, params,
+    intensity, length, weights, 
 	mid_prices, mid_starts, 
 	event_intensity, 
 	target_price, sigma):
-
     price_list = []
     for i in range(len(file_names)):
         name = file_names[i]
+
         macro = params[name]["macro"]
         stock_simulator = DayPriceGenerator(macro)
         base_price = stock_simulator.price_loop()
@@ -44,23 +43,32 @@ def get_stock_price(
         else:
             adjust_factor = price_list[-1]
 
-        print(len(combinated_price))
-        final_price_list = []
-        price_generator = StockSimulator(adjust_factor, combinated_price, sigma)
+        # print("HI")
+        # print(len(base_price))
+        price_generator = StockSimulator(adjust_factor, combinated_price, sigma[i])
         result_price = price_generator.generate_price()
-        final_price_list.extend(result_price)
                 
-        price_list.extend(final_price_list)
+        price_list.extend(result_price)
+
+        # plt.figure()
+        # plt.plot(base_price)
+        # plt.figure()
+        # plt.plot(combinated_price)
+        # plt.figure()
+        # plt.plot(result_price)
+        # plt.show()
 
     return price_list
 
+sigma = [4.5,6.5,6.5,5.5,5.5,5,6]
 mid_price_index1 = MidPriceGenerator.generate_mid_price("2015-3-9", "2017-1-1", ["^DJI"], 15)
 mid_prices_index = [mid_price_index1, mid_price_index1, mid_price_index1,
                     mid_price_index1, mid_price_index1, mid_price_index1, mid_price_index1]
 mid_start = [120, 50, 30, 50, 50, 60, 60]
-intensity = [1,1,1,1,1,1,10]
+intensity = [1,1,1,1,1,1,1]
 index_price = get_stock_price(get_parameters.file_names_index, get_parameters.index_params_index, intensity, get_parameters.length_index,
-get_parameters.fund_weights_index, mid_prices_index, mid_start, [600, 700, 700, 750, 750, 700, 3200], 1200, 5)
+get_parameters.fund_weights_index, mid_prices_index, mid_start, [300, 100, 200, 120, 100, 200, 35], 1200, sigma)
+
 plt.figure()
 plt.plot(index_price)
 plt.show()

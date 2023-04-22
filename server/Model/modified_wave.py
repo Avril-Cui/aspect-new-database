@@ -103,7 +103,7 @@ class StockSimulator:
 
     def generate_price(self):
         price_list = []
-        adjusted_factor = self.target_price / self.day_price_lst [0]
+        adjusted_factor = self.target_price / self.day_price_lst[0]
         for index in range(1, len(self.day_price_lst)):
             adjust_price = self.day_price_lst[index]
             adjusted_last = self.day_price_lst[index-1] 
