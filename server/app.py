@@ -206,6 +206,23 @@ def pending_orders():
 	pending_orders = house.get_user_pending_orders(user_uid)
 	return jsonify(pending_orders)
 
+@app.route('/user-accept-order', methods=['POST'])
+def user_accept_order():
+	data = json.loads(request.data)
+	order_id = data["order_id"]
+	action = data["action"]
+	user_uid = data["user_uid"]
+	company = data["company"]
+	response = house.accept_order(order_id, action, user_uid, company)
+	if response == "Invalid 1":
+		return "You do not owe enough shares of this stock.", 401
+	elif response == "Invalid 2":
+		return "You do not have enough money for this trade", 402
+	elif response == "Invalid 3":
+		return "Currently no shares available for trade. Your transaction will enter the pending state.", 403
+	else:
+		return "Order accepted!"
+
 @app.route('/bot-actions', methods=['POST'])
 def bot_actions():
 	action = json.loads(request.data)

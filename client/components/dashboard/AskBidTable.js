@@ -47,6 +47,26 @@ function AskBidTable(props) {
     return () => clearInterval(data);
   }, [props.comp_name]);
 
+  const handleAcceptOrder = (input) => {
+    var axios = require("axios");
+    var data = JSON.stringify(input);
+    var config = {
+      method: "POST",
+      url: "http://127.0.0.1:5000/user-accept-order",
+      headers: {
+        "Content-Type": "text/plain",
+      },
+      data: data,
+    };
+    axios(config)
+      .then(function (response) {
+        console.log("Order accepted!");
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
+  };
+
   return (
     <div className={styles.table} id="ask_bid">
       <div>

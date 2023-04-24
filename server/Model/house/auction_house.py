@@ -141,7 +141,7 @@ class AuctionHouse:
 		price = result[0]
 		share_number = result[1]
 		bot_id = result[2]
-		if action == "sell":
+		if action == "buy": #action is buy, user wants to sell
 			share_number = share_number * -1
 		
 		self.cur.execute(f"""
@@ -233,7 +233,7 @@ class AuctionHouse:
 				UPDATE orders SET accepted={True} WHERE order_id='{order_id}';
 			""")
 			self.conn.commit()  
-			trade_value = share_number * price
+			trade_value = abs(share_number) * price
 			self.cur.execute(f"""
 				SELECT shares_holding from bot_portfolio WHERE bot_id='{bot_id}' and company_id='{company}';
 			""")
@@ -248,7 +248,7 @@ class AuctionHouse:
 							{round(share_number,2)},
 							{round(trade_value,2)}
 						);
-						UPDATE bot_portfolio SET shares_holding = (shares_holding+{round(share_number,2)})
+						UPDATE bot_portfolio SET shares_holding = (shares_holding+{abs(round(share_number,2))})
 						WHERE bot_id='{bot_id}' and company_id='{company}';
 						UPDATE bot_portfolio SET cost = (cost+{round(trade_value,2)})
 						WHERE bot_id='{bot_id}' and company_id='{company}';
@@ -260,13 +260,13 @@ class AuctionHouse:
 							'{bot_id}',
 							'{company}',
 							{round(float(time.time()), 2)},
-							{round(share_number,2)},
+							{abs(round(share_number,2))},
 							{round(trade_value,2)}
 						);
 						INSERT INTO bot_portfolio VALUES (
 							'{bot_id}',
 							'{company}',
-							{round(share_number,2)},
+							{abs(round(share_number,2))},
 							{round(trade_value,2)}
 						);
 					""")
@@ -277,10 +277,10 @@ class AuctionHouse:
 						'{bot_id}',
 						'{company}',
 						{round(float(time.time()), 2)},
-						{-round(share_number,2)},
+						{-abs(round(share_number,2))},
 						{-round(trade_value,2)}
 					);
-					UPDATE bot_portfolio SET shares_holding = (shares_holding-{round(share_number,2)})
+					UPDATE bot_portfolio SET shares_holding = (shares_holding-{abs(round(share_number,2))})
 					WHERE bot_id='{bot_id}' and company_id='{company}';
 					UPDATE bot_portfolio SET cost = (cost-{round(trade_value,2)})
 					WHERE bot_id='{bot_id}' and company_id='{company}';
