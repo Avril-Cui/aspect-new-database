@@ -219,7 +219,7 @@ def user_accept_order():
 	elif response == "Invalid 2":
 		return "You do not have enough money for this trade", 402
 	elif response == "Invalid 3":
-		return "Currently no shares available for trade. Your transaction will enter the pending state.", 403
+		return "Currently no shares available for trade. Enter less shares.", 403
 	else:
 		return "Order accepted!"
 
