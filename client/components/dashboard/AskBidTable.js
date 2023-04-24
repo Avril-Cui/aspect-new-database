@@ -8,17 +8,17 @@ function AskBidTable(props) {
       [0, 0, 0],
       [0, 0, 0],
       [0, 0, 0],
-      [0, 0, 0]
+      [0, 0, 0],
     ],
     [
       [0, 0, 0],
       [0, 0, 0],
       [0, 0, 0],
       [0, 0, 0],
-      [0, 0, 0]
+      [0, 0, 0],
     ],
   ]);
-  console.log(orderBook)
+  console.log(orderBook);
 
   const WAIT_TIME = 1000;
 
@@ -55,6 +55,7 @@ function AskBidTable(props) {
             <tr>
               <th className={styles.buy_price_header}>Price</th>
               <th className={styles.quantity}>Quantity</th>
+              <th></th>
             </tr>
 
             {orderBook[0].map((order) => {
@@ -67,6 +68,9 @@ function AskBidTable(props) {
                     <td className={styles.sell_price}>{order[0]}</td>
                   </div>
                   <td className={styles.quantity}>{order[1]}</td>
+                  <button className={styles.accept}>
+                    <p>✅</p>
+                  </button>
                 </tr>
               );
             })}
@@ -92,6 +96,9 @@ function AskBidTable(props) {
                     <td className={styles.buy_price}>{order[0]}</td>
                   </div>
                   <td className={styles.quantity}>{order[1]}</td>
+                  <button className={styles.accept}>
+                    <p>✅</p>
+                  </button>
                 </tr>
               );
             })}

@@ -8,7 +8,7 @@
   font-weight: 300;
   font-size: 16px;
   padding-bottom: 0.5em;
-  width: 9.7em;
+  width: 8.75em;
 }
 
 .buy_price_header{
@@ -46,4 +46,17 @@
 .sell_quantity_bg{
   background-color: #86bf8c40;
   margin-left: 0.5em;
+}
+
+.accept{
+  background-color: rgb(27, 27, 27);
+  padding: 0.1em 0.4em;
+  margin-left: 1em;
+  border: 1px solid #727272;
+  border-radius: 5px;
+}
+
+.accept:hover{
+  color: #c3fcc2;
+  background-color: #2c2c2c;
 }
