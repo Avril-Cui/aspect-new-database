@@ -24,7 +24,6 @@ def get_stock_price(
             'weight': weights[i],
             'intensity_factor': intensity
         }
-        print(base_price[0])
 
         wave_2 = {
             'price_list': mid_prices[i],
@@ -49,106 +48,67 @@ def get_stock_price(
                 
         price_list.extend(result_price)
 
-        # plt.figure()
-        # plt.plot(base_price)
-        # plt.figure()
-        # plt.plot(combinated_price)
-        # plt.figure()
-        # plt.plot(result_price)
-        # plt.show()
-
     return price_list
 
 intensity = [1,1,1,1,1,1,1]
 
-# sigma = [4.5,6.5,6.5,5.5,5.5,5,6]
-# mid_price_index1 = MidPriceGenerator.generate_mid_price("2015-3-9", "2017-1-1", ["^DJI"], 15)
-# mid_prices_index = [mid_price_index1, mid_price_index1, mid_price_index1,
-#                     mid_price_index1, mid_price_index1, mid_price_index1, mid_price_index1]
-# mid_start = [120, 50, 30, 50, 50, 60, 60]
-# index_price = get_stock_price(get_parameters.file_names_index, get_parameters.index_params_index, intensity, get_parameters.length_index,
-# get_parameters.fund_weights_index, mid_prices_index, mid_start, [300, 100, 200, 120, 100, 200, 35], 1200, sigma)
+sigma = [6,10,8,3,4,5,7]
+mid_price_index1 = MidPriceGenerator.generate_mid_price("2015-3-9", "2017-1-1", ["^DJI"], 15)
+mid_prices_index = [mid_price_index1, mid_price_index1, mid_price_index1,
+                    mid_price_index1, mid_price_index1, mid_price_index1, mid_price_index1]
+mid_start = [120, 50, 30, 50, 50, 60, 60]
+index_price = get_stock_price(get_parameters.file_names_index, get_parameters.index_params_index, intensity, get_parameters.length_index,
+get_parameters.fund_weights_index, mid_prices_index, mid_start, [900, 900, 900, 900, 600, 700, 220], 1200, sigma)
 
-# plt.figure()
-# plt.plot(index_price)
-# plt.show()
+mid_price_index1 = MidPriceGenerator.generate_mid_price("2019-1-1", "2019-10-20", ["^GSPC"], 15)
+mid_price_index2 = MidPriceGenerator.generate_mid_price("2019-6-19", "2019-10-28", ["^GSPC"], 15)
+mid_price_index3 = MidPriceGenerator.generate_mid_price("2019-6-19", "2019-10-28", ["^GSPC"], 15)
+mid_price_index4 = MidPriceGenerator.generate_mid_price("2019-8-15", "2020-2-15", ["^GSPC"], 15)
+mid_price_index5 = MidPriceGenerator.generate_mid_price("2019-8-15", "2020-2-15", ["^GSPC"], 15)
+mid_prices_index = [mid_price_index1, mid_price_index2, mid_price_index3, mid_price_index4, mid_price_index5]
+mid_start = [0, 0, 0, 0, 0]
+sigma = [2,2,4.5,3,3]
+ast_price = get_stock_price(get_parameters.file_names_ast, get_parameters.params_ast, intensity, get_parameters.length_ast,
+get_parameters.fund_weights_ast, mid_prices_index, mid_start, [100, 100, 70, 135, 110], 50, sigma)
 
-# mid_price_index1 = MidPriceGenerator.generate_mid_price("2019-1-1", "2019-10-20", ["^GSPC"], 15)
-# mid_price_index2 = MidPriceGenerator.generate_mid_price("2019-6-19", "2019-10-28", ["^GSPC"], 15)
-# mid_price_index3 = MidPriceGenerator.generate_mid_price("2019-6-19", "2019-10-28", ["^GSPC"], 15)
-# mid_price_index4 = MidPriceGenerator.generate_mid_price("2019-8-15", "2020-2-15", ["^GSPC"], 15)
-# mid_price_index5 = MidPriceGenerator.generate_mid_price("2019-8-15", "2020-2-15", ["^GSPC"], 15)
-# mid_prices_index = [mid_price_index1, mid_price_index2, mid_price_index3, mid_price_index4, mid_price_index5]
-# mid_start = [0, 0, 0, 0, 0]
-# sigma = [0.5,0.6,0.6,0.25,0.4]
-# ast_price = get_stock_price(get_parameters.file_names_ast, get_parameters.params_ast, intensity, get_parameters.length_ast,
-# get_parameters.fund_weights_ast, mid_prices_index, mid_start, [50, 40, 20, 30, 30], 50, sigma)
+mid_price_index1 = MidPriceGenerator.generate_mid_price("2019-12-15", "2021-8-1", ["^GSPC"], 15)
+mid_prices_index = [mid_price_index1, mid_price_index1, mid_price_index1, mid_price_index1]
+mid_start = [0, 140, 170, 270]
+sigma = [1, 0.4, 1.75, 0.5]
+dsc_price = get_stock_price(get_parameters.file_names_dsc, get_parameters.params_dsc, intensity, get_parameters.length_dsc,
+get_parameters.fund_weights_dsc, mid_prices_index, mid_start, [17, 135, 70, 140], 39.78, sigma)
 
-# plt.figure()
-# plt.plot(ast_price)
-# plt.show()
+mid_price_index1 = MidPriceGenerator.generate_mid_price("2019-12-15", "2021-8-1", ["^GSPC"], 15)
+mid_prices_index = [mid_price_index1, mid_price_index1, mid_price_index1, mid_price_index1]
+mid_start = [0, 150, 190, 270, 300]
+sigma = [0.5, 0.2, 0.85, 0.5]
+fsin_price = get_stock_price(get_parameters.file_names_fsin, get_parameters.params_fsin, intensity, get_parameters.length_fsin,
+get_parameters.fund_weights_fsin, mid_prices_index, mid_start, [40, 100, 10, 40], 60, sigma)
 
+mid_price_index1 = MidPriceGenerator.generate_mid_price("2021-8-15", "2022-12-1", ["^GSPC"], 15)
+mid_prices_index = [mid_price_index1, mid_price_index1, mid_price_index1, mid_price_index1]
+mid_start = [0, 20, 110, 190, 300]
+sigma = [0.7, 1, 0.45, 0.35]
+hhw_price = get_stock_price(get_parameters.file_names_hhw, get_parameters.params_hhw, intensity, get_parameters.length_hhw,
+get_parameters.fund_weights_hhw, mid_prices_index, mid_start, [70, 120, 100, 40], 70, sigma)
 
-# mid_price_index1 = MidPriceGenerator.generate_mid_price("2019-12-15", "2021-8-1", ["^GSPC"], 15)
-# mid_prices_index = [mid_price_index1, mid_price_index1, mid_price_index1, mid_price_index1]
-# mid_start = [0, 140, 170, 270]
-# sigma = [0.25, 0.2, 0.35, 0.2]
-# dsc_price = get_stock_price(get_parameters.file_names_dsc, get_parameters.params_dsc, intensity, get_parameters.length_dsc,
-# get_parameters.fund_weights_dsc, mid_prices_index, mid_start, [12, 27, 20, 27], 39.78, sigma
-# )
+mid_price_index1 = MidPriceGenerator.generate_mid_price("2021-8-15", "2022-12-1", ["^GSPC"], 15)
+mid_prices_index = [mid_price_index1, mid_price_index1, mid_price_index1, mid_price_index1]
+mid_start = [0, 20, 110, 190]
+sigma = [0.55, 0.55, 0.6, 0.5]
+jky_price = get_stock_price(get_parameters.file_names_jky, get_parameters.params_jky, intensity, get_parameters.length_jky,
+get_parameters.fund_weights_jky, mid_prices_index, mid_start, [45, 50, 50, 80], 60, sigma)
 
-# plt.figure()
-# plt.plot(dsc_price)
-# plt.show()
-
-# mid_price_index1 = MidPriceGenerator.generate_mid_price("2019-12-15", "2021-8-1", ["^GSPC"], 15)
-# mid_prices_index = [mid_price_index1, mid_price_index1, mid_price_index1, mid_price_index1]
-# mid_start = [0, 150, 190, 270, 300]
-# sigma = [0.35, 0.2, 0.35, 0.2]
-# fsin_price = get_stock_price(get_parameters.file_names_fsin, get_parameters.params_fsin, intensity, get_parameters.length_fsin,
-# get_parameters.fund_weights_fsin, mid_prices_index, mid_start, [15, 40, 10, 40], 60, sigma)
-# plt.figure()
-# plt.plot(fsin_price)
-# plt.show()
-
-
-# mid_price_index1 = MidPriceGenerator.generate_mid_price("2021-8-15", "2022-12-1", ["^GSPC"], 15)
-# mid_prices_index = [mid_price_index1, mid_price_index1, mid_price_index1, mid_price_index1]
-# mid_start = [0, 20, 110, 190, 300]
-# sigma = [0.07, 0.4, 0.25, 0.3]
-# hhw_price = get_stock_price(get_parameters.file_names_hhw, get_parameters.params_hhw, intensity, get_parameters.length_hhw,
-# get_parameters.fund_weights_hhw, mid_prices_index, mid_start, [45, 40, 40, 10], 70, sigma)
-# plt.figure()
-# plt.plot(hhw_price)
-# plt.show()
-
-# mid_price_index1 = MidPriceGenerator.generate_mid_price("2021-8-15", "2022-12-1", ["^GSPC"], 15)
-# mid_prices_index = [mid_price_index1, mid_price_index1, mid_price_index1, mid_price_index1]
-# mid_start = [0, 20, 110, 190]
-# sigma = [0.3, 0.2, 0.12, 0.35]
-# jky_price = get_stock_price(get_parameters.file_names_jky, get_parameters.params_jky, intensity, get_parameters.length_jky,
-# get_parameters.fund_weights_jky, mid_prices_index, mid_start, [28, 30, 35, 40], 60, sigma)
-# plt.figure()
-# plt.plot(jky_price)
-# plt.show()
-
-# mid_price_index1 = MidPriceGenerator.generate_mid_price("2021-8-15", "2022-12-1", ["^GSPC"], 15)
-# mid_prices_index = [mid_price_index1, mid_price_index1, mid_price_index1, mid_price_index1, mid_price_index1]
-# mid_start = [0, 10, 100, 160, 250]
-# sigma = [0.3, 0.25, 0.6, 0.3, 0.2]
-# sgo_price = get_stock_price(get_parameters.file_names_sgo, get_parameters.params_sgo, intensity, get_parameters.length_sgo,
-# get_parameters.fund_weights_sgo, mid_prices_index, mid_start, [60, 40, 80, 40, 45], 80, sigma)
-# plt.figure()
-# plt.plot(sgo_price)
-# plt.show()
+mid_price_index1 = MidPriceGenerator.generate_mid_price("2021-8-15", "2022-12-1", ["^GSPC"], 15)
+mid_prices_index = [mid_price_index1, mid_price_index1, mid_price_index1, mid_price_index1, mid_price_index1]
+mid_start = [0, 10, 100, 160, 250]
+sigma = [0.3, 0.55, 1, 0.85, 0.8]
+sgo_price = get_stock_price(get_parameters.file_names_sgo, get_parameters.params_sgo, intensity, get_parameters.length_sgo,
+get_parameters.fund_weights_sgo, mid_prices_index, mid_start, [100, 80, 1000, 80, 98], 80, sigma)
 
 mid_price_index1 = MidPriceGenerator.generate_mid_price("2021-8-15", "2022-12-1", ["^GSPC"], 15)
 mid_prices_index = [mid_price_index1, mid_price_index1, mid_price_index1]
 mid_start = [0, 200, 230]
-sigma = [0.6, 0.35, 0.5]
+sigma = [0.4, 0.35, 0.5]
 wrkn_price = get_stock_price(get_parameters.file_names_wrkn, get_parameters.params_wrkn, intensity, get_parameters.length_wrkn,
-get_parameters.fund_weights_wrkn, mid_prices_index, mid_start, [50, 50, 50], 70, sigma)
-
-plt.figure()
-plt.plot(wrkn_price)
-plt.show()
+get_parameters.fund_weights_wrkn, mid_prices_index, mid_start, [70, 70, 70], 70, sigma)

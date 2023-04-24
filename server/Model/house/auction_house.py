@@ -135,264 +135,81 @@ class AuctionHouse:
 	
 	def get_order_book(self, comp_name):
 		self.cur.execute(f"""
-			SELECT sum (shares) AS total_shares from orders WHERE action='buy';
+			SELECT sum (shares) AS total_shares from bot_orders WHERE action='buy' and accepted='{False}';
 		""")
-		total_buy_shares = float(self.cur.fetchone()[0])
-
+		shares = self.cur.fetchone()[0]
+		if shares != None:
+			total_buy_shares = float(shares)
+		else:
+			total_buy_shares = 0
 		self.cur.execute(f"""
-			SELECT sum (shares) AS total_shares from orders WHERE action='sell';
+			SELECT sum (shares) AS total_shares from bot_orders WHERE action='sell' and accepted='{False}';
 		""")
-		if self.cur.fetchone()[0] != None:
-			total_sell_shares = float(self.cur.fetchone()[0])
+		shares = self.cur.fetchone()[0]
+		if shares != None:
+			total_sell_shares = float(shares)
 		else:
 			total_sell_shares = 0
-
-		self.cur.execute(f"""
-			SELECT price, shares, RANK() OVER (ORDER BY price DESC) as rank FROM orders WHERE 
+		
+		#order book format [price, shares, percentage_shares]
+		cur.execute(f"""
+			SELECT price, shares, RANK() OVER (ORDER BY price DESC) as rank FROM bot_orders WHERE 
 			accepted={False} AND company_name='{comp_name}' AND action='buy';
 		""")
-		buy_orders = list(self.cur.fetchall())
-		buy_five_orders = []
-		price = buy_orders[0][0]
-
-		for index in range(len(buy_orders)):
-			if buy_orders[index][0] != price or index==0:
-				buy_five_orders.append([float(buy_orders[index][0]), float(buy_orders[index][1]), round(float(buy_orders[index][1])/total_buy_shares * 100, 2)])
-				price = buy_orders[index][0]
-			else:
-				buy_five_orders[-1][1] += float(buy_orders[index][1])
-				buy_five_orders[-1][2] = round(buy_five_orders[-1][1]/total_buy_shares * 100, 2)
-
-		try:
-			lowest_buy = buy_five_orders[-1][0]
-		except:
-			lowest_buy = 100
-
-		if len(buy_five_orders) <= 5:
-			for i in range(5-len(buy_five_orders)):
-				buy_five_orders.append([float(lowest_buy)-0.01*(i+1), 0, 0])
-
-
-		self.cur.execute(f"""
-			SELECT price, shares, RANK() OVER (ORDER BY price DESC) as rank FROM orders WHERE 
+		buy_orders = list(cur.fetchall())
+		buy_order_book = []
+		if buy_orders != []:
+			price = buy_orders[0][0]
+			shares = buy_orders[0][1]
+			for index in range(1, len(buy_orders)):
+				pct_shares = round(float(shares)/float(total_buy_shares) * 100, 2)
+				if buy_orders[index][0] == price:
+					shares += buy_orders[index][1]
+				else:
+					buy_order_book.append([float(price), float(shares), pct_shares])
+					price = buy_orders[index][0]
+					shares = buy_orders[index][1]
+					
+				if index + 1 == len(buy_orders):
+					buy_order_book.append([float(price), float(shares), pct_shares])
+			if len(buy_orders) == 1:
+				pct_shares = round(float(shares)/float(total_buy_shares) * 100, 2)
+				buy_order_book.append([float(price), float(shares), pct_shares])
+		
+		cur.execute(f"""
+			SELECT price, shares, RANK() OVER (ORDER BY price DESC) as rank FROM bot_orders WHERE 
 			accepted={False} AND company_name='{comp_name}' AND action='sell';
 		""")
-		sell_orders = list(self.cur.fetchall())
-		sell_five_orders = []
-		price = sell_orders[0][0]
+		sell_orders = list(cur.fetchall())
+		sell_order_book = []
+		if sell_orders != []:
+			price = sell_orders[0][0]
+			shares = sell_orders[0][1]
+			for index in range(1, len(sell_orders)):
+				pct_shares = round(float(shares)/float(total_sell_shares) * 100, 2)
+				if sell_orders[index][0] == price:
+					shares += sell_orders[index][1]
+				else:
+					sell_order_book.append([float(price), float(shares), pct_shares])
+					price = sell_orders[index][0]
+					shares = sell_orders[index][1]
 
-		for index in range(len(sell_orders)):
-			if sell_orders[index][0] != price or index==0:
-				sell_five_orders.append([float(sell_orders[index][0]), float(sell_orders[index][1]), round(float(sell_orders[index][1])/total_sell_shares * 100, 2)])
-				price = sell_orders[index][0]
-			else:
-				sell_five_orders[-1][1] += float(sell_orders[index][1])
-				sell_five_orders[-1][2] = round(sell_five_orders[-1][1]/total_sell_shares * 100, 2)
-
-		try:
-			highest_sell = sell_orders[0][0]
-		except:
-			highest_sell = 100
-		if len(sell_five_orders) <= 5:
-			for i in range(5-len(sell_five_orders)):
-				sell_five_orders.insert(0, [float(highest_sell)+0.01*(i+1), 0, 0])
+				if index + 1 == len(sell_orders):
+					sell_order_book.append([float(price), float(shares), pct_shares])
+			if len(sell_orders) == 1:
+				pct_shares = round(float(shares)/float(total_sell_shares) * 100, 2)
+				sell_order_book.append([float(price), float(shares), pct_shares])
 		
-		order_book = [sell_five_orders, buy_five_orders]
+		if len(buy_order_book) < 5:
+			for _ in range(5-len(buy_order_book)):
+				buy_order_book.append([0, 0, 0])
+		if len(sell_order_book) < 5:
+			for _ in range(5-len(sell_order_book)):
+				sell_order_book.append([0, 0, 0])
+		
+		print(sell_orders)
+		order_book = [sell_order_book[-5:], buy_order_book[:5]]
 		return order_book
-	
-	def get_all_active_orders(self, comp_name):
-		self.cur.execute(f"""
-			SELECT order_id, user_uid, company_name, price, shares, timestamp, action
-			FROM orders WHERE accepted={False} AND company_name='{comp_name}';
-		""")
-		active_orders = self.cur.fetchall()
-		return active_orders
-
-	def accept_order(self, price, trade_action, user_uid, comp_name, shares):
-		if trade_action == "sell":
-			bot_action = "buy"
-		elif trade_action == "buy":
-			bot_action = "sell"
-		cur.execute(f"""
-			SELECT order_id, user_uid FROM orders WHERE price={price} AND action='{bot_action}';
-		""")
-		ids = list(cur.fetchall())
-		share_number = 0
-		for index in range(len(ids)):
-			order_id = ids[index][0]
-			cur.execute(f"""
-				SELECT shares FROM orders WHERE order_id='{order_id}' AND action='{bot_action}' AND price={price};
-			""")
-			shares=float(cur.fetchone()[0])
-			if bot_action == "buy":
-				share_number+=shares
-			elif bot_action == "sell":
-				share_number-=shares
-		
-		if abs(share_number) > abs(shares):
-			cur.execute(f"""
-				SELECT cashvalue from users WHERE uid='{user_uid}';
-			""")
-			cash_value = float(cur.fetchone()[0])
-			cur.execute(f"""
-				SELECT shares_holding from portfolio WHERE uid='{user_uid}' and company_id='{comp_name}';
-			""")
-			portfolio_data = cur.fetchone()
-			if portfolio_data != None:
-				shares_holding = float(portfolio_data[0])
-			trade_value = shares * price
-			invalid = False
-			if trade_value > cash_value and shares > 0:
-				invalid = True
-				return "Invalid 2"  
-			elif shares > 0:
-				if portfolio_data != None:
-					cur.execute(f"""
-						INSERT INTO trade_history VALUES (
-							'{user_uid}',
-							'{comp_name}',
-							{round(float(time.time()), 2)},
-							{round(shares,2)},
-							{round(trade_value,2)}
-						);
-						UPDATE users SET cashvalue = (cashvalue-{round(trade_value, 2)})
-						WHERE uid='{user_uid}';
-						UPDATE portfolio SET shares_holding = (shares_holding+{round(shares,2)})
-						WHERE uid='{user_uid}' and company_id='{comp_name}';
-						UPDATE portfolio SET cost = (cost+{round(shares,2)})
-						WHERE uid='{user_uid}' and company_id='{comp_name}';
-					""")
-					conn.commit()
-				else:
-					cur.execute(f"""
-						INSERT INTO trade_history VALUES (
-							'{user_uid}',
-							'{comp_name}',
-							{round(float(time.time()), 2)},
-							{round(shares,2)},
-							{round(trade_value,2)}
-						);
-						UPDATE users SET cashvalue = (cashvalue-{round(trade_value, 2)})
-						WHERE uid='{user_uid}';
-						INSERT INTO portfolio VALUES (
-							'{user_uid}',
-							'{comp_name}',
-							{round(shares,2)},
-							{round(trade_value,2)}
-						);
-					""")
-					conn.commit()
-			else:
-				if portfolio_data != None:
-					if abs(shares) > shares_holding:
-						invalid = True
-						return "Invalid 1"
-					else:
-						cur.execute(f"""
-							INSERT INTO trade_history VALUES (
-								'{user_uid}',
-								'{comp_name}',
-								{round(float(time.time()), 2)},
-								{round(shares,2)},
-								{round(trade_value,2)}
-							);
-							UPDATE users SET cashvalue = (cashvalue+{abs(round(trade_value, 2))})
-							WHERE uid='{user_uid}';
-							UPDATE portfolio SET shares_holding = (shares_holding+{round(shares,2)})
-							WHERE uid='{user_uid}' and company_id='{comp_name}';
-							UPDATE portfolio SET cost = (cost+{round(trade_value,2)})
-							WHERE uid='{user_uid}' and company_id='{comp_name}';
-							
-						""")
-						conn.commit()
-				else:
-					invalid = True
-					return "Invalid 1"
-
-			if invalid == False:
-				cur.execute(f"""
-					SELECT order_id, user_uid FROM orders WHERE price={price} AND action='{bot_action}';
-				""")
-				ids = list(cur.fetchall())
-				total_shares = 0
-				for index in range(len(ids)):
-					if total_shares <= shares:
-						order_id = ids[index][0]
-						user_uid = ids[index][1]
-						cur.execute(f"""
-							UPDATE orders SET accepted={True} WHERE order_id='{order_id}';
-						""")
-						conn.commit()  
-						cur.execute(f"""
-							SELECT SUM (shares) as total_shares FROM orders WHERE action='{bot_action}' AND price={price} AND user_uid='{user_uid}';
-						""")
-						conn.commit()
-						order_shares = float(cur.fetchone()[0])
-						trade_value = order_shares * price
-						if total_shares + order_shares > shares and total_shares < shares:
-							trade_share_number = shares - total_shares
-							if bot_action == 'buy':
-								cur.execute(f"""
-									INSERT INTO trade_history VALUES (
-										'{user_uid}',
-										'{comp_name}',
-										{round(float(time.time()), 2)},
-										{round(trade_share_number,2)},
-										{round(trade_value,2)}
-									);
-									UPDATE portfolio SET shares_holding = (shares_holding+{round(trade_share_number,2)})
-									WHERE uid='{user_uid}' and company_id='{comp_name}';
-									UPDATE portfolio SET cost = (cost+{round(trade_value,2)})
-									WHERE uid='{user_uid}' and company_id='{comp_name}';
-								""")
-								conn.commit()
-							else:
-								cur.execute(f"""
-									INSERT INTO trade_history VALUES (
-										'{user_uid}',
-										'{comp_name}',
-										{round(float(time.time()), 2)},
-										{-round(trade_share_number,2)},
-										{-round(trade_value,2)}
-									);
-									UPDATE portfolio SET shares_holding = (shares_holding-{round(trade_share_number,2)})
-									WHERE uid='{user_uid}' and company_id='{comp_name}';
-									UPDATE portfolio SET cost = (cost-{round(trade_value,2)})
-									WHERE uid='{user_uid}' and company_id='{comp_name}';
-								""")
-								conn.commit()
-						else:
-							if bot_action == 'buy':
-								cur.execute(f"""
-									INSERT INTO trade_history VALUES (
-										'{user_uid}',
-										'{comp_name}',
-										{round(float(time.time()), 2)},
-										{round(order_shares,2)},
-										{round(trade_value,2)}
-									);
-									UPDATE portfolio SET shares_holding = (shares_holding+{round(order_shares,2)})
-									WHERE uid='{user_uid}' and company_id='{comp_name}';
-									UPDATE portfolio SET cost = (cost+{round(trade_value,2)})
-									WHERE uid='{user_uid}' and company_id='{comp_name}';
-								""")
-								conn.commit()
-							else:
-								cur.execute(f"""
-									INSERT INTO trade_history VALUES (
-										'{user_uid}',
-										'{comp_name}',
-										{round(float(time.time()), 2)},
-										{-round(order_shares,2)},
-										{-round(trade_value,2)}
-									);
-									UPDATE portfolio SET shares_holding = (shares_holding-{round(order_shares,2)})
-									WHERE uid='{user_uid}' and company_id='{comp_name}';
-									UPDATE portfolio SET cost = (cost-{round(trade_value,2)})
-									WHERE uid='{user_uid}' and company_id='{comp_name}';
-								""")
-								conn.commit()
-							total_shares += order_shares
 
 	def trade_stock(
 		self,
@@ -507,7 +324,7 @@ class AuctionHouse:
 			);
 		""")
 		self.conn.commit()
-		company_lst = ["index"]
+		company_lst = ["ast", "dsc", "fsin", "hhw", "jky", "sgo", "wrkn"]
 		for company in company_lst:
 			self.cur.execute(f"""
 				INSERT INTO bot_portfolio
@@ -572,10 +389,10 @@ class AuctionHouse:
 				if portfolio_data != None:
 					shares_holding = float(portfolio_data[0])
 				
-				share_number = action["trader"][company][bot]["share_number"]
-				target_price = action["trader"][company][bot]["target_price"]
+				share_number = float(action["trader"][company][bot]["share_number"])
+				target_price = float(action["trader"][company][bot]["target_price"])
 				if target_price == 0:
-					target_price = current_price[company]
+					target_price = float(current_price[company])
 
 				trade_value = share_number * target_price
 
@@ -650,29 +467,34 @@ class AuctionHouse:
 
 		for company in action["accepter"]:
 			for bot in action["accepter"][company]:
-				if action["accepter"][company][bot]["share_number"] == -1: ##bot is sell -> accept buy
-					bot_action = "buy"
-				elif action["accepter"][company][bot]["share_number"] == 1:
+				if float(action["accepter"][company][bot]["share_number"]) < 0: ##bot is sell -> accept buy orders
+						bot_action = "buy"
+				elif float(action["accepter"][company][bot]["share_number"]) > 0:
 					bot_action = "sell"
 				else:
 					bot_action = None
-				price = action["accepter"][company][bot]["target_price"]
-				
-				if bot_action != None:
-					self.cur.execute(f"""
-						SELECT order_id, user_uid FROM orders WHERE price={price} AND action='{bot_action}';
+				price = float(action["accepter"][company][bot]["target_price"])
+				self.cur.execute(f"""
+						SELECT order_id from orders WHERE price={price} AND action='{bot_action}' AND company_name='{company}' and accepted='{False}';
 					""")
-					ids = list(self.cur.fetchall())
+				ids = self.cur.fetchall()
+				print(f"bot {bot}")
+				print(ids)
+				if ids != [] and bot_action != None:
+					self.cur.execute(f"""
+						SELECT order_id, user_uid FROM orders WHERE price={price} AND action='{bot_action}' AND company_name='{company}' and accepted='{False}';
+					""")
+					ids = list(self.cur.fetchall()) #(order_id, user_id)
 					share_number = 0
 					for index in range(len(ids)):
 						order_id = ids[index][0]
 						self.cur.execute(f"""
-							SELECT shares FROM orders WHERE order_id='{order_id}' AND action='{bot_action}' AND price={price};
+							SELECT shares FROM orders WHERE order_id='{order_id}' AND action='{bot_action}' AND price={price} AND company_name='{company}';
 						""")
 						shares=float(self.cur.fetchone()[0])
-						if action == "buy":
+						if bot_action == "buy": #positive
 							share_number+=shares
-						elif action == "sell":
+						elif bot_action == "sell": #negative
 							share_number-=shares
 
 					self.cur.execute(f"""
@@ -760,10 +582,6 @@ class AuctionHouse:
 							return "Invalid 1"
 
 					if invalid == False:
-						self.cur.execute(f"""
-							SELECT order_id, user_uid FROM orders WHERE price={price} AND action='{bot_action}';
-						""")
-						ids = list(cur.fetchall())
 						for index in range(len(ids)):
 							order_id = ids[index][0]
 							user_uid = ids[index][1]
@@ -772,27 +590,48 @@ class AuctionHouse:
 							""")
 							self.conn.commit()  
 							self.cur.execute(f"""
-								SELECT shares FROM orders WHERE action='{bot_action}' AND price={price} AND order_id='{order_id}';
+								SELECT shares FROM orders WHERE order_id='{order_id}';
 							""")
-							self.conn.commit()
 							shares = float(self.cur.fetchone()[0])
 							trade_value = shares * price
-							if action == 'buy':
-								self.cur.execute(f"""
-									INSERT INTO trade_history VALUES (
-										'{user_uid}',
-										'{company}',
-										{round(float(time.time()), 2)},
-										{round(shares,2)},
-										{round(trade_value,2)}
-									);
-									UPDATE portfolio SET shares_holding = (shares_holding+{round(shares,2)})
-									WHERE uid='{user_uid}' and company_id='{company}';
-									UPDATE portfolio SET cost = (cost+{round(trade_value,2)})
-									WHERE uid='{user_uid}' and company_id='{company}';
-								""")
-								self.conn.commit()
-							else:
+							self.cur.execute(f"""
+								SELECT shares_holding from portfolio WHERE uid='{user_uid}' and company_id='{company}';
+							""")
+							portfolio_data = self.cur.fetchone()
+							if bot_action == 'buy':
+								if portfolio_data != None:
+									self.cur.execute(f"""
+										INSERT INTO trade_history VALUES (
+											'{user_uid}',
+											'{company}',
+											{round(float(time.time()), 2)},
+											{round(shares,2)},
+											{round(trade_value,2)}
+										);
+										UPDATE portfolio SET shares_holding = (shares_holding+{round(shares,2)})
+										WHERE uid='{user_uid}' and company_id='{company}';
+										UPDATE portfolio SET cost = (cost+{round(trade_value,2)})
+										WHERE uid='{user_uid}' and company_id='{company}';
+									""")
+									self.conn.commit()
+								else:
+									self.cur.execute(f"""
+										INSERT INTO trade_history VALUES (
+											'{user_uid}',
+											'{company}',
+											{round(float(time.time()), 2)},
+											{round(shares,2)},
+											{round(trade_value,2)}
+										);
+										INSERT INTO portfolio VALUES (
+											'{user_uid}',
+											'{company}',
+											{round(shares,2)},
+											{round(trade_value,2)}
+										);
+									""")
+									self.conn.commit()
+							elif bot_action == "sell":
 								self.cur.execute(f"""
 									INSERT INTO trade_history VALUES (
 										'{user_uid}',
@@ -807,12 +646,14 @@ class AuctionHouse:
 									WHERE uid='{user_uid}' and company_id='{company}';
 								""")
 								self.conn.commit()
+				else:
+					pass
 
 		for company in action["bidder"]:
 			for bot in action["bidder"][company]:
-				if action["bidder"][company][bot]["share_number"] == 1:
+				if float(action["bidder"][company][bot]["share_number"]) == 1:
 					bot_action = "buy"
-				elif action["bidder"][company][bot]["share_number"] == -1:
+				elif float(action["bidder"][company][bot]["share_number"]) == -1:
 					bot_action = "sell"
 				else:
 					bot_action = None
@@ -832,8 +673,8 @@ class AuctionHouse:
 					if portfolio_data != None:
 						shares_holding = float(portfolio_data[0])
 					
-					share_number = action["bidder"][company][bot]["share_number"]
-					target_price = action["bidder"][company][bot]["target_price"]
+					share_number = float(action["bidder"][company][bot]["share_number"])
+					target_price = float(action["bidder"][company][bot]["target_price"])
 
 					trade_value = share_number * target_price
 

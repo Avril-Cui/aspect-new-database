@@ -4,20 +4,21 @@ import styles from "./AskBidTable.module.css";
 function AskBidTable(props) {
   const [orderBook, setOrderBook] = useState([
     [
-      [104.0, 30, 30],
-      [103.0, 10, 10],
-      [102.0, 30, 30],
-      [101.0, 20, 20],
-      [100.0, 10, 10],
+      [0, 0, 0],
+      [0, 0, 0],
+      [0, 0, 0],
+      [0, 0, 0],
+      [0, 0, 0]
     ],
     [
-      [99.0, 60, 60],
-      [98.0, 10, 10],
-      [97.0, 10, 10],
-      [96.0, 5, 5],
-      [95.0, 15, 15],
+      [0, 0, 0],
+      [0, 0, 0],
+      [0, 0, 0],
+      [0, 0, 0],
+      [0, 0, 0]
     ],
   ]);
+  console.log(orderBook)
 
   const WAIT_TIME = 1000;
 

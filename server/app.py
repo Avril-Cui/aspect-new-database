@@ -184,7 +184,7 @@ def register():
 def register_bots():
 	data = json.loads(request.data)
 	bot_name = data["bot_name"]
-	initial_price = data["initial_price"]
+	initial_price = data["initial_price"] 
 	house.initialize_bot(bot_name, initial_price)
 	return "Bot registered!"
 
@@ -201,7 +201,7 @@ def order_book():
 	return jsonify(order_book)
 
 @app.route('/get-user-pending-orders', methods=['POST'])
-def pending_orders():
+def pending_orders(): 
 	user_uid = json.loads(request.data)
 	pending_orders = house.get_user_pending_orders(user_uid)
 	return jsonify(pending_orders)
@@ -214,7 +214,6 @@ def bot_actions():
 	index_tmp = int(current_time-start_time-index_lst*86400)
 	if index_tmp <= 36000:
 		current_price = {
-			"index": price_list["index"][index_lst][index_tmp],
 			"ast": price_list["ast"][index_lst][index_tmp],
 			"dsc": price_list["dsc"][index_lst][index_tmp],
 			"fsin": price_list["fsin"][index_lst][index_tmp],
@@ -225,7 +224,6 @@ def bot_actions():
 		}
 	else:
 		current_price = {
-			"index":round(price_list["index"][index_lst][-1], 2),
 			"ast":round(price_list["ast"][index_lst][-1], 2),
 			"dsc": round(price_list["dsc"][index_lst][-1], 2),
 			"fsin": round(price_list["fsin"][index_lst][-1], 2),
@@ -235,15 +233,15 @@ def bot_actions():
 			"wrkn": round(price_list["wrkn"][index_lst][-1], 2)
 		}
 	
-	response = house.bot_actions(action, current_price)
-	if response == "Invalid 1":
-			return "Bot do not owe enough shares of this stock.", 401
-	elif response == "Invalid 2":
-		return "Bot do not have enough money for this trade", 402
-	elif response == "Invalid 3":
-		return "Currently no shares available for trade. Bot's transaction will enter the pending state.", 403
-	else:
-		return "Success!"
+	house.bot_actions(action, current_price)
+	# if response == "Invalid 1":
+	# 		return "Bot do not owe enough shares of this stock.", 401
+	# elif response == "Invalid 2":
+	# 	return "Bot do not have enough money for this trade", 402
+	# elif response == "Invalid 3":
+	# 	return "Currently no shares available for trade. Bot's transaction will enter the pending state.", 403
+	# else:
+	return "Success!"
 
 
 @app.route('/trade-stock', methods=['POST'])
