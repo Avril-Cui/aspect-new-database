@@ -133,8 +133,8 @@ class AuctionHouse:
 		""")
 		self.conn.commit()
 	
-	def accept_order(self, price, shares_number, available_shares, action, user_uid, company):
-		if shares_number > available_shares:
+	def accept_order(self, price, share_number, available_shares, action, user_uid, company):
+		if share_number > available_shares:
 			return "Invalid 3"
 		else:
 			if action == "buy": #action is buy, user wants to sell
@@ -239,7 +239,7 @@ class AuctionHouse:
 							UPDATE bot_orders SET accepted={True} WHERE order_id='{order_id}';
 						""")
 						self.conn.commit()  
-						trade_value = abs(order_share) * price
+						trade_value = float(abs(order_share)) * float(price)
 						self.cur.execute(f"""
 							SELECT shares_holding from bot_portfolio WHERE bot_id='{bot_id}' and company_id='{company}';
 						""")
@@ -296,7 +296,7 @@ class AuctionHouse:
 					else:
 						trade_share = share_number - shares
 						self.cur.execute(f"""
-							UPDATE bot_orders SET shares={order_share-trade_share} WHERE order_id='{order_id}';
+							UPDATE bot_orders SET shares={float(order_share)-float(trade_share)} WHERE order_id='{order_id}';
 						""")
 						self.conn.commit()  
 						trade_value = abs(trade_share) * price

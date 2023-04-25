@@ -352,7 +352,7 @@ export default function Home() {
                   ticker={compName}
                   setTicker={setCompName}
                 />
-                <AskBidTable comp_name={compName} />
+                <AskBidTable comp_name={compName} user_uid={user_uid}/>
                 <CompanyChart comp_name={compName} />
               </div>
             </div>

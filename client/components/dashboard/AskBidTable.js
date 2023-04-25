@@ -2,6 +2,9 @@ import { useState, useEffect } from "react";
 import styles from "./AskBidTable.module.css";
 
 function AskBidTable(props) {
+  const [shares, setShares] = useState({});
+  // let shares = {};
+
   const [orderBook, setOrderBook] = useState([
     [
       [0, 0, 0],
@@ -18,9 +21,12 @@ function AskBidTable(props) {
       [0, 0, 0],
     ],
   ]);
-  console.log(orderBook);
 
   const WAIT_TIME = 1000;
+
+  const [isShares, setIsShares] = useState(true);
+  const [isNotEmpty, setIsNotEmpty] = useState(true);
+  const [isSuccess, setIsSuccess] = useState(false);
 
   useEffect(() => {
     const data = setInterval(() => {
@@ -47,24 +53,49 @@ function AskBidTable(props) {
     return () => clearInterval(data);
   }, [props.comp_name]);
 
-  const handleAcceptOrder = (input) => {
-    var axios = require("axios");
-    var data = JSON.stringify(input);
-    var config = {
-      method: "POST",
-      url: "http://127.0.0.1:5000/user-accept-order",
-      headers: {
-        "Content-Type": "text/plain",
-      },
-      data: data,
-    };
-    axios(config)
-      .then(function (response) {
-        console.log("Order accepted!");
-      })
-      .catch(function (error) {
-        console.log(error);
-      });
+  const handleAcceptOrder = (input, e, index) => {
+    e.preventDefault();
+    console.log(input);
+    if (
+      shares[index] == "" ||
+      Object.keys(shares).length == 0 ||
+      shares[index] == undefined ||
+      shares[index] == 0
+    ) {
+      setIsNotEmpty(false);
+    } else if (
+      parseFloat(input["available_shares"]) < parseFloat(shares[index])
+    ) {
+      setIsShares(false);
+    } else {
+      var axios = require("axios");
+      var data = JSON.stringify(input);
+      var config = {
+        method: "POST",
+        url: "http://127.0.0.1:5000/user-accept-order",
+        headers: {
+          "Content-Type": "text/plain",
+        },
+        data: data,
+      };
+      axios(config)
+        .then(function (response) {
+          console.log("Order accepted!");
+          setIsSuccess(true);
+        })
+        .catch(function (error) {
+          console.log(error);
+        });
+    }
+  };
+
+  const handleShareChanges = (event, index) => {
+    let new_share = {};
+    new_share[index] = event.target.value;
+    setShares((shares) => ({
+      ...shares,
+      ...new_share,
+    }));
   };
 
   return (
@@ -78,7 +109,7 @@ function AskBidTable(props) {
               <th>Trade Order</th>
             </tr>
 
-            {orderBook[0].map((order) => {
+            {orderBook[0].map((order, index) => {
               return (
                 <tr>
                   <div
@@ -93,10 +124,30 @@ function AskBidTable(props) {
                       type="number"
                       step="any"
                       name="shares"
+                      id={order}
                       placeholder="Shares"
                       className={styles.input_field}
+                      value={shares[index]}
+                      onChange={(e) => handleShareChanges(e, index)}
                     />
-                    <button className={styles.accept}>
+                    <button
+                      type="submit"
+                      className={styles.accept}
+                      onClick={(e) =>
+                        handleAcceptOrder(
+                          {
+                            price: order[0],
+                            shares_number: shares[index],
+                            available_shares: order[1],
+                            action: "sell",
+                            company: props.comp_name,
+                            user_uid: props.user_uid,
+                          },
+                          e,
+                          index
+                        )
+                      }
+                    >
                       <p>✅</p>
                     </button>
                   </div>
@@ -143,6 +194,39 @@ function AskBidTable(props) {
           </tbody>
         </table>
       </div>
+      {isNotEmpty ? null : (
+        <div className={styles.empty_warning}>
+          You need to enter a share value to trade.
+          <button
+            className={styles.close_btn}
+            onClick={() => setIsNotEmpty(true)}
+          >
+            OK
+          </button>
+        </div>
+      )}
+      {isShares ? null : (
+        <div className={styles.empty_warning}>
+          No enough shares, adjust share number.
+          <button
+            className={styles.close_btn}
+            onClick={() => setIsShares(true)}
+          >
+            OK
+          </button>
+        </div>
+      )}
+      {isSuccess ? (
+        <div className={styles.empty_warning}>
+          Accepting order successfully!
+          <button
+            className={styles.close_btn}
+            onClick={() => setIsSuccess(false)}
+          >
+            OK
+          </button>
+        </div>
+      ) : null}
     </div>
   );
 }

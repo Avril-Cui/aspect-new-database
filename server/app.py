@@ -209,11 +209,13 @@ def pending_orders():
 @app.route('/user-accept-order', methods=['POST'])
 def user_accept_order():
 	data = json.loads(request.data)
-	order_id = data["order_id"]
+	price = float(data["price"])
+	shares_number = float(data["shares_number"])
+	available_shares = float(data["available_shares"])
 	action = data["action"]
-	user_uid = data["user_uid"]
 	company = data["company"]
-	response = house.accept_order(order_id, action, user_uid, company)
+	user_uid = data["user_uid"]
+	response = house.accept_order(price, shares_number, available_shares, action, user_uid, company)
 	if response == "Invalid 1":
 		return "You do not owe enough shares of this stock.", 401
 	elif response == "Invalid 2":
