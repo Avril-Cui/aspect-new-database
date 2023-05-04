@@ -3,6 +3,8 @@ import styles from "../../styles/portfolio.module.css";
 import { useState, useEffect } from "react";
 import Cookies from "universal-cookie";
 import Link from "next/link";
+import alien from "../../image/logo/alien.png";
+import Image from "next/image";
 
 function PendingOrders(props) {
   const cookies = new Cookies();
@@ -12,6 +14,7 @@ function PendingOrders(props) {
   const [orders, setOrders] = useState([[undefined, "", undefined, undefined]]);
 
   const WAIT_TIME = 3000;
+  const [isPortfolio, setIsPortfolio] = useState(false);
 
   useEffect(() => {
     const data = setInterval(() => {
@@ -30,6 +33,10 @@ function PendingOrders(props) {
       axios(config)
         .then(function (response) {
           setOrders(response.data);
+          console.log(orders)
+          if (orders.length > 1) {
+            setIsPortfolio(true);
+          }
         })
         .catch(function (error) {
           console.log(error);
@@ -40,13 +47,14 @@ function PendingOrders(props) {
   return (
     <div className={styles.scroll}>
       <div ref={containerRef}>
-        <table className={styles.screener_table}>
+        <table className={styles.screener_table1}>
           <tbody>
             <tr>
               <th>Ticker</th>
               <th>Price</th>
               <th>Shares</th>
               <th>Total Value</th>
+              <th>Action</th>
               <th></th>
             </tr>
           </tbody>
@@ -56,6 +64,15 @@ function PendingOrders(props) {
             })}
           </tbody>
         </table>
+        {isPortfolio ? null : (
+          <div className={styles.alien_img}>
+            {" "}
+            <Image src={alien} width="210px" height="150px" alt="" />
+            <p className={styles.no_text}>
+              You don't have any pending orders! Make a trade below.
+            </p>
+          </div>
+        )}
       </div>
     </div>
   );
@@ -71,6 +88,8 @@ function Company(props) {
   const category = props.order[1];
   const price = props.order[2];
   const shares_holding = props.order[3];
+  const action = props.order[4];
+  // const action = props.order[4].toUpperCase();;
 
   let total_value = shares_holding * price;
   let share_number = shares_holding;
@@ -105,6 +124,7 @@ function Company(props) {
         <td>{price}</td>
         <td>{share_number}</td>
         <td>{total_value}</td>
+        <td>{action.toUpperCase()}</td>
         <td>
           <button className={styles.cancel} onClick={handleCancelOrder}>
             <p>CANCEL ORDER </p>

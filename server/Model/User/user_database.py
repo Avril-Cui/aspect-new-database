@@ -23,6 +23,7 @@ class UserDatabaseCommands:
             CREATE TABLE portfolio (uid varchar (100),
             company_id varchar (100) NOT NULL,
             shares_holding NUMERIC NOT NULL,
+            pending_shares_holding NUMERIC,
             cost NUMERIC NOT NULL);
         """)
         self.conn.commit()

@@ -52,6 +52,7 @@
    color: #c3fcc2;
    padding-top: 0.5em;
    margin-bottom: -0.5em;
+   width: 22em;
 }
 
 .input_field::-webkit-outer-spin-button,

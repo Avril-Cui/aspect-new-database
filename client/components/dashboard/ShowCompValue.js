@@ -3,6 +3,8 @@ import styles from "../../styles/portfolio.module.css";
 import { useState, useEffect } from "react";
 import Cookies from "universal-cookie";
 import Link from "next/link";
+import alien from "../../image/logo/alien.png";
+import Image from "next/image";
 
 function ShowCompValue(props) {
   const cookies = new Cookies();
@@ -18,7 +20,8 @@ function ShowCompValue(props) {
     },
   });
 
-  const WAIT_TIME = 5000;
+  const WAIT_TIME = 3000;
+  const [isPortfolio, setIsPortfolio] = useState(false);
 
   useEffect(() => {
     const data = setInterval(() => {
@@ -37,6 +40,9 @@ function ShowCompValue(props) {
       axios(config)
         .then(function (response) {
           setPortfolio(response.data);
+          if (Object.keys(portfolio).length > 1) {
+            setIsPortfolio(true);
+          }
         })
         .catch(function (error) {
           console.log(error);
@@ -66,6 +72,15 @@ function ShowCompValue(props) {
             })}
           </tbody>
         </table>
+        {isPortfolio ? null : (
+          <div className={styles.alien_img}>
+            {" "}
+            <Image src={alien} width="210px" height="150px" alt="" />
+            <p className={styles.no_text}>
+              You don't hold any stocks yet! Make a trade below.
+            </p>
+          </div>
+        )}
       </div>
     </div>
   );

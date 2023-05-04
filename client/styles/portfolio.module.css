@@ -314,6 +314,12 @@
   margin-top: 0.1em;
 }
 
+.screener_table1 {
+  border-collapse: collapse;
+  margin-left: 1.35em;
+  margin-top: 0.1em;
+}
+
 .holding_detail td {
   font-size: 14px;
   font-weight: 300;
@@ -330,11 +336,31 @@
   color: #dadada;
 }
 
+.alien_img{
+  margin-left: 20em;
+  margin-top: 1.5em;
+}
+
+.no_text{
+  color: #c3fcc2;
+  margin-left: -1.25em;
+  width: 15em;
+  text-align: center;
+}
+
 .screener_table th {
   font-size: 16px;
   font-weight: 300;
   text-align: left;
   padding: 0.3em 3em;
+  color: #72b176;
+}
+
+.screener_table1 th {
+  font-size: 16px;
+  font-weight: 300;
+  text-align: left;
+  padding: 0.3em 2.1em;
   color: #72b176;
 }
 

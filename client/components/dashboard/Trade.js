@@ -11,7 +11,11 @@ function Trade(props) {
   });
 
   const [type, setType] = useState("Buy");
-  const [percentage, setPercentage] = useState(50);
+  const [percentage, setPercentage] = useState(0);
+
+  if (percentage > 100) {
+    setPercentage("100+");
+  }
 
   const cookies = new Cookies();
   const user_uid = cookies.get("user_uid");
@@ -37,10 +41,12 @@ function Trade(props) {
 
       axios(config)
         .then(function (response) {
-          console.log(response.data.portfolio_value.accountValue)
+          console.log(response.data.portfolio_value.accountValue);
           setPercentage(
             Math.round(
-              (Price * event.target.value / response.data.portfolio_value.accountValue) * 100
+              ((Price * event.target.value) /
+                response.data.portfolio_value.accountValue) *
+                100
             )
           );
         })
@@ -51,28 +57,37 @@ function Trade(props) {
   };
   const handlePriceChange = (event) => {
     setPrice(event.target.value);
+    setIsCurrentPrice(false);
   };
   const handleSellSharesChange = (event) => {
     setSellShares(event.target.value);
     if (Price != undefined) {
-      setTotalOrderValue(Math.round(Price * event.target.value * 100) / 100);
+      setTotalOrderValue(
+        Math.round(Price * Math.abs(event.target.value) * 100) / 100
+      );
       let data = JSON.stringify(user_uid);
-    var config = {
-      method: "post",
-      url: "http://127.0.0.1:5000/portfolio-detail",
-      headers: {
-        "Content-Type": "text/plain",
-      },
-      data: data,
-    };
+      var config = {
+        method: "post",
+        url: "http://127.0.0.1:5000/portfolio-detail",
+        headers: {
+          "Content-Type": "text/plain",
+        },
+        data: data,
+      };
 
-    axios(config)
-      .then(function (response) {
-        setPercentage(Math.round(totalOrderValue/response.data.portfolio_value.accountValue));
-      })
-      .catch(function (error) {
-        console.log(error);
-      });
+      axios(config)
+        .then(function (response) {
+          setPercentage(
+            Math.round(
+              ((Price * Math.abs(event.target.value)) /
+                response.data.portfolio_value.accountValue) *
+                100
+            )
+          );
+        })
+        .catch(function (error) {
+          console.log(error);
+        });
     }
   };
 
@@ -144,12 +159,16 @@ function Trade(props) {
           console.log(error.message);
           if (error.message == "Request failed with status code 403") {
             setMessage(
-              "Currently no shares available for trade. \n Your transaction will enter the pending state."
+              "Currently no shares available for trade in market. \n Try buying a sell order on the right."
             );
           } else if (error.message == "Request failed with status code 402") {
             setMessage("You do not have enough money for this trade.");
           } else if (error.essage == "Request failed with status code 401") {
             setMessage("You do not owe enough shares of this stock.");
+          } else if (error.message == "Request failed with status code 404") {
+            setMessage(
+              "Currently no shares available for trade. \n Your transaction will enter the pending state."
+            );
           }
         });
     }
@@ -161,6 +180,7 @@ function Trade(props) {
       sellShares != "" &&
       props.ticker !== undefined
     ) {
+      console.log("HERE");
       let sell_shares = -parseFloat(sellShares);
       let sell_price;
       if (isCurrentPrice == true) {
@@ -186,26 +206,35 @@ function Trade(props) {
 
       axios(sell_config)
         .then(function (response) {
-          setMessage("Trade entered successfully!");
+          if (response.data == "0") {
+            setMessage("Order put, pending...");
+          } else {
+            setMessage("Trade entered successfully!");
+          }
         })
         .catch(function (error) {
           console.log(error.message);
           if (error.message == "Request failed with status code 403") {
             setMessage(
-              "Currently no shares available for trade. \n Your transaction will enter the pending state."
+              "Currently no shares available for trade in market.\n Try selling a buy order on the right."
             );
           } else if (error.message == "Request failed with status code 402") {
             setMessage("You do not have enough money for this trade.");
-          } else if (error.essage == "Request failed with status code 401") {
+          } else if (error.message == "Request failed with status code 401") {
             setMessage("You do not owe enough shares of this stock.");
+          } else if (error.message == "Request failed with status code 404") {
+            setMessage(
+              "Currently no shares available for trade. \n Your transaction will enter the pending state."
+            );
           }
         });
     }
+    console.log(message);
 
     setBuyShares("");
     setPrice("");
     setTotalOrderValue("");
-    // props.setTicker(undefined);
+    setSellShares("");
   };
   const [portfolio, setPortfolio] = useState({
     accountValue: undefined,
@@ -213,7 +242,6 @@ function Trade(props) {
     category: "portfolio_value",
     holdingValue: undefined,
   });
-
 
   return (
     <form onSubmit={handleSubmit}>
@@ -327,7 +355,12 @@ function Trade(props) {
       <div className={styles.pct_invest_container}>
         <div className={styles.inline}>
           <p className={styles.pct}>{percentage}%</p>
-          <input className={styles.pct_slider} type="range" min="1" max="100" value={percentage}/>
+          <input
+            className={styles.pct_slider}
+            type="range"
+            value={percentage == "100+" ? 100 : percentage}
+            style={percentage == "100+" ? { marginLeft: "0.3em" } : null}
+          />
         </div>
       </div>
       {isSubmit && <p className={styles.success}>{message}</p>}

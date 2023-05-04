@@ -8,7 +8,8 @@ from datetime import datetime
 import datetime
 from Model.House.auction_house import AuctionHouse
 seconds = time.time()
-start_time = 1680646552
+# start_time = 1680646552
+start_time = time.time() - 60*60*24*10
 end_time = start_time + (60*60*24)*29 + 36000
 start_date = datetime.datetime.now()
 DATABASE_HOST = os.getenv("DATABASE_HOST")
@@ -291,7 +292,7 @@ def trade_stock():
 		elif response == "Invalid 2":
 			return "You do not have enough money for this trade", 402
 		elif response == "Invalid 3":
-			return "Currently no shares available for trade. Your transaction will enter the pending state.", 403
+			return "You do not have enough money for this trade.", 403
 		else:
 			company_list = user_database_commands.get_comp_holding_list(user_uid)
 			current_prices = get_current_prices(company_list)
@@ -305,7 +306,7 @@ def trade_stock():
 		elif response == "Invalid 2":
 			return "You do not have enough money for this trade", 402
 		elif response == "Invalid 3":
-			return "Currently no shares available for trade. Your transaction will enter the pending state.", 403
+			return "Currently no shares available for trade. Your transaction will enter the pending state.", 404
 		else:
 			return "0"
 

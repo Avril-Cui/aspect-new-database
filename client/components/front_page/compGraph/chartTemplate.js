@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import styles from "./chart_style.module.css";
 import Image from "next/image";
 import alien from "../../../image/logo/alien.png";
+
 const AdjustedDimension = (props) => {
   const WAIT_TIME = 1000 * 60 * 60;
   const [isPrice, setIsPrice] = useState(false);
