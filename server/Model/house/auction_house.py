@@ -6,7 +6,7 @@ class AuctionHouse:
 	def __init__(self, conn, cur):
 		self.conn = conn
 		self.cur = cur
-		self.bot_initial_asset = 100000000000000
+		self.bot_initial_asset = 1000000
 	
 	def create_order_table(self):
 		self.cur.execute(f'DROP TABLE IF EXISTS orders;')
@@ -662,7 +662,7 @@ class AuctionHouse:
 			self.cur.execute(f"""
 				INSERT INTO bot_portfolio
 				VALUES (
-					'{bot_name}', '{company}', {50}, {initial_price[company] * 50}
+					'{bot_name}', '{company}', {30}, {initial_price[company] * 30}
 				);
 		""")
 	

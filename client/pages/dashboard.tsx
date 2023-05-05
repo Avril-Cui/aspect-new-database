@@ -16,6 +16,7 @@ import Trade from "../components/dashboard/Trade";
 import AskBidTable from "../components/dashboard/AskBidTable";
 import CompanyChart from "../components/dashboard/company_chart";
 import PendingOrders from "../components/dashboard/PendingOrders";
+import BotRanking from "../components/dashboard/BotRanking";
 
 export default function Home() {
   var today = new Date();
@@ -109,14 +110,14 @@ export default function Home() {
       name: "Jileky Investment, Inc.",
       name2: "Jileky",
       overview:
-        "Jilepy Investment, Inc.(JKY) offers financial services among three major businesses: Corporate & Investment Bank, Commercial Banking, and Asset & Wealth Management. The company provides services to fulfill various client needs, including investment and lending products, deposit, cash management,…",
+        "Jileky Investment, Inc.(JKY) offers financial services among three major businesses: Corporate & Investment Bank, Commercial Banking, and Asset & Wealth Management. The company provides services to fulfill various client needs, including investment and lending products, deposit, cash management,…",
       news_type: "973458a0-eb3a-4e85-bd2a-f7513bf73bab",
       industry: "Financials",
       p_e: 8.14,
       p_b: 1.02,
       p_s: 2.38,
       overview2:
-        "Jilepy Investment, Inc. provides financial services for clients across the world. It offers three major businesses: Corporate & Investment Bank (CIB), Commercial Banking (CB), and Asset & Wealth Management (AWM). The company provides services to fulfill various client needs, including investment and lending products, deposit, cash management, risk management solutions, mortgages, retirement products, etc.",
+        "Jileky Investment, Inc. provides financial services for clients across the world. It offers three major businesses: Corporate & Investment Bank (CIB), Commercial Banking (CB), and Asset & Wealth Management (AWM). The company provides services to fulfill various client needs, including investment and lending products, deposit, cash management, risk management solutions, mortgages, retirement products, etc.",
     },
 
     sgo: {
@@ -342,17 +343,19 @@ export default function Home() {
           </div>
         </div>
 
-        <div style={{ marginLeft: "8.5em" }}>
+        <div className={styles.center_div}>
           <div style={{ marginTop: "1.5em", marginBottom: "0em" }}>
-            <div>
-              <p className={styles.header1}>Trade</p>
-              <div className={styles.inline}>
+            <div style={{ marginLeft: "-22em" }}>
+              <div className={styles.header1}>
+                <p style={{ marginLeft: "-7.25em" }}>Trade</p>
+              </div>
+              <div className={styles.inline} style={{ marginLeft: "-10em" }}>
                 <Trade
                   handleTickerChange={handleTickerChange}
                   ticker={compName}
                   setTicker={setCompName}
                 />
-                <AskBidTable comp_name={compName} user_uid={user_uid}/>
+                <AskBidTable comp_name={compName} user_uid={user_uid} />
                 <CompanyChart comp_name={compName} />
               </div>
             </div>
@@ -375,8 +378,13 @@ export default function Home() {
           <div style={{ marginTop: "1.5em", marginBottom: "7em" }}>
             <div style={{ marginLeft: "1em" }}>
               <p className={styles.header1}>GAME RANKING</p>
-              <div className={styles.leaderboard} id="leaderboard">
-                <LeaderBoard3 />
+              <div className={styles.inline}>
+                <div className={styles.leaderboard} id="leaderboard">
+                  <LeaderBoard3 />
+                </div>
+                <div className={styles.bot_leaderboard}>
+                  <BotRanking />
+                </div>
               </div>
             </div>
           </div>

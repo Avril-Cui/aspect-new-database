@@ -106,7 +106,7 @@ def get_current_prices(company_list):
 		return current_prices
 
 
-chat_storeage = {
+chat_storage = {
 	"main": {
 		"8408dd4a-7039-455f-bfa2-56dec9cace59": {
 			"name": "Avril",
@@ -332,11 +332,15 @@ def show_ranking():
 	rank = user_database_commands.get_rank_user(user_uid)
 	return str(rank)
 
-
 @app.route('/total-rank', methods=['POST'])
 def total_rank():
 	user_rank = user_database_commands.get_total_rank()
 	return user_rank
+
+@app.route('/total-bot-rank', methods=['POST'])
+def total_bot_rank():
+	bot_rank = house.get_total_rank()
+	return bot_rank
 
 @app.route('/current-all-prices', methods=["POST"])
 def current_all_prices():
@@ -529,20 +533,20 @@ def send_message():
 	data = json.loads(request.data)
 	uid = uuid.uuid4()
 	dateTimeObj = datetime.now()
-	chat_storeage[data["section"]][str(uid)] = {
+	chat_storage[data["section"]][str(uid)] = {
 		"name": data["name"],
 		"text": data["text"],
 		"timestamp": dateTimeObj,
 		"uid": uid
 	}
 
-	return jsonify(chat_storeage[data["section"]][str(uid)])
+	return jsonify(chat_storage[data["section"]][str(uid)])
 
 
 @app.route('/get-message', methods=['POST'])
 def get_message():
 	section = json.loads(request.data)
-	section_message = chat_storeage[section]
+	section_message = chat_storage[section]
 	section_message_lst = list(section_message.items())
 	message_lst = []
 	if len(section_message_lst) < 50:

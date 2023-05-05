@@ -2,6 +2,11 @@
   margin-top: 7.5em;
 }
 
+.center_div{
+  display: table;
+  margin: 0 auto;
+}
+
 .center_container{
   display: table;
   margin: 0em auto 1.5em auto;
@@ -460,6 +465,13 @@
   padding: 0.5em 0.75em;
   border: 1px solid rgb(75, 75, 75);
   border-radius: 7px;
+}
+
+.bot_leaderboard{
+  padding: 0.5em 0.75em;
+  border: 1px solid rgb(75, 75, 75);
+  border-radius: 7px;
+  margin-left: 1em;
 }
 
 .cancel{
