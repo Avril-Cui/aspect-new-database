@@ -607,7 +607,7 @@ class AuctionHouse:
 			self.cur.execute(f"""
 				INSERT INTO bot_portfolio
 				VALUES (
-					'{bot_name}', '{company}', {30}, {30}, {initial_price[company] * 30}
+					'{bot_name}', '{company}', {50}, {50}, {initial_price[company] * 50}
 				);
 		""")
 	
@@ -1043,12 +1043,7 @@ class AuctionHouse:
 									WHERE bot_id='{bot}' and company_id='{company}';
 								""")
 								self.conn.commit()	
-								
-								self.cur.execute(f"""
-									UPDATE bots SET cashvalue = (cashvalue+{abs(round(trade_value, 2))})
-									WHERE bot_id='{bot}';						
-								""")
-								self.conn.commit()
+
 						else:
 							return "Invalid 1"
 
