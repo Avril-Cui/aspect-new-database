@@ -21,7 +21,7 @@ const ScreenerTable = (props) => {
           {companyProfiles.map((company) => (
             <tr key={company.id}>
               <Link key={company.id} href={`/company/${company.id}`}>
-                <a><td className={styles.comp_link}>{company.name}</td></a>
+                <td className={styles.comp_link}><a>{company.name}</a></td>
               </Link>
               <td>
                 {props.isPrice

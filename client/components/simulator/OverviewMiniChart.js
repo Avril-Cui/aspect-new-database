@@ -60,35 +60,3 @@ export const OverviewChart = (props) => {
 };
 
 export default OverviewChart;
-
-// export function OverviewMiniChartFront(props) {
-//   const WAIT_TIME = 3000;
-
-//   const [priceData, setPriceData] = useState([{ time: 0, value: 0 }]);
-//   useEffect(() => {
-//     const data = setInterval(() => {
-//       var axios = require("axios");
-//       var data = `"${props.comp_name}"`;
-
-//       var config = {
-//         method: 'post',
-//         url: 'http://localhost:5000/tick-graph',
-//         headers: { 
-//           'Content-Type': 'text/plain'
-//         },
-//         data : data
-//       };
-
-//       axios(config)
-//       .then(function (response) {
-//         setPriceData(response.data);
-//       })
-//       .catch(function (error) {
-//         console.log(error);
-//       });
-//     }, WAIT_TIME);
-//     return () => clearInterval(data);
-//   }, [priceData, props.comp_name]);
-
-//   return <OverviewChart {...props} data={priceData}></OverviewChart>;
-// }

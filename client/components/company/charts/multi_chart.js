@@ -14,17 +14,18 @@ const MultiChart = (props) => {
     ssr: false,
   });
 
+
   useEffect(() => {
     const data = setInterval(() => {
       LightweightChart = dynamic(() => import("./compMinChart"), {
         ssr: false,
       });
       var axios = require("axios");
-      var data = '"wrkn"';
+      var data = `"${props.CompanyName}"`
 
       var config = {
         method: "post",
-        url: "https://aspect-server.onrender.com/tick-graph",
+        url: `${process.env.serverConnection}/tick-graph`,
         headers: {
           "Content-Type": "text/plain",
         },

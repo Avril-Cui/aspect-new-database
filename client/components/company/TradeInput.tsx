@@ -37,7 +37,7 @@ function TradeInput(props: any) {
     e.preventDefault();
     axios({
       method: "POST",
-      url: "https://aspect-server.onrender.com/current-price",
+      url: `${process.env.serverConnection}/current-price`,
       headers: {
         "Content-Type": "text/plain",
       },
@@ -58,7 +58,7 @@ function TradeInput(props: any) {
     e.preventDefault();
     axios({
       method: "POST",
-      url: "http://127.0.0.1:5000/current-price",
+      url: `${process.env.serverConnection}/current-price`,
       headers: {
         "Content-Type": "text/plain",
       },
@@ -101,7 +101,7 @@ function TradeInput(props: any) {
       });
       var buy_config = {
         method: "post",
-        url: "http://127.0.0.1:5000/trade-stock",
+        url: `${process.env.serverConnection}/trade-stock`,
         headers: {
           "Content-Type": "text/plain",
         },
@@ -143,7 +143,7 @@ function TradeInput(props: any) {
       });
       var sell_config = {
         method: "post",
-        url: "http://127.0.0.1:5000/trade-stock",
+        url: `${process.env.serverConnection}/trade-stock`,
         headers: {
           "Content-Type": "text/plain",
         },

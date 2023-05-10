@@ -25,7 +25,7 @@ const Login = () => {
     cookies.set("userData", { email, user_name }, { path: "/" });
     axios({
       method: "POST",
-      url: "http://127.0.0.1:5000/result",
+      url: `${process.env.serverConnection}/result`,
       headers: {
         "Content-Type": "text/plain",
       },
@@ -100,7 +100,7 @@ const Login = () => {
       <div className={styles.sign_in_container}>
         <Link href="/auth/signup">
           <a className={styles.sign_in}>
-            New user? <span className={styles.register}>Register</span> an
+            New user? <span className={styles.register} id="register-new-user">Register</span> an
             account.
           </a>
         </Link>

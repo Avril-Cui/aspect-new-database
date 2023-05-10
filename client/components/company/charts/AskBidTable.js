@@ -1,10 +1,11 @@
 import { useState, useEffect } from "react";
 import styles from "./AskBidTable.module.css";
+import Cookies from "universal-cookie";
 
 function AskBidTable(props) {
+  const cookies = new Cookies();
+  const user_uid = cookies.get("user_uid");
   const [shares, setShares] = useState({});
-  // let shares = {};
-
   const [orderBook, setOrderBook] = useState([
     [
       [0, 0, 0],
@@ -141,7 +142,7 @@ function AskBidTable(props) {
                             available_shares: order[1],
                             action: "sell",
                             company: props.comp_name,
-                            user_uid: props.user_uid,
+                            user_uid: user_uid,
                           },
                           e,
                           index
@@ -159,7 +160,7 @@ function AskBidTable(props) {
       </div>
 
       <div>
-        <table className={styles.order_table} style={{ marginTop: "1em" }}>
+        <table className={styles.order_table}>
           <tbody>
             <tr>
               <th></th>

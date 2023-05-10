@@ -17,7 +17,7 @@ function LeaderBoard1() {
 
     var config = {
       method: "POST",
-      url: "https://aspect-server.onrender.com/total-rank",
+      url: `${process.env.serverConnection}/total-rank`,
       headers: {},
       data: data,
     };

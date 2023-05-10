@@ -25,7 +25,7 @@ function ExploreSection(props) {
 
       var config = {
         method: "post",
-        url: "https://aspect-server.onrender.com/tick-graphs",
+        url: `${process.env.serverConnection}/tick-graphs`,
         data: data,
       };
 

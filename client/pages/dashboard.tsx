@@ -190,7 +190,7 @@ export default function Home() {
     var data = JSON.stringify(user_uid);
     var config = {
       method: "post",
-      url: "http://127.0.0.1:5000/show-ranking",
+      url: `${process.env.serverConnection}/show-ranking`,
       headers: {
         "Content-Type": "text/plain",
       },

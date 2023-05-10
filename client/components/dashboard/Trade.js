@@ -32,7 +32,7 @@ function Trade(props) {
       let data = JSON.stringify(user_uid);
       var config = {
         method: "post",
-        url: "http://127.0.0.1:5000/portfolio-detail",
+        url: `${process.env.serverConnection}/portfolio-detail`,
         headers: {
           "Content-Type": "text/plain",
         },
@@ -68,7 +68,7 @@ function Trade(props) {
       let data = JSON.stringify(user_uid);
       var config = {
         method: "post",
-        url: "http://127.0.0.1:5000/portfolio-detail",
+        url: `${process.env.serverConnection}/portfolio-detail`,
         headers: {
           "Content-Type": "text/plain",
         },
@@ -99,7 +99,7 @@ function Trade(props) {
     e.preventDefault();
     axios({
       method: "POST",
-      url: "http://127.0.0.1:5000/current-price",
+      url: `${process.env.serverConnection}/current-price`,
       headers: {
         "Content-Type": "text/plain",
       },
@@ -140,7 +140,7 @@ function Trade(props) {
       });
       var buy_config = {
         method: "post",
-        url: "http://127.0.0.1:5000/trade-stock",
+        url: `${process.env.serverConnection}/trade-stock`,
         headers: {
           "Content-Type": "text/plain",
         },
@@ -197,7 +197,7 @@ function Trade(props) {
       });
       var sell_config = {
         method: "post",
-        url: "http://127.0.0.1:5000/trade-stock",
+        url: `${process.env.serverConnection}/trade-stock`,
         headers: {
           "Content-Type": "text/plain",
         },

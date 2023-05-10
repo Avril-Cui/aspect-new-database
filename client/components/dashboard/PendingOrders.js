@@ -23,7 +23,7 @@ function PendingOrders(props) {
 
       var config = {
         method: "post",
-        url: "http://127.0.0.1:5000/get-user-pending-orders",
+        url: `${process.env.serverConnection}/get-user-pending-orders`,
         headers: {
           "Content-Type": "text/plain",
         },
@@ -99,7 +99,7 @@ function Company(props) {
     var data = JSON.stringify(id);
     var config = {
       method: "POST",
-      url: "http://127.0.0.1:5000/cancel-order",
+      url: `${process.env.serverConnection}/cancel-order`,
       headers: {
         "Content-Type": "text/plain",
       },

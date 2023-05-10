@@ -67,7 +67,7 @@ const Manu = () => {
               </Nav.Link>
             ) : (
               <Nav.Link className={styles.text} href="/auth/login">
-                <a className={styles.login_text}>Log In</a>
+                <a className={styles.login_text} id="log-in-btn">Log In</a>
               </Nav.Link>
             )}
           </p>

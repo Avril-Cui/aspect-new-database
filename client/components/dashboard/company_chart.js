@@ -8,7 +8,7 @@ const CompanyChart = (props) => {
 
     var config = {
       method: "post",
-      url: "http://127.0.0.1:5000/hour-graph",
+      url: `${process.env.serverConnection}/hour-graph`,
       headers: {
         "Content-Type": "text/plain",
       },

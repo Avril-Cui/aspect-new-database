@@ -5,7 +5,7 @@ export const requestPrice = () => {
     return (dispatch) => {
       axios({
         method: 'post',
-        url: 'http://127.0.0.1:5000/current-all-prices',
+        url: `${process.env.serverConnection}/current-all-prices`,
         headers: {}
       })
         .then((response) => {

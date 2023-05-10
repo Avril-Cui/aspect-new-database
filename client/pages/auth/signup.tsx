@@ -22,7 +22,7 @@ const Login = () => {
     cookies.set("userData", data, { path: "/" });
     axios({
       method: "POST",
-      url: "http://127.0.0.1:5000/register",
+      url: `${process.env.serverConnection}/register`,
       headers: {
         "Content-Type": "text/plain",
       },
@@ -58,6 +58,7 @@ const Login = () => {
                   value={data["user_name"]}
                   type="text"
                   placeholder="Enter username"
+                  id="user-name-entry"
                 />
               </div>
             </div>
@@ -76,6 +77,7 @@ const Login = () => {
                   value={data["user_email"]}
                   type="email"
                   placeholder="Enter user email"
+                  id="user-email-entry"
                 />
               </div>
             </div>
@@ -95,6 +97,7 @@ const Login = () => {
                   required
                   type="password"
                   placeholder="Password"
+                  id="user-password-entry"
                 />
               </div>
             </div>
@@ -108,6 +111,7 @@ const Login = () => {
               type="submit"
               className={styles.submit_button}
               value="Sign Up"
+              id="submit-register-new-user"
             />
           </form>
         </div>
