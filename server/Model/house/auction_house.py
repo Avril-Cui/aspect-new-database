@@ -398,7 +398,10 @@ class AuctionHouse:
 		self.cur.execute(f"""
 			SELECT sum (shares) AS total_shares from bot_orders WHERE action='buy' and accepted='{False}';
 		""")
-		shares = self.cur.fetchone()[0]
+		try:
+			shares = self.cur.fetchone()[0]
+		except:
+			shares = None
 		if shares != None:
 			total_buy_shares = float(shares)
 		else:
@@ -406,7 +409,10 @@ class AuctionHouse:
 		self.cur.execute(f"""
 			SELECT sum (shares) AS total_shares from bot_orders WHERE action='sell' and accepted='{False}';
 		""")
-		shares = self.cur.fetchone()[0]
+		try:
+			shares = self.cur.fetchone()[0]
+		except:
+			shares = None
 		if shares != None:
 			total_sell_shares = float(shares)
 		else:
@@ -581,8 +587,11 @@ class AuctionHouse:
 		self.cur.execute(f"""
 			SELECT order_id, company_name, price, shares, action FROM orders WHERE accepted={False} and user_uid='{user_uid}';
 		""")
-		pending_orders = self.cur.fetchall()
-		return pending_orders
+		try:
+			pending_orders = self.cur.fetchall()
+			return pending_orders
+		except:
+			return [None, None, None, None, None]
 
 	def create_bot_table(self):
 		self.cur.execute('DROP TABLE IF EXISTS bots;')
@@ -635,20 +644,40 @@ class AuctionHouse:
 		""")
 		self.conn.commit()
 	
-	def get_total_rank(self):
+	def get_total_bot_rank(self):
 		self.cur.execute(f"""
 			SELECT bot_name, cashvalue, RANK() OVER (ORDER BY cashvalue DESC) as rank FROM bots;
 		""")
-		result = list(self.cur.fetchall())
-		ranking = {}
-		for index in range(len(result)):
-			ranking[result[index][0]] = {
-				"cash_value": float(round(result[index][1], 2)),
-				"value_change": float(round(result[index][1]-self.bot_initial_asset, 2)),
-				"pct_change": float(round((result[index][1]-self.bot_initial_asset)/self.bot_initial_asset, 4)),
-				"ranking": int(round(result[index][2]))
+		try:
+			results = list(self.cur.fetchall())
+			ranking = {}
+			for index in range(len(results)):
+				ranking[results[index][0]] = {
+					"cash_value": float(round(results[index][1], 2)),
+					"value_change": float(round(results[index][1]-self.bot_initial_asset, 2)),
+					"pct_change": float(round((results[index][1]-self.bot_initial_asset)/self.bot_initial_asset, 4)),
+					"ranking": int(round(results[index][2]))
+				}
+			if ranking == {}:
+				ranking = {
+				"loading...": {
+					"cash_value": 0,
+					"value_change": 0,
+					"pct_change": 0,
+					"ranking": 0
+				}
 			}
-		return ranking
+			return ranking
+		except:
+			ranking = {
+				"loading...": {
+					"cash_value": 0,
+					"value_change": 0,
+					"pct_change": 0,
+					"ranking": 0
+				}
+			}
+			return ranking
 	
 	def bot_actions(
 			self,

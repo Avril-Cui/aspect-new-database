@@ -154,7 +154,7 @@ export default function Home() {
     },
   };
   const cookies = new Cookies();
-  const user_uid = cookies.get("user_uid");
+  const [userUid, setUserUid] = useState("");
 
   const [isOpen, setIsOpen] = useState(false);
   const [isOpen1, setIsOpen1] = useState(false);
@@ -178,36 +178,101 @@ export default function Home() {
   let price_data = useSelector((state: any) => state.price.value);
 
   const [isPrice, setIsPrice] = useState(false);
-  useEffect(() => {
-    const data = setInterval(() => {
-      dispatch(requestPrice() as any);
-      setIsPrice(true);
-    }, WAIT_TIME);
-    return () => clearInterval(data);
-  }, [isPrice, dispatch]);
+
+  const [loading, setLoading] = useState(false);
+
+  const loadingState = {
+    accountValue: "...",
+    cashValue: "...",
+    category: "portfolio_value",
+    holdingValue: "...",
+  };
+
+  const [portfolio, setPortfolio] = useState({
+    accountValue: undefined,
+    cashValue: undefined,
+    category: "portfolio_value",
+    holdingValue: undefined,
+  });
+
+  const [orders, setOrders] = useState([]);
+
+  const [fullPortfolio, setFullPortfolio] = useState({
+    portfolio_value: {
+      accountValue: 0,
+      cashValue: 0,
+      category: "portfolio_value",
+      holdingValue: 0,
+    },
+  });
 
   useEffect(() => {
-    var data = JSON.stringify(user_uid);
-    var config = {
+    setUserUid(cookies.get("user_uid"));
+    if (portfolio.accountValue != undefined) {
+      setLoading(true);
+    }
+    const user_data = JSON.stringify(userUid);
+
+    axios({
       method: "post",
       url: `${process.env.serverConnection}/show-ranking`,
       headers: {
         "Content-Type": "text/plain",
       },
-      data: data,
-    };
-
-    axios(config)
+      data: user_data,
+    })
       .then(function (response) {
         setRank(response.data);
       })
       .catch(function (error) {
         console.log(error);
       });
-    return () => clearInterval(data);
-  }, [user_uid]);
-  const [enabled, setEnabled] = useState(false);
+    const data = setInterval(() => {
+      dispatch(requestPrice() as any);
+      setIsPrice(true);
 
+      axios({
+        method: "post",
+        url: `${process.env.serverConnection}/portfolio-detail`,
+        headers: {
+          "Content-Type": "text/plain",
+        },
+        data: user_data,
+      })
+        .then(function (response) {
+          setPortfolio(response.data.portfolio_value);
+          setFullPortfolio(response.data);
+        })
+        .catch(function (error) {
+          console.log(error);
+        });
+    }, WAIT_TIME);
+    return () => clearInterval(data);
+  }, [userUid, loading, isPrice, dispatch, portfolio, fullPortfolio]);
+
+  useEffect(() => {
+    const data1 = setInterval(() => {
+      const user_data = JSON.stringify(userUid);
+      axios({
+        method: "post",
+        url: `${process.env.serverConnection}/get-user-pending-orders`,
+        headers: {
+          "Content-Type": "text/plain",
+        },
+        data: user_data,
+      })
+        .then(function (response) {
+          setOrders(response.data);
+        })
+        .catch(function (error) {
+          console.log(error);
+        });
+    }, WAIT_TIME);
+    return () => clearInterval(data1);
+  }, [orders]);
+
+
+  const [enabled, setEnabled] = useState(false);
   const toggleStartTutorial = () => {
     setEnabled(true);
     setIsOpen1(false);
@@ -292,7 +357,11 @@ export default function Home() {
                 style={{ marginBottom: "1.25em" }}
                 id="portfolio"
               >
-                <ShowPortfolio />
+                <ShowPortfolio
+                  portfolio={portfolio}
+                  loading={loading}
+                  loadingState={loadingState}
+                />
               </div>
               <div>
                 <p className={styles.header}>GAME STATUS</p>
@@ -329,14 +398,14 @@ export default function Home() {
               <div>
                 <p className={styles.header}>HOLDING DETAIL</p>
                 <div className={styles.holdings_container} id="holding">
-                  <ShowCompValue />
+                  <ShowCompValue portfolio={fullPortfolio} />
                 </div>
               </div>
 
               <div style={{ marginTop: "0.5em" }}>
                 <p className={styles.header}>PENDING ORDERS</p>
                 <div className={styles.holdings_container} id="holding">
-                  <PendingOrders />
+                  <PendingOrders orders={orders} />
                 </div>
               </div>
             </div>
@@ -347,15 +416,16 @@ export default function Home() {
           <div style={{ marginTop: "1.5em", marginBottom: "0em" }}>
             <div style={{ marginLeft: "-22em" }}>
               <div className={styles.header1}>
-                <p style={{ marginLeft: "-7.25em" }}>Trade</p>
+                <p style={{ marginLeft: "-8em" }}>Trade</p>
               </div>
-              <div className={styles.inline} style={{ marginLeft: "-10em" }}>
+              <div className={styles.inline} style={{ marginLeft: "-11em" }}>
                 <Trade
                   handleTickerChange={handleTickerChange}
                   ticker={compName}
                   setTicker={setCompName}
+                  user_uid={userUid}
                 />
-                <AskBidTable comp_name={compName} user_uid={user_uid} />
+                <AskBidTable comp_name={compName} user_uid={userUid} />
                 <CompanyChart comp_name={compName} />
               </div>
             </div>

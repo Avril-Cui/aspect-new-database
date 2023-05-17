@@ -244,7 +244,7 @@ const CompanyChart = (props) => {
   return (
     <ReactEcharts
       className={styles.time_line_chart}
-      style={{ height: 390, width: 510, marginLeft: "45em", marginTop: "0em" }}
+      style={{ height: 390, width: 510, marginLeft: "45.25em", marginTop: "0em" }}
       option={option}
     />
   );

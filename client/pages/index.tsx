@@ -12,6 +12,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { requestPrice } from "../features/newPrice.js";
 import { useState, useEffect } from "react";
 import dynamic from "next/dynamic";
+import Link from "next/link";
 const Tour = dynamic(() => import("reactour"), { ssr: false });
 interface Props {
   index: [Post];
@@ -42,7 +43,24 @@ export default function Front({ index, posts, companies }: Props) {
   let price_data = useSelector((state: any) => state.price.value);
 
   const [isPrice, setIsPrice] = useState(false);
+  const [isEnd, setIsEnd] = useState(false);
   useEffect(() => {
+    const axios = require("axios");
+    axios
+      .request({
+        method: "post",
+        maxBodyLength: Infinity,
+        url: `${process.env.serverConnection}/is-end-game`,
+      })
+      .then((response: any) => {
+        if (response.data == "0") {
+          setIsEnd(true);
+        }
+      })
+      .catch((error: any) => {
+        console.log(error);
+      });
+
     const data = setInterval(() => {
       dispatch(requestPrice() as any);
       setIsPrice(true);
@@ -139,12 +157,35 @@ export default function Front({ index, posts, companies }: Props) {
         <title>Aspect - Learn Financial Knowledge</title>
       </Head>
       <Tour steps={steps} isOpen={enabled} onRequestClose={onExit} />
+      {isEnd ? (
+        <div style={{ marginBottom: "2em" }}>
+          <p className={styles.header} style={{ marginBottom: "0.5em" }}>
+            💡 Reminder From Game 💡
+          </p>
+          <p className={styles.end_season_note}>
+            Season One had officially ended.
+          </p>
+          <p className={styles.end_season_note}>
+            Seasonal recap and analysis on the market and companies released.
+          </p>
+          <p className={styles.end_season_note}>
+            User and bot performances and statistics are provided.
+          </p>
+          <div className={styles.end_season_note}>
+            <Link href="/season-review">
+              <a>End Season Summary</a>
+            </Link>{" "}
+          </div>
+        </div>
+      ) : null}
       <div className={styles.layer_one}>
         <div className={styles.inline}>
           <p className={styles.header} id="index_graph">
             Market Overview
           </p>
-          <button onClick={togglePopup} className={styles.tutorial}>Start Tutorial ⭐</button>
+          <button onClick={togglePopup} className={styles.tutorial}>
+            Start Tutorial ⭐
+          </button>
         </div>
         {isOpen && (
           <div className={styles.pop_up_container}>

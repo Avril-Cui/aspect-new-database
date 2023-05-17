@@ -1,15 +1,9 @@
 import React from "react";
 import styles from "./Trade.module.css";
 import { useState } from "react";
-import Cookies from "universal-cookie";
 import axios from "axios";
 
 function Trade(props) {
-  const formatter = new Intl.NumberFormat("en-US", {
-    minimumFractionDigits: 2,
-    maximumFractionDigits: 2,
-  });
-
   const [type, setType] = useState("Buy");
   const [percentage, setPercentage] = useState(0);
 
@@ -17,8 +11,6 @@ function Trade(props) {
     setPercentage("100+");
   }
 
-  const cookies = new Cookies();
-  const user_uid = cookies.get("user_uid");
   const [buyShares, setBuyShares] = useState(undefined);
   const [Price, setPrice] = useState(undefined);
   const [sellShares, setSellShares] = useState(undefined);
@@ -27,21 +19,20 @@ function Trade(props) {
 
   const handleBuySharesChange = (event) => {
     setBuyShares(event.target.value);
+    event.preventDefault(props.user_uid);
     if (Price != undefined) {
       setTotalOrderValue(Math.round(Price * event.target.value * 100) / 100);
-      let data = JSON.stringify(user_uid);
       var config = {
         method: "post",
         url: `${process.env.serverConnection}/portfolio-detail`,
         headers: {
           "Content-Type": "text/plain",
         },
-        data: data,
+        data: JSON.stringify(props.user_uid),
       };
 
       axios(config)
         .then(function (response) {
-          console.log(response.data.portfolio_value.accountValue);
           setPercentage(
             Math.round(
               ((Price * event.target.value) /
@@ -60,19 +51,20 @@ function Trade(props) {
     setIsCurrentPrice(false);
   };
   const handleSellSharesChange = (event) => {
+    event.preventDefault(props.user_uid);
     setSellShares(event.target.value);
     if (Price != undefined) {
       setTotalOrderValue(
         Math.round(Price * Math.abs(event.target.value) * 100) / 100
       );
-      let data = JSON.stringify(user_uid);
+      let send_data = JSON.stringify(props.user_uid);
       var config = {
         method: "post",
         url: `${process.env.serverConnection}/portfolio-detail`,
         headers: {
           "Content-Type": "text/plain",
         },
-        data: data,
+        data: send_data,
       };
 
       axios(config)
@@ -116,14 +108,15 @@ function Trade(props) {
   };
 
   const handleSubmit = (event) => {
-    event.preventDefault(user_uid, buyShares, sellShares);
+    event.preventDefault(props.user_uid, buyShares, sellShares);
     setIsSubmit(true);
     if (
       buyShares !== undefined &&
       buyShares !== "" &&
       Price !== undefined &&
       Price != "" &&
-      props.ticker !== undefined
+      props.ticker !== undefined &&
+      props.user_uid != undefined
     ) {
       let buy_shares = parseFloat(buyShares);
       let buy_price;
@@ -133,7 +126,7 @@ function Trade(props) {
         buy_price = parseFloat(Price);
       }
       var buy_data = JSON.stringify({
-        user_uid: user_uid,
+        user_uid: props.user_uid,
         comp_name: props.ticker,
         share_number: buy_shares,
         target_price: buy_price,
@@ -163,7 +156,7 @@ function Trade(props) {
             );
           } else if (error.message == "Request failed with status code 402") {
             setMessage("You do not have enough money for this trade.");
-          } else if (error.essage == "Request failed with status code 401") {
+          } else if (error.message == "Request failed with status code 401") {
             setMessage("You do not owe enough shares of this stock.");
           } else if (error.message == "Request failed with status code 404") {
             setMessage(
@@ -178,9 +171,9 @@ function Trade(props) {
       Price !== undefined &&
       Price != "" &&
       sellShares != "" &&
-      props.ticker !== undefined
+      props.ticker !== undefined &&
+      props.user_uid != undefined
     ) {
-      console.log("HERE");
       let sell_shares = -parseFloat(sellShares);
       let sell_price;
       if (isCurrentPrice == true) {
@@ -190,7 +183,7 @@ function Trade(props) {
       }
 
       var sell_data = JSON.stringify({
-        user_uid: user_uid,
+        user_uid: props.user_uid,
         comp_name: props.ticker,
         share_number: sell_shares,
         target_price: sell_price,
@@ -229,19 +222,12 @@ function Trade(props) {
           }
         });
     }
-    console.log(message);
 
     setBuyShares("");
     setPrice("");
     setTotalOrderValue("");
     setSellShares("");
   };
-  const [portfolio, setPortfolio] = useState({
-    accountValue: undefined,
-    cashValue: undefined,
-    category: "portfolio_value",
-    holdingValue: undefined,
-  });
 
   return (
     <form onSubmit={handleSubmit}>
@@ -266,7 +252,11 @@ function Trade(props) {
         <div className={styles.layer}>
           <div className={styles.company_name}>
             <p className={styles.header}>Company</p>
-            <select style={{ width: 300 }} onChange={props.handleTickerChange}>
+            <select
+              style={{ width: 300 }}
+              onChange={props.handleTickerChange}
+              id="company-trade-selector"
+            >
               <option value="AST">Astral Company Limited (AST)</option>
               <option value="DSC">Doshacom (DSC)</option>
               <option value="FSIN">FlashIn, Inc. (FSIN)</option>
@@ -294,6 +284,7 @@ function Trade(props) {
                   onChange={handlePriceChange}
                   className={styles.input_field}
                   style={{ marginLeft: "0.2em" }}
+                  id="company-trade-price-input"
                 />
               </div>
               <p className={styles.asd}>ASD</p>
@@ -302,6 +293,7 @@ function Trade(props) {
           <button
             className={styles.trade_current}
             onClick={setDefaultPriceHandler}
+            id="company-trade-equilibrium-price-btn"
           >
             <p>Current</p>
           </button>
@@ -324,6 +316,7 @@ function Trade(props) {
                 placeholder="0.00"
                 className={styles.input_field}
                 style={{ marginLeft: "0.2em" }}
+                id="company-trade-qty-input"
               />
             </div>
             <p className={styles.asd1}>ASD</p>
@@ -366,7 +359,9 @@ function Trade(props) {
       {isSubmit && <p className={styles.success}>{message}</p>}
 
       <div>
-        <button className={styles.enter_trade}>Enter {type} Trade</button>
+        <button className={styles.enter_trade} id="submit-company-trade-order">
+          Enter {type} Trade
+        </button>
       </div>
     </form>
   );

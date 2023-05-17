@@ -1,59 +1,7 @@
 import React from "react";
-import axios from "axios";
 import styles from "../../styles/portfolio.module.css";
-import { useState, useEffect } from "react";
-import Cookies from "universal-cookie";
 
-function ShowPortfolio() {
-  const [loading, setLoading] = useState(false);
-
-  const loadingState = {
-    accountValue: "...",
-    cashValue: "...",
-    category: "portfolio_value",
-    holdingValue: "...",
-  };
-
-  const [portfolio, setPortfolio] = useState({
-    accountValue: undefined,
-    cashValue: undefined,
-    category: "portfolio_value",
-    holdingValue: undefined,
-  });
-
-  const cookies = new Cookies();
-  const user_uid = cookies.get("user_uid");
-
-  const WAIT_TIME = 3000;
-
-  useEffect(() => {
-    if (portfolio.accountValue != undefined) {
-      setLoading(true);
-    }
-
-    const data = setInterval(() => {
-      let data = JSON.stringify(user_uid);
-      var config = {
-        method: "post",
-        url: `${process.env.serverConnection}/portfolio-detail`,
-        headers: {
-          "Content-Type": "text/plain",
-        },
-        data: data,
-      };
-
-      axios(config)
-        .then(function (response) {
-          setPortfolio(response.data.portfolio_value);
-        })
-        .catch(function (error) {
-          console.log(error);
-        });
-
-    }, WAIT_TIME);
-    return () => clearInterval(data);
-  }, [portfolio, user_uid]);
-
+function ShowPortfolio(props) {
   function round(num) {
     var m = Number((Math.abs(num) * 100).toPrecision(15));
     return (Math.round(m) / 100) * Math.sign(num);
@@ -61,8 +9,8 @@ function ShowPortfolio() {
 
   let total_change = 0;
 
-  if (portfolio.accountValue != undefined) {
-    total_change = round(((portfolio.accountValue - 100000) / 100000) * 100);
+  if (props.portfolio.accountValue != undefined) {
+    total_change = round(((props.portfolio.accountValue - 100000) / 100000) * 100);
   } else {
     total_change = 0;
   }
@@ -75,7 +23,7 @@ function ShowPortfolio() {
         paddingBottom: "0.75em",
       }}
     >
-      {loading ? (
+      {props.loading ? (
         <div>
           {" "}
           <p className={styles.title}>Account Value</p>
@@ -83,13 +31,13 @@ function ShowPortfolio() {
             className={styles.account_value}
             style={{ marginBottom: "0.2em" }}
           >
-            $ {portfolio.accountValue}
+            $ {props.portfolio.accountValue}
           </div>
           <div className={styles.inline} style={{ marginTop: "0.25em" }}>
             <div>
               <p className={styles.title}>Net Holding</p>
               <div className={styles.price_change}>
-                {round(portfolio.holdingValue)}
+                {round(props.portfolio.holdingValue)}
               </div>
             </div>
             <div style={{ marginLeft: "5em" }}>
@@ -101,7 +49,7 @@ function ShowPortfolio() {
             <div>
               <p className={styles.title}>Cash Value</p>
               <div className={styles.price_change}>
-                {round(portfolio.cashValue)}
+                {round(props.portfolio.cashValue)}
               </div>
             </div>
           </div>
@@ -114,13 +62,13 @@ function ShowPortfolio() {
             className={styles.account_value}
             style={{ marginBottom: "0.2em" }}
           >
-            $ {loadingState.accountValue}
+            $ {props.loadingState.accountValue}
           </div>
           <div className={styles.inline} style={{ marginTop: "0.25em" }}>
             <div>
               <p className={styles.title}>Net Holding</p>
               <div className={styles.price_change}>
-                {loadingState.holdingValue}
+                {props.loadingState.holdingValue}
               </div>
             </div>
             <div style={{ marginLeft: "5em" }}>
@@ -132,7 +80,7 @@ function ShowPortfolio() {
             <div>
               <p className={styles.title}>Cash Value</p>
               <div className={styles.price_change}>
-                {round(loadingState.cashValue)}
+                {round(props.loadingState.cashValue)}
               </div>
             </div>
           </div>

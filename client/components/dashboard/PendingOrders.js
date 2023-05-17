@@ -1,52 +1,15 @@
 import { useRef } from "react";
 import styles from "../../styles/portfolio.module.css";
 import { useState, useEffect } from "react";
-import Cookies from "universal-cookie";
 import Link from "next/link";
 import alien from "../../image/logo/alien.png";
 import Image from "next/image";
+import axios from "axios";
 
 function PendingOrders(props) {
-  const cookies = new Cookies();
-  const user_uid = cookies.get("user_uid");
-
-  const containerRef = useRef(null);
-  const [orders, setOrders] = useState([[undefined, "", undefined, undefined]]);
-
-  const WAIT_TIME = 3000;
-  const [isPortfolio, setIsPortfolio] = useState(false);
-
-  useEffect(() => {
-    const data = setInterval(() => {
-      var axios = require("axios");
-      var data = JSON.stringify(user_uid);
-
-      var config = {
-        method: "post",
-        url: `${process.env.serverConnection}/get-user-pending-orders`,
-        headers: {
-          "Content-Type": "text/plain",
-        },
-        data: data,
-      };
-
-      axios(config)
-        .then(function (response) {
-          setOrders(response.data);
-          console.log(orders)
-          if (orders.length > 1) {
-            setIsPortfolio(true);
-          }
-        })
-        .catch(function (error) {
-          console.log(error);
-        });
-    }, WAIT_TIME);
-    return () => clearInterval(data);
-  }, [orders, user_uid]);
   return (
     <div className={styles.scroll}>
-      <div ref={containerRef}>
+      <div>
         <table className={styles.screener_table1}>
           <tbody>
             <tr>
@@ -59,12 +22,16 @@ function PendingOrders(props) {
             </tr>
           </tbody>
           <tbody className={styles.table_line}>
-            {orders.map((order) => {
-              return <Company order={order} />;
+            {props.orders.map((order) => {
+              return (
+                <Company
+                  order={order == null ? [null, null, null, null, null] : order}
+                />
+              );
             })}
           </tbody>
         </table>
-        {isPortfolio ? null : (
+        {Object.keys(props.orders).length > 0 ? null : (
           <div className={styles.alien_img}>
             {" "}
             <Image src={alien} width="210px" height="150px" alt="" />
@@ -79,11 +46,6 @@ function PendingOrders(props) {
 }
 
 function Company(props) {
-  function round(num) {
-    var m = Number((Math.abs(num) * 100).toPrecision(15));
-    return (Math.round(m) / 100) * Math.sign(num);
-  }
-
   const id = props.order[0];
   const category = props.order[1];
   const price = props.order[2];
@@ -133,7 +95,7 @@ function Company(props) {
       </tr>
     );
   } else {
-    return <tbody key="random"></tbody>;
+    return <tr key="random"></tr>;
   }
 }
 export default PendingOrders;

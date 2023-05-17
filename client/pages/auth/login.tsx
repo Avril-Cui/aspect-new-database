@@ -33,7 +33,7 @@ const Login = () => {
     })
       .then(function (response) {
         cookies.set("user_uid", response.data, { path: "/" });
-        router.push("/dashboard");
+        router.back()
       })
       .catch(function (error) {
         setIsError(true);
@@ -60,6 +60,7 @@ const Login = () => {
                   value={data["user_email"]}
                   type="email"
                   placeholder="Enter user email"
+                  id="user-email-login-entry"
                 />
               </div>
             </div>
@@ -79,6 +80,7 @@ const Login = () => {
                   required
                   type="password"
                   placeholder="Password"
+                  id="user-email-password-entry"
                 />
               </div>
             </div>
@@ -92,6 +94,7 @@ const Login = () => {
               type="submit"
               className={styles.submit_button}
               value="Log In"
+              id="submit-user-login"
             />
           </form>
         </div>

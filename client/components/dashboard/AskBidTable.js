@@ -55,7 +55,6 @@ function AskBidTable(props) {
 
   const handleAcceptOrder = (input, e, index) => {
     e.preventDefault();
-    console.log(input);
     if (
       shares[index] == "" ||
       Object.keys(shares).length == 0 ||
@@ -80,7 +79,6 @@ function AskBidTable(props) {
       };
       axios(config)
         .then(function (response) {
-          console.log("Order accepted!");
           setIsSuccess(true);
         })
         .catch(function (error) {

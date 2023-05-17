@@ -9,7 +9,7 @@ import datetime
 from Model.House.auction_house import AuctionHouse
 seconds = time.time()
 # start_time = 1680646552
-start_time = time.time() - 60*60*24*10
+start_time = time.time() - 60*60*24*10 - 60*60*2
 end_time = start_time + (60*60*24)*29 + 36000
 start_date = datetime.datetime.now()
 DATABASE_HOST = os.getenv("DATABASE_HOST")
@@ -39,14 +39,14 @@ def get_price_from_database(company_id):
 	return price
 
 user_database_commands = UserDatabaseCommands(conn, cur)
-user_database_commands.create_user_table()
-user_database_commands.create_portfolio_table()
-user_database_commands.create_trade_history_table()
+# user_database_commands.create_user_table()
+# user_database_commands.create_portfolio_table()
+# user_database_commands.create_trade_history_table()
 
 import json
 from flask import Flask, request, jsonify, request
 import pyrebase
-from flask_cors import CORS
+from flask_cors import CORS, cross_origin
 import uuid
 from itertools import accumulate
 from functools import reduce
@@ -96,13 +96,15 @@ def get_current_prices(company_list):
 	index_tmp = int(current_time-start_time-index_lst*86400)
 	if index_tmp <= 36000:
 		current_prices = {}
-		for company in company_list:
-			current_prices[company] = price_list[company][index_lst][index_tmp]
+		if company_list != []:
+			for company in company_list:
+				current_prices[company] = float(price_list[company][index_lst][index_tmp])
 		return current_prices
 	elif index_tmp > 36000 and index_tmp <= 86400:
 		current_prices = {}
-		for company in company_list:
-			current_prices[company] = price_list[company][index_lst][-1]
+		if company_list != []:
+			for company in company_list:
+				current_prices[company] = float(price_list[company][index_lst][-1])
 		return current_prices
 
 
@@ -133,10 +135,10 @@ chat_storage = {
 	"technical": {}
 }
 
-app = Flask(__name__, static_url_path='')
+app = Flask(__name__)
 CORS(app)
-app.config["CORS_ORIGINS"] = ["https://aspect-finance.com",
-							  "http://localhost:8080", "http://127.0.0.1:5000/"]
+app.config["CORS_ORIGINS"] = ["https://aspect-game.com",
+							  "http://localhost:8080", "http://127.0.0.1:5000", "http://localhost:3000"]
 app.config['JSON_SORT_KEYS'] = False
 config = {
 	"apiKey": "AIzaSyAHY-ZeX87ObL6y3y_2n76GLNxU-24hHs0",
@@ -320,11 +322,10 @@ def cancel_order():
 def portfolio_detail():
 	user_uid = json.loads(request.data)
 	company_list = user_database_commands.get_comp_holding_list(user_uid)
-	current_prices = get_current_prices(company_list)
+	current_prices = get_current_prices(company_list)		
 	portfolio = user_database_commands.get_portfolio_info(
 		user_uid, current_prices)
 	return jsonify(portfolio)
-
 
 @app.route('/show-ranking', methods=['POST'])
 def show_ranking():
@@ -336,11 +337,6 @@ def show_ranking():
 def total_rank():
 	user_rank = user_database_commands.get_total_rank()
 	return user_rank
-
-@app.route('/total-bot-rank', methods=['POST'])
-def total_bot_rank():
-	bot_rank = house.get_total_rank()
-	return bot_rank
 
 @app.route('/current-all-prices', methods=["POST"])
 def current_all_prices():
@@ -477,49 +473,105 @@ def tick_graphs():
 			graphs[key] = tick_price_graph
 		return jsonify(graphs)
 
+@cross_origin()
+@app.route('/end-season-user-data', methods=['POST'])
+def end_season_user_data():
+	user_uid = json.loads(request.data)
+	rank = user_database_commands.get_rank_user(user_uid)
+	cash_value = user_database_commands.get_user_cash(user_uid)
+	result = {
+		"rank": rank,
+		"cash": float(cash_value),
+		"pct_change": float((cash_value-100000)/100000 * 100 )
+	}
+	return jsonify(result)
+
+@cross_origin()
+@app.route('/fifteen-rank', methods=['POST'])
+def fifteen_rank():
+	user_rank = user_database_commands.get_fifteen_rank()
+	return user_rank
+
+@cross_origin()
+@app.route('/total-bot-rank', methods=['POST'])
+def total_bot_rank():
+	bot_rank = house.get_total_bot_rank()
+	return bot_rank
+
 @app.route('/is-end-game', methods=['POST'])
 def is_end_game():
-	current_time = time.time()
-	if current_time >= end_time:
-		return str(0) #True
-	else:
-		return str(1) #False
+	return "0"
+	# current_time = time.time()
+	# if current_time >= end_time:
+	# 	return str(0) #True
+	# else:
+	# 	return str(1) #False
 
-@app.route('/end-all-prices', methods=["POST"])
-def end_all_prices():
-	price_dict = {}
-	for key in price_list:
-			change = round(
-				(price_list[key][-1][-1] - price_list[key][0][0]), 1)
-			pct_change = round(
-				(price_list[key][-1][-1] - price_list[key][0][0]) / price_list[key][0][0] * 100, 1)
-			price_dict[key] = {"price":  round(
-				price_list[key][-1][-1], 2), "change": change, "pct_change": pct_change}
-	return jsonify(price_dict)
-
-
-@app.route('/end-season-index-graph', methods=["POST"])
-def end_season_index_graph():
+@app.route('/end-game-index-chart', methods=['POST'])
+def end_game_index_chart():
 	graph_lst = []
-	for index in range(len(price_list["index"])):
-		high = round(max(price_list["index"][index]))
-		low = round(min(price_list["index"][index]))
-		open_p = round(price_list["index"][index][0])
-		close_p = round(price_list["index"][index][-1])
-		if index > (31-int(start_date.day)):
-			month = int(start_date.month) + 1
-			day = index - ((31-int(start_date.day)))
-			month = f"{month:02d}"
-			day = f"{day:02d}"
-			date = f"{day}/{month}/2073"
-		else:
-			month = int(start_date.month)
-			day = int(start_date.day) + index
-			month = f"{month:02d}"
-			day = f"{day:02d}"
-			date = f"{day}/{month}/2073"
+	for index in range((len(price_list["index"])-30), len(price_list["index"])):
+		high = round(max(price_list["index"][index]), 2)
+		low = round(min(price_list["index"][index]), 2)
+		open_p = round(price_list["index"][index][0], 2)
+		close_p = round(price_list["index"][index][-1], 2)
+		dt_object = datetime.datetime.fromtimestamp(start_time+index*86400)
+		month = dt_object.month
+		day = dt_object.day
+		date = f"{day}/{month}/2073"
 		graph_lst.append([date, open_p, close_p, low, high])
 	return jsonify(graph_lst)
+
+@app.route('/end-game-companies-chart', methods=['POST'])
+def end_game_companies_chart():
+	comp_name = json.loads(request.data)
+	graph_lst = []
+	for index in range(len(price_list[comp_name])-30, len(price_list[comp_name])):
+		high = round(max(price_list[comp_name][index]), 2)
+		low = round(min(price_list[comp_name][index]), 2)
+		open_p = round(price_list[comp_name][index][0], 2)
+		close_p = round(price_list[comp_name][index][-1], 2)
+		dt_object = datetime.datetime.fromtimestamp(start_time+index*86400)
+		month = dt_object.month
+		day = dt_object.day
+		date = f"{day}/{month}/2073"
+		graph_lst.append([date, open_p, close_p, low, high])
+	print(len(graph_lst))
+	return jsonify(graph_lst)
+
+@app.route('/end-game-prices', methods=['POST'])
+def end_game_prices():
+	comp_price_data = {}
+	for key in price_list:
+		comp_price_data[key] = {
+			"end_price": price_list[key][-1][-1],
+			"pct_change": (price_list[key][-1][-1] - price_list[key][0][0]) / price_list[key][0][0]
+		}
+	return comp_price_data
+
+
+# @app.route('/end-season-index-graph', methods=["POST"])
+# def end_season_index_graph():
+# 	graph_lst = []
+# 	for index in range(len(price_list["index"])):
+# 		high = round(max(price_list["index"][index]))
+# 		low = round(min(price_list["index"][index]))
+# 		open_p = round(price_list["index"][index][0])
+# 		close_p = round(price_list["index"][index][-1])
+# 		if index > (31-int(start_date.day)):
+# 			month = int(start_date.month) + 1
+# 			day = index - ((31-int(start_date.day)))
+# 			month = f"{month:02d}"
+# 			day = f"{day:02d}"
+# 			date = f"{day}/{month}/2073"
+# 		else:
+# 			month = int(start_date.month)
+# 			day = int(start_date.day) + index
+# 			month = f"{month:02d}"
+# 			day = f"{day:02d}"
+# 			date = f"{day}/{month}/2073"
+# 		graph_lst.append([date, open_p, close_p, low, high])
+# 	return jsonify(graph_lst)
 
 @app.route('/send-message', methods=['POST'])
 def send_message():
@@ -568,5 +620,5 @@ def get_message():
 	return jsonify(list(message_lst))
 
 if __name__ == '__main__':
-	app.run()
+	app.run(debug=True)
     # app.run(host="localhost", port=5000)
