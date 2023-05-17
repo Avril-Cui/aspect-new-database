@@ -65,6 +65,20 @@
   border: #c3fcc2 solid 1px;
 }
 
+.end_season_note{
+  color: #ececec;
+  margin-left: 1em;
+}
+
+.end_season_note a{
+  color: #c3fcc2;
+  text-decoration: underline;
+}
+
+.end_season_note a:hover{
+  cursor: pointer;
+}
+
 .box4 {
   width: 28em;
   margin: 0 auto;

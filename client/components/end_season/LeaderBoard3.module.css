@@ -1,0 +1,28 @@
+.user_table{
+    border-collapse: collapse;
+    display: table;
+    margin: 0.5em auto;
+}
+
+.user_table th{
+    font-size: 16px;
+    font-weight: 300;
+    text-align: left;
+    /* padding: 0.35em 1.75em; */
+    padding: 0.55em 2em;
+    color: #72B176;
+    text-align: center;
+}
+
+.user_table td{
+    font-size: 14px;
+    font-weight: 300;
+    text-align: left;
+    padding: 0.45em 2em;
+    color: #dadada;
+    text-align: center;
+}
+
+.user_table tr:nth-child(even) {
+    background-color: #272727;
+}

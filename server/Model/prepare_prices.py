@@ -1,15 +1,16 @@
 import get_parameters
 from modified_wave import MidPriceGenerator, DayPriceGenerator, WaveModifier, StockSimulator
 import numpy as np
-micro = get_parameters.micro
+import matplotlib.pyplot as plt
+import pandas as pd
+
 
 def get_stock_price(
-	file_names, params, 
-	intensity, length, weights, 
+	file_names, params,
+    intensity, length, weights, 
 	mid_prices, mid_starts, 
 	event_intensity, 
-	adjust_price, random1, random2):
-
+	target_price, sigma):
     price_list = []
     for i in range(len(file_names)):
         name = file_names[i]
@@ -21,7 +22,7 @@ def get_stock_price(
             'start_point': 0,
             'duration': length[i],
             'weight': weights[i],
-            'intensity_factor': 1
+            'intensity_factor': intensity
         }
 
         wave_2 = {
@@ -29,7 +30,7 @@ def get_stock_price(
             'start_point': mid_starts[i],
             'duration': length[i],
             'weight': 1-weights[i],
-            'intensity_factor': 1
+            'intensity_factor': intensity
         }
         print(name)
 
@@ -38,42 +39,26 @@ def get_stock_price(
             0, event_intensity[i], length[i], wave_1, wave_2)
         
         if len(price_list) == 0:
-            adjust_factor = adjust_price
+            adjust_factor = target_price
         else:
             adjust_factor = price_list[-1]
 
-        final_price_list = []
-        for index in range(len(combinated_price)):
-            if index > 0:
-                price_generator = StockSimulator(
-                    combinated_price[1]-adjust_factor, combinated_price[index], combinated_price, index, micro)
-                result_price = price_generator.generate_price()
-                final_price_list.extend(result_price)
-
-        user_interaction_modifier = []
-        for index in range(len(final_price_list)):
-            random_modifier = np.random.normal(0, random1)
-            random_modifier2 = np.random.normal(0, random2)
-            if index % 100 == 0:
-                user_interaction_modifier.append(random_modifier)
-            elif index % 50 == 0:
-                user_interaction_modifier.append(random_modifier2)
-            else:
-                user_interaction_modifier.append(0)
-
-        final_price_list = np.add(user_interaction_modifier, final_price_list)
-        price_list.extend(final_price_list)
+        price_generator = StockSimulator(adjust_factor, combinated_price, sigma[i])
+        result_price = price_generator.generate_price()
+                
+        price_list.extend(result_price)
 
     return price_list
 
+intensity = [1,1,1,1,1,1,1]
+
+sigma = [6,10,8,3,4,5,7]
 mid_price_index1 = MidPriceGenerator.generate_mid_price("2015-3-9", "2017-1-1", ["^DJI"], 15)
 mid_prices_index = [mid_price_index1, mid_price_index1, mid_price_index1,
                     mid_price_index1, mid_price_index1, mid_price_index1, mid_price_index1]
 mid_start = [120, 50, 30, 50, 50, 60, 60]
-intensity = [1,1,1,1,1,1,1]
 index_price = get_stock_price(get_parameters.file_names_index, get_parameters.index_params_index, intensity, get_parameters.length_index,
-get_parameters.fund_weights_index, mid_prices_index, mid_start, [600, 700, 700, 750, 750, 700, 3200], 1200, 0.5, 0.25
-)
+get_parameters.fund_weights_index, mid_prices_index, mid_start, [900, 900, 900, 900, 600, 700, 220], 1200, sigma)
 
 mid_price_index1 = MidPriceGenerator.generate_mid_price("2019-1-1", "2019-10-20", ["^GSPC"], 15)
 mid_price_index2 = MidPriceGenerator.generate_mid_price("2019-6-19", "2019-10-28", ["^GSPC"], 15)
@@ -82,51 +67,48 @@ mid_price_index4 = MidPriceGenerator.generate_mid_price("2019-8-15", "2020-2-15"
 mid_price_index5 = MidPriceGenerator.generate_mid_price("2019-8-15", "2020-2-15", ["^GSPC"], 15)
 mid_prices_index = [mid_price_index1, mid_price_index2, mid_price_index3, mid_price_index4, mid_price_index5]
 mid_start = [0, 0, 0, 0, 0]
-
+sigma = [2,2,4.5,3,3]
 ast_price = get_stock_price(get_parameters.file_names_ast, get_parameters.params_ast, intensity, get_parameters.length_ast,
-get_parameters.fund_weights_ast, mid_prices_index, mid_start, [20, 30, 50, 30, 40], 50, 0.7, 0.35
-)
-
+get_parameters.fund_weights_ast, mid_prices_index, mid_start, [100, 100, 70, 135, 110], 50, sigma)
 
 mid_price_index1 = MidPriceGenerator.generate_mid_price("2019-12-15", "2021-8-1", ["^GSPC"], 15)
 mid_prices_index = [mid_price_index1, mid_price_index1, mid_price_index1, mid_price_index1]
-mid_start = [0, 140, 170, 270, 300]
-
+mid_start = [0, 140, 170, 270]
+sigma = [1, 0.4, 1.75, 0.5]
 dsc_price = get_stock_price(get_parameters.file_names_dsc, get_parameters.params_dsc, intensity, get_parameters.length_dsc,
-get_parameters.fund_weights_dsc, mid_prices_index, mid_start, [40, 10, 40, 10, 40], 30, 0.05, 0.07
-)
+get_parameters.fund_weights_dsc, mid_prices_index, mid_start, [17, 135, 70, 140], 39.78, sigma)
 
 mid_price_index1 = MidPriceGenerator.generate_mid_price("2019-12-15", "2021-8-1", ["^GSPC"], 15)
 mid_prices_index = [mid_price_index1, mid_price_index1, mid_price_index1, mid_price_index1]
 mid_start = [0, 150, 190, 270, 300]
+sigma = [0.5, 0.2, 0.85, 0.5]
 fsin_price = get_stock_price(get_parameters.file_names_fsin, get_parameters.params_fsin, intensity, get_parameters.length_fsin,
-get_parameters.fund_weights_fsin, mid_prices_index, mid_start, [35, 10, 70, 10], 60, 0.06, 0.03
-)
+get_parameters.fund_weights_fsin, mid_prices_index, mid_start, [40, 100, 10, 40], 60, sigma)
 
 mid_price_index1 = MidPriceGenerator.generate_mid_price("2021-8-15", "2022-12-1", ["^GSPC"], 15)
 mid_prices_index = [mid_price_index1, mid_price_index1, mid_price_index1, mid_price_index1]
 mid_start = [0, 20, 110, 190, 300]
+sigma = [0.7, 1, 0.45, 0.35]
 hhw_price = get_stock_price(get_parameters.file_names_hhw, get_parameters.params_hhw, intensity, get_parameters.length_hhw,
-get_parameters.fund_weights_hhw, mid_prices_index, mid_start, [15, 28, 28, 70], 70, 0.07, 0.04
-)
+get_parameters.fund_weights_hhw, mid_prices_index, mid_start, [70, 120, 100, 40], 70, sigma)
 
 mid_price_index1 = MidPriceGenerator.generate_mid_price("2021-8-15", "2022-12-1", ["^GSPC"], 15)
 mid_prices_index = [mid_price_index1, mid_price_index1, mid_price_index1, mid_price_index1]
-mid_start = [0, 20, 110, 190, 300]
+mid_start = [0, 20, 110, 190]
+sigma = [0.55, 0.55, 0.6, 0.5]
 jky_price = get_stock_price(get_parameters.file_names_jky, get_parameters.params_jky, intensity, get_parameters.length_jky,
-get_parameters.fund_weights_jky, mid_prices_index, mid_start, [78, 45, 6, 10], 60, 0.15, 0.05
-)
+get_parameters.fund_weights_jky, mid_prices_index, mid_start, [45, 50, 50, 80], 60, sigma)
 
 mid_price_index1 = MidPriceGenerator.generate_mid_price("2021-8-15", "2022-12-1", ["^GSPC"], 15)
 mid_prices_index = [mid_price_index1, mid_price_index1, mid_price_index1, mid_price_index1, mid_price_index1]
 mid_start = [0, 10, 100, 160, 250]
+sigma = [0.3, 0.55, 1, 0.85, 0.8]
 sgo_price = get_stock_price(get_parameters.file_names_sgo, get_parameters.params_sgo, intensity, get_parameters.length_sgo,
-get_parameters.fund_weights_sgo, mid_prices_index, mid_start, [10, 55, 20, 65, 50], 80, 0.06, 0.028
-)
+get_parameters.fund_weights_sgo, mid_prices_index, mid_start, [100, 80, 1000, 80, 98], 80, sigma)
 
 mid_price_index1 = MidPriceGenerator.generate_mid_price("2021-8-15", "2022-12-1", ["^GSPC"], 15)
 mid_prices_index = [mid_price_index1, mid_price_index1, mid_price_index1]
 mid_start = [0, 200, 230]
+sigma = [0.4, 0.35, 0.5]
 wrkn_price = get_stock_price(get_parameters.file_names_wrkn, get_parameters.params_wrkn, intensity, get_parameters.length_wrkn,
-get_parameters.fund_weights_wrkn, mid_prices_index, mid_start, [56, 10, 50], 50, 0.3, 0.15
-)
+get_parameters.fund_weights_wrkn, mid_prices_index, mid_start, [70, 70, 70], 70, sigma)

@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import styles from "./chart_style.module.css";
 import Image from "next/image";
 import alien from "../../../image/logo/alien.png";
+
 const AdjustedDimension = (props) => {
   const WAIT_TIME = 1000 * 60 * 60;
   const [isPrice, setIsPrice] = useState(false);
@@ -14,7 +15,7 @@ const AdjustedDimension = (props) => {
 
     var config = {
       method: "post",
-      url: "https://aspect-server.onrender.com/day-graph",
+      url: `${process.env.serverConnection}/day-graph`,
       headers: {
         "Content-Type": "text/plain",
       },

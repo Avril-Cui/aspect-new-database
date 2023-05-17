@@ -9,7 +9,7 @@ const DayDimension = (props) => {
 
     var config = {
       method: "post",
-      url: "https://aspect-server.onrender.com/day-graph",
+      url: `${process.env.serverConnection}/day-graph`,
       headers: {
         "Content-Type": "text/plain",
       },

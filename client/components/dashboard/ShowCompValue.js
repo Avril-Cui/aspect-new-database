@@ -1,53 +1,13 @@
 import { useRef } from "react";
 import styles from "../../styles/portfolio.module.css";
-import { useState, useEffect } from "react";
-import Cookies from "universal-cookie";
 import Link from "next/link";
+import alien from "../../image/logo/alien.png";
+import Image from "next/image";
 
 function ShowCompValue(props) {
-  const cookies = new Cookies();
-  const user_uid = cookies.get("user_uid");
-
-  const containerRef = useRef(null);
-  const [portfolio, setPortfolio] = useState({
-    portfolio_value: {
-      accountValue: 0,
-      cashValue: 0,
-      category: "portfolio_value",
-      holdingValue: 0,
-    },
-  });
-
-  const WAIT_TIME = 5000;
-
-  useEffect(() => {
-    const data = setInterval(() => {
-      var axios = require("axios");
-      var data = JSON.stringify(user_uid);
-
-      var config = {
-        method: "post",
-        url: "https://aspect-server.onrender.com/portfolio-detail",
-        headers: {
-          "Content-Type": "text/plain",
-        },
-        data: data,
-      };
-
-      axios(config)
-        .then(function (response) {
-          setPortfolio(response.data);
-        })
-        .catch(function (error) {
-          console.log(error);
-        });
-    }, WAIT_TIME);
-    return () => clearInterval(data);
-  }, [portfolio, user_uid]);
-
   return (
     <div className={styles.scroll}>
-      <div ref={containerRef}>
+      <div >
         <table className={styles.screener_table}>
           <tbody>
             <tr>
@@ -59,13 +19,22 @@ function ShowCompValue(props) {
             </tr>
           </tbody>
           <tbody className={styles.table_line}>
-            {Object.keys(portfolio).map((key) => {
+            {Object.keys(props.portfolio).map((key) => {
               return key != "portfolio_value" ? (
-                <Company company={portfolio[key]} />
+                <Company company={props.portfolio[key]} />
               ) : null;
             })}
           </tbody>
         </table>
+        {Object.keys(props.portfolio).length > 1 ? null : (
+          <div className={styles.alien_img}>
+            {" "}
+            <Image src={alien} width="210px" height="150px" alt="" />
+            <p className={styles.no_text}>
+              You don't hold any stocks yet! Make a trade below.
+            </p>
+          </div>
+        )}
       </div>
     </div>
   );
@@ -118,7 +87,7 @@ function Company(props) {
       </tr>
     );
   } else {
-    return <tbody key="random"></tbody>;
+    return <tr key="random"></tr>;
   }
 }
 export default ShowCompValue;

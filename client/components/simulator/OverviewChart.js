@@ -70,7 +70,7 @@ export default function OverviewMiniChart(props) {
 
       var config = {
         method: 'post',
-        url: 'http://localhost:5000/tick-graph',
+        url: `${process.env.serverConnection}/tick-graph`,
         headers: { 
           'Content-Type': 'text/plain'
         },

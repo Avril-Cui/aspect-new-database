@@ -12,6 +12,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { requestPrice } from "../features/newPrice.js";
 import { useState, useEffect } from "react";
 import dynamic from "next/dynamic";
+import Link from "next/link";
 const Tour = dynamic(() => import("reactour"), { ssr: false });
 interface Props {
   index: [Post];
@@ -42,7 +43,24 @@ export default function Front({ index, posts, companies }: Props) {
   let price_data = useSelector((state: any) => state.price.value);
 
   const [isPrice, setIsPrice] = useState(false);
+  const [isEnd, setIsEnd] = useState(false);
   useEffect(() => {
+    const axios = require("axios");
+    axios
+      .request({
+        method: "post",
+        maxBodyLength: Infinity,
+        url: `${process.env.serverConnection}/is-end-game`,
+      })
+      .then((response: any) => {
+        if (response.data == "0") {
+          setIsEnd(true);
+        }
+      })
+      .catch((error: any) => {
+        console.log(error);
+      });
+
     const data = setInterval(() => {
       dispatch(requestPrice() as any);
       setIsPrice(true);
@@ -139,12 +157,35 @@ export default function Front({ index, posts, companies }: Props) {
         <title>Aspect - Learn Financial Knowledge</title>
       </Head>
       <Tour steps={steps} isOpen={enabled} onRequestClose={onExit} />
+      {isEnd ? (
+        <div style={{ marginBottom: "2em" }}>
+          <p className={styles.header} style={{ marginBottom: "0.5em" }}>
+            💡 Reminder From Game 💡
+          </p>
+          <p className={styles.end_season_note}>
+            Season One had officially ended.
+          </p>
+          <p className={styles.end_season_note}>
+            Seasonal recap and analysis on the market and companies released.
+          </p>
+          <p className={styles.end_season_note}>
+            User and bot performances and statistics are provided.
+          </p>
+          <div className={styles.end_season_note}>
+            <Link href="/season-review">
+              <a>End Season Summary</a>
+            </Link>{" "}
+          </div>
+        </div>
+      ) : null}
       <div className={styles.layer_one}>
         <div className={styles.inline}>
           <p className={styles.header} id="index_graph">
             Market Overview
           </p>
-          <button onClick={togglePopup} className={styles.tutorial}>Start Tutorial ⭐</button>
+          <button onClick={togglePopup} className={styles.tutorial}>
+            Start Tutorial ⭐
+          </button>
         </div>
         {isOpen && (
           <div className={styles.pop_up_container}>
@@ -438,14 +479,14 @@ export const getStaticProps = async () => {
       name: "Jileky Investment, Inc.",
       name2: "Jileky",
       overview:
-        "Jilepy Investment, Inc.(JKY) offers financial services among three major businesses: Corporate & Investment Bank, Commercial Banking, and Asset & Wealth Management. The company provides services to fulfill various client needs, including investment and lending products, deposit, cash management,…",
+        "Jileky Investment, Inc.(JKY) offers financial services among three major businesses: Corporate & Investment Bank, Commercial Banking, and Asset & Wealth Management. The company provides services to fulfill various client needs, including investment and lending products, deposit, cash management,…",
       news_type: "973458a0-eb3a-4e85-bd2a-f7513bf73bab",
       industry: "Financials",
       p_e: 8.14,
       p_b: 1.02,
       p_s: 2.38,
       overview2:
-        "Jilepy Investment, Inc. provides financial services for clients across the world. It offers three major businesses: Corporate & Investment Bank (CIB), Commercial Banking (CB), and Asset & Wealth Management (AWM). The company provides services to fulfill various client needs, including investment and lending products, deposit, cash management, risk management solutions, mortgages, retirement products, etc.",
+        "Jileky Investment, Inc. provides financial services for clients across the world. It offers three major businesses: Corporate & Investment Bank (CIB), Commercial Banking (CB), and Asset & Wealth Management (AWM). The company provides services to fulfill various client needs, including investment and lending products, deposit, cash management, risk management solutions, mortgages, retirement products, etc.",
     },
 
     sgo: {

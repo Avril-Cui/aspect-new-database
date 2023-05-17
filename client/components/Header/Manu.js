@@ -39,6 +39,11 @@ const Manu = () => {
             </Link>
           ) : null}
           <div>
+            <Link href="/season-review">
+              <a style={{color: "#f3ec78"}}>Season Review</a>
+            </Link>
+          </div>
+          <div>
             <Link href="/game">
               <a>Game</a>
             </Link>
@@ -60,17 +65,17 @@ const Manu = () => {
         </div>
 
         <Button>
-          <p className={styles.style_but}>
+          <div className={styles.style_but}>
             {userData ? (
               <Nav.Link className={styles.text} onClick={handleLogout}>
                 <a>Log Out</a>
               </Nav.Link>
             ) : (
               <Nav.Link className={styles.text} href="/auth/login">
-                <a className={styles.login_text}>Log In</a>
+                <a className={styles.login_text} id="log-in-btn">Log In</a>
               </Nav.Link>
             )}
-          </p>
+          </div>
         </Button>
       </div>
     </header>

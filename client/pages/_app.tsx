@@ -7,7 +7,7 @@ import { useRouter } from "next/router";
 import store from "../store/store.js";
 import { Provider } from "react-redux";
 import Head from "next/head";
-import "intro.js/introjs.css"
+import "intro.js/introjs.css";
 
 const ProtectedRoute = dynamic(() => import("../components/ProtectedRoute"), {
   ssr: false,
@@ -17,8 +17,7 @@ const EndSeason = dynamic(() => import("../components/EndSeason"), {
 });
 
 const AuthRequired = ["/dashboard"];
-const EndSeasonRequired = ["/seasonal-recap"];
-
+const EndSeasonRequired = ["/season-review"];
 function MyApp({ Component, pageProps }: AppProps) {
   const router = useRouter();
 

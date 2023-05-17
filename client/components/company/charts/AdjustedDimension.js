@@ -3,14 +3,13 @@ import { useEffect } from "react";
 import styles from "../../../styles/simulator/company.module.css";
 const AdjustedDimension = (props) => {
   const WAIT_TIME = 1000*60*60;
-
   useEffect(() => {
     var axios = require("axios");
     var request = `"${props.CompanyName}"`;
 
     var config = {
       method: "post",
-      url: "https://aspect-server.onrender.com/hour-graph",
+      url: `${process.env.serverConnection}/hour-graph`,
       headers: {
         "Content-Type": "text/plain",
       },

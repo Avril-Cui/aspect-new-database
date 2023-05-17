@@ -7,13 +7,10 @@ const EndSeason = ({ children }: { children: React.ReactNode }) => {
 
   useEffect(() => {
     var axios = require("axios");
-    var data = "";
 
     var config = {
       method: "post",
-      url: "https://aspect-server.onrender.com/is-end-game",
-      headers: {},
-      data: data,
+      url: `${process.env.serverConnection}/is-end-game`,
     };
 
     axios(config)

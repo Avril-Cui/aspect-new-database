@@ -1,5 +1,10 @@
 .container {
-  margin-top: 7em;
+  margin-top: 7.5em;
+}
+
+.center_div{
+  display: table;
+  margin: 0 auto;
 }
 
 .center_container{
@@ -11,6 +16,12 @@
   border: 1px solid #5a5a5a;
   border-radius: 10px;
   width: 20em;
+  padding: 1em 0em;
+}
+
+.date{
+  font-size: 40px;
+  color: rgb(228, 228, 228);
 }
 
 .header {
@@ -19,6 +30,13 @@
   font-weight: 300;
   padding-bottom: 0.35em;
   padding-left: 0.5em;
+}
+
+.header1 {
+  color: #fff;
+  font-size: 22px;
+  font-weight: 400;
+  padding-bottom: 0.5em;
 }
 
 .tutorial {
@@ -59,7 +77,7 @@
 
 .account_value {
   color: #ffffff;
-  font-size: 36px;
+  font-size: 48px;
   font-weight: 300;
   margin-top: -0.15em;
 }
@@ -288,7 +306,7 @@
 }
 
 .holdings_container {
-  height: 29.5em;
+  height: 20em;
   width: 53em;
   background: #1d1d1d;
   border-radius: 10px;
@@ -296,6 +314,12 @@
 }
 
 .screener_table {
+  border-collapse: collapse;
+  margin-left: 1.35em;
+  margin-top: 0.1em;
+}
+
+.screener_table1 {
   border-collapse: collapse;
   margin-left: 1.35em;
   margin-top: 0.1em;
@@ -309,11 +333,39 @@
   color: #dadada;
 }
 
+.holding_detail1 td {
+  font-size: 14px;
+  font-weight: 300;
+  text-align: center;
+  padding: 0.6em 3em;
+  color: #dadada;
+}
+
+.alien_img{
+  margin-left: 20em;
+  margin-top: 1.5em;
+}
+
+.no_text{
+  color: #c3fcc2;
+  margin-left: -1.25em;
+  width: 15em;
+  text-align: center;
+}
+
 .screener_table th {
   font-size: 16px;
   font-weight: 300;
   text-align: left;
   padding: 0.3em 3em;
+  color: #72b176;
+}
+
+.screener_table1 th {
+  font-size: 16px;
+  font-weight: 300;
+  text-align: left;
+  padding: 0.3em 2.1em;
   color: #72b176;
 }
 
@@ -328,7 +380,7 @@
 }
 
 .scroll {
-  height: 445px; /* or any value */
+  height: 300px;
   overflow-y: scroll;
   width: 53em;
 }
@@ -413,4 +465,23 @@
   padding: 0.5em 0.75em;
   border: 1px solid rgb(75, 75, 75);
   border-radius: 7px;
+}
+
+.bot_leaderboard{
+  padding: 0.5em 0.75em;
+  border: 1px solid rgb(75, 75, 75);
+  border-radius: 7px;
+  margin-left: 1em;
+}
+
+.cancel{
+  background-color: rgb(27, 27, 27);
+  padding: 0.25em 0.5em;
+  border: 1px solid #c3fcc2;
+  border-radius: 5px;
+}
+
+.cancel:hover{
+  color: #c3fcc2;
+  background-color: #2c2c2c;
 }

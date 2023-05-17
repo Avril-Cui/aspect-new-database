@@ -1,39 +1,12 @@
 import React from "react";
 import styles from "./LeaderBoard3.module.css";
-import { useEffect, useState } from "react";
 
-function LeaderBoard3() {
+function LeaderBoard3(props) {
   const formatter = new Intl.NumberFormat("en-US", {
     minimumFractionDigits: 2,
     maximumFractionDigits: 2,
   });
-
-  const [ranking, setRanking] = useState({
-    "": {
-      cash_value: null,
-      value_change: 0,
-      pct_change: 0,
-      ranking: 0,
-    },
-  });
-
-  useEffect(() => {
-    var axios = require("axios");
-    var config = {
-      method: "POST",
-      url: "https://aspect-server.onrender.com/total-rank",
-      headers: {},
-    };
-
-    axios(config)
-      .then(function (response: any) {
-        setRanking(response.data);
-      })
-      .catch(function (error: any) {
-        console.log(error);
-      });
-  }, []);
-
+// console.log(props.ranking)
   return (
     <table className={styles.user_table}>
       <tbody>
@@ -46,11 +19,11 @@ function LeaderBoard3() {
         </tr>
       </tbody>
       <tbody>
-        {Object.entries(ranking).map(([key, value], i) => (
+        {Object.entries(props.ranking).map(([key, value], i) => (
           <tr key={key}>
             <td className={styles.ranking}>{value["ranking"]}</td>
-            <td className={styles.normal}>{key}</td>
-            <td className={styles.normal}>${value["cash_value"]}</td>
+            <td className={styles.normal1}>{key}</td>
+            <td className={styles.normal1}>${value["cash_value"]}</td>
             <td
               className={styles.normal}
               style={
