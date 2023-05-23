@@ -1,11 +1,33 @@
 import React from "react";
 import styles from "./LeaderBoard3.module.css";
+import { useEffect, useState } from "react";
 
 function LeaderBoard3(props) {
   const formatter = new Intl.NumberFormat("en-US", {
     minimumFractionDigits: 2,
     maximumFractionDigits: 2,
   });
+  const [ranking, setRanking] = useState({
+    "loading...": {
+      cash_value: 0,
+      value_change: 0,
+      pct_change: 0,
+      ranking: 0,
+    },
+  });
+  useEffect(() => {
+    const axios = require("axios");
+    axios({
+      method: "post",
+      url: `${process.env.serverConnection}/total-rank`,
+    })
+      .then(function (response) {
+        setRanking(response.data);
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
+  }, []);
 // console.log(props.ranking)
   return (
     <table className={styles.user_table}>
@@ -19,7 +41,7 @@ function LeaderBoard3(props) {
         </tr>
       </tbody>
       <tbody>
-        {Object.entries(props.ranking).map(([key, value], i) => (
+        {Object.entries(ranking).map(([key, value], i) => (
           <tr key={key}>
             <td className={styles.ranking}>{value["ranking"]}</td>
             <td className={styles.normal1}>{key}</td>

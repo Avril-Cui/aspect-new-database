@@ -112,7 +112,7 @@ function AskBidTable(props) {
 
             {orderBook[0].map((order, index) => {
               return (
-                <tr>
+                <tr key={index}>
                   <div
                     className={styles.sell_quantity_bg}
                     style={{ width: `${order[2] * 4}%`, maxWidth: `330%` }}
@@ -167,9 +167,9 @@ function AskBidTable(props) {
               <th></th>
             </tr>
 
-            {orderBook[1].map((order) => {
+            {orderBook[1].map((order, index) => {
               return (
-                <tr>
+                <tr key={index}>
                   <div
                     className={styles.buy_quantity_bg}
                     style={{ width: `${order[2] * 4}%`, maxWidth: `200%` }}

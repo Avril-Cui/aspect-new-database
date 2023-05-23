@@ -31,7 +31,7 @@ function ShowCompValue(props) {
             {" "}
             <Image src={alien} width="210px" height="150px" alt="" />
             <p className={styles.no_text}>
-              You don't hold any stocks yet! Make a trade below.
+              You don&apos;t hold any stocks yet! Make a trade below.
             </p>
           </div>
         )}
