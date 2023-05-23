@@ -48,7 +48,6 @@ def macro(file):
     parameter_dict['time'] = len(sampling_price_list)
     return parameter_dict
 
-
 file_names_index = ['normal1', 'mete1_1', 'mete1_2', 'mete2', 'mete3', 'mete4', 'mete5']
 length_index = [120, 50, 30, 50, 50, 60, 60]
 fund_weights_index = [0.7, 0.6, 0.85, 0.85, 0.9, 1, 1]

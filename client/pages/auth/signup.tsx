@@ -30,7 +30,7 @@ const Login = () => {
     })
       .then(function (response: any) {
         cookies.set("user_uid", response.data, { path: "/" });
-        router.back()
+        router.push("/dashboard")
       })
       .catch(function (error: any) {
         setIsError(true);

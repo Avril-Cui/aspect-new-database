@@ -22,11 +22,15 @@ function PendingOrders(props) {
             </tr>
           </tbody>
           <tbody className={styles.table_line}>
-            {props.orders.map((order) => {
+            {props.orders.map((order, index) => {
               return (
-                <Company
-                  order={order == null ? [null, null, null, null, null] : order}
-                />
+                <div key={index}>
+                  <Company
+                    order={
+                      order == null ? [null, null, null, null, null] : order
+                    }
+                  />
+                </div>
               );
             })}
           </tbody>
@@ -36,7 +40,7 @@ function PendingOrders(props) {
             {" "}
             <Image src={alien} width="210px" height="150px" alt="" />
             <p className={styles.no_text}>
-              You don't have any pending orders! Make a trade below.
+              You don&apos;t have any pending orders! Make a trade below.
             </p>
           </div>
         )}

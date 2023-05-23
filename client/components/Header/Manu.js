@@ -7,12 +7,21 @@ import { useRouter } from "next/router";
 import Cookies from "universal-cookie";
 import alien from "../../image/logo/alien.png";
 import Image from "next/image";
+import { useEffect } from "react";
 
 const Manu = () => {
   const router = useRouter();
 
   const cookies = new Cookies();
   const userData = cookies.get("userData");
+
+  useEffect(() => {
+    if (userData == undefined) {
+      cookies.remove("userData", { path: "/" });
+      cookies.remove("user_uid", { path: "/" });
+      router.push("/");
+    }
+  }, [userData]);
 
   const handleLogout = () => {
     cookies.remove("userData", { path: "/" });
@@ -35,12 +44,12 @@ const Manu = () => {
         <div className={styles.sections}>
           {userData ? (
             <Link href="/dashboard">
-              <a style={{color: "#c3fcc2"}}>Dashboard</a>
+              <a style={{ color: "#c3fcc2" }}>Dashboard</a>
             </Link>
           ) : null}
           <div>
             <Link href="/season-review">
-              <a style={{color: "#f3ec78"}}>Season Review</a>
+              <a style={{ color: "#f3ec78" }}>Season Review</a>
             </Link>
           </div>
           <div>
@@ -72,7 +81,9 @@ const Manu = () => {
               </Nav.Link>
             ) : (
               <Nav.Link className={styles.text} href="/auth/login">
-                <a className={styles.login_text} id="log-in-btn">Log In</a>
+                <a className={styles.login_text} id="log-in-btn">
+                  Log In
+                </a>
               </Nav.Link>
             )}
           </div>
