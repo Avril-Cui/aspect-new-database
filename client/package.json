@@ -9,7 +9,8 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "cypress": "cypress open"
   },
   "dependencies": {
     "@reduxjs/toolkit": "^1.8.6",
@@ -30,7 +31,6 @@
     "react-redux": "^8.0.4",
     "react-tradingview-embed": "^3.0.6",
     "reactour": "^1.19.0",
-    "serve": "^14.2.0",
     "styled-components": "^5.3.6"
   },
   "devDependencies": {
@@ -40,6 +40,7 @@
     "@types/react-dom": "18.0.6",
     "@types/reactour": "^1.18.2",
     "autoprefixer": "^10.4.13",
+    "cypress": "^12.11.0",
     "eslint": "8.23.0",
     "eslint-config-next": "12.2.5",
     "postcss": "^8.4.18",

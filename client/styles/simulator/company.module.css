@@ -282,11 +282,11 @@
 }
 
 .table {
-  background-color: #2d2d2d;
   border-radius: 6px;
   opacity: 1;
   margin-left: 0.75em;
   margin-top: -0.4em;
+  border: 0.5px solid #c9c9c923;
 }
 
 .ask_bid {
@@ -330,11 +330,14 @@
 } */
 
 .learn_more_btn {
-  /* margin-top: 0.75em;
-    margin-bottom: 1.25em;;
-    margin-left: 5.25em; */
+  color: #dbdbdb;
+  font-weight: 300;
+  padding: 0.075em 4.5em;
+  background-color: #577a60;
+  border-radius: 5px;
+  border: 0.5px solid #c9ffd1;
   display: table;
-  margin: 1em auto 1.25em auto;
+  margin: 1em auto 1em auto;
 }
 
 .learn_more {

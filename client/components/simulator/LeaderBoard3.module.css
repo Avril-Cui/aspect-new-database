@@ -24,7 +24,7 @@
     font-size: 16px;
     font-weight: 300;
     text-align: left;
-    padding: 0.35em 4.5em;
+    padding: 0.35em 2em;
     color: #72B176;
 }
 
@@ -32,7 +32,15 @@
     font-size: 14px;
     font-weight: 300;
     text-align: left;
-    padding: 0.65em 6.2em;
+    padding: 0.55em 6.5em;
+    color: #dadada;
+}
+
+.normal1{
+    font-size: 14px;
+    font-weight: 300;
+    text-align: left;
+    padding: 0.55em 3em;
     color: #dadada;
 }
 
@@ -44,6 +52,6 @@
     text-align: center;
     font-size: 14px;
     font-weight: 300;
-    padding: 0.65em 1.5em;
+    padding: 0.55em 1.5em;
     color: #dadada;
 }

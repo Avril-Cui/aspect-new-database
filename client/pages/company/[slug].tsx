@@ -2,6 +2,7 @@ import dynamic from "next/dynamic";
 import styles from "../../styles/simulator/company.module.css";
 import ast_valuation from "../../image/snowflask_chart/ast_chart.png";
 import Image from "next/image";
+import AskBidTable from "../../components/company/charts/AskBidTable.js";
 import WrknDayChart from "../../components/company/charts/TimelineChart";
 import CompHeader from "../../components/company/charts/comp_header";
 import Link from "next/link";
@@ -73,19 +74,23 @@ export default function Wakron({ individual, posts, company_name }: Props) {
     },
     {
       selector: "#timeline",
-      content: "See the timeline of the events of the stock. This graph will also be enabled during Season 2. Currently, this graph only shows the tick-dimension stock price.",
+      content:
+        "See the timeline of the events of the stock. This graph will also be enabled during Season 2. Currently, this graph only shows the tick-dimension stock price.",
     },
     {
       selector: "#chat",
-      content: "Chat with other users in the game and share your opinions or investment decisions on the company or on the overall market! Chat feature is still in testing stage and will open during next season!",
+      content:
+        "Chat with other users in the game and share your opinions or investment decisions on the company or on the overall market! Chat feature is still in testing stage and will open during next season!",
     },
     {
       selector: "#stats",
-      content: "Learn and analysis the companies financial statistics from various dimensions to help forming investment decisions!",
+      content:
+        "Learn and analysis the companies financial statistics from various dimensions to help forming investment decisions!",
     },
     {
       selector: "#news",
-      content: "Read and analyze news to make investment decisions. News are critical to making high return rates in the game!",
+      content:
+        "Read and analyze news to make investment decisions. News are critical to making high return rates in the game!",
     },
   ];
 
@@ -135,77 +140,19 @@ export default function Wakron({ individual, posts, company_name }: Props) {
           <div className={styles.first_layer}>
             <div className={styles.price_chart} id="graphs">
               <div className={styles.price_chart_content}>
-                <MultiChart id={individual.id} />
+                <MultiChart id={individual.id} CompanyName={individual.id} />
               </div>
             </div>
 
             <div className={styles.table} id="ask_bid">
-              <p className={styles.title_text}>Ask and Bid Price: Open Soon!</p>
-              <div className={styles.table_content}>
-                <table className={styles.ask_bid_table}>
-                  <tbody>
-                    <tr>
-                      <th>Ask/Bid</th>
-                      <th>Price</th>
-                      <th>Number</th>
-                    </tr>
-                    <tr>
-                      <td>S#5</td>
-                      <td>100.00</td>
-                      <td>1000</td>
-                    </tr>
-                    <tr>
-                      <td>S#4</td>
-                      <td>100.00</td>
-                      <td>1000</td>
-                    </tr>
-                    <tr>
-                      <td>S#3</td>
-                      <td>100.00</td>
-                      <td>1000</td>
-                    </tr>
-                    <tr>
-                      <td>S#2</td>
-                      <td>100.00</td>
-                      <td>1000</td>
-                    </tr>
-                    <tr>
-                      <td>S#1</td>
-                      <td>100.00</td>
-                      <td>1000</td>
-                    </tr>
-                    <tr>
-                      <td>B#1</td>
-                      <td>100.00</td>
-                      <td>1000</td>
-                    </tr>
-                    <tr>
-                      <td>B#2</td>
-                      <td>100.00</td>
-                      <td>1000</td>
-                    </tr>
-                    <tr>
-                      <td>B#3</td>
-                      <td>100.00</td>
-                      <td>1000</td>
-                    </tr>
-                    <tr>
-                      <td>B#4</td>
-                      <td>100.00</td>
-                      <td>1000</td>
-                    </tr>
-                    <tr>
-                      <td>B#5</td>
-                      <td>100.00</td>
-                      <td>1000</td>
-                    </tr>
-                  </tbody>
-                </table>
-              </div>
-              <div className={styles.learn_more_btn}>
-                <Button>
-                  <p className={styles.learn_more}>Learn More On This</p>
-                </Button>
+              <p className={styles.title_text}>Ask and Bid Price: Order Book</p>
+              <AskBidTable comp_name={individual.id}/>
+              <div>
+                <button className={styles.learn_more_btn}>
+                  <Link href="/post/ask-bid-order-book">
+                    <a>Learn More On This</a>
+                  </Link>
+                </button>
               </div>
             </div>
           </div>
@@ -424,7 +371,7 @@ export async function getStaticProps({ params }: any) {
       short_name: "J",
       name: "Jileky Investment, Inc.",
       overview:
-        "Jilepy Investment, Inc.(JKY) offers financial services among three major businesses: Corporate & Investment Bank, Commercial Banking, and Asset & Wealth Management. The company provides services to fulfill various client needs, including investment and lending products, deposit, cash management,…",
+        "Jileky Investment, Inc.(JKY) offers financial services among three major businesses: Corporate & Investment Bank, Commercial Banking, and Asset & Wealth Management. The company provides services to fulfill various client needs, including investment and lending products, deposit, cash management,…",
       news_type: "973458a0-eb3a-4e85-bd2a-f7513bf73bab",
       industry: "Financials",
     },

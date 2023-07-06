@@ -66,7 +66,7 @@ const CompanyInfo = [
     short_name: "J",
     name: "Jileky Investment, Inc.",
     overview:
-      "Jilepy Investment, Inc.(JKY) offers financial services among three major businesses: Corporate & Investment Bank, Commercial Banking, and Asset & Wealth Management. The company provides services to fulfill various client needs, including investment and lending products, deposit, cash management,…",
+      "Jileky Investment, Inc.(JKY) offers financial services among three major businesses: Corporate & Investment Bank, Commercial Banking, and Asset & Wealth Management. The company provides services to fulfill various client needs, including investment and lending products, deposit, cash management,…",
     news_type: "973458a0-eb3a-4e85-bd2a-f7513bf73bab",
     industry: "Financials",
     // opportunity1: ,

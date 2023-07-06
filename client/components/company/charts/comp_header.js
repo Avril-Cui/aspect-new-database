@@ -8,7 +8,6 @@ const CompHeader = (props) => {
   const dispatch = useDispatch();
   const WAIT_TIME = 10000;
   let price_data = useSelector((state) => state.price.value);
-  console.log(price_data)
 
   const [isPrice, setIsPrice] = useState(false);
   const loadingPrice = "N/A";

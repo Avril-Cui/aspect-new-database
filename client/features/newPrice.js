@@ -5,7 +5,7 @@ export const requestPrice = () => {
     return (dispatch) => {
       axios({
         method: 'post',
-        url: 'https://aspect-server.onrender.com/current-all-prices',
+        url: `${process.env.serverConnection}/current-all-prices`,
         headers: {}
       })
         .then((response) => {

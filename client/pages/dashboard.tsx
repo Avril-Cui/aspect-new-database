@@ -1,5 +1,4 @@
 import { useState, useEffect } from "react";
-import TradeInput from "../components/dashboard/TradeInput";
 import ShowPortfolio from "../components/dashboard/ShowPortfolio";
 import Head from "next/head";
 import ShowCompValue from "../components/dashboard/ShowCompValue";
@@ -13,8 +12,31 @@ import ExploreSection from "../components/front_page/ExploreSection";
 const Tour = dynamic(() => import("reactour"), { ssr: false });
 import { useSelector, useDispatch } from "react-redux";
 import { requestPrice } from "../features/newPrice.js";
+import Trade from "../components/dashboard/Trade";
+import AskBidTable from "../components/dashboard/AskBidTable";
+import CompanyChart from "../components/dashboard/company_chart";
+import PendingOrders from "../components/dashboard/PendingOrders";
+import BotRanking from "../components/dashboard/BotRanking";
 
 export default function Home() {
+  var today = new Date();
+  var dd = String(today.getDate()).padStart(2, "0");
+  const month = [
+    "Jan",
+    "Feb",
+    "Mar",
+    "Apr",
+    "May",
+    "Jun",
+    "Jul",
+    "Aug",
+    "Sep",
+    "Oct",
+    "Nov",
+    "Dec",
+  ];
+  let current_month = month[today.getMonth()];
+
   const companies: any = {
     ast: {
       index: 0,
@@ -88,14 +110,14 @@ export default function Home() {
       name: "Jileky Investment, Inc.",
       name2: "Jileky",
       overview:
-        "Jilepy Investment, Inc.(JKY) offers financial services among three major businesses: Corporate & Investment Bank, Commercial Banking, and Asset & Wealth Management. The company provides services to fulfill various client needs, including investment and lending products, deposit, cash management,…",
+        "Jileky Investment, Inc.(JKY) offers financial services among three major businesses: Corporate & Investment Bank, Commercial Banking, and Asset & Wealth Management. The company provides services to fulfill various client needs, including investment and lending products, deposit, cash management,…",
       news_type: "973458a0-eb3a-4e85-bd2a-f7513bf73bab",
       industry: "Financials",
       p_e: 8.14,
       p_b: 1.02,
       p_s: 2.38,
       overview2:
-        "Jilepy Investment, Inc. provides financial services for clients across the world. It offers three major businesses: Corporate & Investment Bank (CIB), Commercial Banking (CB), and Asset & Wealth Management (AWM). The company provides services to fulfill various client needs, including investment and lending products, deposit, cash management, risk management solutions, mortgages, retirement products, etc.",
+        "Jileky Investment, Inc. provides financial services for clients across the world. It offers three major businesses: Corporate & Investment Bank (CIB), Commercial Banking (CB), and Asset & Wealth Management (AWM). The company provides services to fulfill various client needs, including investment and lending products, deposit, cash management, risk management solutions, mortgages, retirement products, etc.",
     },
 
     sgo: {
@@ -132,7 +154,7 @@ export default function Home() {
     },
   };
   const cookies = new Cookies();
-  const user_uid = cookies.get("user_uid");
+  const [userUid, setUserUid] = useState("");
 
   const [isOpen, setIsOpen] = useState(false);
   const [isOpen1, setIsOpen1] = useState(false);
@@ -152,40 +174,105 @@ export default function Home() {
   const [rank, setRank] = useState(0);
 
   const dispatch = useDispatch();
-  const WAIT_TIME = 4000;
+  const WAIT_TIME = 3000;
   let price_data = useSelector((state: any) => state.price.value);
 
   const [isPrice, setIsPrice] = useState(false);
-  useEffect(() => {
-    const data = setInterval(() => {
-      dispatch(requestPrice() as any);
-      setIsPrice(true);
-    }, WAIT_TIME);
-    return () => clearInterval(data);
-  }, [isPrice, dispatch]);
+
+  const [loading, setLoading] = useState(false);
+
+  const loadingState = {
+    accountValue: "...",
+    cashValue: "...",
+    category: "portfolio_value",
+    holdingValue: "...",
+  };
+
+  const [portfolio, setPortfolio] = useState({
+    accountValue: undefined,
+    cashValue: undefined,
+    category: "portfolio_value",
+    holdingValue: undefined,
+  });
+
+  const [orders, setOrders] = useState([]);
+
+  const [fullPortfolio, setFullPortfolio] = useState({
+    portfolio_value: {
+      accountValue: 0,
+      cashValue: 0,
+      category: "portfolio_value",
+      holdingValue: 0,
+    },
+  });
 
   useEffect(() => {
-    var data = JSON.stringify(user_uid);
-    var config = {
+    setUserUid(cookies.get("user_uid"));
+    if (portfolio.accountValue != undefined) {
+      setLoading(true);
+    }
+    const user_data = JSON.stringify(userUid);
+
+    axios({
       method: "post",
-      url: "https://aspect-server.onrender.com/show-ranking",
+      url: `${process.env.serverConnection}/show-ranking`,
       headers: {
         "Content-Type": "text/plain",
       },
-      data: data,
-    };
-
-    axios(config)
+      data: user_data,
+    })
       .then(function (response) {
         setRank(response.data);
       })
       .catch(function (error) {
         console.log(error);
       });
-    return () => clearInterval(data);
-  }, [user_uid]);
-  const [enabled, setEnabled] = useState(false);
+    const data = setInterval(() => {
+      dispatch(requestPrice() as any);
+      setIsPrice(true);
 
+      axios({
+        method: "post",
+        url: `${process.env.serverConnection}/portfolio-detail`,
+        headers: {
+          "Content-Type": "text/plain",
+        },
+        data: user_data,
+      })
+        .then(function (response) {
+          setPortfolio(response.data.portfolio_value);
+          setFullPortfolio(response.data);
+        })
+        .catch(function (error) {
+          console.log(error);
+        });
+    }, WAIT_TIME);
+    return () => clearInterval(data);
+  }, [userUid, loading, isPrice, dispatch, portfolio, fullPortfolio]);
+
+  useEffect(() => {
+    const data1 = setInterval(() => {
+      const user_data = JSON.stringify(userUid);
+      axios({
+        method: "post",
+        url: `${process.env.serverConnection}/get-user-pending-orders`,
+        headers: {
+          "Content-Type": "text/plain",
+        },
+        data: user_data,
+      })
+        .then(function (response) {
+          setOrders(response.data);
+        })
+        .catch(function (error) {
+          console.log(error);
+        });
+    }, WAIT_TIME);
+    return () => clearInterval(data1);
+  }, [orders]);
+
+
+  const [enabled, setEnabled] = useState(false);
   const toggleStartTutorial = () => {
     setEnabled(true);
     setIsOpen1(false);
@@ -217,6 +304,11 @@ export default function Home() {
       content: "See all users' rankings in the game.",
     },
   ];
+
+  const [compName, setCompName] = useState("ast");
+  const handleTickerChange = (event: any) => {
+    setCompName(event.target.value.toLowerCase());
+  };
   return (
     <div>
       <Head>
@@ -265,7 +357,11 @@ export default function Home() {
                 style={{ marginBottom: "1.25em" }}
                 id="portfolio"
               >
-                <ShowPortfolio />
+                <ShowPortfolio
+                  portfolio={portfolio}
+                  loading={loading}
+                  loadingState={loadingState}
+                />
               </div>
               <div>
                 <p className={styles.header}>GAME STATUS</p>
@@ -274,27 +370,68 @@ export default function Home() {
                   style={{
                     paddingLeft: "1em",
                     paddingTop: "0.5em",
-                    paddingBottom: "0.75em",
+                    paddingBottom: "1.9em",
                   }}
                   id="rank"
                 >
                   <p className={styles.title}>CURRENT RANK</p>
                   <p className={styles.account_value}>{rank}</p>
-                  <button className={styles.trade_btn} onClick={togglePopup}>
-                    <p>Trade Stocks</p>
-                  </button>
-                  {isOpen && <TradeInput toggleClose={togglePopup} />}
+                </div>
+              </div>
+              <div style={{ marginTop: "1em" }}>
+                <p className={styles.header}>DATE</p>
+                <div
+                  className={styles.value_container}
+                  style={{
+                    paddingLeft: "1em",
+                    paddingTop: "2em",
+                    paddingBottom: "2em",
+                  }}
+                >
+                  <p className={styles.date}>
+                    {current_month}, {dd}
+                  </p>
                 </div>
               </div>
             </div>
             <div style={{ marginLeft: "1em" }}>
-              <p className={styles.header}>HOLDING DETAIL</p>
-              <div className={styles.holdings_container} id="holding">
-                <ShowCompValue />
+              <div>
+                <p className={styles.header}>HOLDING DETAIL</p>
+                <div className={styles.holdings_container} id="holding">
+                  <ShowCompValue portfolio={fullPortfolio} />
+                </div>
+              </div>
+
+              <div style={{ marginTop: "0.5em" }}>
+                <p className={styles.header}>PENDING ORDERS</p>
+                <div className={styles.holdings_container} id="holding">
+                  <PendingOrders orders={orders} />
+                </div>
               </div>
             </div>
           </div>
         </div>
+
+        <div className={styles.center_div}>
+          <div style={{ marginTop: "1.5em", marginBottom: "0em" }}>
+            <div style={{ marginLeft: "-22em" }}>
+              <div className={styles.header1}>
+                <p style={{ marginLeft: "-8em" }}>Trade</p>
+              </div>
+              <div className={styles.inline} style={{ marginLeft: "-11em" }}>
+                <Trade
+                  handleTickerChange={handleTickerChange}
+                  ticker={compName}
+                  setTicker={setCompName}
+                  user_uid={userUid}
+                />
+                <AskBidTable comp_name={compName} user_uid={userUid} />
+                <CompanyChart comp_name={compName} />
+              </div>
+            </div>
+          </div>
+        </div>
+
         <div style={{ marginLeft: "-7.5em" }}>
           <div className={styles.center_container}>
             <div id="companies" className={styles.explore_section}>
@@ -310,9 +447,14 @@ export default function Home() {
         <div className={styles.center_container}>
           <div style={{ marginTop: "1.5em", marginBottom: "7em" }}>
             <div style={{ marginLeft: "1em" }}>
-              <p className={styles.header}>GAME RANKING</p>
-              <div className={styles.leaderboard} id="leaderboard">
-                <LeaderBoard3 />
+              <p className={styles.header1}>GAME RANKING</p>
+              <div className={styles.inline}>
+                <div className={styles.leaderboard} id="leaderboard">
+                  <LeaderBoard3 />
+                </div>
+                <div className={styles.bot_leaderboard}>
+                  <BotRanking />
+                </div>
               </div>
             </div>
           </div>

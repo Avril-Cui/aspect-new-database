@@ -1,0 +1,148 @@
+.inline {
+  display: inline-flex;
+}
+
+.pop_up_container {
+  position: fixed;
+  width: 100%;
+  height: 100vh;
+  top: 0;
+  left: 0;
+}
+
+.box {
+  width: 25em;
+  margin: 0 auto;
+  margin-left: 27em;
+  height: 10em;
+  margin-top: 10em;
+  background-color: #2c2c2c;
+  border-radius: 6px;
+  padding: 10px 20px;
+  z-index: 99999;
+  overflow: auto;
+  padding-bottom: 0em;
+  border: #c3fcc2 solid 1px;
+}
+
+.game_intro{
+  color: #c3fcc2;
+  font-weight: 400;
+  font-size: 18px;
+}
+
+.game_intro_text{
+  color: #dbdbdb;
+  font-size: 16px;
+  margin-bottom: 0.5em;
+  line-height: 1.5;
+  font-weight: 300;
+  text-align: left;
+}
+
+.close_candlestick{
+  font-size: 16px;
+  background-color: #c3fcc2ad;
+  color: #2f2f2fec;
+  padding: 0em 0.5em;
+  border-radius: 100px;
+  margin-left: 10.3em;
+}
+
+.comp_type_name span{
+  font-size: 20px;
+  background-color: #c3fcc254;
+  color: #afafaf;
+  padding: 0em 0.35em;
+  border-radius: 100px;
+}
+
+.game_intro_text a{
+  color: #6b9977;
+}
+
+.game_intro_text a:hover{
+  text-decoration: underline;
+}
+
+.tyle_btn {
+  color: #ffffff;
+  padding: 0.25em 0.75em;
+  margin-left: 0.75em;
+  border-radius: 5px;
+}
+
+.tyle_btn_shadow {
+  color: #ffffff;
+  padding: 0.25em 0.75em;
+  margin-left: 0.75em;
+  border-radius: 5px;
+  background-color: #333333;
+}
+
+.tyle_btn:hover:not(:focus) {
+  background-color: #252525;
+}
+
+.comp_type_container {
+  height: 4.6em;
+  width: 17em;
+  padding-top: 0.6em;
+  border-radius: 7px;
+  margin-right: 2.25em;
+}
+
+.comp_type_container_shadow {
+  box-shadow: 0 1px 14px 0 #6b9977, 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+  height: 4.6em;
+  width: 17em;
+  padding-top: 0.6em;
+  border-radius: 7px;
+  margin-right: 2.25em;
+}
+
+.comp_type_container:hover:not(:focus) {
+  background-color: #2c2c2c;
+}
+
+.comp_type_profile {
+  width: 34px;
+  height: 34px;
+  color: #dfdfdf;
+  font-weight: 500;
+  border-radius: 100px;
+  background-color: rgb(43, 53, 184);
+  text-align: center;
+  padding-top: 0.3em;
+  margin-left: -6em;
+}
+
+.comp_type_name {
+  color: #dfdfdf;
+  font-size: 20px;
+  margin-top: -0.5em;
+  margin-left: 0.5em;
+  width: 6em;
+  text-align: left;
+}
+
+.comp_type_prices {
+  margin-left: -1.5em;
+  margin-top: -0.65em;
+}
+
+.comp_type_price {
+  color: #dfdfdf;
+  font-size: 16px;
+}
+
+.comp_type_price span {
+  color: #a7a7a7;
+  font-size: 12px;
+}
+
+.comp_type_pct_change {
+  margin-left: 1em;
+  color: #c9ffd1;
+  font-size: 16px;
+}

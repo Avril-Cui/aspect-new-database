@@ -1,0 +1,106 @@
+.inline {
+  display: inline-flex;
+}
+
+.header {
+  font-size: 50px;
+  font-weight: 500;
+  margin-bottom: 0.5em;
+  line-height: 1.2;
+  text-align: center;
+  background-color: #f3ec78;
+  background-image: linear-gradient(45deg, #81fa94, #618aec);
+  background-size: 100%;
+  -webkit-background-clip: text;
+  -moz-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  -moz-text-fill-color: transparent;
+}
+
+.container {
+  margin-top: 7em;
+}
+
+.layer_header {
+  font-size: 22px;
+  color: #e0e0e0;
+  font-weight: 400;
+}
+
+.layer_header1 {
+  font-size: 18px;
+  color: #e0e0e0;
+  font-weight: 400;
+}
+
+.layer_header span{
+  color: #c9ffd1;
+  font-weight: 500;
+}
+
+.layer {
+  margin-top: 1.25em;
+  width: 79em;
+}
+
+.layer1 {
+  margin-top: 4em;
+  width: 77em;
+}
+
+.login{
+  font-size: 40px;
+  color: #e0e0e0;
+  width: 10em;
+  text-align: center;
+  margin-top: 1.5em;
+  margin-bottom: 2.4em;
+  line-height: 1.2;
+}
+
+.leaderboard {
+  border: #484848 solid 1px;
+  margin-top: 1em;
+  border-radius: 5px;
+  height: 36.5em;
+}
+
+.title {
+  color: #ffffff;
+  font-size: 15px;
+  font-weight: 300;
+  margin: 0.25em 0em;
+}
+
+.rank_num {
+  color: #c9ffd1;
+  font-size: 42px;
+  font-weight: 500;
+  margin-top: -0.15em;
+}
+
+.account_value {
+  color: #ffffff;
+  font-size: 42px;
+  font-weight: 300;
+  margin-top: -0.15em;
+}
+
+.price_change {
+  color: #c9ffd1;
+  font-size: 20px;
+  font-weight: 300;
+}
+.change_percentage {
+  color: #c9ffd1;
+  font-size: 16px;
+  font-weight: 300;
+  margin-left: 1em;
+}
+
+.BotRanking{
+  border: #484848 solid 1px;
+  border-radius: 5px;
+  margin-top: 0.5em;
+  height: 18.61em;
+}

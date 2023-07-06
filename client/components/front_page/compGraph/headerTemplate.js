@@ -70,9 +70,9 @@ function HeaderTemplate(props) {
                 >
                   See detail:
                   <Link
-                    href={`http://www.aspect-game.com/post/trading-overview`}
+                    href="/post/candlestick-graph"
                   >
-                    <a>Candlestick and MA</a>
+                    <a>Candlestick Graph</a>
                   </Link>
                 </p>
                 <p className={styles.game_intro_text}>

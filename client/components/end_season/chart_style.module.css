@@ -1,0 +1,12 @@
+.img_container {
+  margin-top: 4em;
+  padding-bottom: 10em;
+  border-bottom: 2px #ffffff solid;
+}
+
+.no_text {
+  font-size: 20px;
+  font-weight: 400;
+  color: #c9ffd1;
+  text-align: center;
+}
