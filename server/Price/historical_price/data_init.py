@@ -9,7 +9,3 @@ symbol = ['HM-B.ST']
 data = pdr.get_data_yahoo(symbol, start_date, end_date)['Adj Close']
 
 data.to_csv('Model/historical_price/FSIN/fast_fashion.csv')
-# , , [""], 15
-
-# plt.plot(base_price)
-# plt.show()

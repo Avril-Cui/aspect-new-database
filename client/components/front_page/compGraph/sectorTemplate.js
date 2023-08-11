@@ -32,7 +32,7 @@ function SectorTemplate(props) {
       </div>
 
       {props.compGraph == 1 && (
-        <div>
+        <div style={{marginTop: "5em"}}>
           <ChartTemplate comp_name={name} />
         </div>
       )}

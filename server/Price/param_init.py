@@ -55,7 +55,7 @@ index_params_index = {}
 for index in range(len(file_names_index)):
 	name = file_names_index[index]
 	index_params_index[name] = {
-		"macro": macro("server/Model/historical_price/index_data/{}.csv".format(name))
+		"macro": macro("Price/historical_price/index_data/{}.csv".format(name))
 	}
 
 file_names_ast = ['gov_policy', 'normal', 'insider', 'normal', 'fs']
@@ -65,7 +65,7 @@ params_ast = {}
 for index in range(len(file_names_ast)):
     name = file_names_ast[index]
     params_ast[name] = {
-        "macro": macro("server/Model/historical_price/AST/{}.csv".format(name))
+        "macro": macro("Price/historical_price/AST/{}.csv".format(name))
     }
 
 file_names_dsc = ['acquisition', 'normal', 'chip', 'normal']
@@ -75,7 +75,7 @@ params_dsc = {}
 for index in range(len(file_names_dsc)):
     name = file_names_dsc[index]
     params_dsc[name] = {
-        "macro": macro("server/Model/historical_price/DSC/{}.csv".format(name))
+        "macro": macro("Price/historical_price/DSC/{}.csv".format(name))
     }
 
 file_names_fsin = ['fast_fashion', 'normal', 'ceo_crisis', 'normal']
@@ -85,7 +85,7 @@ params_fsin = {}
 for index in range(len(file_names_fsin)):
     name = file_names_fsin[index]
     params_fsin[name] = {
-        "macro": macro("server/Model/historical_price/FSIN/{}.csv".format(name))
+        "macro": macro("Price/historical_price/FSIN/{}.csv".format(name))
     }
 
 file_names_hhw = ['normal', 'mete_business_1', 'mete_business_2', 'business_restructure']
@@ -95,7 +95,7 @@ params_hhw = {}
 for index in range(len(file_names_hhw)):
     name = file_names_hhw[index]
     params_hhw[name] = {
-        "macro": macro("server/Model/historical_price/HHW/{}.csv".format(name))
+        "macro": macro("Price/historical_price/HHW/{}.csv".format(name))
     }
 
 file_names_jky = ['margin_call', 'interest', 'crisis_survival', 'normal']
@@ -105,7 +105,7 @@ params_jky = {}
 for index in range(len(file_names_jky)):
     name = file_names_jky[index]
     params_jky[name] = {
-        "macro": macro("server/Model/historical_price/JKY/{}.csv".format(name))
+        "macro": macro("Price/historical_price/JKY/{}.csv".format(name))
     }
 
 file_names_sgo = ['normal', 'new_medicine', 'share_purchase', 'competition', 'success_medicine']
@@ -115,7 +115,7 @@ params_sgo = {}
 for index in range(len(file_names_sgo)):
     name = file_names_sgo[index]
     params_sgo[name] = {
-        "macro": macro("server/Model/historical_price/SGO/{}.csv".format(name))
+        "macro": macro("Price/historical_price/SGO/{}.csv".format(name))
     }
 
 file_names_wrkn = ['IPO', 'normal', 'new_business_strategy']
@@ -125,5 +125,5 @@ params_wrkn = {}
 for index in range(len(file_names_wrkn)):
     name = file_names_wrkn[index]
     params_wrkn[name] = {
-        "macro": macro("server/Model/historical_price/WRKN/{}.csv".format(name))
+        "macro": macro("Price/historical_price/WRKN/{}.csv".format(name))
     }

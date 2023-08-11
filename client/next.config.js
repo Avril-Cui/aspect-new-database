@@ -3,7 +3,7 @@ const nextConfig = {
   reactStrictMode: false,
   swcMinify: true,
   env: {
-    serverConnection: 'http://127.0.0.1:5000',
+    serverConnection: 'http://localhost:5000',
   },
 }
 

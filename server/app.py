@@ -1,140 +1,47 @@
-from Model.User.user_database import UserDatabaseCommands
-import psycopg2
-import os
-from dotenv import load_dotenv
-load_dotenv()
+#import dependencies & functions
+from User.user_database import UserDatabaseCommands
+from House.auction_house import AuctionHouse
+from Function.database import db
+from Function.helper import helper
 import time
 from datetime import datetime
-import datetime
-from Model.House.auction_house import AuctionHouse
+import json
+from flask import Flask, request, jsonify, request
+import pyrebase
+from flask_cors import CORS, cross_origin
+from itertools import accumulate
+from functools import reduce
+import operator
+
+#initialize timeframe
 seconds = time.time()
-# start_time = 1680646552
 start_time = time.time() - 60*60*24*10 - 60*60*2
 end_time = start_time + (60*60*24)*29 + 36000
-start_date = datetime.datetime.now()
-DATABASE_HOST = os.getenv("DATABASE_HOST")
-DATABASE_USER = os.getenv("DATABASE_USER")
-DATABASE_PASSWORD = os.getenv("DATABASE_PASSWORD")
-DATABASE_ROOT_NAME = os.getenv("DATABASE_ROOT_NAME")
+start_date = datetime.now()
 
-conn = psycopg2.connect(
-    host=DATABASE_HOST if DATABASE_HOST!=None else "localhost",
-    database=DATABASE_ROOT_NAME if DATABASE_ROOT_NAME!=None else "aspectdatabase",
-    user=DATABASE_USER if DATABASE_USER!=None else "postgres",
-    password=DATABASE_PASSWORD if DATABASE_PASSWORD!=None else "Xiaokeai0717"
-)
-
-cur = conn.cursor()
+#initialize database, tables, and house&user classes
+conn, cur = db.initialize()
 house = AuctionHouse(conn, cur)
 house.create_bot_table()
 house.create_bot_portfolio_table()
 house.create_bot_trade_history_table()
 house.create_bot_order_table()
-
-def get_price_from_database(company_id):
-	cur.execute(f"""
-          SELECT price_list from prices WHERE company_id='{company_id}';
-        """)
-	price = list(cur.fetchone()[0])
-	return price
-
 user_database_commands = UserDatabaseCommands(conn, cur)
-# user_database_commands.create_user_table()
-# user_database_commands.create_portfolio_table()
-# user_database_commands.create_trade_history_table()
+user_database_commands.create_user_table()
+user_database_commands.create_portfolio_table()
+user_database_commands.create_trade_history_table()
 
-import json
-from flask import Flask, request, jsonify, request
-import pyrebase
-from flask_cors import CORS, cross_origin
-import uuid
-from itertools import accumulate
-from functools import reduce
-import operator
+#initialize company prices
+company_names = ["ast", "dsc", "fsin", "hhw", "jky", "sgo", "wrkn", "index"]
+price_list = {}
+flat_price = {}
+for company in company_names:
+	price_data = db.get_price_from_database(company, cur)
+	price_list[company] = [price_data[x - y: x] for x, y in zip(
+		accumulate([36000 for _ in range(len(price_data)//36000)]), [36000 for i in range(len(price_data)//36000)])]
+	flat_price[company] = reduce(operator.concat, price_list[company])
 
-index_price = get_price_from_database("index")
-ast_price = get_price_from_database("ast")
-dsc_price = get_price_from_database("dsc")
-fsin_price = get_price_from_database("fsin")
-hhw_price = get_price_from_database("hhw")
-jky_price = get_price_from_database("jky")
-sgo_price = get_price_from_database("sgo")
-wrkn_price = get_price_from_database("wrkn")
-
-price_list = {
-	"index": [index_price[x - y: x] for x, y in zip(
-		accumulate([36000 for _ in range(len(index_price)//36000)]), [36000 for i in range(len(index_price)//36000)])],
-	"ast": [ast_price[x - y: x] for x, y in zip(
-		accumulate([36000 for _ in range(len(ast_price)//36000)]), [36000 for i in range(len(ast_price)//36000)])],
-	"dsc": [dsc_price[x - y: x] for x, y in zip(
-		accumulate([36000 for _ in range(len(dsc_price)//36000)]), [36000 for i in range(len(dsc_price)//36000)])],
-	"fsin": [fsin_price[x - y: x] for x, y in zip(
-		accumulate([36000 for _ in range(len(fsin_price)//36000)]), [36000 for i in range(len(fsin_price)//36000)])],
-	"hhw": [hhw_price[x - y: x] for x, y in zip(
-		accumulate([36000 for _ in range(len(hhw_price)//36000)]), [36000 for i in range(len(hhw_price)//36000)])],
-	"jky": [jky_price[x - y: x] for x, y in zip(
-		accumulate([36000 for _ in range(len(jky_price)//36000)]), [36000 for i in range(len(jky_price)//36000)])],
-	"sgo": [sgo_price[x - y: x] for x, y in zip(
-		accumulate([36000 for _ in range(len(sgo_price)//36000)]), [36000 for i in range(len(sgo_price)//36000)])],
-	"wrkn": [wrkn_price[x - y: x] for x, y in zip(
-		accumulate([36000 for _ in range(len(wrkn_price)//36000)]), [36000 for i in range(len(wrkn_price)//36000)])],
-}
-
-flat_price = {
-	"ast": reduce(operator.concat, price_list["ast"]),
-	"dsc": reduce(operator.concat, price_list["dsc"]),
-	"fsin": reduce(operator.concat, price_list["fsin"]),
-	"hhw": reduce(operator.concat, price_list["hhw"]),
-	"jky": reduce(operator.concat, price_list["jky"]),
-	"sgo": reduce(operator.concat, price_list["sgo"]),
-	"wrkn": reduce(operator.concat, price_list["wrkn"]),
-}
-
-def get_current_prices(company_list):
-	current_time = time.time()
-	index_lst = int(int((current_time-start_time))/86400)
-	index_tmp = int(current_time-start_time-index_lst*86400)
-	if index_tmp <= 36000:
-		current_prices = {}
-		if company_list != []:
-			for company in company_list:
-				current_prices[company] = float(price_list[company][index_lst][index_tmp])
-		return current_prices
-	elif index_tmp > 36000 and index_tmp <= 86400:
-		current_prices = {}
-		if company_list != []:
-			for company in company_list:
-				current_prices[company] = float(price_list[company][index_lst][-1])
-		return current_prices
-
-
-chat_storage = {
-	"main": {
-		"8408dd4a-7039-455f-bfa2-56dec9cace59": {
-			"name": "Avril",
-			"text": "Hello world",
-			"timestamp": time.time(),
-			"uid": "8408dd4a-7039-455f-bfa2-56dec9cace59"
-		},
-		"9999dd4a-7039-455f-bfa2-56dec9cace59": {
-			"name": "Friday",
-			"text": "Friday is bulldog.",
-			"timestamp": time.time()+3,
-			"uid": "9999dd4a-7039-455f-bfa2-56dec9cace59"
-		},
-		"7777dd4a-7039-455f-bfa2-56dec9cace59": {
-			"name": "Daniel",
-			"text": "Wakron is a very good stock, I think it will go up!",
-			"timestamp": time.time()+6,
-			"uid": "7777dd4a-7039-455f-bfa2-56dec9cace59"
-		}
-
-	},
-	"fundamental": {},
-	"quantitative": {},
-	"technical": {}
-}
-
+#set configuration for flask server and firebase auth
 app = Flask(__name__)
 CORS(app)
 app.config["CORS_ORIGINS"] = ["https://aspect-game.com",
@@ -146,13 +53,8 @@ config = {
 	"databaseURL":  "https://aspect-fb6c9-default-rtdb.firebaseio.com/",
 	"storageBucket": "aspect-fb6c9.appspot.com",
 }
-
 firebase = pyrebase.initialize_app(config)
 auth = firebase.auth()
-
-event = None
-
-company_names = ["ast", "dsc", "fsin", "hhw", "jky", "sgo", "wrkn"]
 
 @app.route("/result", methods=["POST", "GET"])
 def result():
@@ -297,7 +199,7 @@ def trade_stock():
 			return "You do not have enough money for this trade.", 403
 		else:
 			company_list = user_database_commands.get_comp_holding_list(user_uid)
-			current_prices = get_current_prices(company_list)
+			current_prices = helper.get_current_prices(company_list,start_time, price_list)
 			portfolio = user_database_commands.get_portfolio_info(
 				user_uid, current_prices)
 			return jsonify(portfolio)
@@ -322,7 +224,7 @@ def cancel_order():
 def portfolio_detail():
 	user_uid = json.loads(request.data)
 	company_list = user_database_commands.get_comp_holding_list(user_uid)
-	current_prices = get_current_prices(company_list)		
+	current_prices = helper.get_current_prices(company_list, start_time, price_list)
 	portfolio = user_database_commands.get_portfolio_info(
 		user_uid, current_prices)
 	return jsonify(portfolio)
@@ -417,7 +319,7 @@ def day_graph():
 		low = round(min(price_list[comp_name][index]), 2)
 		open_p = round(price_list[comp_name][index][0], 2)
 		close_p = round(price_list[comp_name][index][-1], 2)
-		dt_object = datetime.datetime.fromtimestamp(start_time+index*86400)
+		dt_object = datetime.fromtimestamp(start_time+index*86400)
 		month = dt_object.month
 		day = dt_object.day
 		date = f"{day}/{month}/2073"
@@ -441,7 +343,7 @@ def hour_graph():
 				open_p = round(price_chunk[0], 2)
 				close_p = round(price_chunk[-1], 2)
 				timestamp = start_time + (index)*60*60*24 + inx
-				dt_object = datetime.datetime.fromtimestamp(timestamp)
+				dt_object = datetime.fromtimestamp(timestamp)
 				date = f"{dt_object.day}/{dt_object.month} {dt_object.time()}"
 				graph_lst.append([date, open_p, close_p, low, high])
 	return jsonify(graph_lst)
@@ -500,12 +402,7 @@ def total_bot_rank():
 
 @app.route('/is-end-game', methods=['POST'])
 def is_end_game():
-	return "0"
-	# current_time = time.time()
-	# if current_time >= end_time:
-	# 	return str(0) #True
-	# else:
-	# 	return str(1) #False
+	return "1"
 
 @app.route('/end-game-index-chart', methods=['POST'])
 def end_game_index_chart():
@@ -515,7 +412,7 @@ def end_game_index_chart():
 		low = round(min(price_list["index"][index]), 2)
 		open_p = round(price_list["index"][index][0], 2)
 		close_p = round(price_list["index"][index][-1], 2)
-		dt_object = datetime.datetime.fromtimestamp(start_time+index*86400)
+		dt_object = datetime.fromtimestamp(start_time+index*86400)
 		month = dt_object.month
 		day = dt_object.day
 		date = f"{day}/{month}/2073"
@@ -531,7 +428,7 @@ def end_game_companies_chart():
 		low = round(min(price_list[comp_name][index]), 2)
 		open_p = round(price_list[comp_name][index][0], 2)
 		close_p = round(price_list[comp_name][index][-1], 2)
-		dt_object = datetime.datetime.fromtimestamp(start_time+index*86400)
+		dt_object = datetime.fromtimestamp(start_time+index*86400)
 		month = dt_object.month
 		day = dt_object.day
 		date = f"{day}/{month}/2073"
@@ -549,76 +446,6 @@ def end_game_prices():
 		}
 	return comp_price_data
 
-
-# @app.route('/end-season-index-graph', methods=["POST"])
-# def end_season_index_graph():
-# 	graph_lst = []
-# 	for index in range(len(price_list["index"])):
-# 		high = round(max(price_list["index"][index]))
-# 		low = round(min(price_list["index"][index]))
-# 		open_p = round(price_list["index"][index][0])
-# 		close_p = round(price_list["index"][index][-1])
-# 		if index > (31-int(start_date.day)):
-# 			month = int(start_date.month) + 1
-# 			day = index - ((31-int(start_date.day)))
-# 			month = f"{month:02d}"
-# 			day = f"{day:02d}"
-# 			date = f"{day}/{month}/2073"
-# 		else:
-# 			month = int(start_date.month)
-# 			day = int(start_date.day) + index
-# 			month = f"{month:02d}"
-# 			day = f"{day:02d}"
-# 			date = f"{day}/{month}/2073"
-# 		graph_lst.append([date, open_p, close_p, low, high])
-# 	return jsonify(graph_lst)
-
-@app.route('/send-message', methods=['POST'])
-def send_message():
-	"""
-			message = {
-					"section": "main",
-					"name": "Avril",
-					"text": "Hello world"
-			}
-	"""
-	data = json.loads(request.data)
-	uid = uuid.uuid4()
-	dateTimeObj = datetime.now()
-	chat_storage[data["section"]][str(uid)] = {
-		"name": data["name"],
-		"text": data["text"],
-		"timestamp": dateTimeObj,
-		"uid": uid
-	}
-
-	return jsonify(chat_storage[data["section"]][str(uid)])
-
-
-@app.route('/get-message', methods=['POST'])
-def get_message():
-	section = json.loads(request.data)
-	section_message = chat_storage[section]
-	section_message_lst = list(section_message.items())
-	message_lst = []
-	if len(section_message_lst) < 50:
-		for index in range(len(section_message_lst)):
-			message_lst.append({
-				"timestamp": section_message_lst[index][1]["timestamp"],
-				"name": section_message_lst[index][1]["name"],
-				"text": section_message_lst[index][1]["text"],
-				"uid": section_message_lst[index][1]["uid"]
-			})
-	else:
-		for index in range(50):
-			message_lst.append({
-				"timestamp": section_message_lst[-index][1]["timestamp"],
-				"name": section_message_lst[-index][1]["name"],
-				"text": section_message_lst[-index][1]["text"],
-				"uid": section_message_lst[index][1]["uid"]
-			})
-	return jsonify(list(message_lst))
-
 if __name__ == '__main__':
-	app.run(debug=True)
+	app.run(debug=True, host="localhost", port="5000")
     # app.run(host="localhost", port=5000)

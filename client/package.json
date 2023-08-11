@@ -27,9 +27,11 @@
     "react-cookie": "^4.1.1",
     "react-dom": "18.2.0",
     "react-hook-form": "^7.39.1",
+    "react-player": "^2.12.0",
     "react-portable-text": "^0.5.1",
     "react-redux": "^8.0.4",
     "react-tradingview-embed": "^3.0.6",
+    "react-vertical-timeline-component": "^3.6.0",
     "reactour": "^1.19.0",
     "styled-components": "^5.3.6"
   },
