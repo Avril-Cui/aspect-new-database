@@ -13,6 +13,9 @@
     "cypress": "cypress open"
   },
   "dependencies": {
+    "@emotion/react": "^11.11.1",
+    "@emotion/styled": "^11.11.0",
+    "@mui/lab": "^5.0.0-alpha.139",
     "@reduxjs/toolkit": "^1.8.6",
     "@sanity/image-url": "^1.0.1",
     "axios": "^0.27.2",

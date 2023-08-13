@@ -1,3 +1,4 @@
+import profile from "../public/profile.jpg";
 import styles from "../styles/product/product.module.css";
 import Head from "next/head";
 import Image from "next/image";
@@ -5,23 +6,13 @@ import company from "../image/logo/company.png";
 import terms from "../image/logo/terms.png";
 import model from "../image/logo/model.png";
 import main from "../image/screenshot/main.png";
-import dict from "../image/screenshot/dict.png";
-import spreadsheet from "../image/screenshot/spreadsheet.png";
-import chart from "../image/screenshot/chart.png";
-import leaderboard from "../image/screenshot/leaderboard.png";
-import trade from "../image/screenshot/trade.png";
-import news from "../image/screenshot/news.png";
-import chat from "../image/screenshot/chat.png";
-import logo from "../image/logo/alien.png";
 import Link from "next/link";
 import ReactPlayer from "react-player";
 import twi from "../public/twitter.png";
 import ins from "../public/instagram.png";
 import git from "../public/git.png";
-import {
-  VerticalTimeline,
-  VerticalTimelineElement,
-} from "react-vertical-timeline-component";
+import trade_info from "../public/trade.png";
+import Timeline from "../components/Product/timeline";
 
 const Product = () => {
   return (
@@ -144,264 +135,31 @@ const Product = () => {
             market.
           </p>
         </div>
-        <VerticalTimeline>
-          <VerticalTimelineElement
-            className="vertical-timeline-element--work"
-            contentStyle={{ background: "rgb(33, 150, 243)", color: "#fff" }}
-            contentArrowStyle={{ borderRight: "7px solid  rgb(33, 150, 243)" }}
-            date="2011 - present"
-            iconStyle={{ background: "rgb(33, 150, 243)", color: "#fff" }}
-          >
-            <h3 className="vertical-timeline-element-title">
-              Creative Director
-            </h3>
-            <h4 className="vertical-timeline-element-subtitle">Miami, FL</h4>
-            <p>
-              Creative Direction, User Experience, Visual Design, Project
-              Management, Team Leading
-            </p>
-          </VerticalTimelineElement>
-          <VerticalTimelineElement
-            className="vertical-timeline-element--work"
-            date="2010 - 2011"
-            iconStyle={{ background: "rgb(33, 150, 243)", color: "#fff" }}
-          >
-            <h3 className="vertical-timeline-element-title">Art Director</h3>
-            <h4 className="vertical-timeline-element-subtitle">
-              San Francisco, CA
-            </h4>
-            <p>
-              Creative Direction, User Experience, Visual Design, SEO, Online
-              Marketing
-            </p>
-          </VerticalTimelineElement>
-          <VerticalTimelineElement
-            className="vertical-timeline-element--work"
-            date="2008 - 2010"
-            iconStyle={{ background: "rgb(33, 150, 243)", color: "#fff" }}
-          >
-            <h3 className="vertical-timeline-element-title">Web Designer</h3>
-            <h4 className="vertical-timeline-element-subtitle">
-              Los Angeles, CA
-            </h4>
-            <p>User Experience, Visual Design</p>
-          </VerticalTimelineElement>
-          <VerticalTimelineElement
-            className="vertical-timeline-element--work"
-            date="2006 - 2008"
-            iconStyle={{ background: "rgb(33, 150, 243)", color: "#fff" }}
-          >
-            <h3 className="vertical-timeline-element-title">Web Designer</h3>
-            <h4 className="vertical-timeline-element-subtitle">
-              San Francisco, CA
-            </h4>
-            <p>User Experience, Visual Design</p>
-          </VerticalTimelineElement>
-          <VerticalTimelineElement
-            className="vertical-timeline-element--education"
-            date="April 2013"
-            iconStyle={{ background: "rgb(233, 30, 99)", color: "#fff" }}
-          >
-            <h3 className="vertical-timeline-element-title">
-              Content Marketing for Web, Mobile and Social Media
-            </h3>
-            <h4 className="vertical-timeline-element-subtitle">
-              Online Course
-            </h4>
-            <p>Strategy, Social Media</p>
-          </VerticalTimelineElement>
-          <VerticalTimelineElement
-            className="vertical-timeline-element--education"
-            date="November 2012"
-            iconStyle={{ background: "rgb(233, 30, 99)", color: "#fff" }}
-          >
-            <h3 className="vertical-timeline-element-title">
-              Agile Development Scrum Master
-            </h3>
-            <h4 className="vertical-timeline-element-subtitle">
-              Certification
-            </h4>
-            <p>Creative Direction, User Experience, Visual Design</p>
-          </VerticalTimelineElement>
-          <VerticalTimelineElement
-            className="vertical-timeline-element--education"
-            date="2002 - 2006"
-            iconStyle={{ background: "rgb(233, 30, 99)", color: "#fff" }}
-          >
-            <h3 className="vertical-timeline-element-title">
-              Bachelor of Science in Interactive Digital Media Visual Imaging
-            </h3>
-            <h4 className="vertical-timeline-element-subtitle">
-              Bachelor Degree
-            </h4>
-            <p>Creative Direction, Visual Design</p>
-          </VerticalTimelineElement>
-          <VerticalTimelineElement
-            iconStyle={{ background: "rgb(16, 204, 82)", color: "#fff" }}
-          />
-        </VerticalTimeline>
-      </div>
-
-      <div className={styles.layer_five}>
-        <div className={styles.inline}>
-          <div className={styles.charts} style={{ marginRight: "2em" }}>
-            <h2 className={styles.sub_subheader}>
-              Comprehensive Data Visualization
-            </h2>
-            <p className={styles.sub_subintro}>
-              Read and work with various financial charts to understand strength
-              and risk of each companies.
-            </p>
-            <ul className={styles.chart_list}>
-              <li>🚀 Histogram and Line Graph</li>
-              <li>🚀 Pie Charts</li>
-              <li>🚀 Waterfall Charts</li>
-              <li>🚀 Tree Charts</li>
-              <li>🚀 Scatter plots</li>
-            </ul>
-            <div style={{ marginTop: "2em" }}>
-              <Image src={chart} width="550" height="360" />
-            </div>
-          </div>
-          <div className={styles.charts}>
-            <h2 className={styles.sub_subheader}>
-              Competitive Gaming Environment
-            </h2>
-            <p className={styles.sub_subintro}>
-              Updating ranking feature to see the top winners in the current
-              game and compete.
-            </p>
-            <ul className={styles.chart_list}>
-              <li>🚀 Interactive user environment.</li>
-              <li>🚀 Challenging rules.</li>
-              <li>🚀 Chat features for discussions.</li>
-              <li>🚀 Communicate and learn.</li>
-              <li>🚀 Award for top winners.</li>
-            </ul>
-            <div style={{ marginTop: "2.75em" }}>
-              <Image src={leaderboard} width="550" height="350" />
-            </div>
-          </div>
+        <div className={styles.display_game1}>
+          <Image src={trade_info} width="1280" height="490" />
+        </div>
+        <div>
+          <div className={styles.vl}></div>
+          <Timeline />
         </div>
       </div>
 
-      <div className={styles.layer_four}>
-        <div className={styles.inline}>
-          <div>
-            <h2 className={styles.sub_subheader}>
-              Fundamental Model and Analysis
-            </h2>
-            <p className={styles.sub_subintro}>
-              Work with web-embedded fundamental spreadsheets and templates to
-              analyze stocks and form investment decisions. The templates
-              provides users a practical opportunity to apply knowledge they
-              learned. Models provided include:
-            </p>
-            <div style={{ marginTop: "1.5em" }}>
-              <div
-                className={styles.model_name}
-                style={{ background: "#C9FFD1", color: "#577A60" }}
-              >
-                WACC Calculation
-              </div>
-              <div
-                className={styles.model_name}
-                style={{ background: "#6ee780", color: "#415f49" }}
-              >
-                Sensitivity Analysis
-              </div>
-              <div
-                className={styles.model_name}
-                style={{ background: "#56b664", color: "#1a1a1a" }}
-              >
-                Discounted Cash Flow Model
-              </div>
-            </div>
-          </div>
-          <div className={styles.spreadsheet_pic}>
-            <Image
-              src={spreadsheet}
-              width="630px"
-              height="400px"
-              style={{ borderTopLeftRadius: 15, borderBottomLeftRadius: 15 }}
-            />
-          </div>
-        </div>
-      </div>
-
-      <div className={styles.layer_three}>
-        <div className={styles.layer_top}>
-          <h2 className={styles.subheader1}>
-            Make Trades — Your Decision Influences the Market!
-          </h2>
-          <p className={styles.sub_intro} style={{ marginLeft: "5em" }}>
-            While playing, learn financial terms and concepts to get a clearer
-            insight of the financial world.
-          </p>
-        </div>
-        <div className={styles.display_game}>
-          <div className={styles.screenshot_main}>
-            <Image src={trade} width="1200px" height="630px" />
-          </div>
-        </div>
-      </div>
-
-      <div className={styles.layer_five} style={{ marginLeft: "2em" }}>
-        <div className={styles.inline}>
-          <div className={styles.charts1} style={{ marginRight: "2em" }}>
-            <h2 className={styles.sub_subheader}>
-              Collect Market Clue: Stylistic News
-            </h2>
-            <p className={styles.sub_subintro}>
-              Capture important market information from different news sources.
-              ALL INFO MATTERS!
-            </p>
-            <div style={{ marginTop: "2em", marginLeft: "2em" }}>
-              <Image src={news} width="410" height="400" />
-            </div>
-          </div>
-
-          <div className={styles.charts1} style={{ marginRight: "2em" }}>
-            <h2 className={styles.sub_subheader}>
-              Chat: Join Discussion and Share Opinions
-            </h2>
-            <p className={styles.sub_subintro}>
-              Communicate with other users and share your opinions on stocks.
-              Unity creates values.
-            </p>
-            <div style={{ marginTop: "2em", marginLeft: "2em" }}>
-              <Image src={chat} width="410" height="360" />
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div className={styles.layer_three}>
-        <div className={styles.layer_top}>
-          <h2 className={styles.subheader}>
-            Financial Terms at Your Fingertips
-          </h2>
-          <p className={styles.sub_intro}>
-            While playing, learn financial terms and concepts to get a clearer
-            insight of the financial world.
-          </p>
-        </div>
-        <div className={styles.display_game}>
-          <div className={styles.screenshot_main}>
-            <Image src={dict} width="1200px" height="630px" />
-          </div>
-        </div>
-      </div>
+      <div className={styles.vl1} style={{ marginLeft: "26em" }} />
+      <div
+        className={styles.vl2}
+        style={{ marginLeft: "45.95em", height: "10em" }}
+      />
+      <div className={styles.icon_box} />
+      <div
+        className={styles.vl2}
+        style={{ marginLeft: "45.95em", height: "5em" }}
+      />
 
       <div className={styles.comment_from_developer}>
-        <h2 className={styles.subsubheader}>
-          Notes From Developer [GAME MASTER]
-        </h2>
+        <h2 className={styles.letter_header}>Notes From Developer</h2>
         <div className={styles.inline}>
           <div className={styles.logo_img}>
-            <div style={{ marginTop: "1.25em", marginLeft: "0.65em" }}>
-              <Image src={logo} width="300pz" height="230px" />
-            </div>
+            <Image src={profile} width="300px" height="277px" />
           </div>
           <div className={styles.contact_info}>
             <p className={styles.name}>Avril Cui</p>
@@ -414,10 +172,10 @@ const Product = () => {
               16-year-old high school junior.
             </p>
             <p className={styles.description} style={{ marginTop: "1em" }}>
-              I created this website because my own finance-learning experience
-              inspired me. Learning finance is always a challenging task.
-              Complicated terminologies, intense market fluctuations, various
-              models...
+              Learning finance is always a challenging task. Complicated
+              terminologies, intense market fluctuations, various models. But
+              gaming is always a fun thing to do. I love video games. So one day
+              I wondered: Can I combine learning finance and gaming?
             </p>
             <p className={styles.description} style={{ marginTop: "1em" }}>
               I hope Aspect can help simplify the learning process through
