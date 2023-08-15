@@ -169,7 +169,7 @@ const Product = () => {
           <div style={{ marginTop: "5em" }}>
             <p className={styles.description}>
               This website is created by <b>Avril Cui</b>. I am currently a
-              16-year-old high school junior.
+              17-year-old high school senior.
             </p>
             <p className={styles.description} style={{ marginTop: "1em" }}>
               Learning finance is always a challenging task. Complicated
