@@ -419,11 +419,11 @@ class AuctionHouse:
 			total_sell_shares = 0
 		
 		#order book format [price, shares, percentage_shares]
-		self.cur.execute(f"""
+		cur.execute(f"""
 			SELECT price, shares, RANK() OVER (ORDER BY price DESC) as rank FROM bot_orders WHERE 
 			accepted={False} AND company_name='{comp_name}' AND action='buy';
 		""")
-		buy_orders = list(self.cur.fetchall())
+		buy_orders = list(cur.fetchall())
 		buy_order_book = []
 		if buy_orders != []:
 			price = buy_orders[0][0]
@@ -443,11 +443,11 @@ class AuctionHouse:
 				pct_shares = round(float(shares)/float(total_buy_shares) * 100, 2)
 				buy_order_book.append([float(price), float(shares), pct_shares])
 		
-		self.cur.execute(f"""
+		cur.execute(f"""
 			SELECT price, shares, RANK() OVER (ORDER BY price DESC) as rank FROM bot_orders WHERE 
 			accepted={False} AND company_name='{comp_name}' AND action='sell';
 		""")
-		sell_orders = list(self.cur.fetchall())
+		sell_orders = list(cur.fetchall())
 		sell_order_book = []
 		if sell_orders != []:
 			price = sell_orders[0][0]
@@ -1075,3 +1075,44 @@ class AuctionHouse:
 
 						else:
 							return "Invalid 1"
+
+
+
+
+
+
+
+import psycopg2
+conn = psycopg2.connect(
+	host="localhost",
+	database="aspectdatabase",
+	user="postgres",
+	password="Xiaokeai0717"
+)
+cur = conn.cursor()
+
+house = AuctionHouse(conn, cur)
+house.create_order_table()
+# house.put_order("Avril", 10, 100, "wrkn")
+# house.put_order("Friday", 20, 200, "wrkn")
+# house.put_order("GameMaster", 30, 300, "wrkn")
+# house.put_order("Face", 50, 300, "wrkn")
+# house.put_order("Fuqi", -30, 99, "wrkn")
+# house.put_order("Face", -10, 180, "wrkn")
+
+# house.put_order("Avril", 40, 100, "ast")
+# house.put_order("Friday", 10, 200, "ast")
+# house.put_order("GameMaster", 80, 300, "ast")
+# house.put_order("Face", 10, 300, "ast")
+# house.put_order("Fuqi", -60, 99, "ast")
+# house.put_order("Face", -10, 180, "ast")
+
+# house.put_order("Avril", 30, 100, "dsc")
+# house.put_order("Friday", 10, 200, "dsc")
+# house.put_order("GameMaster", 60, 300, "dsc")
+# house.put_order("Face", 80, 300, "dsc")
+# house.put_order("Fuqi", -20, 99, "dsc")
+# house.put_order("Face", -90, 180, "dsc")
+
+# # house.get_order_book("wrkn")
+# # house.cancel_order("9e9bf8fb-87eb-428a-8a99-37a7158eb9c9")
