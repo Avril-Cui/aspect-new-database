@@ -1,5 +1,5 @@
 from User.user_database import UserDatabaseCommands
-from prices_init import index_price, ast_price, dsc_price, fsin_price, hhw_price, jky_price, sgo_price, wrkn_price
+from Price.prices_init import index_price, ast_price, dsc_price, fsin_price, hhw_price, jky_price, sgo_price, wrkn_price
 import psycopg2
 import os
 from dotenv import load_dotenv
