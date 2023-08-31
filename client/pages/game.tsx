@@ -92,31 +92,36 @@ const Product = () => {
       </div>
 
       <div className={styles.bg2}>
-        <div className={styles.video}>
-          <ReactPlayer
-            url="https://www.youtube.com/watch?v=vsqmaqe-xBU&ab_channel=AspectGameMaster"
-            height="489px"
-            width="870px"
-          />
-        </div>
-        <div>
-          <p className={styles.slogan}>
-            "While playing, observe a clearer insight of the financial world. "
-          </p>
-          <div className={styles.social_media}>
-            <p className={styles.info_header}>
-              Find information and updates on Aspect
-            </p>
-            <div className={styles.center}>
-              <div className={styles.icons}>
-                <div style={{ marginLeft: "-1em" }}>
-                  <Image src={twi} width={50} height={50} />
-                </div>
-                <div style={{ marginLeft: "2em" }}>
-                  <Image src={ins} width={50} height={50} />
-                </div>
-                <div style={{ marginLeft: "2em" }}>
-                  <Image src={git} width={50} height={50} />
+        <div className={styles.layer_one}>
+          <div className={styles.inline}>
+            <div className={styles.video}>
+              <ReactPlayer
+                url="https://www.youtube.com/watch?v=vsqmaqe-xBU&ab_channel=AspectGameMaster"
+                height="489px"
+                width="870px"
+              />
+            </div>
+            <div>
+              <p className={styles.slogan}>
+                "While playing, observe a clearer insight of the financial
+                world. "
+              </p>
+              <div className={styles.social_media}>
+                <p className={styles.info_header}>
+                  Find information and updates on Aspect
+                </p>
+                <div className={styles.center}>
+                  <div className={styles.icons}>
+                    <div style={{ marginLeft: "-1em" }}>
+                      <Image src={twi} width={50} height={50} />
+                    </div>
+                    <div style={{ marginLeft: "2em" }}>
+                      <Image src={ins} width={50} height={50} />
+                    </div>
+                    <div style={{ marginLeft: "2em" }}>
+                      <Image src={git} width={50} height={50} />
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
@@ -156,33 +161,35 @@ const Product = () => {
       />
 
       <div className={styles.comment_from_developer}>
-        <h2 className={styles.letter_header}>Notes From Developer</h2>
-        <div className={styles.inline}>
-          <div className={styles.logo_img}>
-            <Image src={profile} width="300px" height="277px" />
-          </div>
-          <div className={styles.contact_info}>
-            <p className={styles.name}>Avril Cui</p>
-            <p className={styles.contact}>Founder</p>
-            <p className={styles.contact1}>AvrilCui17@gmail.com</p>
-          </div>
-          <div style={{ marginTop: "5em" }}>
-            <p className={styles.description}>
-              This website is created by <b>Avril Cui</b>. I am currently a
-              17-year-old high school senior.
-            </p>
-            <p className={styles.description} style={{ marginTop: "1em" }}>
-              Learning finance is always a challenging task. Complicated
-              terminologies, intense market fluctuations, various models. But
-              gaming is always a fun thing to do. I love video games. So one day
-              I wondered: Can I combine learning finance and gaming?
-            </p>
-            <p className={styles.description} style={{ marginTop: "1em" }}>
-              I hope Aspect can help simplify the learning process through
-              gaming. The game will have the best effect when playing on a
-              computer. In the future season, more features will be constantly
-              updated.
-            </p>
+        <div className={styles.layer_one}>
+          <h2 className={styles.letter_header}>Notes From Developer</h2>
+          <div className={styles.inline}>
+            <div className={styles.logo_img}>
+              <Image src={profile} width="300px" height="277px" />
+            </div>
+            <div className={styles.contact_info}>
+              <p className={styles.name}>Avril Cui</p>
+              <p className={styles.contact}>Founder</p>
+              <p className={styles.contact1}>AvrilCui17@gmail.com</p>
+            </div>
+            <div style={{ marginTop: "5em" }}>
+              <p className={styles.description}>
+                This website is created by <b>Avril Cui</b>. I am currently a
+                17-year-old high school senior.
+              </p>
+              <p className={styles.description} style={{ marginTop: "1em" }}>
+                Learning finance is always a challenging task. Complicated
+                terminologies, intense market fluctuations, various models. But
+                gaming is always a fun thing to do. I love video games. So one
+                day I wondered: Can I combine learning finance and gaming?
+              </p>
+              <p className={styles.description} style={{ marginTop: "1em" }}>
+                I hope Aspect can help simplify the learning process through
+                gaming. The game will have the best effect when playing on a
+                computer. In the future season, more features will be constantly
+                updated.
+              </p>
+            </div>
           </div>
         </div>
       </div>

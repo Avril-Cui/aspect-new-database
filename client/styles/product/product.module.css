@@ -17,9 +17,8 @@
   width: 100vw;
   padding-top: 2em;
   padding-bottom: 4em;
-  padding: 10em 7em;
+  padding: 10em 7vw;
   padding-bottom: 12em;
-  display: inline-flex;
 }
 
 .container {
@@ -119,6 +118,7 @@
   font-size: 20px;
   font-weight: 500;
   color: #577a60;
+  text-align: center;
 }
 
 .icons {
@@ -231,7 +231,6 @@
 .comment_from_developer {
   background-color: #ffffff;
   width: 100vw;
-  padding-left: 12em;
   padding-top: 7em;
   height: 60em
 }
@@ -471,7 +470,7 @@
   border-radius: 10px;
   display: table;
   margin: 0em auto;
-  margin-left: 9.5em;
+  margin-left: 10em;
   box-shadow: 0 4px 8px 0 rgba(255, 255, 255, 0.2),
     0 6px 20px 0 rgba(255, 255, 255, 0.1);
   z-index: 999;
