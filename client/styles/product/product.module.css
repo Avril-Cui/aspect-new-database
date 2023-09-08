@@ -14,7 +14,7 @@
 
 .bg2 {
   background-color: #ffffff;
-  width: 100vw;
+  width: 99vw;
   padding-top: 2em;
   padding-bottom: 4em;
   padding: 10em 7vw;
@@ -142,7 +142,7 @@
 
 .bg3 {
   margin-top: 10em;
-  width: 100vw;
+  width: 99vw;
 }
 
 .header1 {
@@ -230,7 +230,7 @@
 
 .comment_from_developer {
   background-color: #ffffff;
-  width: 100vw;
+  width: 99vw;
   padding-top: 7em;
   height: 60em
 }
