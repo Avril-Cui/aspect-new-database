@@ -22,6 +22,7 @@ start_date = datetime.now()
 #initialize database, tables, and house&user classes
 conn, cur = db.initialize()
 house = AuctionHouse(conn, cur)
+house.create_order_table()
 house.create_bot_table()
 house.create_bot_portfolio_table()
 house.create_bot_trade_history_table()
