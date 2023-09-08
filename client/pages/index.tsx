@@ -25,7 +25,6 @@ interface Props {
 
 export default function Front({ index, posts, companies }: Props) {
   const [isUser, setIsUser] = useState(false);
-  console.log(isUser)
   const cookies = new Cookies();
 
   var today = new Date();
@@ -51,14 +50,9 @@ export default function Front({ index, posts, companies }: Props) {
 
   const [isPrice, setIsPrice] = useState(false);
   const [isEnd, setIsEnd] = useState(false);
+  const user_uid = cookies.get("user_uid");
+
   useEffect(() => {
-    const user_uid = cookies.get("user_uid");
-    if (user_uid != null || undefined) {
-      setIsUser(true);
-      console.log(user_uid)
-    } else {
-      setIsUser(false);
-    }
     const axios = require("axios");
     axios
       .request({
@@ -81,6 +75,15 @@ export default function Front({ index, posts, companies }: Props) {
     }, WAIT_TIME);
     return () => clearInterval(data);
   }, [isPrice, dispatch]);
+
+  useEffect(() => {
+    if (user_uid != null || undefined) {
+      setIsUser(true);
+      console.log(user_uid);
+    } else {
+      setIsUser(false);
+    }
+  }, [user_uid]);
 
   const [isOpen, setIsOpen] = useState(false);
   const [isOpen1, setIsOpen1] = useState(false);

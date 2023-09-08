@@ -19,7 +19,7 @@ const Manu = () => {
     if (userData == undefined) {
       cookies.remove("userData", { path: "/" });
       cookies.remove("user_uid", { path: "/" });
-      router.push("/");
+      // router.push("/");
     }
   }, [userData]);
 
