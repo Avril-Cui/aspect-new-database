@@ -11,11 +11,11 @@ export default function Simulator(props: any) {
   const elementRef: any = useRef(null);
 
   function handleScrollLeft() {
-    elementRef.current.scrollLeft -= 1250;
+    elementRef.current.scrollLeft -= 1300;
   }
 
   function handleScrollRight() {
-    elementRef.current.scrollLeft += 1250;
+    elementRef.current.scrollLeft += 1300;
   }
 
   return (
@@ -24,7 +24,7 @@ export default function Simulator(props: any) {
         <button
           onClick={handleScrollLeft}
           className={styles.scroll_btn}
-          style={{ marginRight: "1180px" }}
+          style={{ marginRight: "1210px" }}
         >
           &lt;
         </button>

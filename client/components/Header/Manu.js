@@ -7,7 +7,7 @@ import { useRouter } from "next/router";
 import Cookies from "universal-cookie";
 import alien from "../../image/logo/alien.png";
 import Image from "next/image";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 
 const Manu = () => {
   const router = useRouter();
@@ -15,11 +15,27 @@ const Manu = () => {
   const cookies = new Cookies();
   const userData = cookies.get("userData");
 
+  const [isEnd, setIsEnd] = useState(false);
+
   useEffect(() => {
     if (userData == undefined) {
       cookies.remove("userData", { path: "/" });
       cookies.remove("user_uid", { path: "/" });
-      // router.push("/");
+      const axios = require("axios");
+      axios
+        .request({
+          method: "post",
+          maxBodyLength: Infinity,
+          url: `${process.env.serverConnection}/is-end-game`,
+        })
+        .then((response) => {
+          if (response.data == "0") {
+            setIsEnd(true);
+          }
+        })
+        .catch((error) => {
+          console.log(error);
+        });
     }
   }, [userData]);
 
@@ -47,11 +63,13 @@ const Manu = () => {
               <a style={{ color: "#c3fcc2" }}>Dashboard</a>
             </Link>
           ) : null}
-          <div>
-            <Link href="/season-review">
-              <a style={{ color: "#f3ec78" }}>Season Review</a>
-            </Link>
-          </div>
+          {isEnd ? (
+            <div>
+              <Link href="/season-review">
+                <a style={{ color: "#f3ec78" }}>Season Review</a>
+              </Link>
+            </div>
+          ) : null}
           <div>
             <Link href="/game">
               <a>Game</a>
