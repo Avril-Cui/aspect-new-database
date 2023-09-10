@@ -152,7 +152,7 @@ function Trade(props) {
           console.log(error.message);
           if (error.message == "Request failed with status code 403") {
             setMessage(
-              "Currently no shares available for trade in market. \n Try buying a sell order on the right."
+              "Currently no shares available for trade in market. \n Try accepting a sell order on the right."
             );
           } else if (error.message == "Request failed with status code 402") {
             setMessage("You do not have enough money for this trade.");
@@ -209,12 +209,12 @@ function Trade(props) {
           console.log(error.message);
           if (error.message == "Request failed with status code 403") {
             setMessage(
-              "Currently no shares available for trade in market.\n Try selling a buy order on the right."
+              "Currently no shares available for trade in market.\n Try accepting a buy order on the right."
             );
           } else if (error.message == "Request failed with status code 402") {
             setMessage("You do not have enough money for this trade.");
           } else if (error.message == "Request failed with status code 401") {
-            setMessage("You do not owe enough shares of this stock.");
+            setMessage("You do not own enough shares of this stock.\n Try cancel pending sell orders if there is any.");
           } else if (error.message == "Request failed with status code 404") {
             setMessage(
               "Currently no shares available for trade. \n Your transaction will enter the pending state."

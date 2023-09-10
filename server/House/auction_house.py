@@ -483,8 +483,8 @@ class AuctionHouse:
 		share_number: float,
 		target_price: float,
 		comp_name: str,
-		share_range1=50,
-		share_range2=120
+		share_range1=100,
+		share_range2=800
 	):
 		available_shares = random.randint(share_range1, share_range2)
 

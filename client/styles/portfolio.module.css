@@ -337,8 +337,9 @@
   font-size: 14px;
   font-weight: 300;
   text-align: center;
-  padding: 0.6em 3em;
   color: #dadada;
+  width: 10em;
+  padding: 0.25em 0;
 }
 
 .alien_img{
@@ -356,17 +357,19 @@
 .screener_table th {
   font-size: 16px;
   font-weight: 300;
-  text-align: left;
-  padding: 0.3em 3em;
+  text-align: center;
+  padding: 0.3em auto;
+  width: 10em;
   color: #72b176;
 }
 
 .screener_table1 th {
   font-size: 16px;
   font-weight: 300;
-  text-align: left;
-  padding: 0.3em 2.1em;
+  text-align: center;
+  width: 10em;
   color: #72b176;
+  padding: 0.25em 0;
 }
 
 .table_line tr:nth-of-type(odd) {
@@ -476,7 +479,7 @@
 
 .cancel{
   background-color: rgb(27, 27, 27);
-  padding: 0.25em 0.5em;
+  padding: 0.25em 0.35em;
   border: 1px solid #c3fcc2;
   border-radius: 5px;
 }

@@ -24,13 +24,12 @@ function PendingOrders(props) {
           <tbody className={styles.table_line}>
             {props.orders.map((order, index) => {
               return (
-                <div key={index}>
                   <Company
                     order={
                       order == null ? [null, null, null, null, null] : order
                     }
                   />
-                </div>
+
               );
             })}
           </tbody>
@@ -50,6 +49,11 @@ function PendingOrders(props) {
 }
 
 function Company(props) {
+  const formatter = new Intl.NumberFormat("en-US", {
+    minimumFractionDigits: 2,
+    maximumFractionDigits: 2,
+  });
+
   const id = props.order[0];
   const category = props.order[1];
   const price = props.order[2];
@@ -87,9 +91,9 @@ function Company(props) {
             <td className={styles.comp_link}>{category.toUpperCase()}</td>
           </a>
         </Link>
-        <td>{price}</td>
-        <td>{share_number}</td>
-        <td>{total_value}</td>
+        <td>{formatter.format(price)}</td>
+        <td>{formatter.format(share_number)}</td>
+        <td>{formatter.format(total_value)}</td>
         <td>{action.toUpperCase()}</td>
         <td>
           <button className={styles.cancel} onClick={handleCancelOrder}>
