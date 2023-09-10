@@ -97,7 +97,7 @@ function Company(props) {
         <td>{action.toUpperCase()}</td>
         <td>
           <button className={styles.cancel} onClick={handleCancelOrder}>
-            <p>CANCEL ORDER </p>
+            <p>CANCEL</p>
           </button>
         </td>
       </tr>

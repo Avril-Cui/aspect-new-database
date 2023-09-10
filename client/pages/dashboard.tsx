@@ -403,7 +403,7 @@ export default function Home() {
               </div>
 
               <div style={{ marginTop: "0.5em" }}>
-                <p className={styles.header}>PENDING ORDERS</p>
+                <p className={styles.header}>PENDING ORDERS (will be canceled after 24 hours)</p>
                 <div className={styles.holdings_container} id="holding">
                   <PendingOrders orders={orders} />
                 </div>
