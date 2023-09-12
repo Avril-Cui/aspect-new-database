@@ -1039,6 +1039,7 @@ class AuctionHouse:
 							);
 						""")
 						self.conn.commit()
+						print("bidded sucessfully")
 						if portfolio_data != None:
 							self.cur.execute(f"""
 								UPDATE bots SET cashvalue = (cashvalue-{round(trade_value, 2)})
@@ -1071,7 +1072,8 @@ class AuctionHouse:
 									UPDATE bot_portfolio SET pending_shares_holding = (pending_shares_holding-{abs(round(share_number,2))})
 									WHERE bot_id='{bot}' and company_id='{company}';
 								""")
-								self.conn.commit()	
+								self.conn.commit()
+								print("bidded sucessfully")
 
 						else:
 							return "Invalid 1"
