@@ -684,8 +684,97 @@ class AuctionHouse:
 			action: dict,
 			current_price: float
 		):
-		print("HI")
-		print(action)
+
+		for company in action["bidder"]:
+			for bot in action["bidder"][company]:
+				if float(action["bidder"][company][bot]["share_number"]) > 0:
+					bot_action = "buy"
+				elif float(action["bidder"][company][bot]["share_number"]) < 0:
+					bot_action = "sell"
+				else:
+					bot_action = None
+				
+				if bot_action != None:
+					order_id = str(uuid.uuid4())
+
+					self.cur.execute(f"""
+						SELECT cashvalue from bots WHERE bot_id='{bot}';
+					""")
+					cash_value = float(self.cur.fetchone()[0])
+
+					self.cur.execute(f"""
+						SELECT shares_holding from bot_portfolio WHERE bot_id='{bot}' and company_id='{company}';
+					""")
+					portfolio_data = self.cur.fetchone()
+					if portfolio_data != None:
+						shares_holding = float(portfolio_data[0])
+					
+					self.cur.execute(f"""
+						SELECT pending_shares_holding from bot_portfolio WHERE bot_id='{bot}' and company_id='{company}';
+					""")
+					pending_portfolio_data = self.cur.fetchone()
+					if pending_portfolio_data != None:
+						pending_shares_holding = float(pending_portfolio_data[0])
+					
+					share_number = float(action["bidder"][company][bot]["share_number"])
+					target_price = float(action["bidder"][company][bot]["target_price"])
+
+					trade_value = abs(share_number) * target_price
+
+					if trade_value > cash_value and share_number > 0:
+						return "Invalid 2"
+
+					elif share_number > 0:
+						self.cur.execute(f"""
+							INSERT INTO bot_orders VALUES(
+								'{order_id}',
+								'{bot}',
+								'{company}',
+								{round(target_price, 2)},
+								{abs(round(share_number, 2))},
+								{round(float(time.time()), 2)},
+								'{bot_action}',
+								{False}
+							);
+						""")
+						self.conn.commit()
+						if portfolio_data != None:
+							self.cur.execute(f"""
+								UPDATE bots SET cashvalue = (cashvalue-{round(trade_value, 2)})
+								WHERE bot_id='{bot}';
+							""")
+							self.conn.commit()
+						else:
+							self.cur.execute(f"""
+								UPDATE bots SET cashvalue = (cashvalue-{round(trade_value, 2)})
+								WHERE bot_id='{bot}';
+							""")
+							self.conn.commit()
+
+					else:
+						if portfolio_data != None:
+							if abs(share_number) > shares_holding or abs(share_number) > pending_shares_holding:
+								return "Invalid 1"
+							else:
+								self.cur.execute(f"""
+									INSERT INTO bot_orders VALUES(
+										'{order_id}',
+										'{bot}',
+										'{company}',
+										{round(target_price, 2)},
+										{abs(round(share_number, 2))},
+										{round(float(time.time()), 2)},
+										'{bot_action}',
+										{False}
+									);
+									UPDATE bot_portfolio SET pending_shares_holding = (pending_shares_holding-{abs(round(share_number,2))})
+									WHERE bot_id='{bot}' and company_id='{company}';
+								""")
+								self.conn.commit()
+
+						else:
+							return "Invalid 1"
+
 		for company in action["trader"]:
 			for bot in action["trader"][company]:
 				self.cur.execute(f"""
@@ -988,102 +1077,3 @@ class AuctionHouse:
 				else:
 					pass
 
-		for company in action["bidder"]:
-			for bot in action["bidder"][company]:
-				print("Im here")
-				if float(action["bidder"][company][bot]["share_number"]) > 0:
-					bot_action = "buy"
-				elif float(action["bidder"][company][bot]["share_number"]) < 0:
-					bot_action = "sell"
-				else:
-					bot_action = None
-
-				print("action: ", bot_action)
-				
-				if bot_action != None:
-					order_id = str(uuid.uuid4())
-
-					self.cur.execute(f"""
-						SELECT cashvalue from bots WHERE bot_id='{bot}';
-					""")
-					cash_value = float(self.cur.fetchone()[0])
-
-					self.cur.execute(f"""
-						SELECT shares_holding from bot_portfolio WHERE bot_id='{bot}' and company_id='{company}';
-					""")
-					portfolio_data = self.cur.fetchone()
-					if portfolio_data != None:
-						shares_holding = float(portfolio_data[0])
-					
-					self.cur.execute(f"""
-						SELECT pending_shares_holding from bot_portfolio WHERE bot_id='{bot}' and company_id='{company}';
-					""")
-					pending_portfolio_data = self.cur.fetchone()
-					if pending_portfolio_data != None:
-						pending_shares_holding = float(pending_portfolio_data[0])
-					
-					share_number = float(action["bidder"][company][bot]["share_number"])
-					target_price = float(action["bidder"][company][bot]["target_price"])
-
-					trade_value = abs(share_number) * target_price
-
-					if trade_value > cash_value and share_number > 0:
-						print("Invalid 2")
-						return "Invalid 2"
-
-					elif share_number > 0:
-						self.cur.execute(f"""
-							INSERT INTO bot_orders VALUES(
-								'{order_id}',
-								'{bot}',
-								'{company}',
-								{round(target_price, 2)},
-								{abs(round(share_number, 2))},
-								{round(float(time.time()), 2)},
-								'{bot_action}',
-								{False}
-							);
-						""")
-						self.conn.commit()
-						print("bidded sucessfully")
-						if portfolio_data != None:
-							self.cur.execute(f"""
-								UPDATE bots SET cashvalue = (cashvalue-{round(trade_value, 2)})
-								WHERE bot_id='{bot}';
-							""")
-							self.conn.commit()
-						else:
-							self.cur.execute(f"""
-								UPDATE bots SET cashvalue = (cashvalue-{round(trade_value, 2)})
-								WHERE bot_id='{bot}';
-							""")
-							self.conn.commit()
-
-					else:
-						if portfolio_data != None:
-							if abs(share_number) > shares_holding or abs(share_number) > pending_shares_holding:
-								print("here")
-								return "Invalid 1"
-							else:
-								self.cur.execute(f"""
-									INSERT INTO bot_orders VALUES(
-										'{order_id}',
-										'{bot}',
-										'{company}',
-										{round(target_price, 2)},
-										{abs(round(share_number, 2))},
-										{round(float(time.time()), 2)},
-										'{bot_action}',
-										{False}
-									);
-									UPDATE bot_portfolio SET pending_shares_holding = (pending_shares_holding-{abs(round(share_number,2))})
-									WHERE bot_id='{bot}' and company_id='{company}';
-								""")
-								self.conn.commit()
-								print("bidded sucessfully")
-
-						else:
-							print("invalid 1")
-							return "Invalid 1"
-				else:
-					print("NONE")
