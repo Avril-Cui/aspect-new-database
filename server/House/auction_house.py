@@ -684,6 +684,8 @@ class AuctionHouse:
 			action: dict,
 			current_price: float
 		):
+		print("HI")
+		print(action)
 		for company in action["trader"]:
 			for bot in action["trader"][company]:
 				self.cur.execute(f"""
@@ -988,12 +990,15 @@ class AuctionHouse:
 
 		for company in action["bidder"]:
 			for bot in action["bidder"][company]:
+				print("Im here")
 				if float(action["bidder"][company][bot]["share_number"]) > 0:
 					bot_action = "buy"
 				elif float(action["bidder"][company][bot]["share_number"]) < 0:
 					bot_action = "sell"
 				else:
 					bot_action = None
+
+				print("action: ", bot_action)
 				
 				if bot_action != None:
 					order_id = str(uuid.uuid4())
@@ -1023,6 +1028,7 @@ class AuctionHouse:
 					trade_value = abs(share_number) * target_price
 
 					if trade_value > cash_value and share_number > 0:
+						print("Invalid 2")
 						return "Invalid 2"
 
 					elif share_number > 0:
@@ -1056,6 +1062,7 @@ class AuctionHouse:
 					else:
 						if portfolio_data != None:
 							if abs(share_number) > shares_holding or abs(share_number) > pending_shares_holding:
+								print("here")
 								return "Invalid 1"
 							else:
 								self.cur.execute(f"""
@@ -1076,4 +1083,7 @@ class AuctionHouse:
 								print("bidded sucessfully")
 
 						else:
+							print("invalid 1")
 							return "Invalid 1"
+				else:
+					print("NONE")
