@@ -447,7 +447,7 @@ export default function Home() {
         <div className={styles.center_container}>
           <div style={{ marginTop: "1.5em", marginBottom: "7em" }}>
             <div style={{ marginLeft: "1em" }}>
-              <p className={styles.header1}>GAME RANKING</p>
+              <p className={styles.header1}>GAME RANKING (Based on Cash Value)</p>
               <div className={styles.inline}>
                 <div className={styles.leaderboard} id="leaderboard">
                   <LeaderBoard3 />

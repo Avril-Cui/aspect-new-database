@@ -3,6 +3,8 @@ import styles from "./AskBidTable.module.css";
 
 function AskBidTable(props) {
   const [shares, setShares] = useState({});
+  const [buyShares, setBuyShares] = useState({});
+
   // let shares = {};
 
   const [orderBook, setOrderBook] = useState([
@@ -87,10 +89,53 @@ function AskBidTable(props) {
     }
   };
 
+  const handleAcceptBuyOrder = (input, e, index) => {
+    e.preventDefault();
+    if (
+      buyShares[index] == "" ||
+      Object.keys(buyShares).length == 0 ||
+      buyShares[index] == undefined ||
+      buyShares[index] == 0
+    ) {
+      setIsNotEmpty(false);
+    } else if (
+      parseFloat(input["available_shares"]) < parseFloat(buyShares[index])
+    ) {
+      setIsShares(false);
+    } else {
+      var axios = require("axios");
+      var data = JSON.stringify(input);
+      var config = {
+        method: "POST",
+        url: `${process.env.serverConnection}/user-accept-order`,
+        headers: {
+          "Content-Type": "text/plain",
+        },
+        data: data,
+      };
+      axios(config)
+        .then(function (response) {
+          setIsSuccess(true);
+        })
+        .catch(function (error) {
+          console.log(error);
+        });
+    }
+  };
+
   const handleShareChanges = (event, index) => {
     let new_share = {};
     new_share[index] = event.target.value;
     setShares((shares) => ({
+      ...shares,
+      ...new_share,
+    }));
+  };
+
+  const handleBuyShareChanges = (event, index) => {
+    let new_share = {};
+    new_share[index] = event.target.value;
+    setBuyShares((shares) => ({
       ...shares,
       ...new_share,
     }));
@@ -181,10 +226,32 @@ function AskBidTable(props) {
                       name="shares"
                       placeholder="Shares"
                       className={styles.input_field}
+                      value={buyShares[index]}
+                      onChange={(e) => handleBuyShareChanges(e, index)}
                     />
-                    <button className={styles.accept}>
+                    <button
+                      type="submit"
+                      className={styles.accept}
+                      onClick={(e) =>
+                        handleAcceptBuyOrder(
+                          {
+                            price: order[0],
+                            shares_number: buyShares[index],
+                            available_shares: order[1],
+                            action: "buy",
+                            company: props.comp_name,
+                            user_uid: props.user_uid,
+                          },
+                          e,
+                          index
+                        )
+                      }
+                    >
                       <p>✅</p>
                     </button>
+                    {/* <button className={styles.accept}>
+                      <p>✅</p>
+                    </button> */}
                   </div>
                 </tr>
               );
