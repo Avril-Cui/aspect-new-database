@@ -51,7 +51,6 @@ class UserDatabaseCommands:
         self.conn.commit()
 
     def get_comp_holding_list(self, user_uid):
-        print(user_uid)
         self.cur.execute(f"""
             SELECT company_id from portfolio WHERE uid = '{user_uid}';
         """)
@@ -61,17 +60,12 @@ class UserDatabaseCommands:
             for index in range(len(result)):
                 if result[index][0] != None:
                     company_list.append(result[index][0])
-            print(f"empty 1 {company_list}")
-            print(f"result {result}")
-            print(f"id: {user_uid}")
             return company_list
         except:
             try:
                 result = self.cur.fetchone()[0]
                 return [result]
             except:
-                print([])
-                print(f"empty 2 {[]}")
                 return []
 
     def get_portfolio_info(self, user_uid, company_prices):
@@ -81,11 +75,11 @@ class UserDatabaseCommands:
             users.uid = '{user_uid}' and portfolio.uid = '{user_uid}';
         """)
         try:
-            result = list(self.cur.fetchone())
+            results = list(self.cur.fetchall())
+            print(results)
         except:
-            result = []
-        print(result)
-        if result == []:
+            results = []
+        if results == []:
             self.cur.execute(f"""
                 SELECT cashvalue FROM users WHERE uid = '{user_uid}';
             """)
@@ -103,7 +97,7 @@ class UserDatabaseCommands:
             except:
                 pass
         else:
-            cash_value = float(result[0])
+            cash_value = float(results[0][0])
 
             user_portfolio = {
                 "portfolio_value": {
@@ -114,16 +108,18 @@ class UserDatabaseCommands:
 
             holding_value = 0
 
-            company = result[1]
-            shares_holding = float(result[2])
-            cost = float(result[3])
-            holding_value += float(company_prices[company]) * float(shares_holding)
-            user_portfolio[company] = {
-                "shares_holding": shares_holding,
-                "total_holding": float(company_prices[company]) * float(shares_holding),
-                "cost": cost,
-                "category": company
-            }
+            for index in range(len(results)):
+
+                company = results[index][1]
+                shares_holding = float(results[index][2])
+                cost = float(results[index][3])
+                holding_value += float(company_prices[company]) * float(shares_holding)
+                user_portfolio[company] = {
+                    "shares_holding": shares_holding,
+                    "total_holding": float(company_prices[company]) * float(shares_holding),
+                    "cost": cost,
+                    "category": company
+                }
 
             user_portfolio["portfolio_value"]["holdingValue"] = round(holding_value, 2)
             user_portfolio["portfolio_value"]["accountValue"] = round(holding_value + cash_value, 2)

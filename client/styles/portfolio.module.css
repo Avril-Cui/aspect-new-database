@@ -329,8 +329,9 @@
   font-size: 14px;
   font-weight: 300;
   text-align: center;
-  padding: 0.6em 3.75em;
   color: #dadada;
+  padding: 0.6em 0;
+  width: 10em;
 }
 
 .holding_detail1 td {
@@ -358,9 +359,9 @@
   font-size: 16px;
   font-weight: 300;
   text-align: center;
-  padding: 0.3em auto;
   width: 10em;
   color: #72b176;
+  padding: 0.3em 0;
 }
 
 .screener_table1 th {
