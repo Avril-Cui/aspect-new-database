@@ -69,7 +69,6 @@ def result():
 		except:
 			return "Invalid user request", 401
 
-
 @app.route("/register", methods=["POST", "GET"])
 def register():
 	if request.method == "POST":
