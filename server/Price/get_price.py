@@ -13,6 +13,7 @@ def get_stock_price(
         macro = params[name]["macro"]
         stock_simulator = DayPriceGenerator(macro)
         base_price = stock_simulator.price_loop()
+        print(base_price)
 
         wave_1 = {
             'price_list': base_price,
@@ -33,7 +34,6 @@ def get_stock_price(
         Combinator = WaveModifier()
         combinated_price = Combinator.price_wave_addition(
             0, event_intensity[i], length[i], wave_1, wave_2)
-        print(combinated_price)
         if len(price_list) == 0:
             adjust_factor = target_price
         else:

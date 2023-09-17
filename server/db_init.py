@@ -8,7 +8,7 @@ load_dotenv()
 import matplotlib.pyplot as plt
 
 # index_price = get_index_price()
-ast_price = get_ast_price()
+# ast_price = get_ast_price()
 dsc_price = get_dsc_price()
 # fsin_price = get_fsin_price()
 # hhw_price = get_hhw_price()

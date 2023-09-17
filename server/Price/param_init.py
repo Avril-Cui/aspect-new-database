@@ -12,7 +12,6 @@ from sklearn.linear_model import LinearRegression
 
 def macro(file):
     comp_price_df = pd.read_csv(file)
-    print(comp_price_df)
     stock_price = comp_price_df["Adj Close"].tolist()
 
     sampling_price_list = []
