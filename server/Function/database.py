@@ -24,3 +24,12 @@ class db:
             """)
         price = list(cur.fetchone()[0])
         return price
+
+
+import matplotlib.pyplot as plt
+
+DB = db()
+conn, cur = db.initialize_connection()
+ast_price = db.get_price_from_database("dsc", cur)
+plt.plot(ast_price)
+plt.show()

@@ -40,26 +40,28 @@ def macro(file):
         mu_lst.append(mu)
         sigma_lst.append(sigma)
 
-    parameter_dict = {}
-    parameter_dict['original_price'] = stock_price[0]
-    parameter_dict['mu_sde'] = mu_lst
-    parameter_dict['sigma'] = sigma_lst
-    parameter_dict['theta'] = theta_lst
-    parameter_dict['time'] = len(sampling_price_list)
+    parameter_dict = {
+        "original_price": stock_price[0],
+        "mu_sde": mu_lst,
+        "sigma": sigma_lst,
+        "theta": theta_lst,
+        "time": len(sampling_price_list)
+    }
+
     return parameter_dict
 
-file_names_index = ['normal1', 'mete1_1', 'mete1_2', 'mete2', 'mete3', 'mete4', 'mete5']
-length_index = [120, 50, 30, 50, 50, 60, 60]
-fund_weights_index = [0.7, 0.6, 0.85, 0.85, 0.9, 1, 1]
-index_params_index = {}
-for index in range(len(file_names_index)):
-	name = file_names_index[index]
-	index_params_index[name] = {
-		"macro": macro("Price/historical_price/index_data/{}.csv".format(name))
-	}
+# file_names_index = ['normal1', 'mete1_1', 'mete1_2', 'mete2', 'mete3', 'mete4', 'mete5']
+# length_index = [120, 50, 30, 50, 50, 60, 60]
+# fund_weights_index = [0.7, 0.6, 0.85, 0.85, 0.9, 1, 1]
+# index_params_index = {}
+# for index in range(len(file_names_index)):
+#  name = file_names_index[index]
+#  index_params_index[name] = {
+#   "macro": macro("Price/historical_price/index_data/{}.csv".format(name))
+#  }
 
 file_names_ast = ['gov_policy', 'normal', 'insider', 'normal', 'fs']
-length_ast = [85, 30, 75, 30, 100]
+length_ast = [120, 50, 75, 50, 110]
 fund_weights_ast = [0.6, 1, 0.75, 1, 1]
 params_ast = {}
 for index in range(len(file_names_ast)):
@@ -69,61 +71,61 @@ for index in range(len(file_names_ast)):
     }
 
 file_names_dsc = ['acquisition', 'normal', 'chip', 'normal']
-length_dsc = [145, 30, 105, 30]
-fund_weights_dsc = [0.9, 1, 0.9, 0.5]
+length_dsc = [145, 60, 105, 90]
+fund_weights_dsc = [0.9, 1, 0.9, 0.3]
 params_dsc = {}
-for index in range(len(file_names_dsc)):
-    name = file_names_dsc[index]
+for index1 in range(len(file_names_dsc)):
+    name = file_names_dsc[index1]
     params_dsc[name] = {
         "macro": macro("Price/historical_price/DSC/{}.csv".format(name))
     }
 
-file_names_fsin = ['fast_fashion', 'normal', 'ceo_crisis', 'normal']
-length_fsin = [150, 40, 80, 30]
-fund_weights_fsin = [0.8, 1, 0.9,1]
-params_fsin = {}
-for index in range(len(file_names_fsin)):
-    name = file_names_fsin[index]
-    params_fsin[name] = {
-        "macro": macro("Price/historical_price/FSIN/{}.csv".format(name))
-    }
+# file_names_fsin = ['fast_fashion', 'normal', 'ceo_crisis', 'normal']
+# length_fsin = [150, 60, 80, 110]
+# fund_weights_fsin = [0.8, 0.75, 0.9, 0.1]
+# params_fsin = {}
+# for index in range(len(file_names_fsin)):
+#     name = file_names_fsin[index]
+#     params_fsin[name] = {
+#         "macro": macro("Price/historical_price/FSIN/{}.csv".format(name))
+#     }
 
-file_names_hhw = ['normal', 'mete_business_1', 'mete_business_2', 'business_restructure']
-length_hhw = [20, 90, 80, 110]
-fund_weights_hhw = [1, 1, 1, 1]
-params_hhw = {}
-for index in range(len(file_names_hhw)):
-    name = file_names_hhw[index]
-    params_hhw[name] = {
-        "macro": macro("Price/historical_price/HHW/{}.csv".format(name))
-    }
+# file_names_hhw = ['normal', 'mete_business_1', 'mete_business_2', 'business_restructure']
+# length_hhw = [110, 90, 80, 110]
+# fund_weights_hhw = [0.35, 1, 1, 1]
+# params_hhw = {}
+# for index in range(len(file_names_hhw)):
+#     name = file_names_hhw[index]
+#     params_hhw[name] = {
+#         "macro": macro("Price/historical_price/HHW/{}.csv".format(name))
+#     }
 
-file_names_jky = ['margin_call', 'interest', 'crisis_survival', 'normal']
-length_jky = [110, 70, 80, 40]
-fund_weights_jky = [0.9, 1, 1, 0.6]
-params_jky = {}
-for index in range(len(file_names_jky)):
-    name = file_names_jky[index]
-    params_jky[name] = {
-        "macro": macro("Price/historical_price/JKY/{}.csv".format(name))
-    }
+# file_names_jky = ['margin_call', 'interest', 'crisis_survival', 'normal']
+# length_jky = [115, 80, 80, 120]
+# fund_weights_jky = [0.9, 1, 1, 0.1]
+# params_jky = {}
+# for index in range(len(file_names_jky)):
+#     name = file_names_jky[index]
+#     params_jky[name] = {
+#         "macro": macro("Price/historical_price/JKY/{}.csv".format(name))
+#     }
 
-file_names_sgo = ['normal', 'new_medicine', 'share_purchase', 'competition', 'success_medicine']
-length_sgo = [10, 90, 60, 90, 50]
-fund_weights_sgo = [0.8, 0.8, 1, 0.9, 0.8]
-params_sgo = {}
-for index in range(len(file_names_sgo)):
-    name = file_names_sgo[index]
-    params_sgo[name] = {
-        "macro": macro("Price/historical_price/SGO/{}.csv".format(name))
-    }
+# file_names_sgo = ['normal', 'new_medicine', 'share_purchase', 'competition', 'success_medicine']
+# length_sgo = [100, 90, 60, 90, 50]
+# fund_weights_sgo = [0.8, 0.8, 1, 0.9, 0.8]
+# params_sgo = {}
+# for index in range(len(file_names_sgo)):
+#     name = file_names_sgo[index]
+#     params_sgo[name] = {
+#         "macro": macro("Price/historical_price/SGO/{}.csv".format(name))
+#     }
 
-file_names_wrkn = ['IPO', 'normal', 'new_business_strategy']
-length_wrkn = [200, 30, 70]
-fund_weights_wrkn = [0.75, 0.6, 1]
-params_wrkn = {}
-for index in range(len(file_names_wrkn)):
-    name = file_names_wrkn[index]
-    params_wrkn[name] = {
-        "macro": macro("Price/historical_price/WRKN/{}.csv".format(name))
-    }
+# file_names_wrkn = ['IPO', 'normal', 'new_business_strategy']
+# length_wrkn = [230, 100, 70]
+# fund_weights_wrkn = [0.75, 0.6, 1]
+# params_wrkn = {}
+# for index in range(len(file_names_wrkn)):
+#     name = file_names_wrkn[index]
+#     params_wrkn[name] = {
+#         "macro": macro("Price/historical_price/WRKN/{}.csv".format(name))
+#     }

@@ -5,7 +5,6 @@ This issue might be fixed by yahoo later.
 """
 from typing import Optional
 import numpy as np
-from copy import deepcopy
 from pandas_datareader import data as pdr
 import yfinance as yf
 np.random.seed(17)
