@@ -1,4 +1,5 @@
 from Price.alg_price import  DayPriceGenerator, WaveModifier, StockSimulator
+import matplotlib.pyplot as plt
 
 def get_stock_price(
         file_names, params,
@@ -7,14 +8,12 @@ def get_stock_price(
         event_intensity,
         target_price, sigma):
     price_list = []
-    base_price_lst = []
     for i in range(len(file_names)):
         name = file_names[i]
         macro = params[name]["macro"]
         stock_simulator = DayPriceGenerator(macro)
         base_price = stock_simulator.price_loop()
 
-        base_price_lst.extend(base_price)
         wave_1 = {
             'price_list': base_price,
             'start_point': 0,
@@ -34,6 +33,7 @@ def get_stock_price(
         Combinator = WaveModifier()
         combinated_price = Combinator.price_wave_addition(
             0, event_intensity[i], length[i], wave_1, wave_2)
+        print(combinated_price)
         if len(price_list) == 0:
             adjust_factor = target_price
         else:
@@ -43,6 +43,7 @@ def get_stock_price(
             adjust_factor, combinated_price, sigma[i])
         result_price = price_generator.generate_price()
         price_list.extend(result_price)
-        # print(name)
-        # print(f'days: {len(result_price)/(60*60*24)}')
+
+    # plt.plot(price_list)
+    # plt.show()
     return price_list
