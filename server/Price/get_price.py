@@ -13,7 +13,6 @@ def get_stock_price(
         macro = params[name]["macro"]
         stock_simulator = DayPriceGenerator(macro)
         base_price = stock_simulator.price_loop()
-        print(base_price)
 
         wave_1 = {
             'price_list': base_price,

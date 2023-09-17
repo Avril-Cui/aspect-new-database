@@ -1,15 +1,15 @@
 import Price.param_init
-from Price.alg_price import MidPriceGenerator, DayPriceGenerator, WaveModifier, StockSimulator
+from Price.alg_price import MidPriceGenerator
 import numpy as np
 import matplotlib.pyplot as plt
 import pandas as pd
 from Price.get_price import get_stock_price
-
-
+import numpy as np
 
 intensity = [1, 1, 1, 1, 1, 1, 1]
 
 def get_index_price():
+    np.random.seed(17)
     mid_price_index1 = MidPriceGenerator.generate_mid_price(
     "2015-3-9", "2017-1-1", ["^DJI"], 15)
     mid_prices_index = [mid_price_index1, mid_price_index1, mid_price_index1,
@@ -20,6 +20,7 @@ def get_index_price():
     return index_price
 
 def get_ast_price():
+    np.random.seed(17)
     mid_price_index1 = MidPriceGenerator.generate_mid_price(
     "2019-1-1", "2019-10-20", ["^GSPC"], 15)
     mid_price_index2 = MidPriceGenerator.generate_mid_price(
@@ -36,6 +37,7 @@ def get_ast_price():
     return ast_price
 
 def get_dsc_price():
+    np.random.seed(17)
     mid_price_index6 = MidPriceGenerator.generate_mid_price(
     "2019-12-15", "2021-8-1", ["^GSPC"], 15)
     dsc_price = get_stock_price(Price.param_init.file_names_dsc, Price.param_init.params_dsc, intensity, Price.param_init.length_dsc,
@@ -44,6 +46,7 @@ def get_dsc_price():
     return dsc_price
 
 def get_fsin_price():
+    np.random.seed(17)
     mid_price_index1 = MidPriceGenerator.generate_mid_price(
     "2019-12-15", "2021-8-1", ["^GSPC"], 15)
     mid_prices_index = [mid_price_index1, mid_price_index1,
@@ -54,6 +57,7 @@ def get_fsin_price():
     return fsin_price
 
 def get_hhw_price():
+    np.random.seed(17)
     mid_price_index1 = MidPriceGenerator.generate_mid_price(
     "2021-8-15", "2022-12-1", ["^GSPC"], 15)
     mid_prices_index = [mid_price_index1, mid_price_index1,
@@ -64,6 +68,7 @@ def get_hhw_price():
     return hhw_price
 
 def get_jky_price():
+    np.random.seed(17)
     mid_price_index1 = MidPriceGenerator.generate_mid_price(
     "2021-8-15", "2022-12-1", ["^GSPC"], 15)
     mid_prices_index = [mid_price_index1, mid_price_index1,
@@ -74,6 +79,7 @@ def get_jky_price():
     return jky_price
 
 def get_sgo_price():
+    np.random.seed(17)
     mid_price_index1 = MidPriceGenerator.generate_mid_price(
         "2021-8-15", "2022-12-1", ["^GSPC"], 15)
     mid_prices_index = [mid_price_index1, mid_price_index1,
@@ -84,6 +90,7 @@ def get_sgo_price():
     return sgo_price
 
 def get_wrkn_price():
+    np.random.seed(17)
     mid_price_index1 = MidPriceGenerator.generate_mid_price(
         "2021-8-15", "2022-12-1", ["^GSPC"], 15)
     mid_prices_index = [mid_price_index1, mid_price_index1, mid_price_index1]

@@ -1,37 +1,38 @@
 from User.user_database import UserDatabaseCommands
 from Price.prices_init import  get_index_price, get_ast_price, get_dsc_price, get_fsin_price, get_hhw_price, get_jky_price, get_sgo_price, get_wrkn_price
-# from Price.prices_init import index_price, ast_price, dsc_price, fsin_price, hhw_price, jky_price, sgo_price, wrkn_price
 import psycopg2
 import os
 from dotenv import load_dotenv
 load_dotenv()
 import matplotlib.pyplot as plt
+import numpy as np
+np.random.seed(17)
 
-# index_price = get_index_price()
-# ast_price = get_ast_price()
+index_price = get_index_price()
+ast_price = get_ast_price()
 dsc_price = get_dsc_price()
-# fsin_price = get_fsin_price()
-# hhw_price = get_hhw_price()
-# jky_price = get_jky_price()
-# sgo_price = get_sgo_price()
-# wrkn_price = get_wrkn_price()
+fsin_price = get_fsin_price()
+hhw_price = get_hhw_price()
+jky_price = get_jky_price()
+sgo_price = get_sgo_price()
+wrkn_price = get_wrkn_price()
 
-# plt.plot(index_price)
-# plt.show()
-# plt.plot(ast_price)
-# plt.show()
+plt.plot(index_price)
+plt.show()
+plt.plot(ast_price)
+plt.show()
 plt.plot(dsc_price)
 plt.show()
-# plt.plot(fsin_price)
-# plt.show()
-# plt.plot(hhw_price)
-# plt.show()
-# plt.plot(jky_price)
-# plt.show()
-# plt.plot(sgo_price)
-# plt.show()
-# plt.plot(wrkn_price)
-# plt.show()
+plt.plot(fsin_price)
+plt.show()
+plt.plot(hhw_price)
+plt.show()
+plt.plot(jky_price)
+plt.show()
+plt.plot(sgo_price)
+plt.show()
+plt.plot(wrkn_price)
+plt.show()
 # prices_list = [index_price, ast_price, dsc_price, fsin_price, hhw_price, jky_price, sgo_price, wrkn_price]
 # companies = ["index", "ast", "dsc", "fsin", "hhw", "jky", "sgo", "wrkn"]
 
