@@ -1,7 +1,6 @@
 import Price.param_init
 from Price.alg_price import MidPriceGenerator
 import numpy as np
-import matplotlib.pyplot as plt
 import pandas as pd
 from Price.get_price import get_stock_price
 import numpy as np

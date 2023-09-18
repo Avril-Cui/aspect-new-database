@@ -30,6 +30,14 @@ import matplotlib.pyplot as plt
 
 DB = db()
 conn, cur = db.initialize_connection()
-ast_price = db.get_price_from_database("dsc", cur)
-plt.plot(ast_price)
-plt.show()
+
+# for company in ["ast", "dsc", "fsin", "hhw", "jky", "sgo", "wrkn", "index"]:
+#     lst = []
+#     price = db.get_price_from_database(company, cur)
+#     for index in range(len(price)):
+#         if index % (60*60*24) == 0:
+#             print(index % 60*60*24)
+#             lst.append(price[index])
+
+#     plt.plot(lst)
+#     plt.show()

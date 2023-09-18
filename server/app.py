@@ -6,15 +6,14 @@ from Function.helper import helper
 import time
 from datetime import datetime
 import json
-from flask import Flask, request, jsonify, request
+from flask import Flask, request, jsonify
 import pyrebase
 from flask_cors import CORS, cross_origin
-import matplotlib.pyplot as plt
 
 #initialize timeframe
 seconds = time.time()
-start_time = time.time() - 60*60*24*10 - 60*60*2
-end_time = start_time + (60*60*24)*29 + 36000
+start_time = time.time() - 60*60*24*15 - 60*60*2
+end_time = start_time + (60*60*24)*14 + 36000
 start_date = datetime.now()
 
 #initialize database, tables, and house&user classes
@@ -35,15 +34,12 @@ company_names = ["ast", "dsc", "fsin", "hhw", "jky", "sgo", "wrkn", "index"]
 flat_price = {}
 for company in company_names:
  flat_price[company] = db.get_price_from_database(company, cur)
- print(company)
- plt.plot(flat_price[company])
- plt.show()
 
 #set configuration for flask server and firebase auth
 app = Flask(__name__)
 CORS(app)
 app.config["CORS_ORIGINS"] = ["https://aspect-game.com",
-         "http://localhost:8080", "http://127.0.0.1:5000", "http://localhost:3000"]
+		 "http://localhost:8080", "http://127.0.0.1:5000", "http://localhost:3000"]
 app.config['JSON_SORT_KEYS'] = False
 config = {
  "apiKey": "AIzaSyAHY-ZeX87ObL6y3y_2n76GLNxU-24hHs0",
@@ -170,7 +166,7 @@ def trade_stock():
    company_list = user_database_commands.get_comp_holding_list(user_uid)
    current_prices = helper.get_current_prices(company_list,start_time, flat_price)
    portfolio = user_database_commands.get_portfolio_info(
-    user_uid, current_prices)
+	user_uid, current_prices)
    return jsonify(portfolio)
  else:
   response = house.put_order(user_uid, share_number, target_price, comp_name)
@@ -209,11 +205,29 @@ def total_rank():
  user_rank = user_database_commands.get_total_rank()
  return user_rank
 
+@app.route('/current-all-prices', methods=["POST"])
+def current_all_prices():
+	current_time = time.time()
+	index_tmp = int(current_time-start_time)
+	day = index_tmp//(60*60*24)
+	current_price_dict = {}
+	for key in flat_price:
+		open_price = flat_price[key][day*60*60*24]
+		change = round(flat_price[key][index_tmp]-open_price, 2)
+		pct_change = round((flat_price[key][index_tmp] - open_price) / open_price * 100, 2)
+		current_price = round(flat_price[key][index_tmp], 2)
+		current_price_dict[key] = {
+			"price": current_price,
+			"change": change,
+			"pct_change": pct_change
+		}
+	return current_price_dict
+
 @app.route('/current-price', methods=['POST'])
 def current_price():
+ comp_name = json.loads(request.data)
  current_time = time.time()
  index_tmp = int(current_time-start_time)
- comp_name = json.loads(request.data)
  return {"price": round(flat_price[comp_name][index_tmp], 2)}
 
 @app.route('/tick-graph', methods=["POST"])
@@ -230,69 +244,71 @@ def tick_graph():
  for index in range(day*60*60*24, (day+1)*60*60*24):
   if index % 300 == 0:
    tick_price_graph.append({"time": (
-     start_time+index), "value": round(flat_price[comp_name][index], 2)})
+	 start_time+index), "value": round(flat_price[comp_name][index], 2)})
  return jsonify(tick_price_graph)
 
 @app.route('/day-graph', methods=["POST"])
 def day_graph():
- current_time = time.time()
- index_tmp = int(current_time-start_time)
- comp_name = json.loads(request.data)
- day = index_tmp//(60*60*24)
+	current_time = time.time()
+	index_tmp = int(current_time-start_time)
+	comp_name = json.loads(request.data)
+	day = len(flat_price[comp_name])//(60*60*24)
+	print(day)
+	graph_lst = []
 
- graph_lst = []
-
- for index in range(0, day-1):
-  high = round(max(flat_price[comp_name][index, index+1]), 2)
-  low = round(min(flat_price[comp_name][index, index+1]), 2)
-  open_p = round(max(flat_price[comp_name][index]), 2)
-  close_p = round(max(flat_price[comp_name][index+1]), 2)
-  dt_object = datetime.fromtimestamp(start_time+index*86400)
-  month = dt_object.month
-  day = dt_object.day
-  date = f"{day}/{month}/2073"
-  graph_lst.append([date, open_p, close_p, low, high])
- return jsonify(graph_lst)
+	for index in range(day):
+		for inx in range(index*60*60*24, (index+1)*60*60*24):
+			if inx % (3600*5) == 0 and inx != 0:
+				price_chunk = flat_price[comp_name][inx-3600:inx]
+				high = round(max(price_chunk), 2)
+				low = round(min(price_chunk), 2)
+				open_p = round(price_chunk[0], 2)
+				close_p = round(price_chunk[-1], 2)
+				timestamp = start_time + inx
+				dt_object = datetime.fromtimestamp(timestamp)
+				date = f"{dt_object.day}/{dt_object.month} {dt_object.time()}"
+				graph_lst.append([date, open_p, close_p, low, high])
+	return jsonify(graph_lst)
 
 @app.route('/hour-graph', methods=["POST"])
 def hour_graph():
- current_time = time.time()
- index_tmp = int(current_time-start_time)
- comp_name = json.loads(request.data)
- day = index_tmp//(60*60*24)
- graph_lst = []
+	current_time = time.time()
+	index_tmp = int(current_time-start_time)
+	comp_name = json.loads(request.data)
+	day = index_tmp//(60*60*24)
+	graph_lst = []
 
- for index in range(day):
-  for inx in range(index*60*60*24, (index+1)*60*60*24):
-   if inx % 3600 == 0 and inx != 0:
-    price_chunk = flat_price[comp_name][inx-3600, inx]
-    high = round(max(price_chunk), 2)
-    low = round(min(price_chunk), 2)
-    open_p = round(price_chunk[0], 2)
-    close_p = round(price_chunk[-1], 2)
-    timestamp = start_time + inx
-    dt_object = datetime.fromtimestamp(timestamp)
-    date = f"{dt_object.day}/{dt_object.month} {dt_object.time()}"
-    graph_lst.append([date, open_p, close_p, low, high])
- return jsonify(graph_lst)
+	for index in range(day):
+		for inx in range(index*60*60*24, (index+1)*60*60*24):
+			if inx % 3600 == 0 and inx != 0:
+				price_chunk = flat_price[comp_name][inx-3600:inx]
+				high = round(max(price_chunk), 2)
+				low = round(min(price_chunk), 2)
+				open_p = round(price_chunk[0], 2)
+				close_p = round(price_chunk[-1], 2)
+				timestamp = start_time + inx
+				dt_object = datetime.fromtimestamp(timestamp)
+				date = f"{dt_object.day}/{dt_object.month} {dt_object.time()}"
+	graph_lst.append([date, open_p, close_p, low, high])
+	return jsonify(graph_lst)
 
 
 @app.route('/tick-graphs', methods=["POST"])
 def tick_graphs():
- current_time = time.time()
- index_tmp = int(current_time-start_time)
- day = index_tmp//(60*60*24)
+	current_time = time.time()
+	index_tmp = int(current_time-start_time)
+	day = index_tmp//(60*60*24)
 
- graphs = {}
- for comp_name in flat_price:
-  tick_price_graph = []
-  for index in range(day*60*60*24, (day+1)*60*60*24):
-   if index % 300 == 0:
-    tick_price_graph.append({"time": (
-      start_time+index), "value": round(flat_price[comp_name][index], 2)})
-  graphs[comp_name] = tick_price_graph
+	graphs = {}
+	for comp_name in flat_price:
+		tick_price_graph = []
+		for index in range(day*60*60*24, (day+1)*60*60*24):
+			if index % 300 == 0:
+				tick_price_graph.append({"time": (
+					start_time+index), "value": round(flat_price[comp_name][index], 2)})
+		graphs[comp_name] = tick_price_graph
  
- return jsonify(graphs)
+	return jsonify(graphs)
 
 @cross_origin()
 @app.route('/end-season-user-data', methods=['POST'])
@@ -372,4 +388,4 @@ def end_game_prices():
 
 if __name__ == '__main__':
  app.run(debug=True, host="localhost", port="5000")
-    # app.run(host="localhost", port=5000)
+	# app.run(host="localhost", port=5000)

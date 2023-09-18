@@ -1,5 +1,4 @@
 from Price.alg_price import  DayPriceGenerator, WaveModifier, StockSimulator
-import matplotlib.pyplot as plt
 
 def get_stock_price(
         file_names, params,
@@ -43,6 +42,4 @@ def get_stock_price(
         result_price = price_generator.generate_price()
         price_list.extend(result_price)
 
-    # plt.plot(price_list)
-    # plt.show()
     return price_list
