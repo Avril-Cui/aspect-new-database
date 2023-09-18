@@ -22,6 +22,7 @@ function LeaderBoard3(props) {
       url: `${process.env.serverConnection}/total-rank`,
     })
       .then(function (response) {
+        console.log(response.data)
         setRanking(response.data);
       })
       .catch(function (error) {

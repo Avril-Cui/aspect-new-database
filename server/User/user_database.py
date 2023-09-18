@@ -118,7 +118,9 @@ class UserDatabaseCommands:
                     "shares_holding": shares_holding,
                     "total_holding": float(company_prices[company]) * float(shares_holding),
                     "cost": cost,
-                    "category": company
+                    "category": company,
+                    "current_price": round(company_prices[company], 2),
+                    "buy_price": round((float(results[index][3])/float(shares_holding)), 2)
                 }
 
             user_portfolio["portfolio_value"]["holdingValue"] = round(holding_value, 2)

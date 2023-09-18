@@ -83,7 +83,7 @@ function Company(props) {
         console.log(error);
       });
   };
-  if (share_number != undefined) {
+  if (share_number != undefined || action != undefined) {
     return (
       <tr key={id} className={styles.holding_detail1}>
         <Link href={`/company/${category}`}>

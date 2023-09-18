@@ -271,7 +271,6 @@ export default function Home() {
     return () => clearInterval(data1);
   }, [orders]);
 
-
   const [enabled, setEnabled] = useState(false);
   const toggleStartTutorial = () => {
     setEnabled(true);
@@ -296,12 +295,31 @@ export default function Home() {
         "Track the stocks you currently hold (if it is empty, then you don't have any stocks yet), make a trade!",
     },
     {
+      selector: "#pending",
+      content:
+        "Contains all the pending orders that are waiting for acceptance. Pending orders will be automatically canceled after 24 hours.",
+    },
+    {
+      selector: "#trade",
+      content:
+        "Trade a stock here by choosing the action (buy or share), enter the target price, and desired shares.",
+    },
+    {
+      selector: "#ask-bid",
+      content:
+        "See the currently available ask/bid orders in the market. Click the check button to accept an order.",
+    },
+    {
       selector: "#companies",
       content: "Explore companies with various characteristics and businesses.",
     },
     {
       selector: "#leaderboard",
       content: "See all users' rankings in the game.",
+    },
+    {
+      selector: "#botleaderboard",
+      content: "See all embedded bots' rankings in the game",
     },
   ];
 
@@ -403,8 +421,10 @@ export default function Home() {
               </div>
 
               <div style={{ marginTop: "0.5em" }}>
-                <p className={styles.header}>PENDING ORDERS (will be canceled after 24 hours)</p>
-                <div className={styles.holdings_container} id="holding">
+                <p className={styles.header}>
+                  PENDING ORDERS (will be canceled after 24 hours)
+                </p>
+                <div className={styles.holdings_container} id="pending">
                   <PendingOrders orders={orders} />
                 </div>
               </div>
@@ -419,13 +439,17 @@ export default function Home() {
                 <p style={{ marginLeft: "-8em" }}>Trade</p>
               </div>
               <div className={styles.inline} style={{ marginLeft: "-11em" }}>
-                <Trade
-                  handleTickerChange={handleTickerChange}
-                  ticker={compName}
-                  setTicker={setCompName}
-                  user_uid={userUid}
-                />
-                <AskBidTable comp_name={compName} user_uid={userUid} />
+                <div id="trade">
+                  <Trade
+                    handleTickerChange={handleTickerChange}
+                    ticker={compName}
+                    setTicker={setCompName}
+                    user_uid={userUid}
+                  />
+                </div>
+                <div id="ask-bid">
+                  <AskBidTable comp_name={compName} user_uid={userUid} />
+                </div>
                 <CompanyChart comp_name={compName} />
               </div>
             </div>
@@ -447,12 +471,14 @@ export default function Home() {
         <div className={styles.center_container}>
           <div style={{ marginTop: "1.5em", marginBottom: "7em" }}>
             <div style={{ marginLeft: "1em" }}>
-              <p className={styles.header1}>GAME RANKING (Based on Cash Value)</p>
+              <p className={styles.header1}>
+                GAME RANKING (Based on Cash Value)
+              </p>
               <div className={styles.inline}>
                 <div className={styles.leaderboard} id="leaderboard">
                   <LeaderBoard3 />
                 </div>
-                <div className={styles.bot_leaderboard}>
+                <div className={styles.bot_leaderboard} id="botleaderboard">
                   <BotRanking />
                 </div>
               </div>

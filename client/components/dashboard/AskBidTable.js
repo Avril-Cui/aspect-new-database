@@ -168,7 +168,7 @@ function AskBidTable(props) {
                       step="any"
                       name="shares"
                       id={order}
-                      placeholder="Shares"
+                      placeholder="Buy Share"
                       className={styles.input_field}
                       value={shares[index]}
                       onChange={(e) => handleShareChanges(e, index)}
@@ -224,7 +224,7 @@ function AskBidTable(props) {
                       type="number"
                       step="any"
                       name="shares"
-                      placeholder="Shares"
+                      placeholder="Sell Share"
                       className={styles.input_field}
                       value={buyShares[index]}
                       onChange={(e) => handleBuyShareChanges(e, index)}
@@ -249,9 +249,6 @@ function AskBidTable(props) {
                     >
                       <p>✅</p>
                     </button>
-                    {/* <button className={styles.accept}>
-                      <p>✅</p>
-                    </button> */}
                   </div>
                 </tr>
               );

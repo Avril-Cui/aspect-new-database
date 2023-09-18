@@ -7,12 +7,14 @@ import Image from "next/image";
 function ShowCompValue(props) {
   return (
     <div className={styles.scroll}>
-      <div >
+      <div>
         <table className={styles.screener_table}>
           <tbody>
             <tr>
               <th>Ticker</th>
               <th>Shares</th>
+              <th>Buy Price</th>
+              <th>Current Price</th>
               <th>Total Value</th>
               <th>Change</th>
               <th>Percentage</th>
@@ -46,13 +48,16 @@ function Company(props) {
     return (Math.round(m) / 100) * Math.sign(num);
   }
 
-  const { category, shares_holding, total_holding, cost } = props.company;
+  const { category, shares_holding, total_holding, cost, current_price, buy_price } = props.company;
 
   let company_value = null;
   let share_number = null;
-  let comp_name = category;
   let price_pct_change = 0;
   let price_change = 0;
+  let buyPrice = 0;
+  let currentPrice = 0;
+  let comp_name = category;
+
 
   if (category != "portfolio_value") {
     company_value = total_holding;
@@ -60,6 +65,8 @@ function Company(props) {
     comp_name = category;
     price_change = round(total_holding - cost);
     price_pct_change = round(((total_holding - cost) / cost) * 100);
+    buyPrice = buy_price;
+    currentPrice = current_price;
   }
 
   if (share_number != 0) {
@@ -71,6 +78,8 @@ function Company(props) {
           </a>
         </Link>
         <td>{share_number}</td>
+        <td>{buyPrice}</td>
+        <td>{currentPrice}</td>
         <td>{round(company_value)}</td>
         <td
           style={price_change > 0 ? { color: "#C9FFD1" } : { color: "#FD6565" }}
