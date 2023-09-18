@@ -12,7 +12,7 @@ from flask_cors import CORS, cross_origin
 
 #initialize timeframe
 seconds = time.time()
-start_time = time.time() - 60*60*24*15 - 60*60*2
+start_time = time.time() - 60*60*24*10 - 60*60*2
 end_time = start_time + (60*60*24)*14 + 36000
 start_date = datetime.now()
 
@@ -253,7 +253,6 @@ def day_graph():
 	index_tmp = int(current_time-start_time)
 	comp_name = json.loads(request.data)
 	day = len(flat_price[comp_name])//(60*60*24)
-	print(day)
 	graph_lst = []
 
 	for index in range(day):
@@ -289,7 +288,7 @@ def hour_graph():
 				timestamp = start_time + inx
 				dt_object = datetime.fromtimestamp(timestamp)
 				date = f"{dt_object.day}/{dt_object.month} {dt_object.time()}"
-	graph_lst.append([date, open_p, close_p, low, high])
+				graph_lst.append([date, open_p, close_p, low, high])
 	return jsonify(graph_lst)
 
 
