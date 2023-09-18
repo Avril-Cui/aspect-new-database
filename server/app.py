@@ -190,7 +190,6 @@ def portfolio_detail():
  user_uid = json.loads(request.data)
  company_list = user_database_commands.get_comp_holding_list(user_uid)
  current_prices = helper.get_current_prices(company_list, start_time, flat_price)
- print(current_prices)
  portfolio = user_database_commands.get_portfolio_info(
   user_uid, current_prices)
  return jsonify(portfolio)
