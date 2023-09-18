@@ -2,7 +2,7 @@ import styles from "./overview_charts.module.css";
 import { useState } from "react";
 import SectorTemplate from "./compGraph/sectorTemplate";
 
-const OverviewChart = (props:any) => {
+const OverviewChart = (props: any) => {
   const [category, setCategory] = useState(1);
   const [compGraph, setCompGraph] = useState(1);
 
@@ -60,6 +60,12 @@ const OverviewChart = (props:any) => {
             onClick={() => handleCategory(7)}
           >
             <p>Communications</p>
+          </button>
+          <button
+            className={category == 8 ? styles.tyle_btn_shadow : styles.tyle_btn}
+            onClick={() => handleCategory(8)}
+          >
+            <p>Automotive</p>
           </button>
         </div>
       </div>
@@ -203,6 +209,27 @@ const OverviewChart = (props:any) => {
             setCompGraph={setCompGraph}
             category={category}
             comp_names={["DSC"]}
+            price_data={props.price_data}
+            isPrice={props.isPrice}
+            indexDayChart={props.indexDayChart}
+          />
+        </div>
+      )}
+
+      {category === 8 && (
+        <div
+          style={{
+            height: 580,
+            width: 1240,
+            marginTop: "2.25em",
+            marginLeft: "0em",
+          }}
+        >
+          <SectorTemplate
+            compGraph={compGraph}
+            setCompGraph={setCompGraph}
+            category={category}
+            comp_names={["AST"]}
             price_data={props.price_data}
             isPrice={props.isPrice}
             indexDayChart={props.indexDayChart}

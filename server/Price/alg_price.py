@@ -5,44 +5,36 @@ This issue might be fixed by yahoo later.
 """
 from typing import Optional
 import numpy as np
-from copy import deepcopy
 from pandas_datareader import data as pdr
 import yfinance as yf
-np.random.seed(17)
 yf.pdr_override()
-
+np.random.seed(17)
 
 class DayPriceGenerator:
     def __init__(
         self,
         macro_params: dict,
     ):
-        self.original_price = macro_params['original_price']
         self.macro_params = macro_params
         self.price = macro_params['original_price']
         self.price_list = []
         self.minimum_simulation_tick = 1
 
     def ontk_price(self, theta, mu, sigma):
-        tmp_bm_coeff = np.random.normal(0,1) * np.sqrt(self.minimum_simulation_tick)
+        bm = np.random.normal(0,1)
+        tmp_bm_coeff = bm * np.sqrt(self.minimum_simulation_tick)
         simulated_price = self.price + theta * (mu-self.price) + sigma * tmp_bm_coeff 
         return simulated_price
 
     def price_loop(
         self
     ):
-        mu_lst = self.macro_params["mu_sde"]
-        theta_lst = self.macro_params["theta"]
-        sigma_lst = self.macro_params["sigma"]
-        time_length = self.macro_params["time"]
-
-        for index in range(time_length):
-            mu = mu_lst[index]
-            theta = theta_lst[index]
-            sigma = sigma_lst[index]
-            next_price = self.ontk_price(theta, mu, sigma)
-            self.price = next_price
-            self.price_list.append(next_price)
+        for index in range(self.macro_params["time"]):
+            mu = self.macro_params["mu_sde"][index]
+            theta = self.macro_params["theta"][index]
+            sigma = self.macro_params["sigma"][index]
+            self.price = self.ontk_price(theta, mu, sigma)
+            self.price_list.append(self.price)
 
         return (self.price_list)
 
