@@ -39,6 +39,7 @@
     "react-tradingview-embed": "^3.0.6",
     "react-vertical-timeline-component": "^3.6.0",
     "reactour": "^1.19.0",
+    "sharp": "^0.32.6",
     "styled-components": "^5.3.6"
   },
   "devDependencies": {
