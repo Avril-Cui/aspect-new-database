@@ -127,13 +127,11 @@ const Manu = () => {
                 <a>Log Out</a>
               </Nav.Link>
             ) : (
-              <a
-                className={styles.login_text}
-                id="log-in-btn"
-                href="/api/auth/login"
-              >
-                Log In
-              </a>
+              <Link href="/api/auth/login">
+                <a className={styles.login_text} id="log-in-btn">
+                  Log In
+                </a>
+              </Link>
             )}
           </div>
         </Button>

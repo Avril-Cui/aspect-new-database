@@ -103,8 +103,8 @@ const Product = () => {
             </div>
             <div>
               <p className={styles.slogan}>
-                "While playing, observe a clearer insight of the financial
-                world. "
+              &quot;While playing, observe a clearer insight of the financial
+                world. &quot;
               </p>
               <div className={styles.social_media}>
                 <p className={styles.info_header}>

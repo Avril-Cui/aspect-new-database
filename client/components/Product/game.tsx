@@ -17,7 +17,6 @@ import Timeline from "./timeline";
 const Product = () => {
   return (
     <div className={styles.container}>
-
       <div className={styles.bg1}>
         <div className={styles.layer_one}>
           <h1 className={styles.header}>Dynamic market trading game</h1>
@@ -101,8 +100,8 @@ const Product = () => {
             </div>
             <div>
               <p className={styles.slogan}>
-                "While playing, observe a clearer insight of the financial
-                world. "
+                &quot;While playing, observe a clearer insight of the financial
+                world. &quot;
               </p>
               <div className={styles.social_media}>
                 <p className={styles.info_header}>

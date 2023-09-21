@@ -1,10 +1,7 @@
-import { useRef } from "react";
 import styles from "../../styles/portfolio.module.css";
-import { useState, useEffect } from "react";
 import Link from "next/link";
 import alien from "../../image/logo/alien.png";
 import Image from "next/image";
-import axios from "axios";
 
 function PendingOrders(props) {
   return (
@@ -28,8 +25,8 @@ function PendingOrders(props) {
                     order={
                       order == null ? [null, null, null, null, null] : order
                     }
+                    key={index}
                   />
-
               );
             })}
           </tbody>
