@@ -10,7 +10,7 @@ import Head from "next/head";
 import "intro.js/introjs.css";
 import { initializeApp } from "firebase/app";
 import { getAnalytics } from "firebase/analytics";
-import { useEffect } from "react";
+import { UserProvider } from '@auth0/nextjs-auth0/client';
 
 const ProtectedRoute = dynamic(() => import("../components/ProtectedRoute"), {
   ssr: false,
@@ -39,42 +39,47 @@ function MyApp({ Component, pageProps }: AppProps) {
     const analytics = getAnalytics(app);
   }
 
-  // Initialize Firebase
-  // const app = initializeApp(firebaseConfig);
-  useEffect(() => {}, []);
   return (
-    <Provider store={store}>
-      <Head>
-        <link rel="shortcut icon" href="/logo.png" />
-      </Head>
-      <CookiesProvider>
-        {EndSeasonRequired.includes(router.pathname) ? (
-          <EndSeason>
-            {AuthRequired.includes(router.pathname) ? (
-              <ProtectedRoute>
-                <Component {...pageProps} />
-              </ProtectedRoute>
-            ) : (
-              <Layout>
-                <Component {...pageProps} />
-              </Layout>
-            )}
-          </EndSeason>
-        ) : (
-          <>
-            {AuthRequired.includes(router.pathname) ? (
-              <ProtectedRoute>
-                <Component {...pageProps} />
-              </ProtectedRoute>
-            ) : (
-              <Layout>
-                <Component {...pageProps} />
-              </Layout>
-            )}
-          </>
-        )}
-      </CookiesProvider>
-    </Provider>
+    <UserProvider
+      // domain="YOUR_DOMAIN"
+      // clientId="YOUR_CLIENT_ID"
+      // authorizationParams={{
+      //   redirect_uri: window.location.origin,
+      // }}
+    >
+      <Provider store={store}>
+        <Head>
+          <link rel="shortcut icon" href="/logo.png" />
+        </Head>
+        <CookiesProvider>
+          {EndSeasonRequired.includes(router.pathname) ? (
+            <EndSeason>
+              {AuthRequired.includes(router.pathname) ? (
+                <ProtectedRoute>
+                  <Component {...pageProps} />
+                </ProtectedRoute>
+              ) : (
+                <Layout>
+                  <Component {...pageProps} />
+                </Layout>
+              )}
+            </EndSeason>
+          ) : (
+            <>
+              {AuthRequired.includes(router.pathname) ? (
+                <ProtectedRoute>
+                  <Component {...pageProps} />
+                </ProtectedRoute>
+              ) : (
+                <Layout>
+                  <Component {...pageProps} />
+                </Layout>
+              )}
+            </>
+          )}
+        </CookiesProvider>
+      </Provider>
+    </UserProvider>
   );
 }
 

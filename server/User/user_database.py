@@ -1,5 +1,6 @@
 import time
 
+
 class UserDatabaseCommands:
 
     def __init__(self, conn, cur):
@@ -28,7 +29,7 @@ class UserDatabaseCommands:
         """)
         self.conn.commit()
 
-    def create_trade_history_table(self ):
+    def create_trade_history_table(self):
         self.cur.execute(f'DROP TABLE IF EXISTS trade_history;')
         self.cur.execute(f"""
             CREATE TABLE trade_history (
@@ -43,12 +44,20 @@ class UserDatabaseCommands:
 
     def intialize_user(self, uid, user_name):
         self.cur.execute(f"""
-            INSERT INTO users
-            VALUES (
-                '{uid}', '{user_name}', 100000
-            );
+            SELECT * from users WHERE uid='{uid}';
         """)
-        self.conn.commit()
+        result = self.cur.fetchall()
+        print(result)
+        if len(result) < 1:
+            self.cur.execute(f"""
+                INSERT INTO users
+                VALUES (
+                    '{uid}', '{user_name}', 100000
+                );
+            """)
+            self.conn.commit()
+        else:
+            print("already exists")
 
     def get_comp_holding_list(self, user_uid):
         self.cur.execute(f"""
@@ -113,7 +122,8 @@ class UserDatabaseCommands:
                 company = results[index][1]
                 shares_holding = float(results[index][2])
                 cost = float(results[index][3])
-                holding_value += float(company_prices[company]) * float(shares_holding)
+                holding_value += float(company_prices[company]
+                                       ) * float(shares_holding)
                 user_portfolio[company] = {
                     "shares_holding": shares_holding,
                     "total_holding": float(company_prices[company]) * float(shares_holding),
@@ -123,12 +133,14 @@ class UserDatabaseCommands:
                     "buy_price": round((float(results[index][3])/float(shares_holding)), 2)
                 }
 
-            user_portfolio["portfolio_value"]["holdingValue"] = round(holding_value, 2)
-            user_portfolio["portfolio_value"]["accountValue"] = round(holding_value + cash_value, 2)
+            user_portfolio["portfolio_value"]["holdingValue"] = round(
+                holding_value, 2)
+            user_portfolio["portfolio_value"]["accountValue"] = round(
+                holding_value + cash_value, 2)
 
             return user_portfolio
 
-    def get_total_rank(self ):
+    def get_total_rank(self):
         # Format: [('friday', Decimal('100000'), 1), ('avrilcui', Decimal('99250'), 2)]
         self.cur.execute(f"""
             SELECT user_name, cashvalue, RANK() OVER (ORDER BY cashvalue DESC) as rank FROM users;
@@ -147,7 +159,7 @@ class UserDatabaseCommands:
             }
         return ranking
 
-    def get_fifteen_rank(self ):
+    def get_fifteen_rank(self):
         # Format: [('friday', Decimal('100000'), 1), ('avrilcui', Decimal('99250'), 2)]
         self.cur.execute(f"""
             SELECT user_name, cashvalue, RANK() OVER (ORDER BY cashvalue DESC) as rank FROM users;
@@ -194,7 +206,7 @@ class UserDatabaseCommands:
         #     return rank
         # except:
         #     return 0
-    
+
     def get_user_cash(self, user_uid):
         self.cur.execute(f"""
             SELECT cashvalue from users WHERE uid = '{user_uid}';
