@@ -8,42 +8,67 @@ import Cookies from "universal-cookie";
 import alien from "../../image/logo/alien.png";
 import Image from "next/image";
 import { useEffect, useState } from "react";
+import { useUser } from "@auth0/nextjs-auth0/client";
+import axios from "axios";
 
 const Manu = () => {
+  const { user, error, isLoading } = useUser();
   const router = useRouter();
 
   const cookies = new Cookies();
-  const userData = cookies.get("userData");
+  // const userData = cookies.get("userData");]
+  const [userData, setUserData] = useState(null);
 
   const [isEnd, setIsEnd] = useState(false);
 
   useEffect(() => {
-    if (userData == undefined) {
-      cookies.remove("userData", { path: "/" });
-      cookies.remove("user_uid", { path: "/" });
-      const axios = require("axios");
-      axios
-        .request({
-          method: "post",
-          maxBodyLength: Infinity,
-          url: `${process.env.serverConnection}/is-end-game`,
-        })
-        .then((response) => {
-          if (response.data == "0") {
-            setIsEnd(true);
-          }
-        })
-        .catch((error) => {
-          console.log(error);
-        });
+    if (user != null) {
+      console.log(user.nickname);
+      const email = user.email;
+      const user_name = user.nickname;
+      const uid = user.sid;
+      cookies.set("userData", { email, user_name }, { path: "/" });
+      cookies.set("user_uid", uid, { path: "/" });
+      const data = JSON.stringify({ uid, user_name });
+      let config = {
+        method: "post",
+        maxBodyLength: Infinity,
+        url: `${process.env.serverConnection}/login`,
+        headers: {
+          "Content-Type": "text/plain",
+        },
+        data: data,
+      };
+
+      axios.request(config);
     }
-  }, [userData]);
+
+    // if (userData == undefined) {
+    //   cookies.remove("userData", { path: "/" });
+    //   cookies.remove("user_uid", { path: "/" });
+    //   const axios = require("axios");
+    //   axios
+    //     .request({
+    //       method: "post",
+    //       maxBodyLength: Infinity,
+    //       url: `${process.env.serverConnection}/is-end-game`,
+    //     })
+    //     .then((response) => {
+    //       if (response.data == "0") {
+    //         setIsEnd(true);
+    //       }
+    //     })
+    //     .catch((error) => {
+    //       console.log(error);
+    //     });
+    // }
+    const newUserData = cookies.get("userData");
+    setUserData(newUserData);
+  }, [user]);
 
   const handleLogout = () => {
     cookies.remove("userData", { path: "/" });
     cookies.remove("user_uid", { path: "/" });
-
-    router.push("/");
   };
 
   return (
@@ -93,16 +118,22 @@ const Manu = () => {
 
         <Button>
           <div className={styles.style_but}>
-            {userData ? (
-              <Nav.Link className={styles.text} onClick={handleLogout}>
+            {userData != null ? (
+              <Nav.Link
+                className={styles.text}
+                href="/api/auth/logout"
+                onClick={handleLogout}
+              >
                 <a>Log Out</a>
               </Nav.Link>
             ) : (
-              <Nav.Link className={styles.text} href="/auth/login">
-                <a className={styles.login_text} id="log-in-btn">
-                  Log In
-                </a>
-              </Nav.Link>
+              <a
+                className={styles.login_text}
+                id="log-in-btn"
+                href="/api/auth/login"
+              >
+                Log In
+              </a>
             )}
           </div>
         </Button>

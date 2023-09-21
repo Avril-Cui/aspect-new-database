@@ -13,12 +13,14 @@
     "cypress": "cypress open"
   },
   "dependencies": {
+    "@auth0/nextjs-auth0": "^3.1.0",
     "@emotion/react": "^11.11.1",
     "@emotion/styled": "^11.11.0",
     "@mui/lab": "^5.0.0-alpha.139",
     "@reduxjs/toolkit": "^1.8.6",
     "@sanity/image-url": "^1.0.1",
     "axios": "^0.27.2",
+    "dotenv": "^16.3.1",
     "echarts-for-react": "^3.0.2",
     "firebase": "^10.3.1",
     "intro.js-react": "^0.7.1",
