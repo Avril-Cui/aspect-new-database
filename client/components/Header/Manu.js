@@ -12,8 +12,8 @@ import { useUser } from "@auth0/nextjs-auth0/client";
 import axios from "axios";
 
 const Manu = () => {
-  const { user, error, isLoading } = useUser();
   const router = useRouter();
+  const { user, error, isLoading } = useUser();
 
   const cookies = new Cookies();
   // const userData = cookies.get("userData");]
@@ -21,50 +21,50 @@ const Manu = () => {
 
   const [isEnd, setIsEnd] = useState(false);
 
-  useEffect(() => {
-    if (user != null) {
-      console.log(user.nickname);
-      const email = user.email;
-      const user_name = user.nickname;
-      const uid = user.sid;
-      cookies.set("userData", { email, user_name }, { path: "/" });
-      cookies.set("user_uid", uid, { path: "/" });
-      const data = JSON.stringify({ uid, user_name });
-      let config = {
-        method: "post",
-        maxBodyLength: Infinity,
-        url: `${process.env.serverConnection}/login`,
-        headers: {
-          "Content-Type": "text/plain",
-        },
-        data: data,
-      };
+  // useEffect(() => {
+  //   if (user != null) {
+  //     console.log(user.nickname);
+  //     const email = user.email;
+  //     const user_name = user.nickname;
+  //     const uid = user.sid;
+  //     cookies.set("userData", { email, user_name }, { path: "/" });
+  //     cookies.set("user_uid", uid, { path: "/" });
+  //     const data = JSON.stringify({ uid, user_name });
+  //     let config = {
+  //       method: "post",
+  //       maxBodyLength: Infinity,
+  //       url: `${process.env.serverConnection}/login`,
+  //       headers: {
+  //         "Content-Type": "text/plain",
+  //       },
+  //       data: data,
+  //     };
 
-      axios.request(config);
-    }
+  //     axios.request(config);
+  //   }
 
-    // if (userData == undefined) {
-    //   cookies.remove("userData", { path: "/" });
-    //   cookies.remove("user_uid", { path: "/" });
-    //   const axios = require("axios");
-    //   axios
-    //     .request({
-    //       method: "post",
-    //       maxBodyLength: Infinity,
-    //       url: `${process.env.serverConnection}/is-end-game`,
-    //     })
-    //     .then((response) => {
-    //       if (response.data == "0") {
-    //         setIsEnd(true);
-    //       }
-    //     })
-    //     .catch((error) => {
-    //       console.log(error);
-    //     });
-    // }
-    const newUserData = cookies.get("userData");
-    setUserData(newUserData);
-  }, [user]);
+  //   // if (userData == undefined) {
+  //   //   cookies.remove("userData", { path: "/" });
+  //   //   cookies.remove("user_uid", { path: "/" });
+  //   //   const axios = require("axios");
+  //   //   axios
+  //   //     .request({
+  //   //       method: "post",
+  //   //       maxBodyLength: Infinity,
+  //   //       url: `${process.env.serverConnection}/is-end-game`,
+  //   //     })
+  //   //     .then((response) => {
+  //   //       if (response.data == "0") {
+  //   //         setIsEnd(true);
+  //   //       }
+  //   //     })
+  //   //     .catch((error) => {
+  //   //       console.log(error);
+  //   //     });
+  //   // }
+  //   const newUserData = cookies.get("userData");
+  //   setUserData(newUserData);
+  // }, [user]);
 
   const handleLogout = () => {
     cookies.remove("userData", { path: "/" });
@@ -119,19 +119,21 @@ const Manu = () => {
         <Button>
           <div className={styles.style_but}>
             {userData != null ? (
-              <Nav.Link
+              <a
                 className={styles.text}
                 href="/api/auth/logout"
                 onClick={handleLogout}
               >
-                <a>Log Out</a>
-              </Nav.Link>
+                Log Out
+              </a>
             ) : (
-              <Link href="/api/auth/login">
-                <a className={styles.login_text} id="log-in-btn">
-                  Log In
-                </a>
-              </Link>
+              <a
+                className={styles.login_text}
+                href="/api/auth/login"
+                id="log-in-btn"
+              >
+                Log In
+              </a>
             )}
           </div>
         </Button>
