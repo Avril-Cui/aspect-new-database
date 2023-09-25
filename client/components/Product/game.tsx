@@ -1,6 +1,5 @@
 import profile from "../../public/profile.jpg";
 import styles from "../../styles/product/product.module.css";
-import Head from "next/head";
 import Image from "next/image";
 import company from "../../image/logo/company.png";
 import terms from "../../image/logo/terms.png";
@@ -13,8 +12,11 @@ import ins from "../../public/instagram.png";
 import git from "../../public/git.png";
 import trade_info from "../../public/trade.png";
 import Timeline from "./timeline";
+import { useAuth0 } from "@auth0/auth0-react";
 
 const Product = () => {
+  const { loginWithRedirect } = useAuth0();
+
   return (
     <div className={styles.container}>
       <div className={styles.bg1}>
@@ -25,13 +27,11 @@ const Product = () => {
             dynamic stock market with various interesting events.
           </p>
           <div className={styles.btns}>
-            <Link href="/auth/signup">
-              <a>
-                <button className={styles.join_btn}>
-                  Join game <span>&gt;</span>
-                </button>{" "}
-              </a>
-            </Link>
+            <a onClick={() => loginWithRedirect()}>
+              <button className={styles.join_btn}>
+                Join game <span>&gt;</span>
+              </button>{" "}
+            </a>
 
             <Link href="https://drive.google.com/file/d/1ewv4b0DfugUCzB8tz5Wtf9PU4weWu647/view?usp=sharing">
               <a>

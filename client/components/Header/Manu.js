@@ -8,12 +8,14 @@ import Cookies from "universal-cookie";
 import alien from "../../image/logo/alien.png";
 import Image from "next/image";
 import { useEffect, useState } from "react";
-import { useUser } from "@auth0/nextjs-auth0/client";
+import { useAuth0 } from "@auth0/auth0-react";
 import axios from "axios";
 
 const Manu = () => {
-  const router = useRouter();
-  const { user, error, isLoading } = useUser();
+  const { loginWithRedirect } = useAuth0();
+
+  // const router = useRouter();
+  const { user, isAuthenticated, isLoading, logout } = useAuth0();
 
   const cookies = new Cookies();
   // const userData = cookies.get("userData");]
@@ -21,52 +23,56 @@ const Manu = () => {
 
   const [isEnd, setIsEnd] = useState(false);
 
-  // useEffect(() => {
-  //   if (user != null) {
-  //     console.log(user.nickname);
-  //     const email = user.email;
-  //     const user_name = user.nickname;
-  //     const uid = user.sid;
-  //     cookies.set("userData", { email, user_name }, { path: "/" });
-  //     cookies.set("user_uid", uid, { path: "/" });
-  //     const data = JSON.stringify({ uid, user_name });
-  //     let config = {
-  //       method: "post",
-  //       maxBodyLength: Infinity,
-  //       url: `${process.env.serverConnection}/login`,
-  //       headers: {
-  //         "Content-Type": "text/plain",
-  //       },
-  //       data: data,
-  //     };
+  useEffect(() => {
+    if (user != null) {
+      const email = user.email;
+      const user_name = user.nickname;
+      const uid = user.sid;
+      cookies.set("userData", { email, user_name }, { path: "/" });
+      cookies.set("user_uid", uid, { path: "/" });
+      const data = JSON.stringify({ uid, user_name });
+      let config = {
+        method: "post",
+        maxBodyLength: Infinity,
+        url: `${process.env.serverConnection}/login`,
+        headers: {
+          "Content-Type": "text/plain",
+        },
+        data: data,
+      };
 
-  //     axios.request(config);
-  //   }
+      axios.request(config);
+    }
 
-  //   // if (userData == undefined) {
-  //   //   cookies.remove("userData", { path: "/" });
-  //   //   cookies.remove("user_uid", { path: "/" });
-  //   //   const axios = require("axios");
-  //   //   axios
-  //   //     .request({
-  //   //       method: "post",
-  //   //       maxBodyLength: Infinity,
-  //   //       url: `${process.env.serverConnection}/is-end-game`,
-  //   //     })
-  //   //     .then((response) => {
-  //   //       if (response.data == "0") {
-  //   //         setIsEnd(true);
-  //   //       }
-  //   //     })
-  //   //     .catch((error) => {
-  //   //       console.log(error);
-  //   //     });
-  //   // }
-  //   const newUserData = cookies.get("userData");
-  //   setUserData(newUserData);
-  // }, [user]);
+    // if (userData == undefined) {
+    //   cookies.remove("userData", { path: "/" });
+    //   cookies.remove("user_uid", { path: "/" });
+    //   const axios = require("axios");
+    //   axios
+    //     .request({
+    //       method: "post",
+    //       maxBodyLength: Infinity,
+    //       url: `${process.env.serverConnection}/is-end-game`,
+    //     })
+    //     .then((response) => {
+    //       if (response.data == "0") {
+    //         setIsEnd(true);
+    //       }
+    //     })
+    //     .catch((error) => {
+    //       console.log(error);
+    //     });
+    // }
+    const newUserData = cookies.get("userData");
+    setUserData(newUserData);
+    console.log("is auth")
+    console.log(isAuthenticated)
+  }, [user]);
+
 
   const handleLogout = () => {
+    logout({ logoutParams: { returnTo: "https://www.aspect-game.com/" } });
+
     cookies.remove("userData", { path: "/" });
     cookies.remove("user_uid", { path: "/" });
   };
@@ -121,7 +127,6 @@ const Manu = () => {
             {userData != null ? (
               <a
                 className={styles.text}
-                href="/api/auth/logout"
                 onClick={handleLogout}
               >
                 Log Out
@@ -129,8 +134,7 @@ const Manu = () => {
             ) : (
               <a
                 className={styles.login_text}
-                href="/api/auth/login"
-                id="log-in-btn"
+                onClick={() => loginWithRedirect()}
               >
                 Log In
               </a>

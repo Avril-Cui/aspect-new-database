@@ -75,9 +75,9 @@
 
 .view_btn {
   height: 2.55em;
-  width: 12em;
+  width: 12.5em;
   border: 0.5px solid #fff;
-  padding: 0.5em 2em;
+  /* padding: 0.5em 2em; */
   font-size: 22px;
   font-weight: 600;
   border-radius: 5px;
