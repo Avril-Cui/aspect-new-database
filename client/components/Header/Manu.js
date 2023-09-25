@@ -27,7 +27,9 @@ const Manu = () => {
     if (user != null) {
       const email = user.email;
       const user_name = user.nickname;
-      const uid = user.sid;
+      const uid = user.email;
+      console.log("user");
+      console.log(user);
       cookies.set("userData", { email, user_name }, { path: "/" });
       cookies.set("user_uid", uid, { path: "/" });
       const data = JSON.stringify({ uid, user_name });
@@ -65,13 +67,12 @@ const Manu = () => {
     // }
     const newUserData = cookies.get("userData");
     setUserData(newUserData);
-    console.log("is auth")
-    console.log(isAuthenticated)
+    console.log("is auth");
+    console.log(isAuthenticated);
   }, [user]);
 
-
   const handleLogout = () => {
-    logout({ logoutParams: { returnTo: "https://www.aspect-game.com/" } });
+    logout({ logoutParams: { returnTo: "http://localhost:3000" } });
 
     cookies.remove("userData", { path: "/" });
     cookies.remove("user_uid", { path: "/" });
@@ -125,10 +126,7 @@ const Manu = () => {
         <Button>
           <div className={styles.style_but}>
             {userData != null ? (
-              <a
-                className={styles.text}
-                onClick={handleLogout}
-              >
+              <a className={styles.text} onClick={handleLogout}>
                 Log Out
               </a>
             ) : (

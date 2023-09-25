@@ -23,7 +23,7 @@ const Layout = ({ children }) => {
       domain="dev-by68bdxzfsz4zee3.us.auth0.com"
       clientId="D7iASVLJiFdm6mves3rAUWDsb4k9Ug5q"
       authorizationParams={{
-        redirect_uri: "https://www.aspect-game.com/",
+        redirect_uri: "http://localhost:3000",
       }}
     >
       <div className={styles.layout}>

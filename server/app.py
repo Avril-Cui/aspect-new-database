@@ -12,7 +12,7 @@ from flask_cors import CORS, cross_origin
 
 # initialize timeframe
 seconds = time.time()
-start_time = time.time() - 60*60*24*10 - 60*60*2
+start_time = time.time() - 60*60*24*14
 end_time = start_time + (60*60*24)*14 + 36000
 start_date = datetime.now()
 
@@ -50,10 +50,12 @@ config = {
 firebase = pyrebase.initialize_app(config)
 auth = firebase.auth()
 
+
 @app.route("/login", methods=["POST", "GET"])
 def login():
     if request.method == "POST":
         data = json.loads(request.data)
+        print(data)
         uid = data["uid"]
         name = data["user_name"]
         user_database_commands.intialize_user(uid, name)
@@ -242,7 +244,7 @@ def tick_graph():
     day = index_tmp//(60*60*24)
     tick_price_graph = []
 
-    for index in range(day*60*60*24, (day+1)*60*60*24):
+    for index in range((day)*60*60*24, index_tmp):
         if index % 300 == 0:
             tick_price_graph.append({"time": (
                 start_time+index), "value": round(flat_price[comp_name][index], 2)})
@@ -254,21 +256,20 @@ def day_graph():
     current_time = time.time()
     index_tmp = int(current_time-start_time)
     comp_name = json.loads(request.data)
-    day = len(flat_price[comp_name])//(60*60*24)
-    graph_lst = []
 
-    for index in range(day):
-        for inx in range(index*60*60*24, (index+1)*60*60*24):
-            if inx % (3600*5) == 0 and inx != 0:
-                price_chunk = flat_price[comp_name][inx-3600:inx]
-                high = round(max(price_chunk), 2)
-                low = round(min(price_chunk), 2)
-                open_p = round(price_chunk[0], 2)
-                close_p = round(price_chunk[-1], 2)
-                timestamp = start_time + inx
-                dt_object = datetime.fromtimestamp(timestamp)
-                date = f"{dt_object.day}/{dt_object.month} {dt_object.time()}"
-                graph_lst.append([date, open_p, close_p, low, high])
+    graph_lst = []
+    for inx in range(index_tmp):
+        if inx % (3600*5) == 0 and inx != 0:
+            price_chunk = flat_price[comp_name][inx-3600:inx]
+            high = round(max(price_chunk), 2)
+            low = round(min(price_chunk), 2)
+            open_p = round(price_chunk[0], 2)
+            close_p = round(price_chunk[-1], 2)
+            timestamp = start_time + inx
+            dt_object = datetime.fromtimestamp(timestamp)
+            date = f"{dt_object.day}/{dt_object.month} {dt_object.time()}"
+            graph_lst.append([date, open_p, close_p, low, high])
+
     return jsonify(graph_lst)
 
 
@@ -277,21 +278,20 @@ def hour_graph():
     current_time = time.time()
     index_tmp = int(current_time-start_time)
     comp_name = json.loads(request.data)
-    day = index_tmp//(60*60*24)
     graph_lst = []
 
-    for index in range(day):
-        for inx in range(index*60*60*24, (index+1)*60*60*24):
-            if inx % 3600 == 0 and inx != 0:
-                price_chunk = flat_price[comp_name][inx-3600:inx]
-                high = round(max(price_chunk), 2)
-                low = round(min(price_chunk), 2)
-                open_p = round(price_chunk[0], 2)
-                close_p = round(price_chunk[-1], 2)
-                timestamp = start_time + inx
-                dt_object = datetime.fromtimestamp(timestamp)
-                date = f"{dt_object.day}/{dt_object.month} {dt_object.time()}"
-                graph_lst.append([date, open_p, close_p, low, high])
+    for inx in range(index_tmp):
+        if inx % 3600 == 0 and inx != 0:
+            price_chunk = flat_price[comp_name][inx-3600:inx]
+            high = round(max(price_chunk), 2)
+            low = round(min(price_chunk), 2)
+            open_p = round(price_chunk[0], 2)
+            close_p = round(price_chunk[-1], 2)
+            timestamp = start_time + inx
+            dt_object = datetime.fromtimestamp(timestamp)
+            date = f"{dt_object.day}/{dt_object.month} {dt_object.time()}"
+            graph_lst.append([date, open_p, close_p, low, high])
+
     return jsonify(graph_lst)
 
 
@@ -304,7 +304,7 @@ def tick_graphs():
     graphs = {}
     for comp_name in flat_price:
         tick_price_graph = []
-        for index in range(day*60*60*24, (day+1)*60*60*24):
+        for index in range((day)*60*60*24, index_tmp):
             if index % 300 == 0:
                 tick_price_graph.append({"time": (
                     start_time+index), "value": round(flat_price[comp_name][index], 2)})

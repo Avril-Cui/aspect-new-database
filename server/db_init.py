@@ -50,7 +50,7 @@ conn.commit()
 for i in range(len(prices_list)):
     cur.execute(f"""
         INSERT INTO prices VALUES (
-            '{companies[i]}',
+            '{companies[i][len(companies)-1382400]}',
             ARRAY {prices_list[i]}
         );
     """)
