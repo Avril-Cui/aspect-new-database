@@ -8,12 +8,14 @@ import Cookies from "universal-cookie";
 import alien from "../../image/logo/alien.png";
 import Image from "next/image";
 import { useEffect, useState } from "react";
-import { useUser } from "@auth0/nextjs-auth0/client";
+import { useAuth0 } from "@auth0/auth0-react";
 import axios from "axios";
 
 const Manu = () => {
-  const { user, error, isLoading } = useUser();
-  const router = useRouter();
+  const { loginWithRedirect } = useAuth0();
+
+  // const router = useRouter();
+  const { user, isAuthenticated, isLoading, logout } = useAuth0();
 
   const cookies = new Cookies();
   // const userData = cookies.get("userData");]
@@ -23,7 +25,6 @@ const Manu = () => {
 
   useEffect(() => {
     if (user != null) {
-      console.log(user.nickname);
       const email = user.email;
       const user_name = user.nickname;
       const uid = user.sid;
@@ -64,9 +65,14 @@ const Manu = () => {
     // }
     const newUserData = cookies.get("userData");
     setUserData(newUserData);
+    console.log("is auth")
+    console.log(isAuthenticated)
   }, [user]);
 
+
   const handleLogout = () => {
+    logout({ logoutParams: { returnTo: "https://www.aspect-game.com/" } });
+
     cookies.remove("userData", { path: "/" });
     cookies.remove("user_uid", { path: "/" });
   };
@@ -119,19 +125,19 @@ const Manu = () => {
         <Button>
           <div className={styles.style_but}>
             {userData != null ? (
-              <Nav.Link
+              <a
                 className={styles.text}
-                href="/api/auth/logout"
                 onClick={handleLogout}
               >
-                <a>Log Out</a>
-              </Nav.Link>
+                Log Out
+              </a>
             ) : (
-              <Link href="/api/auth/login">
-                <a className={styles.login_text} id="log-in-btn">
-                  Log In
-                </a>
-              </Link>
+              <a
+                className={styles.login_text}
+                onClick={() => loginWithRedirect()}
+              >
+                Log In
+              </a>
             )}
           </div>
         </Button>

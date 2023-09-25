@@ -2,14 +2,15 @@
   display: inline-flex;
 }
 
-.inline:hover{
-    cursor: pointer;
+.inline:hover {
+  cursor: pointer;
 }
 
 .sections {
   font-weight: 300;
   font-size: 20px;
-  width: 34em;
+  /* width: 34em; */
+  width: 34vw;
   display: flex;
   justify-content: space-between;
   justify-items: center;
@@ -33,7 +34,7 @@
   font-family: "Roboto Slab";
 }
 
-.logo:hover{
+.logo:hover {
   color: #c9ffd1;
 }
 
@@ -52,14 +53,15 @@
   font-size: 20px;
 }
 
-.center{
+.center {
   display: flex;
   align-items: center;
   margin: 0em auto;
   justify-content: space-between;
   padding: 0em 5em;
   background-color: #202020;
-  width: 1420px;
+  /* width: 1420px; */
+  max-width: 90vw;
 }
 
 .manu {

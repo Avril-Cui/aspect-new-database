@@ -8,3 +8,6 @@ node_modules/*
 *.DS_Store
 server/static/*
 # package.json
+
+.env
+.env.local

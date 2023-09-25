@@ -14,7 +14,7 @@ import { useState, useEffect } from "react";
 import dynamic from "next/dynamic";
 import Link from "next/link";
 import Product from "./game";
-import Cookies from "universal-cookie";
+import { useAuth0 } from "@auth0/auth0-react";
 
 const Tour = dynamic(() => import("reactour"), { ssr: false });
 interface Props {
@@ -24,8 +24,7 @@ interface Props {
 }
 
 export default function Front({ index, posts, companies }: Props) {
-  const [isUser, setIsUser] = useState(false);
-  const cookies = new Cookies();
+  const { isAuthenticated} = useAuth0();
 
   var today = new Date();
   var dd = String(today.getDate()).padStart(2, "0");
@@ -50,7 +49,6 @@ export default function Front({ index, posts, companies }: Props) {
 
   const [isPrice, setIsPrice] = useState(false);
   const [isEnd, setIsEnd] = useState(false);
-  const user_uid = cookies.get("user_uid");
 
   useEffect(() => {
     const axios = require("axios");
@@ -76,14 +74,6 @@ export default function Front({ index, posts, companies }: Props) {
     return () => clearInterval(data);
   }, [isPrice, dispatch]);
 
-  useEffect(() => {
-    if (user_uid != null || undefined) {
-      setIsUser(true);
-      console.log(user_uid);
-    } else {
-      setIsUser(false);
-    }
-  }, [user_uid]);
 
   const [isOpen, setIsOpen] = useState(false);
   const [isOpen1, setIsOpen1] = useState(false);
@@ -170,7 +160,7 @@ export default function Front({ index, posts, companies }: Props) {
 
   return (
     <div>
-      {isUser ? (
+      {isAuthenticated ? (
         <div className={styles.container}>
           <Head>
             <title>Aspect - Learn Financial Knowledge</title>

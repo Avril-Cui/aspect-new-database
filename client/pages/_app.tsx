@@ -10,7 +10,6 @@ import Head from "next/head";
 import "intro.js/introjs.css";
 import { initializeApp } from "firebase/app";
 import { getAnalytics } from "firebase/analytics";
-import { UserProvider } from '@auth0/nextjs-auth0/client';
 
 const ProtectedRoute = dynamic(() => import("../components/ProtectedRoute"), {
   ssr: false,
@@ -39,14 +38,9 @@ function MyApp({ Component, pageProps }: AppProps) {
     const analytics = getAnalytics(app);
   }
 
+
   return (
-    <UserProvider
-      // domain="YOUR_DOMAIN"
-      // clientId="YOUR_CLIENT_ID"
-      // authorizationParams={{
-      //   redirect_uri: window.location.origin,
-      // }}
-    >
+
       <Provider store={store}>
         <Head>
           <link rel="shortcut icon" href="/logo.png" />
@@ -79,7 +73,6 @@ function MyApp({ Component, pageProps }: AppProps) {
           )}
         </CookiesProvider>
       </Provider>
-    </UserProvider>
   );
 }
 
