@@ -9,5 +9,5 @@ node_modules/*
 server/static/*
 # package.json
 
-# .env
-# .env.local
+.env
+.env.local
