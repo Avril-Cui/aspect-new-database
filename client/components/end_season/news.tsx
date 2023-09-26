@@ -1,0 +1,73 @@
+import styles from "./news.module.css";
+import Link from "next/link";
+import { urlFor } from "../../sanity";
+import Image from "next/image";
+import rocket from "../../image/logo/rocket.png";
+import message from "../../image/logo/message.png";
+import { useRef } from "react";
+
+export default function Simulator(props: any) {
+  const index = props.index;
+  const elementRef: any = useRef(null);
+
+  function handleScrollLeft() {
+    elementRef.current.scrollLeft -= 1300;
+  }
+
+  function handleScrollRight() {
+    elementRef.current.scrollLeft += 1300;
+  }
+  console.log(props.index);
+
+  return (
+    <div>
+      <div
+        ref={elementRef}
+        // className={styles.article_container}
+        className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 md:gap-6"
+      >
+        {index.map((post: any) => (
+          <Link key={post._id} href={`/end_season_news/${post.slug.current}`}>
+            <a>
+              <div className={styles.container}>
+                <img
+                  className={styles.img_news}
+                  src={urlFor(post.mainImage).url()!}
+                  alt=""
+                />
+                <p className={styles.section_title_comp}>{post.title}</p>
+                <p className={styles.section_text_comp}>{post.description}</p>
+                <div className={styles.inline}>
+                  <div>
+                    <p className={styles.post_detail_comp}>
+                      by <span>{post.author.name}</span>
+                    </p>
+                    <p className={styles.date}>April 2nd</p>
+                  </div>
+                  <button
+                    className={styles.like_button}
+                    style={{ paddingTop: "0.25em" }}
+                  >
+                    <div className={styles.inline}>
+                      <Image src={rocket} width="22px" height="22px" alt="" />
+                      <p className={styles.like_num}>10</p>
+                    </div>
+                  </button>
+                  <button
+                    className={styles.message_button}
+                    style={{ paddingTop: "0.25em" }}
+                  >
+                    <div className={styles.inline}>
+                      <Image src={message} width="22px" height="22px" alt="" />
+                      <p className={styles.like_num}>10</p>
+                    </div>
+                  </button>
+                </div>
+              </div>
+            </a>
+          </Link>
+        ))}
+      </div>
+    </div>
+  );
+}

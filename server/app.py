@@ -12,8 +12,8 @@ from flask_cors import CORS, cross_origin
 
 # initialize timeframe
 seconds = time.time()
-start_time = time.time() - 60*60*24*14
-end_time = start_time + (60*60*24)*14 + 36000
+start_time = time.time() - 60*60*24*17
+end_time = start_time + (60*60*24)*16 + 36000
 start_date = datetime.now()
 
 # initialize database, tables, and house&user classes
@@ -343,43 +343,48 @@ def total_bot_rank():
 
 @app.route('/is-end-game', methods=['POST'])
 def is_end_game():
-    return "1"
+    current_time = time.time()
+    index_tmp = int(current_time-start_time)
+    if index_tmp > (60*60*24*16):
+        return "0"
+    else:
+        return "1"
 
 
 @app.route('/end-game-index-chart', methods=['POST'])
 def end_game_index_chart():
-    day = len(flat_price['ast'])//(60*60*24)
     graph_lst = []
-
-    for index in range(0, day-1):
-        high = round(max(flat_price["index"][index, index+1]), 2)
-        low = round(min(flat_price['index'][index, index+1]), 2)
-        open_p = round(max(flat_price['index'][index]), 2)
-        close_p = round(max(flat_price['index'][index+1]), 2)
-        dt_object = datetime.fromtimestamp(start_time+index*86400)
-        month = dt_object.month
-        day = dt_object.day
-        date = f"{day}/{month}/2073"
-        graph_lst.append([date, open_p, close_p, low, high])
+    for inx in range(60*60*24*16):
+        if inx % (3600*5) == 0 and inx != 0:
+            price_chunk = flat_price["index"][inx-3600:inx]
+            high = round(max(price_chunk), 2)
+            low = round(min(price_chunk), 2)
+            open_p = round(price_chunk[0], 2)
+            close_p = round(price_chunk[-1], 2)
+            timestamp = start_time + inx
+            dt_object = datetime.fromtimestamp(timestamp)
+            date = f"{dt_object.day}/{dt_object.month} {dt_object.time()}"
+            graph_lst.append([date, open_p, close_p, low, high])
     return jsonify(graph_lst)
 
 
 @app.route('/end-game-companies-chart', methods=['POST'])
 def end_game_companies_chart():
     comp_name = json.loads(request.data)
-    graph_lst = []
-    day = len(flat_price['ast'])//(60*60*24)
 
-    for index in range(0, day-1):
-        high = round(max(flat_price[comp_name][index, index+1]), 2)
-        low = round(min(flat_price[comp_name][index, index+1]), 2)
-        open_p = round(max(flat_price[comp_name][index]), 2)
-        close_p = round(max(flat_price[comp_name][index+1]), 2)
-        dt_object = datetime.fromtimestamp(start_time+index*86400)
-        month = dt_object.month
-        day = dt_object.day
-        date = f"{day}/{month}/2073"
-        graph_lst.append([date, open_p, close_p, low, high])
+    graph_lst = []
+    for inx in range(60*60*24*16):
+        if inx % (3600*2) == 0 and inx != 0:
+            price_chunk = flat_price[comp_name][inx-3600:inx]
+            high = round(max(price_chunk), 2)
+            low = round(min(price_chunk), 2)
+            open_p = round(price_chunk[0], 2)
+            close_p = round(price_chunk[-1], 2)
+            timestamp = start_time + inx
+            dt_object = datetime.fromtimestamp(timestamp)
+            date = f"{dt_object.day}/{dt_object.month} {dt_object.time()}"
+            graph_lst.append([date, open_p, close_p, low, high])
+
     return jsonify(graph_lst)
 
 

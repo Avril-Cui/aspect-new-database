@@ -6,7 +6,7 @@ import { requestPrice } from "../../../features/newPrice.js";
 const CompHeader = (props) => {
   const change = 1;
   const dispatch = useDispatch();
-  const WAIT_TIME = 10000;
+  const WAIT_TIME = 3000;
   let price_data = useSelector((state) => state.price.value);
 
   const [isPrice, setIsPrice] = useState(false);

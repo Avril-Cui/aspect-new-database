@@ -212,7 +212,7 @@ function Post({ post }: Props) {
 export default Post;
 
 export const getStaticPaths = async () => {
-  const query = `*[_type == "simulator_news"]{
+  const query = `*[_type == "end_season_news"]{
         _id,
         slug {
           current
@@ -234,7 +234,7 @@ export const getStaticPaths = async () => {
 };
 
 export const getStaticProps: GetStaticProps = async ({ params }) => {
-  const query = `*[_type == "simulator_news" && slug.current == $slug][0]{
+  const query = `*[_type == "end_season_news" && slug.current == $slug][0]{
       _id,
       _createdAt,
       title,

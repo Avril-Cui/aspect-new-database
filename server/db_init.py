@@ -15,10 +15,19 @@ hhw_price = get_hhw_price()
 jky_price = get_jky_price()
 sgo_price = get_sgo_price()
 wrkn_price = get_wrkn_price()
+print(len(index_price))
+print(len(ast_price))
+print(len(dsc_price))
+print(len(fsin_price))
+print(len(hhw_price))
+print(len(jky_price))
+print(len(sgo_price))
+print(len(wrkn_price))
+
 
 prices_list = [index_price, ast_price, dsc_price, fsin_price, hhw_price, jky_price, sgo_price, wrkn_price]
 companies = ["index", "ast", "dsc", "fsin", "hhw", "jky", "sgo", "wrkn"]
-
+print("HERE")
 DATABASE_HOST = os.getenv("DATABASE_HOST")
 DATABASE_USER = os.getenv("DATABASE_USER")
 DATABASE_PASSWORD = os.getenv("DATABASE_PASSWORD")
@@ -32,12 +41,12 @@ conn = psycopg2.connect(
 )
 
 cur = conn.cursor()
-
+print("HERE")
 user_database_commands = UserDatabaseCommands(conn, cur)
 user_database_commands.create_user_table()
 user_database_commands.create_portfolio_table()
 user_database_commands.create_trade_history_table()
-
+print("HERE")
 cur.execute(f'DROP TABLE IF EXISTS prices;')
 cur.execute(f"""
     CREATE TABLE prices (
@@ -46,12 +55,13 @@ cur.execute(f"""
     );
 """)
 conn.commit()
-
-for i in range(len(prices_list)):
+print("HERE")
+for i in range(len(companies)):
     cur.execute(f"""
         INSERT INTO prices VALUES (
-            '{companies[i][len(companies)-1382400]}',
-            ARRAY {prices_list[i]}
+            '{companies[i]}',
+            ARRAY {prices_list[i][len(companies)-1382400:]}
         );
     """)
     conn.commit()
+    print(i)

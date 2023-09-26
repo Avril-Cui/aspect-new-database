@@ -1,0 +1,123 @@
+.inline {
+  display: inline-flex;
+}
+
+.article_container {
+  margin-top: -2em;
+  /* display: inline-flex; */
+  /* width: 1260px; */
+  /* overflow-x: scroll; */
+}
+
+.container {
+  width: 26.5em;
+  height: 26em;
+  padding-left: 1.25em;
+  padding-top: 0.7em;
+  margin-bottom: 1em;
+  border-radius: 10px;
+  margin-left: -0.75em;
+  margin-right: 1.3em;
+}
+
+.container:hover {
+  cursor: pointer;
+  background-color: #222222;
+}
+
+.img_news {
+  width: 24em;
+  height: 14em;
+  border: 1px solid #5f5f5f;
+  border-radius: 10px;
+}
+
+.section_title_comp {
+  color: #e7e7e7;
+  font-size: 18px;
+  width: 20em;
+  margin-left: 0.25em;
+  padding-top: 0.25em;
+  height: 3.25em;
+}
+
+.section_text_comp {
+  color: #c1c1c1;
+  font-size: 16px;
+  font-weight: 300;
+  width: 24em;
+  margin-left: 0.25em;
+  padding-top: 0.25em;
+  height: 4.25em;
+}
+
+.post_detail_comp {
+  color: #c9ffd1;
+  font-size: 14px;
+  font-weight: 300;
+  margin-left: 0.25em;
+}
+
+.date {
+  color: #aaaaaa;
+  font-size: 13px;
+  font-weight: 300;
+  margin-left: 0.25em;
+}
+
+.like_button {
+  width: 4em;
+  height: 2em;
+  border: 1px solid #515151;
+  border-radius: 10px;
+  margin-left: 1em;
+  margin-top: 0.25em;
+  margin-bottom: 0.5em;
+}
+
+.like_button:focus {
+  background-color: #3f9d57;
+}
+
+.like_num {
+  font-family: "Roboto";
+  font-style: normal;
+  font-weight: 300;
+  font-size: 14px;
+  color: #ffffff;
+  padding-left: 0.5em;
+}
+
+.message_button {
+  width: 4em;
+  height: 2em;
+  border: 1px solid #515151;
+  border-radius: 10px;
+  margin-left: 1em;
+  margin-top: 0.25em;
+  margin-bottom: 0.5em;
+}
+
+.scroll_btn {
+  background-color: #3d3d3d;
+  width: 40px;
+  height: 40px;
+  color: #afafaf;
+  font-weight: 500;
+  border-radius: 100px;
+}
+
+.scroll_btn:hover {
+  color: #c9ffd1;
+}
+
+.buttons {
+  display: inline-flex;
+  position: relative;
+  top: 7.5em;
+  margin-left: -0.7em;
+}
+
+/* .article_container::-webkit-scrollbar {
+  -webkit-appearance: none;
+} */

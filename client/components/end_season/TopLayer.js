@@ -1,8 +1,6 @@
 import React from "react";
 import Cookies from "universal-cookie";
-// import BotRanking from "./BotRanking";
 import dynamic from "next/dynamic";
-// import PortfolioDetail from "./portfolio_datail";
 import LeaderBoard3 from "./LeaderBoard3";
 import { useState, useEffect } from "react";
 import styles from "../../styles/EndSeason/SeasonalReview.module.css";
@@ -12,7 +10,6 @@ const BotRanking = dynamic(() => import("./BotRanking"), {
 const PortfolioDetail = dynamic(() => import("./portfolio_datail"), {
   ssr: false,
 });
-
 
 function TopLayer() {
   const cookies = new Cookies();
@@ -35,7 +32,7 @@ function TopLayer() {
           </div>
           <div
             style={{
-              marginLeft: "1.5em",
+              marginLeft: "4.5em",
               paddingTop: "0.5em",
               paddingBottom: "0.75em",
             }}
@@ -62,7 +59,7 @@ function TopLayer() {
           </div>
           <div
             style={{
-              marginLeft: "1.5em",
+              marginLeft: "4.5em",
               paddingTop: "0.5em",
               paddingBottom: "0.75em",
             }}

@@ -49,6 +49,7 @@ function Company(props) {
   }
 
   const { category, shares_holding, total_holding, cost, current_price, buy_price } = props.company;
+  console.log(props.company)
 
   let company_value = null;
   let share_number = null;
@@ -63,7 +64,7 @@ function Company(props) {
     company_value = total_holding;
     share_number = shares_holding;
     comp_name = category;
-    price_change = round(total_holding - cost);
+    price_change = round(current_price - buy_price);
     price_pct_change = round(((total_holding - cost) / cost) * 100);
     buyPrice = buy_price;
     currentPrice = current_price;
