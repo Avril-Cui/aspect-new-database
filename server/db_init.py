@@ -1,9 +1,22 @@
-from User.user_database import UserDatabaseCommands
-from Price.prices_init import  get_index_price, get_ast_price, get_dsc_price, get_fsin_price, get_hhw_price, get_jky_price, get_sgo_price, get_wrkn_price
-import psycopg2
 import os
 from dotenv import load_dotenv
+import psycopg2
 load_dotenv()
+DATABASE_HOST = os.getenv("DATABASE_HOST")
+DATABASE_USER = os.getenv("DATABASE_USER")
+DATABASE_PASSWORD = os.getenv("DATABASE_PASSWORD")
+DATABASE_ROOT_NAME = os.getenv("DATABASE_ROOT_NAME")
+conn = psycopg2.connect(
+    host=DATABASE_HOST if DATABASE_HOST!=None else "localhost",
+    database=DATABASE_ROOT_NAME if DATABASE_ROOT_NAME!=None else "aspectdatabase",
+    user=DATABASE_USER if DATABASE_USER!=None else "postgres",
+    password=DATABASE_PASSWORD if DATABASE_PASSWORD!=None else "Xiaokeai0717"
+)
+cur = conn.cursor()
+print("HERE")
+
+from User.user_database import UserDatabaseCommands
+from Price.prices_init import  get_index_price, get_ast_price, get_dsc_price, get_fsin_price, get_hhw_price, get_jky_price, get_sgo_price, get_wrkn_price
 import numpy as np
 np.random.seed(17)
 
@@ -15,33 +28,11 @@ hhw_price = get_hhw_price()
 jky_price = get_jky_price()
 sgo_price = get_sgo_price()
 wrkn_price = get_wrkn_price()
-print(len(index_price))
-print(len(ast_price))
-print(len(dsc_price))
-print(len(fsin_price))
-print(len(hhw_price))
-print(len(jky_price))
-print(len(sgo_price))
-print(len(wrkn_price))
-
 
 prices_list = [index_price, ast_price, dsc_price, fsin_price, hhw_price, jky_price, sgo_price, wrkn_price]
 companies = ["index", "ast", "dsc", "fsin", "hhw", "jky", "sgo", "wrkn"]
 print("HERE")
-DATABASE_HOST = os.getenv("DATABASE_HOST")
-DATABASE_USER = os.getenv("DATABASE_USER")
-DATABASE_PASSWORD = os.getenv("DATABASE_PASSWORD")
-DATABASE_ROOT_NAME = os.getenv("DATABASE_ROOT_NAME")
 
-conn = psycopg2.connect(
-    host=DATABASE_HOST if DATABASE_HOST!=None else "localhost",
-    database=DATABASE_ROOT_NAME if DATABASE_ROOT_NAME!=None else "aspectdatabase",
-    user=DATABASE_USER if DATABASE_USER!=None else "postgres",
-    password=DATABASE_PASSWORD if DATABASE_PASSWORD!=None else "Xiaokeai0717"
-)
-
-cur = conn.cursor()
-print("HERE")
 user_database_commands = UserDatabaseCommands(conn, cur)
 user_database_commands.create_user_table()
 user_database_commands.create_portfolio_table()
