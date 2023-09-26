@@ -12,9 +12,9 @@ from flask_cors import CORS, cross_origin
 
 # initialize timeframe
 seconds = time.time()
-start_time = time.time() - 60*60*24*10
-end_time = start_time + (60*60*24)*16 + 36000
-start_date = datetime.now()
+# start_time = time.time() - 60*60*24*10
+start_time = 1695600000
+end_time = start_time + (60*60*24)*16
 
 # initialize database, tables, and house&user classes
 conn, cur = db.initialize_connection()
