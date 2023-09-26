@@ -73,7 +73,6 @@ const Manu = () => {
 
   const handleLogout = () => {
     logout({ logoutParams: { returnTo: "http://localhost:3000" } });
-
     cookies.remove("userData", { path: "/" });
     cookies.remove("user_uid", { path: "/" });
   };

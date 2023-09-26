@@ -16,8 +16,7 @@ export default function SeasonReview(props: any) {
 
       <div className={styles.layer1}>
         <p className={styles.layer_header}>
-          📟 Market and Company Performance 📟 -{" "}
-          <span>Click on Tickers To Read Official Analysis!</span>
+          📟 Market and Company Performance 📟
         </p>
         <OverviewChart />
       </div>

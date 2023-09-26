@@ -21,12 +21,10 @@ function PendingOrders(props) {
           <tbody className={styles.table_line}>
             {props.orders.map((order, index) => {
               return (
-                  <Company
-                    order={
-                      order == null ? [null, null, null, null, null] : order
-                    }
-                    key={index}
-                  />
+                <Company
+                  order={order == null ? [null, null, null, null, null] : order}
+                  key={index}
+                />
               );
             })}
           </tbody>
@@ -80,7 +78,7 @@ function Company(props) {
         console.log(error);
       });
   };
-  if (share_number != undefined || action != undefined) {
+  if (share_number != undefined || action != undefined || action != null) {
     return (
       <tr key={id} className={styles.holding_detail1}>
         <Link href={`/company/${category}`}>
