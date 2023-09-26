@@ -16,22 +16,8 @@ cur = conn.cursor()
 print("HERE")
 
 from User.user_database import UserDatabaseCommands
-from Price.prices_init import  get_index_price, get_ast_price, get_dsc_price, get_fsin_price, get_hhw_price, get_jky_price, get_sgo_price, get_wrkn_price
 import numpy as np
 np.random.seed(17)
-
-index_price = get_index_price()
-ast_price = get_ast_price()
-dsc_price = get_dsc_price()
-fsin_price = get_fsin_price()
-hhw_price = get_hhw_price()
-jky_price = get_jky_price()
-sgo_price = get_sgo_price()
-wrkn_price = get_wrkn_price()
-
-prices_list = [index_price, ast_price, dsc_price, fsin_price, hhw_price, jky_price, sgo_price, wrkn_price]
-companies = ["index", "ast", "dsc", "fsin", "hhw", "jky", "sgo", "wrkn"]
-print("HERE")
 
 user_database_commands = UserDatabaseCommands(conn, cur)
 user_database_commands.create_user_table()
@@ -46,13 +32,40 @@ cur.execute(f"""
     );
 """)
 conn.commit()
-print("HERE")
-for i in range(len(companies)):
-    cur.execute(f"""
-        INSERT INTO prices VALUES (
-            '{companies[i]}',
-            ARRAY {prices_list[i][len(companies)-1382400:]}
-        );
-    """)
-    conn.commit()
-    print(i)
+
+
+
+
+from Price.prices_init import  get_index_price, get_ast_price, get_dsc_price, get_fsin_price, get_hhw_price, get_jky_price, get_sgo_price, get_wrkn_price
+price = get_index_price()
+cur.execute(f"""
+    INSERT INTO prices VALUES (
+        'index',
+        ARRAY {get_index_price[len(price)-1382400:]}
+    );
+""")
+conn.commit()
+
+
+# index_price = get_index_price()
+# ast_price = get_ast_price()
+# dsc_price = get_dsc_price()
+# fsin_price = get_fsin_price()
+# hhw_price = get_hhw_price()
+# jky_price = get_jky_price()
+# sgo_price = get_sgo_price()
+# wrkn_price = get_wrkn_price()
+
+
+
+# prices_list = [index_price, ast_price, dsc_price, fsin_price, hhw_price, jky_price, sgo_price, wrkn_price]
+# companies = ["index", "ast", "dsc", "fsin", "hhw", "jky", "sgo", "wrkn"]
+# for i in range(len(companies)):
+#     cur.execute(f"""
+#         INSERT INTO prices VALUES (
+#             '{companies[i]}',
+#             ARRAY {prices_list[i][len(companies)-1382400:]}
+#         );
+#     """)
+#     conn.commit()
+#     print(i)
