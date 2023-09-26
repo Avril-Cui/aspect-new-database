@@ -26,13 +26,13 @@ class db:
         return price
 
 
-import matplotlib.pyplot as plt
+# import matplotlib.pyplot as plt
 
-DB = db()
-conn, cur = db.initialize_connection()
+# DB = db()
+# conn, cur = db.initialize_connection()
 
-# for company in ["ast", "dsc", "fsin", "hhw", "jky", "sgo", "wrkn", "index"]:
-#     lst = []
-#     price = db.get_price_from_database(company, cur)
-#     plt.plot(price[0:60*60*24])
-#     plt.show()
+# # for company in ["ast", "dsc", "fsin", "hhw", "jky", "sgo", "wrkn", "index"]:
+# #     lst = []
+# #     price = db.get_price_from_database(company, cur)
+# #     plt.plot(price[0:60*60*24])
+# #     plt.show()
