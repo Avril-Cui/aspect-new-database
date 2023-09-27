@@ -24,9 +24,9 @@ house.create_bot_table()
 house.create_bot_portfolio_table()
 house.create_bot_order_table()
 user_database_commands = UserDatabaseCommands(conn, cur)
-user_database_commands.create_user_table()
-user_database_commands.create_portfolio_table()
-user_database_commands.create_trade_history_table()
+# user_database_commands.create_user_table()
+# user_database_commands.create_portfolio_table()
+# user_database_commands.create_trade_history_table()
 
 # initialize company prices
 company_names = ["ast", "dsc", "fsin", "hhw", "jky", "sgo", "wrkn", "index"]
