@@ -286,13 +286,6 @@ class AuctionHouse:
 						if action == 'buy':
 							if portfolio_data != None:
 								self.cur.execute(f"""
-									INSERT INTO bot_trade_history VALUES (
-										'{bot_id}',
-										'{company}',
-										{round(float(time.time()), 2)},
-										{round(order_share,2)},
-										{round(trade_value,2)}
-									);
 									UPDATE bot_portfolio SET shares_holding = (shares_holding+{abs(round(order_share,2))})
 									WHERE bot_id='{bot_id}' and company_id='{company}';
 									UPDATE bot_portfolio SET cost = (cost+{round(trade_value,2)})
@@ -301,13 +294,6 @@ class AuctionHouse:
 								self.conn.commit()
 							else:
 								self.cur.execute(f"""
-									INSERT INTO bot_trade_history VALUES (
-										'{bot_id}',
-										'{company}',
-										{round(float(time.time()), 2)},
-										{abs(round(order_share,2))},
-										{round(trade_value,2)}
-									);
 									INSERT INTO bot_portfolio VALUES (
 										'{bot_id}',
 										'{company}',
@@ -319,13 +305,6 @@ class AuctionHouse:
 								self.conn.commit()
 						elif action == "sell":
 							self.cur.execute(f"""
-								INSERT INTO bot_trade_history VALUES (
-									'{bot_id}',
-									'{company}',
-									{round(float(time.time()), 2)},
-									{-abs(round(order_share,2))},
-									{-round(trade_value,2)}
-								);
 								UPDATE bot_portfolio SET shares_holding = (shares_holding-{abs(round(order_share,2))})
 								WHERE bot_id='{bot_id}' and company_id='{company}';
 								UPDATE bot_portfolio SET cost = (cost-{round(trade_value,2)})
@@ -347,13 +326,6 @@ class AuctionHouse:
 						if action == 'buy':
 							if portfolio_data != None:
 								self.cur.execute(f"""
-									INSERT INTO bot_trade_history VALUES (
-										'{bot_id}',
-										'{company}',
-										{round(float(time.time()), 2)},
-										{round(trade_share,2)},
-										{round(trade_value,2)}
-									);
 									UPDATE bot_portfolio SET shares_holding = (shares_holding+{abs(round(trade_share,2))})
 									WHERE bot_id='{bot_id}' and company_id='{company}';
 									UPDATE bot_portfolio SET cost = (cost+{round(trade_value,2)})
@@ -362,13 +334,6 @@ class AuctionHouse:
 								self.conn.commit()
 							else:
 								self.cur.execute(f"""
-									INSERT INTO bot_trade_history VALUES (
-										'{bot_id}',
-										'{company}',
-										{round(float(time.time()), 2)},
-										{abs(round(trade_share,2))},
-										{round(trade_value,2)}
-									);
 									INSERT INTO bot_portfolio VALUES (
 										'{bot_id}',
 										'{company}',
@@ -380,13 +345,6 @@ class AuctionHouse:
 								self.conn.commit()
 						elif action == "sell":
 							self.cur.execute(f"""
-								INSERT INTO bot_trade_history VALUES (
-									'{bot_id}',
-									'{company}',
-									{round(float(time.time()), 2)},
-									{-abs(round(trade_share,2))},
-									{-round(trade_value,2)}
-								);
 								UPDATE bot_portfolio SET shares_holding = (shares_holding-{abs(round(trade_share,2))})
 								WHERE bot_id='{bot_id}' and company_id='{company}';
 								UPDATE bot_portfolio SET cost = (cost-{round(trade_value,2)})
@@ -645,18 +603,18 @@ class AuctionHouse:
 		""")
 		self.conn.commit()
 	
-	def create_bot_trade_history_table(self ):
-		self.cur.execute(f'DROP TABLE IF EXISTS bot_trade_history;')
-		self.cur.execute(f"""
-			CREATE TABLE bot_trade_history (
-				bot_id varchar (100),
-				company_id varchar (100),
-				timestamp NUMERIC NOT NULL,
-				shares NUMERIC NOT NULL,
-				value NUMERIC NOT NULL
-			);
-		""")
-		self.conn.commit()
+	# def create_bot_trade_history_table(self ):
+	# 	self.cur.execute(f'DROP TABLE IF EXISTS bot_trade_history;')
+	# 	self.cur.execute(f"""
+	# 		CREATE TABLE bot_trade_history (
+	# 			bot_id varchar (100),
+	# 			company_id varchar (100),
+	# 			timestamp NUMERIC NOT NULL,
+	# 			shares NUMERIC NOT NULL,
+	# 			value NUMERIC NOT NULL
+	# 		);
+	# 	""")
+	# 	self.conn.commit()
 	
 	def get_total_bot_rank(self):
 		self.cur.execute(f"""
@@ -825,13 +783,6 @@ class AuctionHouse:
 				elif share_number > 0:
 					if portfolio_data != None:
 						self.cur.execute(f"""
-							INSERT INTO bot_trade_history VALUES (
-								'{bot}',
-								'{company}',
-								{round(float(time.time()), 2)},
-								{round(share_number,2)},
-								{round(target_price*share_number,2)}
-							);
 							UPDATE bots SET cashvalue = (cashvalue-{round(trade_value, 2)})
 							WHERE bot_id='{bot}';
 							UPDATE bot_portfolio SET shares_holding = (shares_holding+{round(share_number,2)})
@@ -844,13 +795,6 @@ class AuctionHouse:
 						self.conn.commit()
 					else:
 						self.cur.execute(f"""
-							INSERT INTO bot_trade_history VALUES (
-								'{bot}',
-								'{company}',
-								{round(float(time.time()), 2)},
-								{round(share_number,2)},
-								{round(target_price*share_number,2)}
-							);
 							UPDATE bots SET cashvalue = (cashvalue-{round(trade_value, 2)})
 							WHERE bot_id='{bot}';
 							INSERT INTO bot_portfolio VALUES (
@@ -869,13 +813,6 @@ class AuctionHouse:
 							return "Invalid 1"
 						else:
 							self.cur.execute(f"""
-								INSERT INTO bot_trade_history VALUES (
-									'{bot}',
-									'{company}',
-									{round(float(time.time()), 2)},
-									{round(share_number,2)},
-									{round(target_price*share_number,2)}
-								);
 								UPDATE bots SET cashvalue = (cashvalue+{abs(round(trade_value, 2))})
 								WHERE bot_id='{bot}';
 								UPDATE bot_portfolio SET shares_holding = (shares_holding+{round(share_number,2)})
@@ -951,13 +888,6 @@ class AuctionHouse:
 					elif share_number > 0:
 						if portfolio_data != None:
 							self.cur.execute(f"""
-								INSERT INTO bot_trade_history VALUES (
-									'{bot}',
-									'{company}',
-									{round(float(time.time()), 2)},
-									{round(share_number,2)},
-									{round(trade_value,2)}
-								);
 								UPDATE bots SET cashvalue = (cashvalue-{round(trade_value, 2)})
 								WHERE bot_id='{bot}';
 								UPDATE bot_portfolio SET shares_holding = (shares_holding+{round(share_number,2)})
@@ -970,13 +900,6 @@ class AuctionHouse:
 							self.conn.commit()
 						else:
 							self.cur.execute(f"""
-								INSERT INTO bot_trade_history VALUES (
-									'{bot}',
-									'{company}',
-									{round(float(time.time()), 2)},
-									{round(share_number,2)},
-									{round(trade_value,2)}
-								);
 								UPDATE bots SET cashvalue = (cashvalue-{round(trade_value, 2)})
 								WHERE bot_id='{bot}';
 								INSERT INTO bot_portfolio VALUES (
@@ -995,13 +918,6 @@ class AuctionHouse:
 								return "Invalid 1"
 							else:
 								self.cur.execute(f"""
-									INSERT INTO bot_trade_history VALUES (
-										'{bot}',
-										'{company}',
-										{round(float(time.time()), 2)},
-										{round(share_number,2)},
-										{round(trade_value,2)}
-									);
 									UPDATE bots SET cashvalue = (cashvalue+{abs(round(trade_value, 2))})
 									WHERE bot_id='{bot}';
 									UPDATE bot_portfolio SET shares_holding = (shares_holding+{round(share_number,2)})
