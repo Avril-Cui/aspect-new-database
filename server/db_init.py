@@ -13,7 +13,6 @@ conn = psycopg2.connect(
     password=DATABASE_PASSWORD if DATABASE_PASSWORD!=None else "Xiaokeai0717"
 )
 cur = conn.cursor()
-print("HERE")
 
 from User.user_database import UserDatabaseCommands
 from Price.prices_init import  get_index_price, get_ast_price, get_dsc_price, get_fsin_price, get_hhw_price, get_jky_price, get_sgo_price, get_wrkn_price
@@ -31,13 +30,11 @@ wrkn_price = get_wrkn_price()
 
 prices_list = [index_price, ast_price, dsc_price, fsin_price, hhw_price, jky_price, sgo_price, wrkn_price]
 companies = ["index", "ast", "dsc", "fsin", "hhw", "jky", "sgo", "wrkn"]
-print("HERE")
 
 user_database_commands = UserDatabaseCommands(conn, cur)
 user_database_commands.create_user_table()
 user_database_commands.create_portfolio_table()
 user_database_commands.create_trade_history_table()
-print("HERE")
 cur.execute(f'DROP TABLE IF EXISTS prices;')
 cur.execute(f"""
     CREATE TABLE prices (
