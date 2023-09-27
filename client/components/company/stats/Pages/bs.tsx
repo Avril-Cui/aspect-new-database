@@ -102,7 +102,7 @@ function Balance(props:any) {
               </tr>
             </table>
           </div>
-          <div className={styles.switch} style={{ marginTop: "0em" }}>
+          {/* <div className={styles.switch} style={{ marginTop: "0em" }}>
             <button
               onClick={() => setChart("income")}
               className={styles.switch_prev_page}
@@ -115,7 +115,7 @@ function Balance(props:any) {
             >
               Next &#8614;
             </button>
-          </div>
+          </div> */}
         </div>
       )}
       {chart === "cashflow" && (

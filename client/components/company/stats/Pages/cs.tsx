@@ -70,7 +70,7 @@ function CashFlow(props: any) {
               </tr>
             </table>
           </div>
-          <div className={styles.switch} style={{ marginTop: "7em" }}>
+          {/* <div className={styles.switch} style={{ marginTop: "7em" }}>
             <button
               onClick={() => setChart("balance")}
               className={styles.switch_prev_page}
@@ -83,7 +83,7 @@ function CashFlow(props: any) {
             >
               Next &#8614;
             </button>
-          </div>
+          </div> */}
         </div>
       )}
       {chart === "dividend" && (

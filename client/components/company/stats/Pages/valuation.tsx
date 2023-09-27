@@ -69,7 +69,7 @@ function Valuation(props: any) {
               </tbody>
             </table>
           </div>
-          <div className={styles.switch} style={{ marginLeft: "42.75em" }}>
+          {/* <div className={styles.switch} style={{ marginLeft: "42.75em" }}>
             <button
               onClick={() => setChart("income")}
               className={styles.switch_page}
@@ -77,7 +77,7 @@ function Valuation(props: any) {
             >
               Next &#8614;
             </button>
-          </div>
+          </div> */}
         </div>
       )}
       {chart === "income" && (

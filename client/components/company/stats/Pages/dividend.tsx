@@ -64,14 +64,14 @@ function Dividend(props: any) {
               </tr>
             </table>
           </div>
-          <div className={styles.switch} style={{ marginTop: "7em" }}>
+          {/* <div className={styles.switch} style={{ marginTop: "7em" }}>
             <button
               onClick={() => setChart("cashflow")}
               className={styles.switch_prev_page}
             >
               &#8612; Previous
             </button>
-          </div>
+          </div> */}
         </div>
       )}
     </div>

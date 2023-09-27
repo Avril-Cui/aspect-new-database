@@ -78,7 +78,7 @@ function Income(props:any) {
               </tr>
             </table>
           </div>
-          <div className={styles.switch} style={{ marginTop: "2.2em" }}>
+          {/* <div className={styles.switch} style={{ marginTop: "2.2em" }}>
             <button
               onClick={() => setChart("valuation")}
               className={styles.switch_prev_page}
@@ -91,7 +91,7 @@ function Income(props:any) {
             >
               Next &#8614;
             </button>
-          </div>
+          </div> */}
         </div>
       )}
       {chart === "balance" && (

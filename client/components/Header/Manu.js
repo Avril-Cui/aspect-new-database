@@ -12,10 +12,9 @@ import { useAuth0 } from "@auth0/auth0-react";
 import axios from "axios";
 
 const Manu = () => {
-  const { loginWithRedirect } = useAuth0();
 
   // const router = useRouter();
-  const { user, isAuthenticated, isLoading, logout } = useAuth0();
+  const { user, isAuthenticated, isLoading, logout, loginWithRedirect } = useAuth0();
 
   const cookies = new Cookies();
   // const userData = cookies.get("userData");]
