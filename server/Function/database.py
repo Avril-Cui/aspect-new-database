@@ -20,6 +20,8 @@ class db:
             sslmode='require'
         )
         cur = conn.cursor()
+        cur.execute("ROLLBACK")
+        conn.commit()
         print("YES")
         return conn, cur
 
