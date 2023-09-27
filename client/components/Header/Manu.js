@@ -23,6 +23,9 @@ const Manu = () => {
   const [isEnd, setIsEnd] = useState(false);
 
   useEffect(() => {
+    console.log(user)
+    console.log("users")
+    console.log(cookies.get(userData))
     if (user != null) {
       const email = user.email;
       const user_name = user.nickname;
@@ -44,26 +47,6 @@ const Manu = () => {
 
       axios.request(config);
     }
-
-    // if (userData == undefined) {
-    //   cookies.remove("userData", { path: "/" });
-    //   cookies.remove("user_uid", { path: "/" });
-    //   const axios = require("axios");
-    //   axios
-    //     .request({
-    //       method: "post",
-    //       maxBodyLength: Infinity,
-    //       url: `${process.env.serverConnection}/is-end-game`,
-    //     })
-    //     .then((response) => {
-    //       if (response.data == "0") {
-    //         setIsEnd(true);
-    //       }
-    //     })
-    //     .catch((error) => {
-    //       console.log(error);
-    //     });
-    // }
     const newUserData = cookies.get("userData");
     setUserData(newUserData);
     console.log("is auth");

@@ -560,6 +560,20 @@ class AuctionHouse:
 				if portfolio_data != None:
 					if abs(share_number) > shares_holding or abs(share_number) > pending_shares_holding:
 						return "Invalid 1"
+					elif abs(share_number) == shares_holding:
+						self.cur.execute(f"""
+							INSERT INTO trade_history VALUES (
+								'{user_uid}',
+								'{comp_name}',
+								{round(float(time.time()), 2)},
+								{round(share_number,2)},
+								{round(target_price*share_number,2)}
+							);
+							DELETE FROM portfolio WHERE uid='{user_uid}' and company_id='{comp_name}';
+							UPDATE users SET cashvalue = (cashvalue+{abs(round(trade_value, 2))})
+							WHERE uid='{user_uid}';
+						""")
+						self.conn.commit()
 					else:
 						self.cur.execute(f"""
 							INSERT INTO trade_history VALUES (

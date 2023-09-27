@@ -9,7 +9,6 @@ import json
 from flask import Flask, request, jsonify
 import pyrebase
 from flask_cors import CORS, cross_origin
-
 # initialize timeframe
 seconds = time.time()
 # start_time = time.time() - 60*60*24*10

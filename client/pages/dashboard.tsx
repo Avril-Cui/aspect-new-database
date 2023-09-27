@@ -154,7 +154,6 @@ export default function Home() {
     },
   };
   const cookies = new Cookies();
-  const [userUid, setUserUid] = useState("");
 
   const [isOpen, setIsOpen] = useState(false);
   const [isOpen1, setIsOpen1] = useState(false);
@@ -207,19 +206,17 @@ export default function Home() {
   });
 
   useEffect(() => {
-    setUserUid(cookies.get("user_uid"));
+    console.log(cookies.get("user_uid"));
     if (portfolio.accountValue != undefined) {
       setLoading(true);
     }
-    const user_data = JSON.stringify(userUid);
-
     axios({
       method: "post",
       url: `${process.env.serverConnection}/show-ranking`,
       headers: {
         "Content-Type": "text/plain",
       },
-      data: user_data,
+      data: JSON.stringify(cookies.get("user_uid")),
     })
       .then(function (response) {
         setRank(response.data);
@@ -237,7 +234,7 @@ export default function Home() {
         headers: {
           "Content-Type": "text/plain",
         },
-        data: user_data,
+        data: JSON.stringify(cookies.get("user_uid"))
       })
         .then(function (response) {
           setPortfolio(response.data.portfolio_value);
@@ -248,18 +245,17 @@ export default function Home() {
         });
     }, WAIT_TIME);
     return () => clearInterval(data);
-  }, [userUid, loading, isPrice, dispatch, portfolio, fullPortfolio]);
+  }, [loading, isPrice, dispatch, portfolio, fullPortfolio]);
 
   useEffect(() => {
     const data1 = setInterval(() => {
-      const user_data = JSON.stringify(userUid);
       axios({
         method: "post",
         url: `${process.env.serverConnection}/get-user-pending-orders`,
         headers: {
           "Content-Type": "text/plain",
         },
-        data: user_data,
+        data: JSON.stringify(cookies.get("user_uid"))
       })
         .then(function (response) {
           setOrders(response.data);
@@ -444,11 +440,11 @@ export default function Home() {
                     handleTickerChange={handleTickerChange}
                     ticker={compName}
                     setTicker={setCompName}
-                    user_uid={userUid}
+                    user_uid={cookies.get("user_uid")}
                   />
                 </div>
                 <div id="ask-bid">
-                  <AskBidTable comp_name={compName} user_uid={userUid} />
+                  <AskBidTable comp_name={compName} user_uid={cookies.get("user_uid")} />
                 </div>
                 <CompanyChart comp_name={compName} />
               </div>
