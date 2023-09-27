@@ -13,6 +13,7 @@ from flask_cors import CORS, cross_origin
 seconds = time.time()
 # start_time = time.time() - 60*60*24*10
 start_time = 1695600000
+# 1695772800
 end_time = start_time + (60*60*24)*16
 
 # initialize database, tables, and house&user classes
