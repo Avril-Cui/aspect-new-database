@@ -20,7 +20,7 @@ const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
       domain="dev-by68bdxzfsz4zee3.us.auth0.com"
       clientId="D7iASVLJiFdm6mves3rAUWDsb4k9Ug5q"
       authorizationParams={{
-        redirect_uri: "http://localhost:3000",
+        redirect_uri: "https://www.aspect-game.com",
       }}
     >
       {userData ? children : <></>}{" "}

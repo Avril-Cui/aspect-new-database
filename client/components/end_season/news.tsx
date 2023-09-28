@@ -4,25 +4,13 @@ import { urlFor } from "../../sanity";
 import Image from "next/image";
 import rocket from "../../image/logo/rocket.png";
 import message from "../../image/logo/message.png";
-import { useRef } from "react";
 
-export default function Simulator(props: any) {
+export default function News(props: any) {
   const index = props.index;
-  const elementRef: any = useRef(null);
-
-  function handleScrollLeft() {
-    elementRef.current.scrollLeft -= 1300;
-  }
-
-  function handleScrollRight() {
-    elementRef.current.scrollLeft += 1300;
-  }
-  console.log(props.index);
 
   return (
     <div>
       <div
-        ref={elementRef}
         // className={styles.article_container}
         className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 md:gap-6"
       >

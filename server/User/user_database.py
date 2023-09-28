@@ -122,6 +122,9 @@ class UserDatabaseCommands:
                 cost = float(results[index][3])
                 holding_value += float(company_prices[company]
                                        ) * float(shares_holding)
+                if shares_holding == 0:
+                    shares_holding = 1
+                    cost = 0
                 user_portfolio[company] = {
                     "shares_holding": shares_holding,
                     "total_holding": float(company_prices[company]) * float(shares_holding),

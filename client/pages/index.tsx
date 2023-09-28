@@ -12,10 +12,9 @@ import { useSelector, useDispatch } from "react-redux";
 import { requestPrice } from "../features/newPrice.js";
 import { useState, useEffect } from "react";
 import dynamic from "next/dynamic";
-import Link from "next/link";
 import Product from "./game";
 import { useAuth0 } from "@auth0/auth0-react";
-import SeasonReview from "./season-review";
+import SeasonReview from "../components/end_season/season-review";
 
 const Tour = dynamic(() => import("reactour"), { ssr: false });
 interface Props {

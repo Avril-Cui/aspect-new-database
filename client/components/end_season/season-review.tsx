@@ -1,9 +1,9 @@
 import React from "react";
 import Head from "next/head";
-import styles from "../styles/EndSeason/SeasonalReview.module.css";
-import OverviewChart from "../components/end_season/overview_charts";
-import TopLayer from "../components/end_season/TopLayer";
-import News from "../components/end_season/news";
+import styles from "../../styles/EndSeason/SeasonalReview.module.css";
+import OverviewChart from "./overview_charts";
+import TopLayer from "./TopLayer";
+import News from "./news";
 
 export default function SeasonReview(props: any) {
   return (
@@ -23,7 +23,7 @@ export default function SeasonReview(props: any) {
 
       <div className={styles.layer1} style={{ marginBottom: "15em" }}>
         <p className={styles.layer_header}>
-          📟 Market and Companies Seasonal Analysis -
+          📟 Market and Company Seasonal Analyses -
           <span> Click To Read Official Analysis!</span>
         </p>
         <News index={props.index} />
