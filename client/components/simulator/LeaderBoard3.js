@@ -22,14 +22,22 @@ function LeaderBoard3(props) {
       url: `${process.env.serverConnection}/total-rank`,
     })
       .then(function (response) {
-        console.log(response.data)
-        setRanking(response.data);
+        const obj = response.data;
+        var items = Object.keys(obj).map(function (key) {
+          return [key, obj[key]];
+        });
+        items.sort(function (first, second) {
+          return second[1].cash_value - first[1].cash_value;
+        });
+        console.log(items);
+
+        setRanking(obj);
       })
       .catch(function (error) {
         console.log(error);
       });
   }, []);
-// console.log(props.ranking)
+  // console.log(props.ranking)
   return (
     <table className={styles.user_table}>
       <tbody>
