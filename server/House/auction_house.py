@@ -233,7 +233,7 @@ class AuctionHouse:
 							WHERE uid='{user_uid}' and company_id='{company}';
 							UPDATE portfolio SET pending_shares_holding = (pending_shares_holding-{abs(round(share_number,2))})
 							WHERE uid='{user_uid}' and company_id='{company}';
-							UPDATE portfolio SET cost = (cost+{round(trade_value,2)})
+							UPDATE portfolio SET cost = (cost+{abs(round(trade_value, 2))})
 							WHERE uid='{user_uid}' and company_id='{company}';
 							
 						""")

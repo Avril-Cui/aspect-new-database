@@ -19,10 +19,10 @@ conn = psycopg2.connect(
 cur = conn.cursor()
 
 cur.execute(f"""
-    UPDATE users SET user_name = 'asdf' WHERE uid='avrilcui17@gmail.com'; 
+   select * from portfolio where uid='aswalfredz@gmail.com';
 """)
-conn.commit()
-
+data = cur.fetchall()
+print(data)
 
 # import matplotlib.pyplot as plt
 
