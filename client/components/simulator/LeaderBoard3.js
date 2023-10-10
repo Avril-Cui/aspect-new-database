@@ -37,7 +37,7 @@ function LeaderBoard3(props) {
         console.log(error);
       });
   }, []);
-  // console.log(props.ranking)
+  console.log(props.ranking)
   return (
     <table className={styles.user_table}>
       <tbody>

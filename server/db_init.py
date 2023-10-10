@@ -43,7 +43,7 @@ cur.execute(f"""
     CREATE TABLE prices (
     company_id varchar (100) PRIMARY KEY,
     price_list NUMERIC [] NOT NULL
-    );
+    );t
 """)
 conn.commit()
 print("HERE")

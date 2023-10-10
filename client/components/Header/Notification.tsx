@@ -7,9 +7,8 @@ const Notification = () => {
       <p className={styles.notification}>
         New Season Is Released, Check It Out Here:{" "}
         <Link href="/game">
-          <a className={styles.link}>Learn Stock Simulator</a>
+          <a className={styles.link}>Learn Aspect Virtual Market Game</a>
         </Link>
-        . Market Open From 8:00AM to 6:00PM EST.
       </p>
     </div>
   );
