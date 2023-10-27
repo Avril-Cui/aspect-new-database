@@ -35,8 +35,8 @@ function LeaderBoard3() {
         <tr>
           <th>Rank</th>
           <th style={{width: "12em"}}>User Name</th>
-          <th>Cash Value</th>
-          <th>Value Change</th>
+          <th style={{width: "12em"}}>Cash Value</th>
+          <th style={{width: "14em"}}>Value Change</th>
           <th>Percentage</th>
         </tr>
       </tbody>

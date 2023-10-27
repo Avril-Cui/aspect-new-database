@@ -36,26 +36,94 @@ function BotRanking() {
         <tr>
           <th>Rank</th>
           <th>Bot Name</th>
-          <th>Percentage Change</th>
+          <th style={{ width: "12em" }}>%</th>
         </tr>
       </tbody>
       <tbody>
-        {Object.entries(botRank).map(([key, value], i) => (
-          <tr key={key}>
-            <td className={styles.normal}>{value["ranking"]}</td>
-            <td className={styles.normal}>{key}</td>
-            <td
-              className={styles.normal}
-              style={
-                value["pct_change"] > 0
-                  ? { color: "#C9FFD1" }
-                  : { color: "#FD6565" }
-              }
-            >
-              {formatter.format(value["pct_change"] * 100)} %
-            </td>
-          </tr>
-        ))}        
+        <tr key="1">
+          <td className={styles.normal}>1</td>
+          <td className={styles.normal}>Arima</td>
+          <td
+            className={styles.normal}
+            style={
+              1 > 0
+                ? { color: "#C9FFD1" }
+                : { color: "#FD6565" }
+            }
+          >
+            273.79%
+          </td>
+        </tr>
+        <tr key="2">
+          <td className={styles.normal}>2</td>
+          <td className={styles.normal}>MysticAdventurer</td>
+          <td
+            className={styles.normal}
+            style={
+              1 > 0
+                ? { color: "#C9FFD1" }
+                : { color: "#FD6565" }
+            }
+          >
+            15.5%
+          </td>
+        </tr>
+        <tr key="3">
+          <td className={styles.normal}>3</td>
+          <td className={styles.normal}>KnightNexus</td>
+          <td
+            className={styles.normal}
+            style={
+              1 > 0
+                ? { color: "#C9FFD1" }
+                : { color: "#FD6565" }
+            }
+          >
+            12.19%
+          </td>
+        </tr>
+        <tr key="1">
+          <td className={styles.normal}>4</td>
+          <td className={styles.normal}>MagicRider</td>
+          <td
+            className={styles.normal}
+            style={
+              1 > 0
+                ? { color: "#C9FFD1" }
+                : { color: "#FD6565" }
+            }
+          >
+            2.05%
+          </td>
+        </tr>
+        <tr key="1">
+          <td className={styles.normal}>5</td>
+          <td className={styles.normal}>DiamondCrystal</td>
+          <td
+            className={styles.normal}
+            style={
+              -1 > 0
+                ? { color: "#C9FFD1" }
+                : { color: "#FD6565" }
+            }
+          >
+            -14.67%
+          </td>
+        </tr>
+        <tr key="1">
+          <td className={styles.normal}>6</td>
+          <td className={styles.normal}>MadInvestor</td>
+          <td
+            className={styles.normal}
+            style={
+              -1 > 0
+                ? { color: "#C9FFD1" }
+                : { color: "#FD6565" }
+            }
+          >
+            -19.46%
+          </td>
+        </tr>
       </tbody>
     </table>
   );

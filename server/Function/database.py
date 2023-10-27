@@ -17,7 +17,7 @@ class db:
             user=DATABASE_USER if DATABASE_USER!=None else "postgres",
             password=DATABASE_PASSWORD if DATABASE_PASSWORD!=None else "Xiaokeai0717",
             port=DATABASE_PORT,
-            sslmode='require'
+            # sslmode='require'
         )
         cur = conn.cursor()
         cur.execute("ROLLBACK")

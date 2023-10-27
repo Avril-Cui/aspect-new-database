@@ -160,39 +160,38 @@ export default function Front({ index, posts, end_season, companies }: Props) {
 
   return (
     <div>
-      {isEnd ? (
-        <SeasonReview index={end_season} />
-      ) : (
+      {isAuthenticated ? (
         <>
-          {" "}
-          {isAuthenticated ? (
+          {isEnd ? (
+            <SeasonReview index={end_season} />
+          ) : (
             <div className={styles.container}>
               <Head>
                 <title>Aspect - Learn Financial Knowledge</title>
               </Head>
               <Tour steps={steps} isOpen={enabled} onRequestClose={onExit} />
               {/* {isEnd ? (
-            <div style={{ marginBottom: "2em" }}>
-              <p className={styles.header} style={{ marginBottom: "0.5em" }}>
-                💡 Reminder From Game 💡
-              </p>
-              <p className={styles.end_season_note}>
-                Season One had officially ended.
-              </p>
-              <p className={styles.end_season_note}>
-                Seasonal recap and analysis on the market and companies
-                released.
-              </p>
-              <p className={styles.end_season_note}>
-                User and bot performances and statistics are provided.
-              </p>
-              <div className={styles.end_season_note}>
-                <Link href="/season-review">
-                  <a>End Season Summary</a>
-                </Link>{" "}
-              </div>
-            </div>
-          ) : null} */}
+      <div style={{ marginBottom: "2em" }}>
+        <p className={styles.header} style={{ marginBottom: "0.5em" }}>
+          💡 Reminder From Game 💡
+        </p>
+        <p className={styles.end_season_note}>
+          Season One had officially ended.
+        </p>
+        <p className={styles.end_season_note}>
+          Seasonal recap and analysis on the market and companies
+          released.
+        </p>
+        <p className={styles.end_season_note}>
+          User and bot performances and statistics are provided.
+        </p>
+        <div className={styles.end_season_note}>
+          <Link href="/season-review">
+            <a>End Season Summary</a>
+          </Link>{" "}
+        </div>
+      </div>
+    ) : null} */}
               <div className={styles.layer_one}>
                 <div className={styles.inline}>
                   <p className={styles.header} id="index_graph">
@@ -435,10 +434,10 @@ export default function Front({ index, posts, end_season, companies }: Props) {
                 />
               </div>
             </div>
-          ) : (
-            <Product />
           )}
         </>
+      ) : (
+        <Product />
       )}
     </div>
   );
@@ -606,7 +605,7 @@ export const getStaticProps = async () => {
 
   const result_index = await sanityClient.fetch(MainQuery);
   const posts = await sanityClient.fetch(query);
-  const end_season = await sanityClient.fetch(EndQuery)
+  const end_season = await sanityClient.fetch(EndQuery);
 
   const index = result_index;
 
@@ -615,7 +614,7 @@ export const getStaticProps = async () => {
       index,
       posts,
       companies,
-      end_season
+      end_season,
     },
   };
 };

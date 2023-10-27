@@ -17,13 +17,34 @@ conn = psycopg2.connect(
     sslmode='require'
 )
 cur = conn.cursor()
-
 cur.execute(f"""
-   select * from portfolio where uid='aswalfredz@gmail.com';
+    UPDATE users SET cashvalue = 109954.55
+    WHERE uid='yepol59798@gekme.com';
 """)
-data = cur.fetchall()
-print(data)
+conn.commit()
 
+# cur.execute(f"""
+#    select uid from users;
+# """)
+# users = cur.fetchall()
+# for user in users:
+#     try:
+#         cur.execute(f"""
+#             select cashValue from users where uid='{user[0]}';
+#         """)
+#         cash_value = cur.fetchone()
+#         new_cash = round(float(cash_value[0])*1750, 2)
+#         cur.execute(f"""
+#             UPDATE users SET cashvalue = {new_cash}
+#             WHERE uid='{user[0]}';
+#         """)
+#         conn.commit()
+#         # cur.execute(f"""
+#         #     select cashValue from users where uid='{user[0]}';
+#         # """)
+#         # cash_value = cur.fetchone()
+#     except:
+#         continue
 # import matplotlib.pyplot as plt
 
 # DB = db()

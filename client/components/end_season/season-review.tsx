@@ -11,8 +11,7 @@ export default function SeasonReview(props: any) {
       <Head>
         <title>Season Review</title>
       </Head>
-      <h1 className={styles.header}>Season One Market and User Review</h1>
-      <TopLayer />
+      {/* <h1 className={styles.header}>Season One Market and User Review</h1> */}
 
       <div className={styles.layer1}>
         <p className={styles.layer_header}>
@@ -21,13 +20,14 @@ export default function SeasonReview(props: any) {
         <OverviewChart />
       </div>
 
-      <div className={styles.layer1} style={{ marginBottom: "15em" }}>
+      <div className={styles.layer2} style={{ marginBottom: "5em" }}>
         <p className={styles.layer_header}>
           📟 Market and Company Seasonal Analyses -
           <span> Click To Read Official Analysis!</span>
         </p>
         <News index={props.index} />
       </div>
+      <TopLayer />
     </div>
   );
 }

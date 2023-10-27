@@ -1,5 +1,5 @@
 import { createChart, ColorType } from "lightweight-charts";
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef } from "react";
 
 export const OverviewChart = (props) => {
   const { data } = props;
