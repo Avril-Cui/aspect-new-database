@@ -11,8 +11,8 @@ import pyrebase
 from flask_cors import CORS, cross_origin
 # initialize timeframe
 seconds = time.time()
-start_time = time.time() - 60*60*24*10
-# start_time = 1695844800
+# start_time = time.time() - 60*60*24*10
+start_time = 1695844800
 # 1695772800
 end_time = start_time + (60*60*24)*16
 
