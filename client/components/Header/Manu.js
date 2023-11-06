@@ -12,9 +12,9 @@ import { useAuth0 } from "@auth0/auth0-react";
 import axios from "axios";
 
 const Manu = () => {
-
   // const router = useRouter();
-  const { user, isAuthenticated, isLoading, logout, loginWithRedirect } = useAuth0();
+  const { user, isAuthenticated, isLoading, logout, loginWithRedirect } =
+    useAuth0();
 
   const cookies = new Cookies();
   // const userData = cookies.get("userData");]
@@ -23,9 +23,9 @@ const Manu = () => {
   const [isEnd, setIsEnd] = useState(false);
 
   useEffect(() => {
-    console.log(user)
-    console.log("users")
-    console.log(cookies.get(userData))
+    console.log(user);
+    console.log("users");
+    console.log(cookies.get(userData));
     if (user != null) {
       const email = user.email;
       const user_name = user.nickname;
@@ -71,18 +71,21 @@ const Manu = () => {
           </a>
         </Link>
         <div className={styles.sections}>
-          {userData ? (
+          <Link href="/season-review">
+            <a style={{ color: "#c3fcc2" }}>Season Review</a>
+          </Link>
+          {/* {userData ? (
             <Link href="/dashboard">
               <a style={{ color: "#c3fcc2" }}>Dashboard</a>
             </Link>
-          ) : null}
-          {isEnd ? (
+          ) : null} */}
+          {/* {isEnd ? (
             <div>
               <Link href="/season-review">
                 <a style={{ color: "#f3ec78" }}>Season Review</a>
               </Link>
             </div>
-          ) : null}
+          ) : null} */}
           <div>
             <Link href="/game">
               <a>Game</a>

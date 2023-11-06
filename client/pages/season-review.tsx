@@ -1,22 +1,12 @@
-import styles from "../styles/front.module.css";
 import { sanityClient } from "../sanity";
 import { Post } from "../typings";
-import OverviewChart from "../components/front_page/overview_charts";
-import News from "../components/front_page/news";
-import Terms from "../components/front_page/terms";
-import ScreenerTable from "../components/simulator/screener_table";
-import LeaderBoard from "../components/simulator/LeaderBoard";
+import React from "react";
 import Head from "next/head";
-import ExploreSection from "../components/front_page/ExploreSection";
-import { useSelector, useDispatch } from "react-redux";
-import { requestPrice } from "../features/newPrice.js";
-import { useState, useEffect } from "react";
-import dynamic from "next/dynamic";
-import Product from "./game";
-import { useAuth0 } from "@auth0/auth0-react";
-import SeasonReview from "./season-review";
+import styles from "../styles/EndSeason/SeasonalReview.module.css";
+import OverviewChart from "../components/end_season/overview_charts";
+import TopLayer from "../components/end_season/TopLayer";
+import News from "../components/end_season/news";
 
-const Tour = dynamic(() => import("reactour"), { ssr: false });
 interface Props {
   index: [Post];
   posts: [Post];
@@ -24,150 +14,29 @@ interface Props {
   companies: any;
 }
 
-export default function Front({ index, posts, end_season, companies }: Props) {
-  const { isAuthenticated } = useAuth0();
-
-  var today = new Date();
-  var dd = String(today.getDate()).padStart(2, "0");
-  const month = [
-    "Jan",
-    "Feb",
-    "Mar",
-    "Apr",
-    "May",
-    "Jun",
-    "Jul",
-    "Aug",
-    "Sep",
-    "Oct",
-    "Nov",
-    "Dec",
-  ];
-  let current_month = month[today.getMonth()];
-  const dispatch = useDispatch();
-  const WAIT_TIME = 4000;
-  let price_data = useSelector((state: any) => state.price.value);
-
-  const [isPrice, setIsPrice] = useState(false);
-  const [isEnd, setIsEnd] = useState(false);
-
-  useEffect(() => {
-    const axios = require("axios");
-    axios
-      .request({
-        method: "post",
-        maxBodyLength: Infinity,
-        url: `${process.env.serverConnection}/is-end-game`,
-      })
-      .then((response: any) => {
-        if (response.data == "0") {
-          setIsEnd(true);
-        }
-      })
-      .catch((error: any) => {
-        console.log(error);
-      });
-
-    const data = setInterval(() => {
-      dispatch(requestPrice() as any);
-      setIsPrice(true);
-    }, WAIT_TIME);
-    return () => clearInterval(data);
-  }, [isPrice, dispatch, isEnd]);
-
-  const [isOpen, setIsOpen] = useState(false);
-  const [isOpen1, setIsOpen1] = useState(false);
-  const [isOpen2, setIsOpen2] = useState(false);
-  const [isOpen3, setIsOpen3] = useState(false);
-  const [isOpen4, setIsOpen4] = useState(false);
-
-  const togglePopup = () => {
-    setIsOpen(true);
-  };
-
-  const togglePopclose = () => {
-    setIsOpen(false);
-  };
-
-  const togglePopup1 = () => {
-    setIsOpen1(true);
-  };
-
-  const togglePopclose1 = () => {
-    setIsOpen1(false);
-  };
-
-  const togglePopup2 = () => {
-    setIsOpen2(true);
-  };
-
-  const togglePopclose2 = () => {
-    setIsOpen2(false);
-  };
-
-  const togglePopup3 = () => {
-    setIsOpen3(true);
-  };
-
-  const togglePopclose3 = () => {
-    setIsOpen3(false);
-  };
-
-  const togglePopup4 = () => {
-    setIsOpen4(true);
-  };
-
-  const togglePopclose4 = () => {
-    setIsOpen4(false);
-  };
-
-  const [enabled, setEnabled] = useState(false);
-
-  const toggleStartTutorial = () => {
-    setEnabled(true);
-    setIsOpen(false);
-  };
-  const onExit = () => {
-    setEnabled(false);
-  };
-  const steps = [
-    {
-      selector: "#index_graph",
-      content: "Hover over the graph to the the daily price trends.",
-    },
-    {
-      selector: "#news",
-      content: "Read and analyze news to make investment decisions.",
-    },
-    {
-      selector: "#terms",
-      content: "Learn terminologies to assist financial analysis.",
-    },
-    {
-      selector: "#companies",
-      content: "Explore companies with various characteristics and businesses.",
-    },
-    {
-      selector: "#screener",
-      content:
-        "View companies' real-time prices and click on the links to view the profile page of each company.",
-    },
-    {
-      selector: "#leaderboard",
-      content: "See top users' rankings in the game.",
-    },
-  ];
-
+export default function SeasonReview({ index, posts, end_season, companies }: Props) {
   return (
-    <div>
-      <Product />
-      {/* <SeasonReview index={end_season} /> */}
-      {/* /
-      {isAuthenticated ? (
-        <SeasonReview index={end_season} />
-      ) : (
-        <Product />
-      )} */}
+    <div className={styles.container} style={{marginBottom: "5em"}}>
+      <Head>
+        <title>Season Review</title>
+      </Head>
+      {/* <h1 className={styles.header}>Season One Market and User Review</h1> */}
+
+      <div className={styles.layer1}>
+        <p className={styles.layer_header}>
+          📟 Market and Company Performance 📟
+        </p>
+        <OverviewChart />
+      </div>
+
+      <div className={styles.layer2} style={{ marginBottom: "5em" }}>
+        <p className={styles.layer_header}>
+          📟 Market and Company Seasonal Analyses -
+          <span> Click To Read Official Analysis!</span>
+        </p>
+        <News index={end_season} />
+      </div>
+      <TopLayer />
     </div>
   );
 }

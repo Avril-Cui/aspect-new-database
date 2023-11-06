@@ -37,7 +37,7 @@ const Product = () => {
               </button>{" "}
             </a>
 
-            <Link href="https://drive.google.com/file/d/1ewv4b0DfugUCzB8tz5Wtf9PU4weWu647/view?usp=sharing">
+            <Link href="https://drive.google.com/file/d/10qpmMTmv66Zzql-NglYSEgiS28SiUihz/view?usp=sharing">
               <a>
                 <button className={styles.view_btn}>View whitepaper</button>
               </a>
