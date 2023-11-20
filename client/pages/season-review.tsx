@@ -14,9 +14,14 @@ interface Props {
   companies: any;
 }
 
-export default function SeasonReview({ index, posts, end_season, companies }: Props) {
+export default function SeasonReview({
+  index,
+  posts,
+  end_season,
+  companies,
+}: Props) {
   return (
-    <div className={styles.container} style={{marginBottom: "5em"}}>
+    <div className={styles.container} style={{ marginBottom: "5em" }}>
       <Head>
         <title>Season Review</title>
       </Head>
@@ -36,7 +41,9 @@ export default function SeasonReview({ index, posts, end_season, companies }: Pr
         </p>
         <News index={end_season} />
       </div>
-      <TopLayer />
+      <div className={styles.layer2}>
+        <TopLayer />
+      </div>
     </div>
   );
 }

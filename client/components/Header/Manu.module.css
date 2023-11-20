@@ -48,6 +48,10 @@
   border-radius: 10px;
 }
 
+.style_but:hover {
+  cursor: pointer;
+}
+
 .style_but .text {
   text-decoration: none;
   color: #ffffff;

@@ -3,20 +3,30 @@ import styles from "../styles/product/product.module.css";
 import Head from "next/head";
 import Image from "next/image";
 import company from "../image/logo/company.png";
+import ranking from "../public/ranking.jpg";
+import bots_chart from "../public/bots_chart.png";
+import company1 from "../image/logo/company1.png";
 import terms from "../image/logo/terms.png";
+import terms1 from "../image/logo/terms1.png";
 import model from "../image/logo/model.png";
-import main from "../image/screenshot/main.png";
+import model1 from "../image/logo/model1.png";
+import game from "../image/logo/game.png";
+import game1 from "../image/logo/game1.png";
+import main from "../public/company_profile.jpg";
 import Link from "next/link";
 import ReactPlayer from "react-player";
-import twi from "../public/twitter.png";
-import ins from "../public/instagram.png";
-import git from "../public/git.png";
+import terms_diagram from "../public/terms_diagram.png";
+// import twi from "../public/twitter.png";
+// import ins from "../public/instagram.png";
+// import git from "../public/git.png";
 import trade_info from "../public/trade.png";
 import Timeline from "../components/Product/timeline";
 import { useAuth0 } from "@auth0/auth0-react";
+import { useState } from "react";
 
 const Product = () => {
   const { loginWithRedirect } = useAuth0();
+  const [mainPic, setMainPic] = useState(0);
 
   return (
     <div className={styles.container}>
@@ -46,48 +56,177 @@ const Product = () => {
         </div>
         <div className={styles.layer_two}>
           <div className={styles.inline} style={{ marginLeft: "2em" }}>
-            <div className={styles.inline_cell}>
-              <div className={styles.logo}>
-                <Image src={company} width="50px" height="50px" />
+            {mainPic == 0 ? (
+              <div className={styles.inline_cell1}>
+                <div className={styles.logo}>
+                  <Image src={company1} width="42px" height="42px" />
+                </div>
+                <p className={styles.inline_header1}>Explore Companies</p>
+                <p className={styles.inline_text1}>
+                  Analysis interesting companies with unique traits.
+                </p>
               </div>
-              <p className={styles.inline_header}>Explore Companies</p>
-              <p className={styles.inline_text}>
-                Analysis interesting companies with unique traits.
-              </p>
-            </div>
+            ) : (
+              <div className={styles.inline_cell} onClick={() => setMainPic(0)}>
+                <div className={styles.logo}>
+                  <Image src={company} width="42px" height="42px" />
+                </div>
+                <p className={styles.inline_header}>Explore Companies</p>
+                <p className={styles.inline_text}>
+                  Analysis interesting companies with unique traits.
+                </p>
+              </div>
+            )}
 
-            <div className={styles.inline_cell}>
-              <div className={styles.logo}>
-                <Image src={terms} width="50px" height="50px" />
+            {mainPic == 1 ? (
+              <div className={styles.inline_cell1}>
+                <div className={styles.logo}>
+                  <Image src={terms1} width="50px" height="50px" />
+                </div>
+                <p className={styles.inline_header1}>Learn Terminologies</p>
+                <p className={styles.inline_text1}>
+                  Understand important financial terms and useful models.
+                </p>
               </div>
-              <p className={styles.inline_header}>Learn Terminologies</p>
-              <p className={styles.inline_text}>
-                Understand important financial terms and useful models.
-              </p>
-            </div>
+            ) : (
+              <div className={styles.inline_cell} onClick={() => setMainPic(1)}>
+                <div className={styles.logo}>
+                  <Image src={terms} width="50px" height="50px" />
+                </div>
+                <p className={styles.inline_header}>Learn Terminologies</p>
+                <p className={styles.inline_text}>
+                  Understand important financial terms and useful models.
+                </p>
+              </div>
+            )}
 
-            <div className={styles.inline_cell}>
-              <div className={styles.logo}>
-                <Image src={model} width="50px" height="50px" />
+            {mainPic == 2 ? (
+              <div className={styles.inline_cell1}>
+                <div className={styles.logo}>
+                  <Image src={game1} width="50px" height="50px" />
+                </div>
+                <p className={styles.inline_header1}>Compete with Friends</p>
+                <p className={styles.inline_text1}>
+                  Compete for highest ranks in leaderboard and win prizes.
+                </p>
               </div>
-              <p className={styles.inline_header}>Implement Models</p>
-              <p className={styles.inline_text}>
-                Guides to implement models to assist investment decisions.
-              </p>
-            </div>
+            ) : (
+              <div className={styles.inline_cell} onClick={() => setMainPic(2)}>
+                <div className={styles.logo}>
+                  <Image src={game} width="50px" height="50px" />
+                </div>
+                <p className={styles.inline_header}>Compete with Friends</p>
+                <p className={styles.inline_text}>
+                  Compete for highest ranks in leaderboard and win prizes.
+                </p>
+              </div>
+            )}
 
-            <div className={styles.inline_cell}>
-              <div className={styles.logo}>
-                <Image src={company} width="50px" height="50px" />
+            {mainPic == 3 ? (
+              <div className={styles.inline_cell1}>
+                <div className={styles.logo}>
+                  <Image src={model1} width="50px" height="50px" />
+                </div>
+                <p className={styles.inline_header1}>Interact with Bots</p>
+                <p className={styles.inline_text1}>
+                  Ask and bid stocks with various intelligent bots.
+                </p>
               </div>
-              <p className={styles.inline_header}>Compete With Friends</p>
-              <p className={styles.inline_text}>
-                Join game and compete & discuss with other users.
-              </p>
-            </div>
+            ) : (
+              <div className={styles.inline_cell} onClick={() => setMainPic(3)}>
+                <div className={styles.logo}>
+                  <Image src={model} width="50px" height="50px" />
+                </div>
+                <p className={styles.inline_header}>Interact with Bot</p>
+                <p className={styles.inline_text}>
+                  Ask and bid stocks with various intelligent bots.
+                </p>
+              </div>
+            )}
           </div>
           <div className={styles.display_game}>
-            <Image src={main} width="1280" height="630px" />
+            {mainPic == 0 ? (
+              <div
+                style={{
+                  marginLeft: "1em",
+                  marginTop: "1em",
+                  marginBottom: "1em",
+                }}
+              >
+                <Image src={main} width="1180px" height="570px" />
+              </div>
+            ) : mainPic == 1 ? (
+              <div className={styles.terms_overall_container}>
+                <div>
+                  <div
+                    className={styles.terms_container}
+                    style={{ marginBottom: "2em" }}
+                  >
+                    <p className={styles.terms_container_h}>Complex Concepts</p>
+                    <p className={styles.terms_container_p}>
+                      Tutorial on fundamental & technical models, risk
+                      management, trading strategies, etc. Preparing for future
+                      investments in the real-world market.
+                    </p>
+                  </div>
+                  <div
+                    className={styles.terms_container}
+                    style={{ marginBottom: "2em" }}
+                  >
+                    <p className={styles.terms_container_h}>
+                      Simple Explanation
+                    </p>
+                    <p className={styles.terms_container_p}>
+                      Aspect aims to simplify the learning process of finance
+                      through more logical materials with abundant examples,
+                      graphics, and visualizations.
+                    </p>
+                  </div>
+                  <div className={styles.terms_container}>
+                    <p className={styles.terms_container_h}>
+                      Convenient Learning
+                    </p>
+                    <p className={styles.terms_container_p}>
+                      Use the search feature to look for specific terms. Under
+                      all terms, share opinions and discuss with each other in
+                      the comment section.
+                    </p>
+                  </div>
+                </div>
+                <div style={{ marginLeft: "2em", marginTop: "1.25em" }}>
+                  {" "}
+                  <Image src={terms_diagram} width="570px" height="460px" />
+                </div>
+              </div>
+            ) : mainPic == 2 ? (
+              <div
+                style={{
+                  marginLeft: "1em",
+                  marginTop: "1em",
+                  marginBottom: "1em",
+                }}
+              >
+                <Image src={ranking} width="1180px" height="540px" />
+              </div>
+            ) : mainPic == 3 ? (
+              <div className={styles.terms_overall_container}>
+                <div>
+                  <p className={styles.ai_header}>AI Bots for High</p>
+                  <p className={styles.ai_header1}>Playability & Interaction</p>
+                  <p className={styles.ai_description}>
+                    The bots serve to increase diversity and ensure fairness in
+                    the game. By processing market information, including
+                    historical prices, current prices, stock volumes, news, and
+                    financial statistics, the bots evaluate the situation based
+                    on their individual strategies and decide whether an order
+                    should be placed or accepted.
+                  </p>
+                </div>
+                <div style={{ marginLeft: "7em", marginTop: "1.25em" }}>
+                  <Image src={bots_chart} width="500px" height="400px" />
+                </div>
+              </div>
+            ) : null}
           </div>
         </div>
       </div>
@@ -107,7 +246,8 @@ const Product = () => {
                 &quot;While playing, observe a clearer insight of the financial
                 world. &quot;
               </p>
-              <div className={styles.social_media}>
+              <div className={styles.github}>Get Started on GitHub</div>
+              {/* <div className={styles.social_media}>
                 <p className={styles.info_header}>
                   Find information and updates on Aspect
                 </p>
@@ -124,7 +264,7 @@ const Product = () => {
                     </div>
                   </div>
                 </div>
-              </div>
+              </div> */}
             </div>
           </div>
         </div>

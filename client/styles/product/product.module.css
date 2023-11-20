@@ -94,7 +94,7 @@
 }
 
 .slogan {
-  margin-top: 0.5em;
+  margin-top: 2em;
   font-size: 45px;
   font-weight: 700;
   text-align: center;
@@ -107,6 +107,23 @@
   -moz-text-fill-color: transparent;
   line-height: 1.2;
   margin-left: 1em;
+}
+
+.github {
+  background-image: linear-gradient(45deg, #5d83f6, #72d681);
+  width: 12em;
+  font-size: 24px;
+  font-weight: 500;
+  color: #fff;
+  text-align: center;
+  padding: 0.5em;
+  border-radius: 10px;
+  margin-left: 4em;
+  margin-top: 3em;
+}
+
+.github:hover {
+  cursor: pointer;
 }
 
 .social_media {
@@ -138,6 +155,22 @@
 
 .inline_cell:hover {
   box-shadow: 0 5px 10px 0 #c9ffd152;
+  cursor: pointer;
+}
+
+.inline_cell1 {
+  border: 1px solid #c9ffd1;
+  background-image: linear-gradient(180deg, #d5d5d5, #73dd83);
+  border-radius: 8px;
+  margin-right: 2em;
+  padding-right: 1em;
+  box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.7), 0 5px 30px 0 rgba(0, 0, 0, 0.5),
+    0px 0px 5px 0.5px rgb(52, 52, 52) inset;
+}
+
+.inline_cell1:hover {
+  box-shadow: 0 5px 10px 0 #c9ffd152;
+  cursor: pointer;
 }
 
 .bg3 {
@@ -188,6 +221,13 @@
   font-size: 20px;
 }
 
+.inline_header1 {
+  color: #505050;
+  margin-left: 1em;
+  font-size: 20px;
+  font-weight: 500;
+}
+
 .inline_text {
   color: #aaaaaa;
   margin-left: 1.25em;
@@ -199,9 +239,72 @@
   width: 15em;
 }
 
+.inline_text1 {
+  color: #505050;
+  margin-left: 1.25em;
+  font-size: 16px;
+  line-height: 1.4;
+  margin-top: 0.5em;
+  margin-bottom: 1em;
+  font-weight: 500;
+  height: 3em;
+  width: 15em;
+}
+
+.terms_overall_container {
+  padding: 1.5em;
+  display: inline-flex;
+}
+
+.terms_container {
+  background-color: #151515;
+  width: 35em;
+  padding: 1.5em 0.75em;
+  border-radius: 10px;
+  border: 2px dashed #c9ffd1;
+}
+
+.terms_container_h {
+  font-size: 20px;
+  color: #e0e0e0;
+  font-weight: 400;
+  margin-bottom: 0.5em;
+}
+
+.terms_container_p {
+  font-size: 16px;
+  color: #aaaaaa;
+  font-weight: 300;
+}
+
+.ai_header {
+  font-size: 46px;
+  font-weight: 500;
+  color: #e0e0e0;
+  line-height: 1;
+  margin-left: 0.5em;
+  margin-top: 1.75em;
+}
+
+.ai_header1 {
+  font-size: 46px;
+  font-weight: 500;
+  color: #c9ffd1;
+  line-height: 1.4;
+  margin-left: 0.5em;
+  margin-bottom: 1em;
+}
+
+.ai_description {
+  font-size: 16px;
+  font-weight: 300;
+  color: #aaaaaa;
+  width: 32em;
+  margin-left: 1.5em;
+}
+
 .display_game {
   background-color: #202020;
-  padding: 1em;
   border-radius: 10px;
   width: 76em;
   display: table;
@@ -232,7 +335,7 @@
   background-color: #ffffff;
   width: 99vw;
   padding-top: 7em;
-  height: 60em
+  height: 60em;
 }
 
 .subheader {
@@ -514,7 +617,7 @@
   box-shadow: 0 5px 10px 0 #c9ffd152;
 }
 
-.letter_header{
+.letter_header {
   font-size: 54px;
   font-weight: 700;
 }

@@ -30,7 +30,7 @@ export default function News(props: any) {
                     <p className={styles.post_detail_comp}>
                       by <span>{post.author.name}</span>
                     </p>
-                    <p className={styles.date}>April 2nd</p>
+                    <p className={styles.date}>Season One</p>
                   </div>
                   <button
                     className={styles.like_button}

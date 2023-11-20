@@ -19,7 +19,8 @@
 }
 
 .container {
-  margin-top: 7em;
+  width: 99vw;
+  margin-top: 10em;
 }
 
 .layer_header {
@@ -34,7 +35,7 @@
   font-weight: 400;
 }
 
-.layer_header span{
+.layer_header span {
   color: #c9ffd1;
   font-weight: 500;
 }
@@ -46,11 +47,17 @@
 
 .layer1 {
   margin-top: 10em;
-  width: 77em;
+  display: table;
+  margin: auto;
   margin-bottom: 1em;
 }
 
-.login{
+.layer2 {
+  display: table;
+  margin: auto;
+}
+
+.login {
   font-size: 40px;
   color: #e0e0e0;
   width: 10em;
@@ -100,7 +107,7 @@
   margin-left: 1em;
 }
 
-.BotRanking{
+.BotRanking {
   border: #484848 solid 1px;
   border-radius: 5px;
   margin-top: 0.5em;

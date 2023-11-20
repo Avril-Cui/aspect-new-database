@@ -17,7 +17,7 @@ conn = psycopg2.connect(
 cur = conn.cursor()
 
 cur.execute(f"""
-   select * from trade_history;
+   select * from portfolio where uid='aswalfredz@gmail.com';
 """)
-data = cur.fetchone()
+data = cur.fetchall()
 print(data)
