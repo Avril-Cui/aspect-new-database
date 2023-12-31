@@ -42,11 +42,11 @@ function MyApp({ Component, pageProps }: AppProps) {
       <CookiesProvider>
         {AuthRequired.includes(router.pathname) ? (
           <ProtectedRoute>
-            <Component {...pageProps} />
+            <Component {...pageProps} suppressHydrationWarning/>
           </ProtectedRoute>
         ) : (
           <Layout>
-            <Component {...pageProps} />
+            <Component {...pageProps} suppressHydrationWarning/>
           </Layout>
         )}
       </CookiesProvider>

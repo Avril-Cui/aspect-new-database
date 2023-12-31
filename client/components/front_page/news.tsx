@@ -53,7 +53,7 @@ export default function Simulator(props: any) {
                     <p className={styles.post_detail_comp}>
                       by <span>{post.author.name}</span>
                     </p>
-                    <p className={styles.date}>April 2nd</p>
+                    <p className={styles.date}>Company News</p>
                   </div>
                   <button
                     className={styles.like_button}

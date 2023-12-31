@@ -29,7 +29,7 @@ const Product = () => {
   const [mainPic, setMainPic] = useState(0);
 
   return (
-    <div className={styles.container}>
+    <div className={styles.container} suppressHydrationWarning>
       <Head>
         <title>Product Introduction</title>
       </Head>

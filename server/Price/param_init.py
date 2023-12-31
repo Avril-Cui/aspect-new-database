@@ -59,6 +59,15 @@ for index in range(len(file_names_index)):
  index_params_index[name] = {
   "macro": macro("Price/historical_price/index_data/{}.csv".format(name))
  }
+import time
+# print(index_params_index)
+for i in range(len(index_params_index["normal1"]["macro"]["mu_sde"])):
+    print(f"Timestamp: {i}")
+    print(f"Drift: {index_params_index['normal1']['macro']['theta'][i]}")
+    print(f"Mean: {index_params_index['normal1']['macro']['mu_sde'][i]}")
+    print(f"Volatility: {index_params_index['normal1']['macro']['sigma'][i]}\n")
+    time.sleep(1)
+
 
 file_names_ast = ['gov_policy', 'normal', 'insider', 'normal', 'fs']
 length_ast = [120, 50, 75, 50, 110]

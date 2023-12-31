@@ -54,7 +54,7 @@ const Manu = () => {
   }, [user]);
 
   const handleLogout = () => {
-    logout({ logoutParams: { returnTo: "https://www.aspect-game.com" } });
+    logout({ logoutParams: { returnTo: "http://localhost:3000" } });
     cookies.remove("userData", { path: "/" });
     cookies.remove("user_uid", { path: "/" });
   };
@@ -71,21 +71,14 @@ const Manu = () => {
           </a>
         </Link>
         <div className={styles.sections}>
-          <Link href="/season-review">
+          {/* <Link href="/season-review">
             <a style={{ color: "#c3fcc2" }}>Season Review</a>
-          </Link>
-          {/* {userData ? (
+          </Link> */}
+          {userData ? (
             <Link href="/dashboard">
               <a style={{ color: "#c3fcc2" }}>Dashboard</a>
             </Link>
-          ) : null} */}
-          {/* {isEnd ? (
-            <div>
-              <Link href="/season-review">
-                <a style={{ color: "#f3ec78" }}>Season Review</a>
-              </Link>
-            </div>
-          ) : null} */}
+          ) : null}
           <div>
             <Link href="/game">
               <a>Game</a>
